@@ -1,0 +1,6 @@
+#!/bin/bash
+g++ *.cpp
+currdir=${PWD##*/}
+ssh simsan@octopus.theophys.kth.se mkdir -p $currdir
+ssh simsan@octopus.theophys.kth.se mkdir -p $currdir/output
+scp ./a.out simsan@octopus.theophys.kth.se:~/$currdir/a.out
