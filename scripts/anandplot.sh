@@ -1,10 +1,10 @@
 #!/bin/bash
-# format data from output
+# loop over raw data files, do data analysis on them by calling analyzeData.py 
 for filename in ./output/*; do
 	python3 analyzeData.py $(basename $filename)
 done
 
-#display plots
+#Display a selection of plots from the output of analyzeData.py using xmgrace
 
 enstring=""
 for filename in ./foutput/en/*; do
