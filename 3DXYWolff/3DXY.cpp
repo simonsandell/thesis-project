@@ -281,7 +281,7 @@ int main(int argc, char* argv[]){
 
 	//
 	//Set equilibration time and number of samples
-	double N_equil_steps= 100*L*L*L;
+	double N_equil_steps= 300*L*L*L;
 	double Nsamples = N_equil_steps; 
 
 	//define and initialize the lattice and cluster
@@ -441,16 +441,15 @@ int main(int argc, char* argv[]){
 		xi[i] /= L*L*L*(extT[i]);
 	}
 	for (int i = 0;i< N_temps; ++i){
+		cout << L << " ";
+		cout << extT[i] << " ";
 		cout << avgE[i] << " ";
-	}
-	for (int i = 0;i<N_temps;++i){
+		cout << avgM[i] << " ";
 		cout << b[i] << " ";
-	}
-	for (int i = 0;i<N_temps;++i){
 		cout << dbdt[i] << " ";
-	}
-	for (int i = 0;i<N_temps;++i){
 		cout << xi[i] << " ";
-	}
+		cout << N_equil_steps/(L*L*L) << " ";
+		cout << endl;
 
+	}
 }
