@@ -1,13 +1,4 @@
 import subprocess
-import os
-dl = os.path.dirname(os.path.realpath(__file__)).rsplit("/")
-dn = dl[len(dl)-1]
-print(dl)
-print(dn)
-dir_list = os.getcwd().rsplit("/")
-dir_name = dir_list[len(dir_list)-1]
-print(dir_list)
-print(dir_name)
 def temperatureRun():
     Tstart = 1
     Tend = 3
@@ -25,6 +16,12 @@ def temperatureRun():
             for L in Lrange:
                 subprocess.call(["./a.out"+ " " +str(L)+ " " +str(T)+ " " +str(1)+ " " +str(N_equil) + " "+ str(N_samples)+" >> "+" ./output/temperatureRun"],shell=True)
 
+def histRun(L,Temps,N):
+    T_str = ""
+    for t in Temps:
+        T_str = T_str + str(t) + " "
+    for i in range(N):
+        subprocess.call(["./a.out"+" "+str(L)+" " + T_str + ">>  ./output/histRun"+str(L)],shell=True)
 
 def nequilRun(L,T,Nruns,Neqrange):
     N_samples =1;
@@ -39,3 +36,5 @@ def nequilRun(L,T,Nruns,Neqrange):
 #Neqrange = [65536,131072,262144,524288,1048576]
 #nequilRun(4,2.2,10,Neqrange)
 #temperatureRun();
+Trange = [2.1,2.12,2.14,2.16,2.18,2.2,2.22,2.24,2.26,2.28,2.3]
+histRun(4,Trange,100)
