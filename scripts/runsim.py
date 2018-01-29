@@ -10,14 +10,14 @@ def histRun(L,Temps,N):
     for t in Temps:
         T_str = T_str + str(t) + " "
     for i in range(N):
-        subprocess.call(["./a.out"+" "+str(L)+" " + T_str + ">>  ./output/histRun"+str(L)],shell=True)
+        subprocess.call(["./a.out"+" "+str(L)+" " + T_str + ">>  ./output/histRun"],shell=True)
 
 def nequilRun(L,T,Nruns,Neqrange):
     N_samples =1;
     for i in range(Nruns):
         for n in Neqrange:
-            subprocess.call(["./a.out"+" "+str(L)+" "+str(T)+" 0 "+str(n)+" 1 >>  ./output/nequil"+str(L)],shell=True)
-            subprocess.call(["./a.out"+" "+str(L)+" "+str(T)+" 1 "+str(n)+" 1 >>  ./output/nequil"+str(L)],shell=True)
+            subprocess.call(["./a.out"+" "+str(L)+" "+str(T)+" 0 "+str(n)+" 1 >>  ./output/nequil"],shell=True)
+            subprocess.call(["./a.out"+" "+str(L)+" "+str(T)+" 1 "+str(n)+" 1 >>  ./output/nequil"],shell=True)
 
 
 def getTrange(Tstart,Tend,Tnum):
