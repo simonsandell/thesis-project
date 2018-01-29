@@ -102,7 +102,7 @@ void sweep(double***lattice,double&L,double&beta,double&TotXMag,double&TotYMag,d
 	double enBefore;
 	double enAfter;
 	for (int i = 0; i<(L*L*L); ++i){
-		//select random angle
+		//select random angle in the range [-PI,PI]
 		u = -M_PI + 2*M_PI*randgen(); 
 		//select random spin
 		s1 = L*randgen();
@@ -126,6 +126,9 @@ void sweep(double***lattice,double&L,double&beta,double&TotXMag,double&TotYMag,d
 
 //main
 int main(int argc, char* argv[]){
+	//set precision of cout
+	cout.precision(17);
+
 	//generate random seed from system and initialize random number generator
 	unsigned long int s;
 	syscall(SYS_getrandom,&s,sizeof(unsigned long int),0);	
@@ -297,13 +300,13 @@ int main(int argc, char* argv[]){
 	avgM /= L*L*L;
 
 	//print to terminal
-	cout << L << " ";
-	cout << T << " ";
-	cout << avgE << " ";
-	cout << avgM << " ";
-	cout << b << " ";
-	cout << dbdt << " ";
-	cout << xi << " ";
-	cout << N_equil_sweeps << " ";
-	cout << endl;
+	cout << fixed << L << " ";
+	cout << fixed << T << " ";
+	cout << fixed << avgE << " ";
+	cout << fixed << avgM << " ";
+	cout << fixed << b << " ";
+	cout << fixed << dbdt << " ";
+	cout << fixed << xi << " ";
+	cout << fixed << N_equil_sweeps << " ";
+	cout << fixed << endl;
 }
