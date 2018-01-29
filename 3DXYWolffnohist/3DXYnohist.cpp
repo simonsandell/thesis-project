@@ -245,42 +245,24 @@ int main(int argc, char* argv[]){
 
 	//set system size and temperature from input arguments
 	if (argc < 2){
-		cout << "input arguments: L T_1 T_2 T_3 ..." << endl;
+		cout << "input arguments: L T initM N_equil N_samples" << endl;
 		exit(0);
 	}
 	double L = stod(argv[1]);
-	double N_temps = 1;
-	double *extT;
-	if (argc == 2) {
-		extT = new double[20];
-		double k = 2.101867183371499;
-		double dk = 0.01;
-		for ( int i = 0; i < 20; ++i){
-			extT[i] = k + i*dk;
-		}
-		N_temps = 20;
-	}
-	else if (argc> 2){
-		extT = new double[argc -2];
-		N_temps = argc -2;
-		for (int i = 0; i< (argc-2); ++i){
-			extT[i] = stod(argv[i+2]);
-		}		
-	}
 
-	//critical temperature of 3D XY
-	double beta = 0.45416;
-	double T = 1/0.45416;
+	double T = stod(argv[2]);
+	double beta = 1/T;
+
+	double initM = stod(argv[3]);
+	double N_equil_sweeps = stod(argv[4]);
+	double N_equil_steps= N_equil_sweeps*L*L*L;
+	double N_samples = stod(argv[5]);
 
 	double TotEn;
 	double TotXMag;
 	double TotYMag;
 	double TotMag;
 
-	//
-	//Set equilibration time and number of samples
-	double N_equil_steps= 100*L*L*L;
-	double Nsamples = N_equil_steps; 
 
 	//define and initialize the lattice and cluster
 	double ***lattice;
@@ -341,114 +323,83 @@ int main(int argc, char* argv[]){
 
 	//parameters and physical quantities
 	//averages
-	double avgE[(int)N_temps] = {}; //energy
-	double avgE2[(int)N_temps] = {};//squared energy
-	double avgM[(int)N_temps] = {}; //abs of magnetization
-	double avgM2[(int)N_temps] = {};//squared magnetization
-	double avgM4[(int)N_temps] = {};//fourth power of magnetization
-	double avgM2E[(int)N_temps] = {};// squared magnetization times energy
-	double avgM4E[(int)N_temps] = {}; // 4th power magnetization times energy
+	double avgE = 0; //energy
+	double avgE2 = 0;//squared energy
+	double avgM = 0; //abs of magnetization
+	double avgM2 = 0;//squared magnetization
+	double avgM4 = 0;//fourth power of magnetization
+	double avgM2E = 0;// squared magnetization times energy
+	double avgM4E = 0; // 4th power magnetization times energy
 
-	double avgMX2[(int)N_temps] ={};
-	double avgMY2[(int)N_temps] ={};
-	double avgMX4[(int)N_temps] ={};
-	double avgMY4[(int)N_temps] ={};
-	double avgMXY2[(int)N_temps] ={};
+	double avgMX2 = 0;
+	double avgMY2 = 0;
+	double avgMX4 = 0;
+	double avgMY4 = 0;
+	double avgMXY2 = 0;
 
-	double avgMX2E[(int)N_temps] ={};
-	double avgMY2E[(int)N_temps] ={};
-	double avgMX4E[(int)N_temps] ={};
-	double avgMY4E[(int)N_temps] ={};
-	double avgMXY2E[(int)N_temps] ={};
+	double avgMX2E = 0;
+	double avgMY2E = 0;
+	double avgMX4E = 0;
+	double avgMY4E = 0;
+	double avgMXY2E = 0;
 
-	double avgExpFac[(int)N_temps] = {};
-	double expFac;
 
-	for ( int i = 0; i < Nsamples; ++i){
+	for ( int i = 0; i < N_samples; ++i){
 		//make a cluster
 		newCluster(lattice,cluster,L,beta,randgen,TotXMag,TotYMag,TotEn);
 		//take sample data
-		for (int i = 0; i<N_temps; ++i){
-			expFac = exp(-( (1/(extT[i])) - beta)*TotEn);
-			avgExpFac[i] += expFac;
-			avgE[i] += expFac*TotEn;
-			avgE2[i] += expFac*TotEn*TotEn;
-			avgM[i] += expFac*sqrt(TotXMag*TotXMag + TotYMag*TotYMag);
-			avgMX2[i] += expFac*TotXMag*TotXMag;
-			avgMY2[i] += expFac*TotYMag*TotYMag;
-			avgMX4[i] += expFac*TotXMag*TotXMag*TotXMag*TotXMag;
-			avgMY4[i] += expFac*TotYMag*TotYMag*TotYMag*TotYMag;
-			avgMXY2[i] += expFac*TotXMag*TotXMag*TotYMag*TotYMag;
-			avgMX2E[i] += expFac*TotXMag*TotXMag*TotEn;
-			avgMY2E[i] += expFac*TotYMag*TotYMag*TotEn;
-			avgMX4E[i] += expFac*TotXMag*TotXMag*TotXMag*TotXMag*TotEn;
-			avgMY4E[i] += expFac*TotYMag*TotYMag*TotYMag*TotYMag*TotEn;
-			avgMXY2E[i] += expFac*TotXMag*TotXMag*TotYMag*TotYMag*TotEn;
-		}
+		avgE += TotEn;
+		avgE2 += TotEn*TotEn;
+		avgM += sqrt(TotXMag*TotXMag + TotYMag*TotYMag);
+		avgMX2 += TotXMag*TotXMag;
+		avgMY2 += TotYMag*TotYMag;
+		avgMX4 += TotXMag*TotXMag*TotXMag*TotXMag;
+		avgMY4 += TotYMag*TotYMag*TotYMag*TotYMag;
+		avgMXY2 += TotXMag*TotXMag*TotYMag*TotYMag;
+		avgMX2E += TotXMag*TotXMag*TotEn;
+		avgMY2E += TotYMag*TotYMag*TotEn;
+		avgMX4E += TotXMag*TotXMag*TotXMag*TotXMag*TotEn;
+		avgMY4E += TotYMag*TotYMag*TotYMag*TotYMag*TotEn;
+		avgMXY2E += TotXMag*TotXMag*TotYMag*TotYMag*TotEn;
 
 	}
-	//test if avgM4 is correct
-	// conclusion: it wasnt
-	/*
-	   double testM4 = 0;
-	   for (int i = 0; i< N_temps; ++i){
-	   testM4 = avgMX4[i] + avgMX4[i] + 2*avgMXY2[i];
-	   testM4 /= Nsamples;
-	   cout << testM4 << "test:avgM4 " << avgM4[i]/Nsamples << endl;
-	   }
-	   */
-
-
-
 	//calculate quantities of interest
 	//derived quantites
-	double xi[(int)N_temps] = {};//susceptibility
-	double b[(int)N_temps] = {}; //Binder parameter
-	double dbdt[(int)N_temps] = {};//derivative wrt T of Binder parameter
-	for (int i =0; i< N_temps; ++i){
-		//form averages of <M^2>, <M^4>, <M^2 E> and <M^4 E>
-		avgM2[i] = avgMX2[i] + avgMY2[i];
-		avgM4[i] = avgMX4[i] + avgMY4[i] + 2*avgMXY2[i];
-		avgM2E[i] = avgMX2E[i] + avgMY2E[i];
-		avgM4E[i] = avgMX4E[i] + avgMY4E[i] + 2*avgMXY2E[i];
+	double xi = 0;//susceptibility
+	double b = 0; //Binder parameter
+	double dbdt = 0;//derivative wrt T of Binder parameter
+	//form averages of <M^2>, <M^4>, <M^2 E> and <M^4 E>
 
-		//normalize
-		avgExpFac[i] /= Nsamples;
+	avgM2 = avgMX2 + avgMY2;
+	avgM4 = avgMX4 + avgMY4 + 2*avgMXY2;
+	avgM2E = avgMX2E + avgMY2E;
+	avgM4E = avgMX4E + avgMY4E + 2*avgMXY2E;
 
-		avgE[i] /= Nsamples;
-		avgE2[i] /= Nsamples;
-		avgM[i] /= Nsamples;
-		avgM2[i] /= Nsamples;
-		avgM4[i] /= Nsamples;
-		avgM2E[i] /= Nsamples;
-		avgM4E[i] /= Nsamples;
+	//normalize
 
-		avgE[i] /= avgExpFac[i];
-		avgE2[i] /= avgExpFac[i];
-		avgM[i] /= avgExpFac[i];
-		avgM2[i] /= avgExpFac[i];
-		avgM4[i] /= avgExpFac[i];
-		avgM2E[i] /= avgExpFac[i];
-		avgM4E[i] /= avgExpFac[i];
-		//calculate
-		b[i] = avgM4[i];
-		b[i] /= (avgM2[i]*avgM2[i]);
-		dbdt[i] = (avgM4E[i]/(avgM2[i]*avgM2[i]) + 2*avgM4[i]*avgE[i]/(avgM2[i]*avgM2[i]) - 3*avgM4[i]*avgM2E[i]/(avgM2[i]*avgM2[i]*avgM2[i]));
-		dbdt[i] /= (extT[i])*(extT[i]);
-		xi[i] = avgM2[i] - avgM[i]*avgM[i];
-		xi[i] /= L*L*L*(extT[i]);
-	}
-	for (int i = 0;i< N_temps; ++i){
-		cout << avgE[i] << " ";
-	}
-	for (int i = 0;i<N_temps;++i){
-		cout << b[i] << " ";
-	}
-	for (int i = 0;i<N_temps;++i){
-		cout << dbdt[i] << " ";
-	}
-	for (int i = 0;i<N_temps;++i){
-		cout << xi[i] << " ";
-	}
+	avgE /= N_samples;
+	avgE2 /= N_samples;
+	avgM /= N_samples;
+	avgM2 /= N_samples;
+	avgM4 /= N_samples;
+	avgM2E /= N_samples;
+	avgM4E /= N_samples;
 
+	//calculate
+	b = avgM4;
+	b /= (avgM2*avgM2);
+	dbdt = (avgM4E/(avgM2*avgM2) + 2*avgM4*avgE/(avgM2*avgM2) - 3*avgM4*avgM2E/(avgM2*avgM2*avgM2));
+	dbdt /= (T)*(T);
+	xi = avgM2 - avgM*avgM;
+	xi /= L*L*L*(T);
+
+	cout << L << " ";
+	cout << T << " ";
+	cout << avgE/(L*L*L) << " ";
+	cout << avgM/(L*L*L) << " ";
+	cout << b << " ";
+	cout << dbdt << " ";
+	cout << xi << " ";
+	cout << N_equil_sweeps << " ";
+	cout << endl;
 }
