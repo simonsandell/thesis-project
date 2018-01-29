@@ -443,8 +443,8 @@ int main(int argc, char* argv[]){
 	for (int i = 0;i< N_temps; ++i){
 		cout << L << " ";
 		cout << extT[i] << " ";
-		cout << avgE[i] << " ";
-		cout << avgM[i] << " ";
+		cout << avgE[i]/(L*L*L) << " ";
+		cout << avgM[i]/(L*L*L) << " ";
 		cout << b[i] << " ";
 		cout << dbdt[i] << " ";
 		cout << xi[i] << " ";
