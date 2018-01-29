@@ -37,3 +37,8 @@
 .Trashes
 ehthumbs.db
 Thumbs.db
+# Directories containing raw and formatted data #
+#################################################
+output/
+foutput/
+saved_output/
