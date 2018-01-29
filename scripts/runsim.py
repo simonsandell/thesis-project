@@ -37,7 +37,7 @@ N = 100
 
 #Neqrange = [65536,131072,262144,524288,1048576]
 #nequilRun(4,2.2,10,Neqrange)
-#temperatureRun(Lrange,Trange,N,N_equil,N_samples);
-histRun(4,Trange,N)
-histRun(8,Trange,N)
-histRun(16,Trange,N)
+temperatureRun(Lrange,Trange,N,N_equil,N_samples);
+#histRun(4,Trange,N)
+#histRun(8,Trange,N)
+#histRun(16,Trange,N)
