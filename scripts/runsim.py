@@ -1,18 +1,11 @@
 import subprocess
-def temperatureRun():
-    Tstart = 1
-    Tend = 3
-    dt = (Tend -Tstart)/20
-    
-    Lrange = [4]
+def temperatureRun(Lrange,Trange,N):
     
     N_equil = 2000;
     N_samples = N_equil;
     
-    for i in range(100):
-        T = Tstart
-        for t in range(20):
-            T = T + dt;
+    for i in range(N):
+        for t in Trange:
             for L in Lrange:
                 subprocess.call(["./a.out"+ " " +str(L)+ " " +str(T)+ " " +str(1)+ " " +str(N_equil) + " "+ str(N_samples)+" >> "+" ./output/temperatureRun"],shell=True)
 
@@ -31,10 +24,15 @@ def nequilRun(L,T,Nruns,Neqrange):
             subprocess.call(["./a.out"+" "+str(L)+" "+str(T)+" 1 "+str(n)+" 1 >>  ./output/nequil"+str(L)],shell=True)
 
 
-
+def getTrange(Tstart,Tend,Tnum):
+    dt = (Tend - Tstart)/(Tnum)
+    ret = []
+    for i in range(Tnum):
+        ret.append(Tstart + i*dt)
+    return ret
 #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
 #Neqrange = [65536,131072,262144,524288,1048576]
 #nequilRun(4,2.2,10,Neqrange)
 #temperatureRun();
-Trange = [2.1,2.12,2.14,2.16,2.18,2.2,2.22,2.24,2.26,2.28,2.3]
-histRun(4,Trange,100)
+Trange = getTrange(1.5,2.9,20)
+histRun(8,Trange,200)
