@@ -233,17 +233,6 @@ int main(int argc, char* argv[]){
 	double avgM2E = 0;// squared magnetization times energy
 	double avgM4E = 0; // 4th power magnetization times energy
 
-	double avgMX2 =0;
-	double avgMY2 =0;
-	double avgMX4 =0;
-	double avgMY4 =0;
-	double avgMXY2 =0;
-
-	double avgMX2E =0;
-	double avgMY2E =0;
-	double avgMX4E =0;
-	double avgMY4E =0;
-	double avgMXY2E =0;
 
 
 	double xi = 0;//susceptibility
@@ -258,17 +247,6 @@ int main(int argc, char* argv[]){
 		avgE += TotEn;
 		avgE2 += TotEn*TotEn;
 		avgM += sqrt(TotXMag*TotXMag + TotYMag*TotYMag);
-		avgMX2 += TotXMag*TotXMag;
-		avgMY2 += TotYMag*TotYMag;
-		avgMX4 += TotXMag*TotXMag*TotXMag*TotXMag;
-		avgMY4 += TotYMag*TotYMag*TotYMag*TotYMag;
-		avgMXY2 += TotXMag*TotXMag*TotYMag*TotYMag;
-		avgMX2E += TotXMag*TotXMag*TotEn;
-		avgMY2E += TotYMag*TotYMag*TotEn;
-		avgMX4E += TotXMag*TotXMag*TotXMag*TotXMag*TotEn;
-		avgMY4E += TotYMag*TotYMag*TotYMag*TotYMag*TotEn;
-		avgMXY2E += TotXMag*TotXMag*TotYMag*TotYMag*TotEn;
-		//test
 		
 		avgM2 += TotXMag*TotXMag + TotYMag*TotYMag;
 		avgM4 += (TotXMag*TotXMag + TotYMag*TotYMag)*(TotXMag*TotXMag + TotYMag*TotYMag);
@@ -277,17 +255,7 @@ int main(int argc, char* argv[]){
 	}
 
 	//calculate quantities of interest
-	//form averages of <M^2>, <M^4>, <M^2 E> and <M^4 E>
 	
-	//test
-	/*
-	cout << fixed <<avgM4E<< endl;
-	avgM2 = avgMX2 + avgMY2;
-	avgM4 = avgMX4 + avgMY4 + 2*avgMXY2;
-	avgM2E = avgMX2E + avgMY2E;
-	avgM4E = avgMX4E + avgMY4E + 2*avgMXY2E;
-	cout << fixed << avgM4E << endl;
-	*/
 
 	//normalize
 

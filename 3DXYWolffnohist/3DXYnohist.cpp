@@ -369,16 +369,10 @@ int main(int argc, char* argv[]){
 		avgE += TotEn;
 		avgE2 += TotEn*TotEn;
 		avgM += sqrt(TotXMag*TotXMag + TotYMag*TotYMag);
-		avgMX2 += TotXMag*TotXMag;
-		avgMY2 += TotYMag*TotYMag;
-		avgMX4 += TotXMag*TotXMag*TotXMag*TotXMag;
-		avgMY4 += TotYMag*TotYMag*TotYMag*TotYMag;
-		avgMXY2 += TotXMag*TotXMag*TotYMag*TotYMag;
-		avgMX2E += TotXMag*TotXMag*TotEn;
-		avgMY2E += TotYMag*TotYMag*TotEn;
-		avgMX4E += TotXMag*TotXMag*TotXMag*TotXMag*TotEn;
-		avgMY4E += TotYMag*TotYMag*TotYMag*TotYMag*TotEn;
-		avgMXY2E += TotXMag*TotXMag*TotYMag*TotYMag*TotEn;
+		avgM2 += TotXMag*TotXMag + TotYMag*TotYMag;
+		avgM4 += (TotXMag*TotXMag + TotYMag*TotYMag)*(TotXMag*TotXMag + TotYMag*TotYMag);
+		avgM2E += TotEn*(TotXMag*TotXMag + TotYMag*TotYMag);
+		avgM4E += TotEn*(TotXMag*TotXMag + TotYMag*TotYMag)*(TotXMag*TotXMag + TotYMag*TotYMag);
 
 	}
 	//calculate quantities of interest
@@ -386,12 +380,6 @@ int main(int argc, char* argv[]){
 	double xi = 0;//susceptibility
 	double b = 0; //Binder parameter
 	double dbdt = 0;//derivative wrt T of Binder parameter
-	//form averages of <M^2>, <M^4>, <M^2 E> and <M^4 E>
-
-	avgM2 = avgMX2 + avgMY2;
-	avgM4 = avgMX4 + avgMY4 + 2*avgMXY2;
-	avgM2E = avgMX2E + avgMY2E;
-	avgM4E = avgMX4E + avgMY4E + 2*avgMXY2E;
 
 	//normalize
 

@@ -29,7 +29,7 @@ def getTrange(Tstart,Tend,Tnum):
 #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
 
 
-Trange = getTrange(1.5,2.9,20)
+Trange = getTrange(1.5,2.9,30)
 N_equil = 300
 N_samples = N_equil
 Lrange = [4,8,16]

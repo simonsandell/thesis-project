@@ -152,7 +152,7 @@ int growCluster(double &u,int &s1,int &s2,int &s3,double ***lattice,bool ***clus
 
 		//test that it is not already part of cluster
 		if (cluster[get<0>(current)][get<1>(current)][get<2>(current)] == 0){
-			
+
 			//increase time for every tested spin
 			++time;
 			//get its current angle;
@@ -182,28 +182,28 @@ int growCluster(double &u,int &s1,int &s2,int &s3,double ***lattice,bool ***clus
 						angleAfter);
 				tuple<int,int,int,double> neig2 = make_tuple(
 						(get<0>(current) + (int)L - 1) % (int)L,
-					       	get<1>(current),
+						get<1>(current),
 						get<2>(current),
 						angleAfter);
 				tuple<int,int,int,double> neig3 = make_tuple(
 						get<0>(current),
-					       	(get<1>(current) + 1) % (int)L,
+						(get<1>(current) + 1) % (int)L,
 						get<2>(current),
 						angleAfter);
 				tuple<int,int,int,double> neig4 = make_tuple(
 						get<0>(current),
-					       	(get<1>(current) + (int)L - 1) % (int)L,
+						(get<1>(current) + (int)L - 1) % (int)L,
 						get<2>(current),
 						angleAfter);
 				tuple<int,int,int,double> neig5 = make_tuple(
 						get<0>(current),
-					       	get<1>(current),
-					       	(get<2>(current) + 1) % (int)L,
+						get<1>(current),
+						(get<2>(current) + 1) % (int)L,
 						angleAfter);
 				tuple<int,int,int,double> neig6 = make_tuple(
 						get<0>(current),
-					       	get<1>(current),
-					       	(get<2>(current) + (int)L - 1)%(int)L,
+						get<1>(current),
+						(get<2>(current) + (int)L - 1)%(int)L,
 						angleAfter);
 				//if it is not already part of the cluster, add it to perimeter list
 				if (cluster[get<0>(neig1)][get<1>(neig1)][get<2>(neig1)] ==0){
@@ -370,17 +370,6 @@ int main(int argc, char* argv[]){
 	double avgM2E[(int)N_temps] = {};// squared magnetization times energy
 	double avgM4E[(int)N_temps] = {}; // 4th power magnetization times energy
 
-	double avgMX2[(int)N_temps] ={};
-	double avgMY2[(int)N_temps] ={};
-	double avgMX4[(int)N_temps] ={};
-	double avgMY4[(int)N_temps] ={};
-	double avgMXY2[(int)N_temps] ={};
-
-	double avgMX2E[(int)N_temps] ={};
-	double avgMY2E[(int)N_temps] ={};
-	double avgMX4E[(int)N_temps] ={};
-	double avgMY4E[(int)N_temps] ={};
-	double avgMXY2E[(int)N_temps] ={};
 
 	double avgExpFac[(int)N_temps] = {};
 	double expFac;
@@ -395,16 +384,11 @@ int main(int argc, char* argv[]){
 			avgE[i] += expFac*TotEn;
 			avgE2[i] += expFac*TotEn*TotEn;
 			avgM[i] += expFac*sqrt(TotXMag*TotXMag + TotYMag*TotYMag);
-			avgMX2[i] += expFac*TotXMag*TotXMag;
-			avgMY2[i] += expFac*TotYMag*TotYMag;
-			avgMX4[i] += expFac*TotXMag*TotXMag*TotXMag*TotXMag;
-			avgMY4[i] += expFac*TotYMag*TotYMag*TotYMag*TotYMag;
-			avgMXY2[i] += expFac*TotXMag*TotXMag*TotYMag*TotYMag;
-			avgMX2E[i] += expFac*TotXMag*TotXMag*TotEn;
-			avgMY2E[i] += expFac*TotYMag*TotYMag*TotEn;
-			avgMX4E[i] += expFac*TotXMag*TotXMag*TotXMag*TotXMag*TotEn;
-			avgMY4E[i] += expFac*TotYMag*TotYMag*TotYMag*TotYMag*TotEn;
-			avgMXY2E[i] += expFac*TotXMag*TotXMag*TotYMag*TotYMag*TotEn;
+			
+			avgM2[i] += expFac*(TotXMag*TotXMag + TotYMag*TotYMag);
+			avgM4[i] += expFac*(TotXMag*TotXMag + TotYMag*TotYMag)*(TotXMag*TotXMag + TotYMag*TotYMag);
+			avgM2E[i] += TotEn*expFac*(TotXMag*TotXMag + TotYMag*TotYMag); 
+			avgM4E[i] += TotEn*expFac*(TotXMag*TotXMag + TotYMag*TotYMag)*(TotXMag*TotXMag + TotYMag*TotYMag);
 		}
 
 	}
@@ -416,11 +400,6 @@ int main(int argc, char* argv[]){
 	double b[(int)N_temps] = {}; //Binder parameter
 	double dbdt[(int)N_temps] = {};//derivative wrt T of Binder parameter
 	for (int i =0; i< N_temps; ++i){
-		//form averages of <M^2>, <M^4>, <M^2 E> and <M^4 E>
-		avgM2[i] = avgMX2[i] + avgMY2[i];
-		avgM4[i] = avgMX4[i] + avgMY4[i] + 2*avgMXY2[i];
-		avgM2E[i] = avgMX2E[i] + avgMY2E[i];
-		avgM4E[i] = avgMX4E[i] + avgMY4E[i] + 2*avgMXY2E[i];
 
 		//normalize
 		avgExpFac[i] /= Nsamples;
