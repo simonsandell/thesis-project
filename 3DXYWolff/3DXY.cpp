@@ -254,6 +254,8 @@ int newCluster(double *** lattice, bool***cluster,double &L,double &beta,auto &r
 
 //main
 int main(int argc, char* argv[]){
+	//set precision of cout
+	cout.precision(17);
 	//generate random seed from system and initialize random number generator
 	unsigned long int s;
 	syscall(SYS_getrandom,&s,sizeof(unsigned long int),0);	
@@ -447,15 +449,15 @@ int main(int argc, char* argv[]){
 		xi[i] /= L*L*L*(extT[i]);
 	}
 	for (int i = 0;i< N_temps; ++i){
-		cout << L << " ";
-		cout << extT[i] << " ";
-		cout << avgE[i]/(L*L*L) << " ";
-		cout << avgM[i]/(L*L*L) << " ";
-		cout << b[i] << " ";
-		cout << dbdt[i] << " ";
-		cout << xi[i] << " ";
-		cout << N_equil_steps/(L*L*L) << " ";
-		cout << endl;
+		cout << fixed << L << " ";
+		cout << fixed << extT[i] << " ";
+		cout << fixed << avgE[i]/(L*L*L) << " ";
+		cout << fixed << avgM[i]/(L*L*L) << " ";
+		cout << fixed << b[i] << " ";
+		cout << fixed << dbdt[i] << " ";
+		cout << fixed << xi[i] << " ";
+		cout << fixed << N_equil_steps/(L*L*L) << " ";
+		cout << fixed << endl;
 
 	}
 }
