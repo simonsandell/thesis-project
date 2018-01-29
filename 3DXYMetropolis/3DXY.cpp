@@ -209,6 +209,7 @@ int main(int argc, char* argv[]){
 	for (int t=0; t < N_equil_sweeps; ++t){
 		sweep(lattice,L,beta,TotXMag,TotYMag,TotEn,randgen);
 	}
+
 	//test if matches after equilibration
 	/*
 	   testEn = calcEn(lattice,L);
