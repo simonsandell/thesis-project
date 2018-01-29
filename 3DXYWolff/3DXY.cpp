@@ -46,13 +46,6 @@ double innerProd(double &angle1,double &angle2){
 	return prod;
 }
 
-//reflect spin 
-double rSpin(double&u,double&spin){
-	double ret = M_PI + 2*u -spin;
-	ret = ret + 4*M_PI;
-	ret = fmod(ret,2*M_PI);
-	return ret;
-}
 
 //calculate energy of site
 double siteEnergy(double *** lattice,double &L, int &s1, int &s2, int &s3){
@@ -73,10 +66,6 @@ double siteEnergy(double *** lattice,double &L, int &s1, int &s2, int &s3){
 	return sum;
 }
 
-double freezingProb(double ***lattice,double&L,double&beta,double &u,double &S1,double &S2){
-	double prob = 1 - exp(-2*beta*(innerProd(S1,u))*(innerProd(S2,u)));
-	return prob;
-}
 
 //testing functions
 double calcXMag(double ***lattice,double&L){
@@ -127,9 +116,9 @@ int growCluster(double &u,int &s1,int &s2,int &s3,double ***lattice,bool ***clus
 	// 
 	double angleBefore = lattice[s1][s2][s3];
 	double enBefore = siteEnergy(lattice,L,s1,s2,s3);
-	lattice[s1][s2][s3] = rSpin(u,lattice[s1][s2][s3]);
+	double angleAfter = M_PI + 2*u - angleBefore;
+	lattice[s1][s2][s3] = angleAfter;
 	cluster[s1][s2][s3] = 1;
-	double angleAfter = lattice[s1][s2][s3];
 	TotEn += siteEnergy(lattice,L,s1,s2,s3) - enBefore;
 	TotXMag += cos(angleAfter) - cos(angleBefore);
 	TotYMag += sin(angleAfter) - sin(angleBefore);
@@ -155,7 +144,7 @@ int growCluster(double &u,int &s1,int &s2,int &s3,double ***lattice,bool ***clus
 	perimeter[n] = make_tuple(s1,s2,n3p,angleAfter); n +=1;
 
 	tuple<int,int,int,double> current;
-	double prob;
+	double prob = 0;
 	while (n > 0){
 		//pick out the last element 
 		current = perimeter[n-1];
@@ -163,31 +152,59 @@ int growCluster(double &u,int &s1,int &s2,int &s3,double ***lattice,bool ***clus
 
 		//test that it is not already part of cluster
 		if (cluster[get<0>(current)][get<1>(current)][get<2>(current)] == 0){
+			
 			//increase time for every tested spin
 			++time;
-			//calculate prob of freezing 
-			prob = freezingProb(lattice,L,beta,u,get<3>(current),lattice[get<0>(current)][get<1>(current)][get<2>(current)]);
+			//get its current angle;
+			angleBefore = lattice[get<0>(current)][get<1>(current)][get<2>(current)];
+			//calculate prob of freezing, == 1 -exp(2*beta( parent_spin * U)( this_spin*U)) 
+			prob = 1 -exp(2*beta*cos(get<3>(current) - u)*cos(angleBefore -u));
 			//add this perimeter spin to the cluster with probability prob
 			if (randgen() < prob){
 				//save angle and energy before reflecting
 				angleBefore = lattice[get<0>(current)][get<1>(current)][get<2>(current)];
 				enBefore = siteEnergy(lattice,L,get<0>(current),get<1>(current),get<2>(current));
+				//get new angle
+				angleAfter = M_PI + 2*u - angleBefore;
 				//reflect and mark as added to cluster
-				lattice[get<0>(current)][get<1>(current)][get<2>(current)] = rSpin(u,lattice[get<0>(current)][get<1>(current)][get<2>(current)]);
+				lattice[get<0>(current)][get<1>(current)][get<2>(current)] = angleAfter;
 				cluster[get<0>(current)][get<1>(current)][get<2>(current)] = 1;
-				angleAfter = lattice[get<0>(current)][get<1>(current)][get<2>(current)];
 				//update energy and magnetization
 				TotEn += siteEnergy(lattice,L,get<0>(current),get<1>(current),get<2>(current)) - enBefore;
 				TotXMag += cos(angleAfter) - cos(angleBefore);
 				TotYMag += sin(angleAfter) - sin(angleBefore);
 
 				//find indices of its neighbours
-				tuple<int,int,int,double> neig1 = make_tuple((get<0>(current) + 1) % (int)L, get<1>(current),get<2>(current),angleBefore);
-				tuple<int,int,int,double> neig2 = make_tuple(((int)L + get<0>(current) - 1) % (int)L, get<1>(current),get<2>(current),angleBefore);
-				tuple<int,int,int,double> neig3 = make_tuple(get<0>(current), (get<1>(current) + 1) % (int)L,get<2>(current),angleBefore);
-				tuple<int,int,int,double> neig4 = make_tuple(get<0>(current), (get<1>(current) + (int)L - 1) % (int)L,get<2>(current),angleBefore);
-				tuple<int,int,int,double> neig5 = make_tuple(get<0>(current), get<1>(current), (1 + get<2>(current))%(int)L,angleBefore);
-				tuple<int,int,int,double> neig6 = make_tuple(get<0>(current), get<1>(current), (get<2>(current)+(int)L -1 )%(int)L,angleBefore);
+				tuple<int,int,int,double> neig1 = make_tuple(
+						(get<0>(current) + 1) % (int)L, 
+						get<1>(current),
+						get<2>(current),
+						angleAfter);
+				tuple<int,int,int,double> neig2 = make_tuple(
+						(get<0>(current) + (int)L - 1) % (int)L,
+					       	get<1>(current),
+						get<2>(current),
+						angleAfter);
+				tuple<int,int,int,double> neig3 = make_tuple(
+						get<0>(current),
+					       	(get<1>(current) + 1) % (int)L,
+						get<2>(current),
+						angleAfter);
+				tuple<int,int,int,double> neig4 = make_tuple(
+						get<0>(current),
+					       	(get<1>(current) + (int)L - 1) % (int)L,
+						get<2>(current),
+						angleAfter);
+				tuple<int,int,int,double> neig5 = make_tuple(
+						get<0>(current),
+					       	get<1>(current),
+					       	(get<2>(current) + 1) % (int)L,
+						angleAfter);
+				tuple<int,int,int,double> neig6 = make_tuple(
+						get<0>(current),
+					       	get<1>(current),
+					       	(get<2>(current) + (int)L - 1)%(int)L,
+						angleAfter);
 				//if it is not already part of the cluster, add it to perimeter list
 				if (cluster[get<0>(neig1)][get<1>(neig1)][get<2>(neig1)] ==0){
 					perimeter[n] = neig1;
@@ -389,17 +406,6 @@ int main(int argc, char* argv[]){
 		}
 
 	}
-	//test if avgM4 is correct
-	// conclusion: it wasnt
-	/*
-	   double testM4 = 0;
-	   for (int i = 0; i< N_temps; ++i){
-	   testM4 = avgMX4[i] + avgMX4[i] + 2*avgMXY2[i];
-	   testM4 /= Nsamples;
-	   cout << testM4 << "test:avgM4 " << avgM4[i]/Nsamples << endl;
-	   }
-	   */
-
 
 
 	//calculate quantities of interest

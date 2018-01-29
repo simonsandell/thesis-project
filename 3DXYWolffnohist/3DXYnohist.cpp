@@ -29,6 +29,30 @@ void printLattice(double***lattice,double&L){
 		cout << endl;
 	}
 }
+//print cluster
+void printCluster(bool***lattice,double&L){
+	cout << "//////////////////" << endl;
+	for (int i = 0; i<L; ++i){
+		for (int j = 0; j<L; ++j){
+			for (int k = 0; k<L; ++k){
+				cout << lattice[i][j][k] << " ";
+			}
+			cout << endl;
+		}
+		cout << endl;
+	}
+}
+int sumCluster(bool***cluster,double &L){
+	int sum = 0;
+	for (int i = 0; i<L; ++i){
+		for (int j = 0; j<L; ++j){
+			for (int k = 0; k<L; ++k){
+				sum += (int)cluster[i][j][k];
+			}
+		}
+	}
+	return sum;
+}
 
 //clear the cluster
 void emptyCluster(bool***cluster,double &L){
@@ -43,13 +67,6 @@ void emptyCluster(bool***cluster,double &L){
 }
 
 
-//reflect spin 
-double rSpin(double&u,double&spin){
-	double ret = M_PI + 2*u -spin;
-	ret = ret + 4*M_PI;
-	ret = fmod(ret,2*M_PI);
-	return ret;
-}
 
 //calculates the energy of a site
 double siteEnergy(double *** lattice,double &L, int &s1, int &s2, int &s3,double&angle){
@@ -124,9 +141,9 @@ int growCluster(double &u,int &s1,int &s2,int &s3,double ***lattice,bool ***clus
 	// 
 	double angleBefore = lattice[s1][s2][s3];
 	double enBefore = siteEnergy(lattice,L,s1,s2,s3,angleBefore);
-	lattice[s1][s2][s3] = rSpin(u,lattice[s1][s2][s3]);
+	double angleAfter = M_PI + 2*u - angleBefore;
+	lattice[s1][s2][s3] = angleAfter;
 	cluster[s1][s2][s3] = 1;
-	double angleAfter = lattice[s1][s2][s3];
 	TotEn += siteEnergy(lattice,L,s1,s2,s3,angleAfter) - enBefore;
 	TotXMag += cos(angleAfter) - cos(angleBefore);
 	TotYMag += sin(angleAfter) - sin(angleBefore);
@@ -162,24 +179,23 @@ int growCluster(double &u,int &s1,int &s2,int &s3,double ***lattice,bool ***clus
 		if (cluster[get<0>(current)][get<1>(current)][get<2>(current)] == 0){
 			//increase time for every tested spin
 			++time;
+			//get angle and energy before reflecting
+			angleBefore = lattice[get<0>(current)][get<1>(current)][get<2>(current)];
 			//calculate prob of freezing 
-			prob = freezingProb(lattice,L,beta,u,get<3>(current),lattice[get<0>(current)][get<1>(current)][get<2>(current)]);
+			prob = 1 - exp(2*beta*(cos(get<3>(current) - u)*cos(angleBefore -u)));
 			//add this perimeter spin to the cluster with probability prob
 			if (randgen() < prob){
-				//save angle and energy before reflecting
-				angleBefore = lattice[get<0>(current)][get<1>(current)][get<2>(current)];
 				enBefore = siteEnergy(lattice,L,get<0>(current),get<1>(current),get<2>(current),angleBefore);
 				//reflect and mark as added to cluster
-				lattice[get<0>(current)][get<1>(current)][get<2>(current)] = rSpin(u,lattice[get<0>(current)][get<1>(current)][get<2>(current)]);
+				angleAfter = M_PI + 2*u - angleBefore;
+				lattice[get<0>(current)][get<1>(current)][get<2>(current)] = angleAfter; 
 				cluster[get<0>(current)][get<1>(current)][get<2>(current)] = 1;
-				angleAfter = lattice[get<0>(current)][get<1>(current)][get<2>(current)];
 				//update energy and magnetization
 				TotEn += siteEnergy(lattice,L,get<0>(current),get<1>(current),get<2>(current),angleAfter) - enBefore;
 				TotXMag += cos(angleAfter) - cos(angleBefore);
 				TotYMag += sin(angleAfter) - sin(angleBefore);
 
 				//find indices of its neighbours
-				// should it really be angleBefore and not angleAfter??
 				tuple<int,int,int,double> neig1 = make_tuple((get<0>(current) + 1) % (int)L, get<1>(current),get<2>(current),angleAfter);
 				tuple<int,int,int,double> neig2 = make_tuple(((int)L + get<0>(current) - 1) % (int)L, get<1>(current),get<2>(current),angleAfter);
 				tuple<int,int,int,double> neig3 = make_tuple(get<0>(current), (get<1>(current) + 1) % (int)L,get<2>(current),angleAfter);
