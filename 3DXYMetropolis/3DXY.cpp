@@ -191,7 +191,6 @@ int main(int argc, char* argv[]){
 	TotEn = calcEn(lattice,L); 
 	TotXMag = calcXMag(lattice,L);
 	TotYMag = calcYMag(lattice,L);
-	TotMag = calcMag(lattice,L);
 	//test if energy and mag matches
 	/*
 	   TotMag = sqrt(pow(TotXMag,2) + pow(TotYMag,2));
@@ -269,14 +268,26 @@ int main(int argc, char* argv[]){
 		avgMX4E += TotXMag*TotXMag*TotXMag*TotXMag*TotEn;
 		avgMY4E += TotYMag*TotYMag*TotYMag*TotYMag*TotEn;
 		avgMXY2E += TotXMag*TotXMag*TotYMag*TotYMag*TotEn;
+		//test
+		
+		avgM2 += TotXMag*TotXMag + TotYMag*TotYMag;
+		avgM4 += (TotXMag*TotXMag + TotYMag*TotYMag)*(TotXMag*TotXMag + TotYMag*TotYMag);
+		avgM2E +=(TotXMag*TotXMag + TotYMag*TotYMag)*TotEn;
+		avgM4E += (TotXMag*TotXMag + TotYMag*TotYMag)*(TotXMag*TotXMag + TotYMag*TotYMag)*TotEn;
 	}
 
 	//calculate quantities of interest
 	//form averages of <M^2>, <M^4>, <M^2 E> and <M^4 E>
+	
+	//test
+	/*
+	cout << fixed <<avgM4E<< endl;
 	avgM2 = avgMX2 + avgMY2;
 	avgM4 = avgMX4 + avgMY4 + 2*avgMXY2;
 	avgM2E = avgMX2E + avgMY2E;
 	avgM4E = avgMX4E + avgMY4E + 2*avgMXY2E;
+	cout << fixed << avgM4E << endl;
+	*/
 
 	//normalize
 
