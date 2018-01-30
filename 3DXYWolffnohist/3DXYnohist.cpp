@@ -86,13 +86,28 @@ double siteEnergy(double *** lattice,double &L, int &s1, int &s2, int &s3,double
 	sum -= cos(angle-lattice[s1][s2][n3p]);
 	return sum;
 }
-
-double freezingProb(double ***lattice,double&L,double&beta,double &u,double &S1,double &S2){
-	double prob = 1 - exp(-2*beta*(cos(S1-u))*(cos(S2-u)));
-	return prob;
+//calculate sin(theta - theta_x) upwards +, downward -
+double sinX(double ***lattice,double &L, int &s1, int &s2, int &s3,double &angle){
+	int np = (s1 + 1) %(int)L;
+	int nm = (s1 -1 + (int)L) % (int)L;	
+	double ret = 0;
+	ret = sin(lattice[nm][s2][s3] - angle) + sin(angle - lattice[np][s2][s3]);
+	return ret;
 }
 
+
 //testing functions
+double calcSinX(double ***lattice,double &L){
+	double sum = 0;
+	for (int i =0; i< L; ++i){
+		for (int j =0; j< L ; ++j){
+			for (int k = 0; k<L; ++k){
+				sum += sin(lattice[i][j][k] - lattice[(i+1)%(int)L][j][k]);
+			}
+		}
+	}
+	return sum;
+}
 double calcXMag(double ***lattice,double&L){
 	double ret = 0;
 	for (int i = 0; i<L; ++i){
@@ -135,7 +150,7 @@ double calcEn(double ***lattice,double&L){
 }
 
 //make a cluster..
-int growCluster(double &u,int &s1,int &s2,int &s3,double ***lattice,bool ***cluster, double &L,double &beta, auto &randgen,double& TotXMag,double& TotYMag,double& TotEn){
+int growCluster(double &u,int &s1,int &s2,int &s3,double ***lattice,bool ***cluster, double &L,double &beta, auto &randgen,double& TotXMag,double& TotYMag,double& TotEn,double &TotSinX){
 	int time = 1;
 	//reflect spin and mark as part of cluster
 	// 
@@ -147,6 +162,7 @@ int growCluster(double &u,int &s1,int &s2,int &s3,double ***lattice,bool ***clus
 	TotEn += siteEnergy(lattice,L,s1,s2,s3,angleAfter) - enBefore;
 	TotXMag += cos(angleAfter) - cos(angleBefore);
 	TotYMag += sin(angleAfter) - sin(angleBefore);
+	TotSinX += sinX(lattice,L,s1,s2,s3,angleAfter) - sinX(lattice,L,s1,s2,s3,angleBefore);
 	//
 	//find indices of nearest neighbours
 	int n1m = (s1 -1 + (int)L )%(int)L;
@@ -194,6 +210,7 @@ int growCluster(double &u,int &s1,int &s2,int &s3,double ***lattice,bool ***clus
 				TotEn += siteEnergy(lattice,L,get<0>(current),get<1>(current),get<2>(current),angleAfter) - enBefore;
 				TotXMag += cos(angleAfter) - cos(angleBefore);
 				TotYMag += sin(angleAfter) - sin(angleBefore);
+				TotSinX += sinX(lattice,L,get<0>(current),get<1>(current),get<2>(current),angleAfter) -sinX(lattice,L,get<0>(current),get<1>(current),get<2>(current),angleBefore) ;
 
 				//find indices of its neighbours
 				tuple<int,int,int,double> neig1 = make_tuple((get<0>(current) + 1) % (int)L, get<1>(current),get<2>(current),angleAfter);
@@ -238,13 +255,13 @@ int growCluster(double &u,int &s1,int &s2,int &s3,double ***lattice,bool ***clus
 //grow cluster from those
 //empty the cluster when done
 //return time  
-int newCluster(double *** lattice, bool***cluster,double &L,double &beta,auto &randgen,double& TotXMag,double& TotYMag,double& TotEn){
+int newCluster(double *** lattice, bool***cluster,double &L,double &beta,auto &randgen,double& TotXMag,double& TotYMag,double& TotEn,double &TotSinX){
 	double u = 2*M_PI*randgen();
 	int s1 = L*randgen();
 	int s2 = L*randgen();
 	int s3 = L*randgen();
 	int time;
-	time = growCluster(u,s1,s2,s3,lattice,cluster,L,beta,randgen,TotXMag,TotYMag,TotEn);
+	time = growCluster(u,s1,s2,s3,lattice,cluster,L,beta,randgen,TotXMag,TotYMag,TotEn,TotSinX);
 	emptyCluster(cluster,L);
 	return time;
 }
@@ -279,7 +296,7 @@ int main(int argc, char* argv[]){
 	double TotEn;
 	double TotXMag;
 	double TotYMag;
-	double TotMag;
+	double TotSinX;
 
 
 	//define and initialize the lattice and cluster
@@ -306,8 +323,12 @@ int main(int argc, char* argv[]){
 	TotEn = -3*L*L*L;
 	TotXMag = 0;
 	TotYMag = L*L*L; 
-	TotMag = L*L*L;
+	TotSinX = 0;
 	//test if energy and mag matches
+	/*
+	double tsinx = calcSinX(lattice,L);
+	cout << tsinx << " " << TotSinX << endl;
+	*/
 	/*
 	   TotMag = sqrt(pow(TotXMag,2) + pow(TotYMag,2));
 	   double testEn = calcEn(lattice,L);
@@ -323,9 +344,13 @@ int main(int argc, char* argv[]){
 	//eqilibration 
 	int t = 0;
 	while (t < N_equil_steps){
-		t += newCluster(lattice,cluster,L,beta,randgen,TotXMag,TotYMag,TotEn);
+		t += newCluster(lattice,cluster,L,beta,randgen,TotXMag,TotYMag,TotEn,TotSinX);
 	}
 	//test if matches after equilibration
+	/*
+	tsinx = calcSinX(lattice,L);
+	cout << tsinx << " " << TotSinX << endl;
+	*/
 	/*
 	   testEn = calcEn(lattice,L);
 	   testXMag = calcXMag(lattice,L);
@@ -349,22 +374,13 @@ int main(int argc, char* argv[]){
 	double avgM2E = 0;// squared magnetization times energy
 	double avgM4E = 0; // 4th power magnetization times energy
 
-	double avgMX2 = 0;
-	double avgMY2 = 0;
-	double avgMX4 = 0;
-	double avgMY4 = 0;
-	double avgMXY2 = 0;
+	double avgSinX2 = 0;
 
-	double avgMX2E = 0;
-	double avgMY2E = 0;
-	double avgMX4E = 0;
-	double avgMY4E = 0;
-	double avgMXY2E = 0;
 
 
 	for ( int i = 0; i < N_samples; ++i){
 		//make a cluster
-		newCluster(lattice,cluster,L,beta,randgen,TotXMag,TotYMag,TotEn);
+		newCluster(lattice,cluster,L,beta,randgen,TotXMag,TotYMag,TotEn,TotSinX);
 		//take sample data
 		avgE += TotEn;
 		avgE2 += TotEn*TotEn;
@@ -373,6 +389,7 @@ int main(int argc, char* argv[]){
 		avgM4 += (TotXMag*TotXMag + TotYMag*TotYMag)*(TotXMag*TotXMag + TotYMag*TotYMag);
 		avgM2E += TotEn*(TotXMag*TotXMag + TotYMag*TotYMag);
 		avgM4E += TotEn*(TotXMag*TotXMag + TotYMag*TotYMag)*(TotXMag*TotXMag + TotYMag*TotYMag);
+		avgSinX2 += TotSinX*TotSinX;
 
 	}
 	//calculate quantities of interest
@@ -380,6 +397,7 @@ int main(int argc, char* argv[]){
 	double xi = 0;//susceptibility
 	double b = 0; //Binder parameter
 	double dbdt = 0;//derivative wrt T of Binder parameter
+	double rs = 0;//superfluid density
 
 	//normalize
 
@@ -390,6 +408,7 @@ int main(int argc, char* argv[]){
 	avgM4 /= N_samples;
 	avgM2E /= N_samples;
 	avgM4E /= N_samples;
+	avgSinX2 /= N_samples;
 
 	//calculate
 	b = avgM4;
@@ -398,6 +417,8 @@ int main(int argc, char* argv[]){
 	dbdt /= (T)*(T);
 	xi = avgM2 - avgM*avgM;
 	xi /= L*L*L*(T);
+	rs = -(1/3)*avgE - beta*avgSinX2;
+	rs /= L*L;
 
 	cout << fixed << L << " ";
 	cout << fixed << T << " ";
@@ -407,5 +428,6 @@ int main(int argc, char* argv[]){
 	cout << fixed << dbdt << " ";
 	cout << fixed << xi << " ";
 	cout << fixed << N_equil_sweeps << " ";
+	cout << fixed << rs << " ";
 	cout << fixed << endl;
 }
