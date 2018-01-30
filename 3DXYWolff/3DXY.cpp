@@ -313,7 +313,7 @@ int main(int argc, char* argv[]){
 
 	//critical temperature of 3D XY
 	double beta = 0.45416;
-	double T = 1/0.45416;
+	double T = 1.0/0.45416;
 
 	double TotEn;
 	double TotXMag;
@@ -415,7 +415,7 @@ int main(int argc, char* argv[]){
 		newCluster(lattice,cluster,L,beta,randgen,TotXMag,TotYMag,TotEn,TotSinX);
 		//take sample data
 		for (int i = 0; i<N_temps; ++i){
-			expFac = exp(-( (1/(extT[i])) - beta)*TotEn);
+			expFac = exp(-( (1.0/(extT[i])) - beta)*TotEn);
 			avgExpFac[i] += expFac;
 			avgE[i] += expFac*TotEn;
 			avgE2[i] += expFac*TotEn*TotEn;
