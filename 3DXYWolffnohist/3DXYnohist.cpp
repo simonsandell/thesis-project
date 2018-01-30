@@ -286,7 +286,7 @@ int main(int argc, char* argv[]){
 	double L = stod(argv[1]);
 
 	double T = stod(argv[2]);
-	double beta = 1/T;
+	double beta = 1.0/T;
 
 	double initM = stod(argv[3]);
 	double N_equil_sweeps = stod(argv[4]);
@@ -414,11 +414,11 @@ int main(int argc, char* argv[]){
 	//calculate
 	b = avgM4;
 	b /= (avgM2*avgM2);
-	dbdt = (avgM4E/(avgM2*avgM2) + 2*avgM4*avgE/(avgM2*avgM2) - 3*avgM4*avgM2E/(avgM2*avgM2*avgM2));
+	dbdt = (avgM4E/(avgM2*avgM2) + 2.0*avgM4*avgE/(avgM2*avgM2) - 3.0*avgM4*avgM2E/(avgM2*avgM2*avgM2));
 	dbdt /= (T)*(T);
 	xi = avgM2 - avgM*avgM;
 	xi /= L*L*L*(T);
-	rs = -(1/3)*avgE - beta*avgSinX2;
+	rs = -(1.0/3.0)*avgE - beta*avgSinX2;
 	rs /= L*L;
 
 	cout << fixed << L << " ";
