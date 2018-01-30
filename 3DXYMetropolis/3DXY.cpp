@@ -47,9 +47,28 @@ double siteEnergy(double *** lattice,double &L, int &s1, int &s2, int &s3,double
 	sum -= cos(angle-lattice[s1][s2][n3p]);
 	return sum;
 }
+//calculate sin(theta - theta_x) upwards +, downward -
+double sinX(double ***lattice,double &L, int &s1, int &s2, int &s3,double &angle){
+	int np = (s1 + 1) %(int)L;
+	int nm = (s1 -1 + (int)L) % (int)L;	
+	double ret = 0;
+	ret = sin(lattice[nm][s2][s3] - angle) + sin(angle - lattice[np][s2][s3]);
+	return ret;
+}
 
 
 //testing functions
+double calcSinX(double ***lattice,double &L){
+	double sum = 0;
+	for (int i =0; i< L; ++i){
+		for (int j =0; j< L ; ++j){
+			for (int k = 0; k<L; ++k){
+				sum += sin(lattice[i][j][k] - lattice[(i+1)%(int)L][j][k]);
+			}
+		}
+	}
+	return sum;
+}
 double calcXMag(double ***lattice,double&L){
 	double ret = 0;
 	for (int i = 0; i<L; ++i){
@@ -91,7 +110,7 @@ double calcEn(double ***lattice,double&L){
 	return en;
 }
 
-void sweep(double***lattice,double&L,double&beta,double&TotXMag,double&TotYMag,double&TotEn,auto &randgen){
+void sweep(double***lattice,double&L,double&beta,double&TotXMag,double&TotYMag,double&TotEn,double &TotSinX,auto &randgen){
 	double prob;
 	double u;
 	int s1;
@@ -120,6 +139,7 @@ void sweep(double***lattice,double&L,double&beta,double&TotXMag,double&TotYMag,d
 			TotEn += enAfter - enBefore;
 			TotXMag += cos(angleAfter) - cos(angleBefore);
 			TotYMag += sin(angleAfter) - sin(angleBefore);
+			TotSinX += sinX(lattice,L,s1,s2,s3,angleAfter) - sinX(lattice,L,s1,s2,s3,angleBefore);
 		}
 	}
 }
@@ -158,6 +178,7 @@ int main(int argc, char* argv[]){
 	double TotXMag;
 	double TotYMag;
 	double TotMag;
+	double TotSinX;
 
 	//define and initialize the lattice and cluster
 	double ***lattice;
@@ -191,6 +212,7 @@ int main(int argc, char* argv[]){
 	TotEn = calcEn(lattice,L); 
 	TotXMag = calcXMag(lattice,L);
 	TotYMag = calcYMag(lattice,L);
+	TotSinX = calcSinX(lattice,L);
 	//test if energy and mag matches
 	/*
 	   TotMag = sqrt(pow(TotXMag,2) + pow(TotYMag,2));
@@ -206,10 +228,12 @@ int main(int argc, char* argv[]){
 
 	//eqilibration sweeps
 	for (int t=0; t < N_equil_sweeps; ++t){
-		sweep(lattice,L,beta,TotXMag,TotYMag,TotEn,randgen);
+		sweep(lattice,L,beta,TotXMag,TotYMag,TotEn,TotSinX,randgen);
 	}
 
 	//test if matches after equilibration
+	double tSinx = calcSinX(lattice,L);
+	cout << tSinx << " " << TotSinX << endl;
 	/*
 	   testEn = calcEn(lattice,L);
 	   testXMag = calcXMag(lattice,L);
@@ -233,25 +257,29 @@ int main(int argc, char* argv[]){
 	double avgM2E = 0;// squared magnetization times energy
 	double avgM4E = 0; // 4th power magnetization times energy
 
+	double avgSinX2 = 0;
+
 
 
 	double xi = 0;//susceptibility
 	double b = 0; //Binder parameter
 	double dbdt = 0;//derivative wrt T of Binder parameter
+	double rs = 0;//superfluid density
 
 	for ( int i = 0; i < Nsamples; ++i){
 		//perform 2 sweeps between taking data
-		sweep(lattice,L,beta,TotXMag,TotYMag,TotEn,randgen);
-		sweep(lattice,L,beta,TotXMag,TotYMag,TotEn,randgen);
+		sweep(lattice,L,beta,TotXMag,TotYMag,TotEn,TotSinX,randgen);
+		sweep(lattice,L,beta,TotXMag,TotYMag,TotEn,TotSinX,randgen);
 		//take sample data
 		avgE += TotEn;
 		avgE2 += TotEn*TotEn;
 		avgM += sqrt(TotXMag*TotXMag + TotYMag*TotYMag);
-		
 		avgM2 += TotXMag*TotXMag + TotYMag*TotYMag;
 		avgM4 += (TotXMag*TotXMag + TotYMag*TotYMag)*(TotXMag*TotXMag + TotYMag*TotYMag);
 		avgM2E +=(TotXMag*TotXMag + TotYMag*TotYMag)*TotEn;
 		avgM4E += (TotXMag*TotXMag + TotYMag*TotYMag)*(TotXMag*TotXMag + TotYMag*TotYMag)*TotEn;
+
+		avgSinX2 += TotSinX*TotSinX;
 	}
 
 	//calculate quantities of interest
@@ -266,6 +294,7 @@ int main(int argc, char* argv[]){
 	avgM4 /= Nsamples;
 	avgM2E /= Nsamples;
 	avgM4E /= Nsamples;
+	avgSinX2 /= Nsamples;
 
 	//calculate
 	b = avgM4;
@@ -274,7 +303,8 @@ int main(int argc, char* argv[]){
 	dbdt /= (T)*(T);
 	xi = avgM2 - avgM*avgM;
 	xi /= L*L*L*(T);
-
+	rs = -(1/3)*avgE - beta*avgSinX2;
+	rs /= L*L;
 	//get energy and mag per spin instead
 	avgE /= L*L*L;
 	avgM /= L*L*L;
@@ -288,5 +318,6 @@ int main(int argc, char* argv[]){
 	cout << fixed << dbdt << " ";
 	cout << fixed << xi << " ";
 	cout << fixed << N_equil_sweeps << " ";
+	cout << fixed << rs << " ";
 	cout << fixed << endl;
 }
