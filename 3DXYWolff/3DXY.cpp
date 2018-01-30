@@ -323,7 +323,7 @@ int main(int argc, char* argv[]){
 	//
 	//Set equilibration time and number of samples
 	double N_equil_steps= 400*L*L*L;
-	double Nsamples = N_equil_steps; 
+	double Nsamples = 0;
 
 	//define and initialize the lattice and cluster
 	double ***lattice;
@@ -373,6 +373,7 @@ int main(int argc, char* argv[]){
 	int t = 0;
 	while (t < N_equil_steps){
 		t += newCluster(lattice,cluster,L,beta,randgen,TotXMag,TotYMag,TotEn,TotSinX);
+		Nsamples += 1;
 	}
 	//test if matches after equilibration
 	/*
@@ -467,7 +468,7 @@ int main(int argc, char* argv[]){
 		dbdt[i] /= (extT[i])*(extT[i]);
 		xi[i] = avgM2[i] - avgM[i]*avgM[i];
 		xi[i] /= L*L*L*(extT[i]);
-		rs[i] = -(1/3)*avgE[i] - (1/extT[i])*avgSinX2[i];
+		rs[i] = -(1.0/3.0)*avgE[i] - (1.0/extT[i])*avgSinX2[i];
 		rs[i] /= L*L; 
 	}
 	for (int i = 0;i< N_temps; ++i){
