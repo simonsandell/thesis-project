@@ -322,7 +322,7 @@ int main(int argc, char* argv[]){
 
 	//
 	//Set equilibration time and number of samples
-	double N_equil_steps= 300*L*L*L;
+	double N_equil_steps= 400*L*L*L;
 	double Nsamples = N_equil_steps; 
 
 	//define and initialize the lattice and cluster

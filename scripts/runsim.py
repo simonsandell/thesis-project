@@ -3,7 +3,7 @@ def temperatureRun(Lrange,Trange,N,N_equil,N_samples):
     for i in range(N):
         for t in Trange:
             for L in Lrange:
-                subprocess.call(["./a.out"+ " " +str(L)+ " " +str(t)+ " " +str(0)+ " " +str(N_equil) + " "+ str(N_samples)+" >> "+" ./output/temperatureRun"],shell=True)
+                subprocess.call(["./a.out"+ " " +str(L)+ " " +str(t)+ " 0 " +str(N_equil) + " "+ str(N_samples)+" >> "+" ./output/temperatureRun"],shell=True)
 
 def histRun(L,Temps,N):
     T_str = ""
@@ -33,7 +33,7 @@ Trange = getTrange(1.5,2.9,30)
 N_equil = 300
 N_samples = N_equil
 Lrange = [4,8,16]
-N = 100
+N = 50
 
 #Neqrange = [65536,131072,262144,524288,1048576]
 #nequilRun(4,2.2,10,Neqrange)

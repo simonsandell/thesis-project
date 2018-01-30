@@ -170,9 +170,9 @@ int main(int argc, char* argv[]){
 	//initial configuration
 	double init = stod(argv[3]);
 	//number of equilibration sweeps
-	double N_equil_sweeps = stod(argv[4]);
+	double N_equil_sweeps = L*L*L*stod(argv[4]);
 	//number of samples
-	double Nsamples = stod(argv[5]);
+	double Nsamples = L*L*L*stod(argv[5]);
 
 	double TotEn;
 	double TotXMag;
@@ -232,8 +232,10 @@ int main(int argc, char* argv[]){
 	}
 
 	//test if matches after equilibration
+	/*
 	double tSinx = calcSinX(lattice,L);
 	cout << tSinx << " " << TotSinX << endl;
+	*/
 	/*
 	   testEn = calcEn(lattice,L);
 	   testXMag = calcXMag(lattice,L);

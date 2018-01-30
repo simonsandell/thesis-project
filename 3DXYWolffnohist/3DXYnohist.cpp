@@ -291,7 +291,7 @@ int main(int argc, char* argv[]){
 	double initM = stod(argv[3]);
 	double N_equil_sweeps = stod(argv[4]);
 	double N_equil_steps= N_equil_sweeps*L*L*L;
-	double N_samples = stod(argv[5]);
+	double N_samples = 0;
 
 	double TotEn;
 	double TotXMag;
@@ -345,6 +345,7 @@ int main(int argc, char* argv[]){
 	int t = 0;
 	while (t < N_equil_steps){
 		t += newCluster(lattice,cluster,L,beta,randgen,TotXMag,TotYMag,TotEn,TotSinX);
+		N_samples += 1;
 	}
 	//test if matches after equilibration
 	/*

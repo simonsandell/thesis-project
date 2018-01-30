@@ -42,3 +42,9 @@ for filename in ./foutput/xi/*; do
 done
 xmgrace $xistring -nosafe -noask -pexec 'xaxis label "Temp"' -pexec 'yaxis label "Susceptibility"' &
 
+rsstring=""
+for filename in ./foutput/rs/*; do
+	rsstring="$rsstring -settype xydy $filename"
+done
+xmgrace $rsstring -nosafe -noask -pexec 'xaxis label "Temp"' -pexec 'yaxis label "Superfluid density"' &
+
