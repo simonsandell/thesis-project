@@ -65,9 +65,29 @@ double siteEnergy(double *** lattice,double &L, int &s1, int &s2, int &s3){
 	sum -= innerProd(lattice[s1][s2][s3],lattice[s1][s2][n3p]);
 	return sum;
 }
+//calculate sin(theta - theta_x) upwards +, downward -
+double sinX(double ***lattice,double &L, int &s1, int &s2, int &s3,double &angle){
+	int np = (s1 + 1) %(int)L;
+	int nm = (s1 -1 + (int)L) % (int)L;	
+	double ret = 0;
+	ret = sin(lattice[nm][s2][s3] - angle) + sin(angle - lattice[np][s2][s3]);
+	return ret;
+}
 
 
 //testing functions
+double calcSinX(double ***lattice,double &L){
+	double sum = 0;
+	for (int i =0; i< L; ++i){
+		for (int j =0; j< L ; ++j){
+			for (int k = 0; k<L; ++k){
+				sum += sin(lattice[i][j][k] - lattice[(i+1)%(int)L][j][k]);
+			}
+		}
+	}
+	return sum;
+}
+
 double calcXMag(double ***lattice,double&L){
 	double ret = 0;
 	for (int i = 0; i<L; ++i){
@@ -110,7 +130,7 @@ double calcEn(double ***lattice,double&L){
 }
 
 //make a cluster..
-int growCluster(double &u,int &s1,int &s2,int &s3,double ***lattice,bool ***cluster, double &L,double &beta, auto &randgen,double& TotXMag,double& TotYMag,double& TotEn){
+int growCluster(double &u,int &s1,int &s2,int &s3,double ***lattice,bool ***cluster, double &L,double &beta, auto &randgen,double& TotXMag,double& TotYMag,double& TotEn,double &TotSinX){
 	int time = 1;
 	//reflect spin and mark as part of cluster
 	// 
@@ -122,6 +142,7 @@ int growCluster(double &u,int &s1,int &s2,int &s3,double ***lattice,bool ***clus
 	TotEn += siteEnergy(lattice,L,s1,s2,s3) - enBefore;
 	TotXMag += cos(angleAfter) - cos(angleBefore);
 	TotYMag += sin(angleAfter) - sin(angleBefore);
+	TotSinX += sinX(lattice,L,s1,s2,s3,angleAfter) - sinX(lattice,L,s1,s2,s3,angleBefore);
 	//
 	//find indices of nearest neighbours
 	int n1m = (s1 -1 + (int)L )%(int)L;
@@ -173,6 +194,7 @@ int growCluster(double &u,int &s1,int &s2,int &s3,double ***lattice,bool ***clus
 				TotEn += siteEnergy(lattice,L,get<0>(current),get<1>(current),get<2>(current)) - enBefore;
 				TotXMag += cos(angleAfter) - cos(angleBefore);
 				TotYMag += sin(angleAfter) - sin(angleBefore);
+				TotSinX += sinX(lattice,L,get<0>(current),get<1>(current),get<2>(current),angleAfter) - sinX(lattice,L,get<0>(current),get<1>(current),get<2>(current),angleBefore);
 
 				//find indices of its neighbours
 				tuple<int,int,int,double> neig1 = make_tuple(
@@ -241,13 +263,13 @@ int growCluster(double &u,int &s1,int &s2,int &s3,double ***lattice,bool ***clus
 //grow cluster from those
 //empty the cluster when done
 //return time  
-int newCluster(double *** lattice, bool***cluster,double &L,double &beta,auto &randgen,double& TotXMag,double& TotYMag,double& TotEn){
+int newCluster(double *** lattice, bool***cluster,double &L,double &beta,auto &randgen,double& TotXMag,double& TotYMag,double& TotEn,double &TotSinX){
 	double u = 2*M_PI*randgen();
 	int s1 = L*randgen();
 	int s2 = L*randgen();
 	int s3 = L*randgen();
 	int time;
-	time = growCluster(u,s1,s2,s3,lattice,cluster,L,beta,randgen,TotXMag,TotYMag,TotEn);
+	time = growCluster(u,s1,s2,s3,lattice,cluster,L,beta,randgen,TotXMag,TotYMag,TotEn,TotSinX);
 	emptyCluster(cluster,L);
 	return time;
 }
@@ -296,7 +318,7 @@ int main(int argc, char* argv[]){
 	double TotEn;
 	double TotXMag;
 	double TotYMag;
-	double TotMag;
+	double TotSinX;
 
 	//
 	//Set equilibration time and number of samples
@@ -327,8 +349,14 @@ int main(int argc, char* argv[]){
 	TotEn = -3*L*L*L;
 	TotXMag = 0;
 	TotYMag = L*L*L; 
-	TotMag = L*L*L;
+	TotSinX = 0;
+	//test SinX
+	/*
+	double tSinX = calcSinX(lattice,L);
+	cout << tSinX << " " << TotSinX << endl;
+	*/
 	//test if energy and mag matches
+	//
 	/*
 	   TotMag = sqrt(pow(TotXMag,2) + pow(TotYMag,2));
 	   double testEn = calcEn(lattice,L);
@@ -344,9 +372,14 @@ int main(int argc, char* argv[]){
 	//eqilibration 
 	int t = 0;
 	while (t < N_equil_steps){
-		t += newCluster(lattice,cluster,L,beta,randgen,TotXMag,TotYMag,TotEn);
+		t += newCluster(lattice,cluster,L,beta,randgen,TotXMag,TotYMag,TotEn,TotSinX);
 	}
 	//test if matches after equilibration
+	/*
+	
+	tSinX = calcSinX(lattice,L);
+	cout << tSinX << " " << TotSinX << endl;
+	*/
 	/*
 	   testEn = calcEn(lattice,L);
 	   testXMag = calcXMag(lattice,L);
@@ -370,13 +403,15 @@ int main(int argc, char* argv[]){
 	double avgM2E[(int)N_temps] = {};// squared magnetization times energy
 	double avgM4E[(int)N_temps] = {}; // 4th power magnetization times energy
 
+	double avgSinX2[(int)N_temps] = {}; // for superfluid density 
+
 
 	double avgExpFac[(int)N_temps] = {};
 	double expFac;
 
 	for ( int i = 0; i < Nsamples; ++i){
 		//make a cluster
-		newCluster(lattice,cluster,L,beta,randgen,TotXMag,TotYMag,TotEn);
+		newCluster(lattice,cluster,L,beta,randgen,TotXMag,TotYMag,TotEn,TotSinX);
 		//take sample data
 		for (int i = 0; i<N_temps; ++i){
 			expFac = exp(-( (1/(extT[i])) - beta)*TotEn);
@@ -384,11 +419,13 @@ int main(int argc, char* argv[]){
 			avgE[i] += expFac*TotEn;
 			avgE2[i] += expFac*TotEn*TotEn;
 			avgM[i] += expFac*sqrt(TotXMag*TotXMag + TotYMag*TotYMag);
-			
+
 			avgM2[i] += expFac*(TotXMag*TotXMag + TotYMag*TotYMag);
 			avgM4[i] += expFac*(TotXMag*TotXMag + TotYMag*TotYMag)*(TotXMag*TotXMag + TotYMag*TotYMag);
 			avgM2E[i] += TotEn*expFac*(TotXMag*TotXMag + TotYMag*TotYMag); 
 			avgM4E[i] += TotEn*expFac*(TotXMag*TotXMag + TotYMag*TotYMag)*(TotXMag*TotXMag + TotYMag*TotYMag);
+
+			avgSinX2[i] += TotSinX*TotSinX*expFac;
 		}
 
 	}
@@ -399,6 +436,8 @@ int main(int argc, char* argv[]){
 	double xi[(int)N_temps] = {};//susceptibility
 	double b[(int)N_temps] = {}; //Binder parameter
 	double dbdt[(int)N_temps] = {};//derivative wrt T of Binder parameter
+
+	double rs[(int)N_temps] = {};//superfluid density
 	for (int i =0; i< N_temps; ++i){
 
 		//normalize
@@ -411,6 +450,7 @@ int main(int argc, char* argv[]){
 		avgM4[i] /= Nsamples;
 		avgM2E[i] /= Nsamples;
 		avgM4E[i] /= Nsamples;
+		avgSinX2[i] /=Nsamples;
 
 		avgE[i] /= avgExpFac[i];
 		avgE2[i] /= avgExpFac[i];
@@ -419,6 +459,7 @@ int main(int argc, char* argv[]){
 		avgM4[i] /= avgExpFac[i];
 		avgM2E[i] /= avgExpFac[i];
 		avgM4E[i] /= avgExpFac[i];
+		avgSinX2[i] /= avgExpFac[i];
 		//calculate
 		b[i] = avgM4[i];
 		b[i] /= (avgM2[i]*avgM2[i]);
@@ -426,6 +467,8 @@ int main(int argc, char* argv[]){
 		dbdt[i] /= (extT[i])*(extT[i]);
 		xi[i] = avgM2[i] - avgM[i]*avgM[i];
 		xi[i] /= L*L*L*(extT[i]);
+		rs[i] = -(1/3)*avgE[i] - (1/extT[i])*avgSinX2[i];
+		rs[i] /= L*L; 
 	}
 	for (int i = 0;i< N_temps; ++i){
 		cout << fixed << L << " ";
@@ -436,6 +479,7 @@ int main(int argc, char* argv[]){
 		cout << fixed << dbdt[i] << " ";
 		cout << fixed << xi[i] << " ";
 		cout << fixed << N_equil_steps/(L*L*L) << " ";
+		cout << fixed << rs[i] << " ";
 		cout << fixed << endl;
 
 	}
