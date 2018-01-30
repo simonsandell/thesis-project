@@ -293,27 +293,14 @@ int main(int argc, char* argv[]){
 	}
 	double L = stod(argv[1]);
 	double N_temps = 1;
-	double *extT;
-	if (argc == 2) {
-		extT = new double[20];
-		double k = 2.101867183371499;
-		double dk = 0.01;
-		for ( int i = 0; i < 20; ++i){
-			extT[i] = k + i*dk;
-		}
-		N_temps = 20;
+	double extT[argc -2] = {};
+	N_temps = argc -2;
+	for (int i = 0; i< (argc-2); ++i){
+		extT[i] = stod(argv[i+2]);
 	}
-	else if (argc> 2){
-		extT = new double[argc -2];
-		N_temps = argc -2;
-		for (int i = 0; i< (argc-2); ++i){
-			extT[i] = stod(argv[i+2]);
-		}		
-	}
+	double T = extT[(int)(N_temps/2)];
+	double beta = 1.0/T;		
 
-	//critical temperature of 3D XY
-	double beta = 0.45416;
-	double T = 1.0/0.45416;
 
 	double TotEn;
 	double TotXMag;
@@ -352,9 +339,9 @@ int main(int argc, char* argv[]){
 	TotSinX = 0;
 	//test SinX
 	/*
-	double tSinX = calcSinX(lattice,L);
-	cout << tSinX << " " << TotSinX << endl;
-	*/
+	   double tSinX = calcSinX(lattice,L);
+	   cout << tSinX << " " << TotSinX << endl;
+	   */
 	//test if energy and mag matches
 	//
 	/*
@@ -377,10 +364,10 @@ int main(int argc, char* argv[]){
 	}
 	//test if matches after equilibration
 	/*
-	
-	tSinX = calcSinX(lattice,L);
-	cout << tSinX << " " << TotSinX << endl;
-	*/
+
+	   tSinX = calcSinX(lattice,L);
+	   cout << tSinX << " " << TotSinX << endl;
+	   */
 	/*
 	   testEn = calcEn(lattice,L);
 	   testXMag = calcXMag(lattice,L);
