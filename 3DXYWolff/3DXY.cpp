@@ -288,15 +288,18 @@ int main(int argc, char* argv[]){
 
 	//set system size and temperature from input arguments
 	if (argc < 2){
-		cout << "input arguments: L T_1 T_2 T_3 ..." << endl;
+		cout << "input arguments: L N_eq N_samp initM T_1 T_2 T_3 ..." << endl;
 		exit(0);
 	}
 	double L = stod(argv[1]);
+	double N_equil_sweeps = stod(argv[2]);
+	double Nsamples = stod(argv[3]);
+	double initM = stod(argv[4]);
 	double N_temps = 1;
-	double extT[argc -2] = {};
-	N_temps = argc -2;
-	for (int i = 0; i< (argc-2); ++i){
-		extT[i] = stod(argv[i+2]);
+	double extT[argc - 5] = {};
+	N_temps = argc - 5;
+	for (int i = 0; i< N_temps; ++i){
+		extT[i] = stod(argv[i+5]);
 	}
 	double T = extT[(int)(N_temps/2)];
 	double beta = 1.0/T;		
@@ -309,8 +312,7 @@ int main(int argc, char* argv[]){
 
 	//
 	//Set equilibration time and number of samples
-	double N_equil_steps= 400*L*L*L;
-	double Nsamples = 0;
+	double N_equil_steps= N_equil_sweeps*L*L*L;
 
 	//define and initialize the lattice and cluster
 	double ***lattice;
@@ -325,18 +327,35 @@ int main(int argc, char* argv[]){
 			cluster[i][j] = new bool[(int)L];
 		}
 	}
-	for (int i = 0; i<L;++i){
-		for (int j=0; j<L;++j){
-			for (int k = 0; k<L; ++k){
-				lattice[i][j][k] = 0.5*M_PI;
-				cluster[i][j][k] = 0;
+
+	if (initM == 0) {
+		for (int i = 0; i<L;++i){
+			for (int j=0; j<L;++j){
+				for (int k = 0; k<L; ++k){
+					lattice[i][j][k] = randgen()*2*M_PI;
+					cluster[i][j][k] = 0;
+				}
 			}
 		}
+	TotEn = calcEn(lattice,L); 
+	TotXMag = calcXMag(lattice,L); 
+	TotYMag = calcYMag(lattice,L); 
+	TotSinX = calcSinX(lattice,L); 
 	}
+	else {
+		for (int i = 0; i<L;++i){
+			for (int j=0; j<L;++j){
+				for (int k = 0; k<L; ++k){
+					lattice[i][j][k] = 0.5*M_PI;
+					cluster[i][j][k] = 0;
+				}
+			}
+		}
 	TotEn = -3*L*L*L;
 	TotXMag = 0;
 	TotYMag = L*L*L; 
 	TotSinX = 0;
+	}
 	//test SinX
 	/*
 	   double tSinX = calcSinX(lattice,L);
@@ -360,7 +379,6 @@ int main(int argc, char* argv[]){
 	int t = 0;
 	while (t < N_equil_steps){
 		t += newCluster(lattice,cluster,L,beta,randgen,TotXMag,TotYMag,TotEn,TotSinX);
-		Nsamples += 1;
 	}
 	//test if matches after equilibration
 	/*

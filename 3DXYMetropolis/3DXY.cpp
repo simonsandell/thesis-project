@@ -172,7 +172,7 @@ int main(int argc, char* argv[]){
 	//number of equilibration sweeps
 	double N_equil_sweeps = L*stod(argv[4]);
 	//number of samples
-	double Nsamples = L*L*L*stod(argv[5]);
+	double Nsamples = L*stod(argv[5]);
 
 	double TotEn;
 	double TotXMag;
