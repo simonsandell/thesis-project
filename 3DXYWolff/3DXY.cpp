@@ -1,7 +1,4 @@
-//This program performs montecarlo with the Wolff algorithm simulation of the 3D XY model at the critical temperature
-//1/Tc = 0.45416
-//taking the system size L as input and outputting binder parameter, db/dt and xi
-//
+//This program performs montecarlo with the Wolff algorithm simulation of the 3D XY model
 //Implements histogramextrapolation to obtain values at different temperatures
 #include <iostream>
 #include <cmath>
@@ -14,8 +11,9 @@
 #include <utility>
 #include <tuple>
 
-using namespace std;
 
+using namespace std;
+//print lattice
 void printLattice(double ***lattice,double &L){
 	for(int i = 0; i < L; ++i){
 		for(int j = 0; j < L; ++j){
@@ -276,6 +274,9 @@ int newCluster(double *** lattice, bool***cluster,double &L,double &beta,auto &r
 
 //main
 int main(int argc, char* argv[]){
+
+
+
 	//set precision of cout
 	cout.precision(17);
 	//generate random seed from system and initialize random number generator
@@ -297,9 +298,11 @@ int main(int argc, char* argv[]){
 	double initM = stod(argv[4]);
 	double N_temps = 1;
 	double extT[argc - 5] = {};
+	double extBeta[argc - 5] = {};
 	N_temps = argc - 5;
 	for (int i = 0; i< N_temps; ++i){
 		extT[i] = stod(argv[i+5]);
+		extBeta[i] = 1.0/extT[i];
 	}
 	double T = extT[(int)(N_temps/2)];
 	double beta = 1.0/T;		
@@ -420,7 +423,7 @@ int main(int argc, char* argv[]){
 		newCluster(lattice,cluster,L,beta,randgen,TotXMag,TotYMag,TotEn,TotSinX);
 		//take sample data
 		for (int i = 0; i<N_temps; ++i){
-			expFac = exp(-( (1.0/(extT[i])) - beta)*TotEn);
+			expFac = exp(-( ((extBeta[i])) - beta)*TotEn);
 			avgExpFac[i] += expFac;
 			avgE[i] += expFac*TotEn;
 			avgE2[i] += expFac*TotEn*TotEn;
@@ -470,10 +473,11 @@ int main(int argc, char* argv[]){
 		b[i] = avgM4[i];
 		b[i] /= (avgM2[i]*avgM2[i]);
 		dbdt[i] = avgM4E[i]*avgM2[i] + avgM4[i]*avgM2[i]*avgE[i] - 2.0*avgM4[i]*avgM2E[i];
-		dbdt[i] *= beta*beta;
+		dbdt[i] *= extBeta*extBeta;
 		dbdt[i] /= avgM2[i]*avgM2[i]*avgM2[i];
 		xi[i] = avgM2[i] - avgM[i]*avgM[i];
-		xi[i] /= L*L*L*(extT[i]);
+		xi[i] /= L*L*L;
+		xi[i] *= extBeta[i];
 		rs[i] = -(1.0/3.0)*avgE[i] - (1.0/extT[i])*avgSinX2[i];
 		rs[i] /= L*L; 
 	}
