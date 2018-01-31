@@ -477,7 +477,7 @@ int main(int argc, char* argv[]){
 		b[i] = avgM4[i];
 		b[i] /= (avgM2[i]*avgM2[i]);
 		dbdt[i] = avgM4E[i]*avgM2[i] + avgM4[i]*avgM2[i]*avgE[i] - 2.0*avgM4[i]*avgM2E[i];
-		dbdt[i] *= extBeta*extBeta;
+		dbdt[i] *= extBeta[i]*extBeta[i];
 		dbdt[i] /= avgM2[i]*avgM2[i]*avgM2[i];
 		xi[i] = avgM2[i] - avgM[i]*avgM[i];
 		xi[i] *= reciNspins;
