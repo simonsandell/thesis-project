@@ -36,10 +36,12 @@ N_samples = N_equil
 Lrange = [4,8,16]
 N = 20
 
-Neqrange = [4,16,64,256,1042,4168]
-nequilRun(4,2.20429,N,Neqrange)
-nequilRun(8,2.20429,N,Neqrange)
-nequilRun(16,2.20429,N,Neqrange)
+Neqrange4 = [16,32,64]
+Neqrange8 = [64,128,256]
+Neqrange16 = [128,256,512,1042]
+nequilRun(4,2.20429,N,Neqrange4)
+nequilRun(8,2.20429,N,Neqrange8)
+nequilRun(16,2.20429,N,Neqrange16)
 #temperatureRun(Lrange,Trange,N,N_equil,N_samples);
 #histRun("4",Trange,N)
 #histRun(8,Trange,N)
