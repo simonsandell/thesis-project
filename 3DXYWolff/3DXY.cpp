@@ -469,8 +469,9 @@ int main(int argc, char* argv[]){
 		//calculate
 		b[i] = avgM4[i];
 		b[i] /= (avgM2[i]*avgM2[i]);
-		dbdt[i] = (avgM4E[i]/(avgM2[i]*avgM2[i]) + 2.0*avgM4[i]*avgE[i]/(avgM2[i]*avgM2[i]) - 3.0*avgM4[i]*avgM2E[i]/(avgM2[i]*avgM2[i]*avgM2[i]));
-		dbdt[i] /= (extT[i])*(extT[i]);
+		dbdt[i] = avgM4E[i]*avgM2[i] + avgM4[i]*avgM2[i]*avgE[i] - 2.0*avgM4[i]*avgM2E[i];
+		dbdt[i] *= beta*beta;
+		dbdt[i] /= avgM2[i]*avgM2[i]*avgM2[i];
 		xi[i] = avgM2[i] - avgM[i]*avgM[i];
 		xi[i] /= L*L*L*(extT[i]);
 		rs[i] = -(1.0/3.0)*avgE[i] - (1.0/extT[i])*avgSinX2[i];
