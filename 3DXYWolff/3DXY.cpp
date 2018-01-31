@@ -441,6 +441,10 @@ int main(int argc, char* argv[]){
 
 
 	//calculate quantities of interest
+	//define some reciprocals to reduce number of divions
+	double reciNsamples = 1.0/Nsamples;
+	double reciNspins = 1.0/(L*L*L);
+	double reciExpFac = 0;
 	//derived quantites
 	double xi[(int)N_temps] = {};//susceptibility
 	double b[(int)N_temps] = {}; //Binder parameter
@@ -450,25 +454,25 @@ int main(int argc, char* argv[]){
 	for (int i =0; i< N_temps; ++i){
 
 		//normalize
-		avgExpFac[i] /= Nsamples;
+		avgExpFac[i] *= reciNsamples;
+		reciExpFac = 1.0/avgExpFac[i];
+		avgE[i] *= reciNsamples;
+		avgE2[i] *= reciNsamples;
+		avgM[i] *= reciNsamples;
+		avgM2[i] *= reciNsamples;
+		avgM4[i] *= reciNsamples;
+		avgM2E[i] *= reciNsamples;
+		avgM4E[i] *= reciNsamples;
+		avgSinX2[i] *= reciNsamples;
 
-		avgE[i] /= Nsamples;
-		avgE2[i] /= Nsamples;
-		avgM[i] /= Nsamples;
-		avgM2[i] /= Nsamples;
-		avgM4[i] /= Nsamples;
-		avgM2E[i] /= Nsamples;
-		avgM4E[i] /= Nsamples;
-		avgSinX2[i] /=Nsamples;
-
-		avgE[i] /= avgExpFac[i];
-		avgE2[i] /= avgExpFac[i];
-		avgM[i] /= avgExpFac[i];
-		avgM2[i] /= avgExpFac[i];
-		avgM4[i] /= avgExpFac[i];
-		avgM2E[i] /= avgExpFac[i];
-		avgM4E[i] /= avgExpFac[i];
-		avgSinX2[i] /= avgExpFac[i];
+		avgE[i] *= reciExpFac;
+		avgE2[i] *= reciExpFac;
+		avgM[i] *= reciExpFac;
+		avgM2[i] *= reciExpFac;
+		avgM4[i] *= reciExpFac;
+		avgM2E[i] *= reciExpFac;
+		avgM4E[i] *= reciExpFac;
+		avgSinX2[i] *= reciExpFac;
 		//calculate
 		b[i] = avgM4[i];
 		b[i] /= (avgM2[i]*avgM2[i]);
@@ -476,20 +480,20 @@ int main(int argc, char* argv[]){
 		dbdt[i] *= extBeta*extBeta;
 		dbdt[i] /= avgM2[i]*avgM2[i]*avgM2[i];
 		xi[i] = avgM2[i] - avgM[i]*avgM[i];
-		xi[i] /= L*L*L;
+		xi[i] *= reciNspins;
 		xi[i] *= extBeta[i];
 		rs[i] = -(1.0/3.0)*avgE[i] - (1.0/extT[i])*avgSinX2[i];
-		rs[i] /= L*L; 
+		rs[i] *= L*reciNspins; 
 	}
 	for (int i = 0;i< N_temps; ++i){
 		cout << fixed << L << " ";
 		cout << fixed << extT[i] << " ";
-		cout << fixed << avgE[i]/(L*L*L) << " ";
-		cout << fixed << avgM[i]/(L*L*L) << " ";
+		cout << fixed << avgE[i]*reciNspins << " ";
+		cout << fixed << avgM[i]*reciNspins << " ";
 		cout << fixed << b[i] << " ";
 		cout << fixed << dbdt[i] << " ";
 		cout << fixed << xi[i] << " ";
-		cout << fixed << N_equil_steps/(L*L*L) << " ";
+		cout << fixed << N_equil_sweeps << " "; 
 		cout << fixed << rs[i] << " ";
 		cout << fixed << endl;
 
