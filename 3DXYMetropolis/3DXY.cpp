@@ -285,18 +285,20 @@ int main(int argc, char* argv[]){
 	}
 
 	//calculate quantities of interest
-	
+	//define reciprocals to reduce amount of divisions
+	double reciNsamples = 1.0/Nsamples;
+	double reciNspins = 1.0/(L*L*L);
 
 	//normalize
 
-	avgE /= Nsamples;
-	avgE2 /= Nsamples;
-	avgM /= Nsamples;
-	avgM2 /= Nsamples;
-	avgM4 /= Nsamples;
-	avgM2E /= Nsamples;
-	avgM4E /= Nsamples;
-	avgSinX2 /= Nsamples;
+	avgE *= reciNsamples;
+	avgE2 *= reciNsamples;
+	avgM *= reciNsamples;
+	avgM2 *= reciNsamples;
+	avgM4 *= reciNsamples;
+	avgM2E *= reciNsamples;
+	avgM4E *= reciNsamples;
+	avgSinX2 *= reciNsamples;
 
 	//calculate
 	b = avgM4;
@@ -305,12 +307,12 @@ int main(int argc, char* argv[]){
 	dbdt *= beta*beta;
 	dbdt /= avgM2*avgM2*avgM2;
 	xi = avgM2 - avgM*avgM;
-	xi /= L*L*L*(T);
+	xi *= reciNspins*beta;
 	rs = -(1.0/3.0)*avgE - beta*avgSinX2;
-	rs /= L*L;
+	rs *= L*reciNspins;
 	//get energy and mag per spin instead
-	avgE /= L*L*L;
-	avgM /= L*L*L;
+	avgE *= reciNspins;
+	avgM *= reciNspins;
 
 	//print to terminal
 	cout << fixed << L << " ";
