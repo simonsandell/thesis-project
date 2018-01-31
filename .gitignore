@@ -27,7 +27,7 @@
 *.sql
 *.sqlite
 *.dat
-
+*.swp
 # OS generated files #
 ######################
 .DS_Store
