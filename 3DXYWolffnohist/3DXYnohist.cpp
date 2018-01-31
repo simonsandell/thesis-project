@@ -414,8 +414,9 @@ int main(int argc, char* argv[]){
 	//calculate
 	b = avgM4;
 	b /= (avgM2*avgM2);
-	dbdt = (avgM4E/(avgM2*avgM2) + 2.0*avgM4*avgE/(avgM2*avgM2) - 3.0*avgM4*avgM2E/(avgM2*avgM2*avgM2));
-	dbdt /= (T)*(T);
+	dbdt = avgM4E*avgM2 + avgM4*avgM2*avgE - 2.0*avgM4*avgM2E;
+	dbdt *= beta*beta;
+	dbdt /= avgM2*avgM2*avgM2;
 	xi = avgM2 - avgM*avgM;
 	xi /= L*L*L*(T);
 	rs = -(1.0/3.0)*avgE - beta*avgSinX2;
