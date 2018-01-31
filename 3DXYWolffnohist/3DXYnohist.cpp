@@ -394,6 +394,9 @@ int main(int argc, char* argv[]){
 
 	}
 	//calculate quantities of interest
+	//define some reciprocals used to speed up calculation
+	double reciNsamples = 1.0/N_samples;
+	double reciNspins = 1.0/(L*L*L);
 	//derived quantites
 	double xi = 0;//susceptibility
 	double b = 0; //Binder parameter
@@ -402,14 +405,14 @@ int main(int argc, char* argv[]){
 
 	//normalize
 
-	avgE /= N_samples;
-	avgE2 /= N_samples;
-	avgM /= N_samples;
-	avgM2 /= N_samples;
-	avgM4 /= N_samples;
-	avgM2E /= N_samples;
-	avgM4E /= N_samples;
-	avgSinX2 /= N_samples;
+	avgE *= reciNsamples;
+	avgE2 *= reciNsamples;
+	avgM *= reciNsamples;
+	avgM2 *= reciNsamples;
+	avgM4 *= reciNsamples;
+	avgM2E *= reciNsamples;
+	avgM4E *= reciNsamples;
+	avgSinX2 *= reciNsamples;
 
 	//calculate
 	b = avgM4;
@@ -418,14 +421,14 @@ int main(int argc, char* argv[]){
 	dbdt *= beta*beta;
 	dbdt /= avgM2*avgM2*avgM2;
 	xi = avgM2 - avgM*avgM;
-	xi /= L*L*L*(T);
+	xi *= beta*reciNspins;
 	rs = -(1.0/3.0)*avgE - beta*avgSinX2;
-	rs /= L*L;
+	rs *= L*reciNspins;
 
 	cout << fixed << L << " ";
 	cout << fixed << T << " ";
-	cout << fixed << avgE/(L*L*L) << " ";
-	cout << fixed << avgM/(L*L*L) << " ";
+	cout << fixed << avgE*reciNspins << " ";
+	cout << fixed << avgM*reciNspins << " ";
 	cout << fixed << b << " ";
 	cout << fixed << dbdt << " ";
 	cout << fixed << xi << " ";
