@@ -315,7 +315,7 @@ int main(int argc, char* argv[]){
 
 	//
 	//Set equilibration time and number of samples
-	double N_equil_steps= N_equil_sweeps*L*L*L;
+	double N_equil_steps = N_equil_sweeps*L*L*L;
 
 	//define and initialize the lattice and cluster
 	double ***lattice;

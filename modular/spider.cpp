@@ -12,6 +12,7 @@
 #include <tuple>
 
 #include "wolff.h"
+#include "latticeOps.h"
 
 
 using namespace std;
