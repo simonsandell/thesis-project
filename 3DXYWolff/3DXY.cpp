@@ -47,7 +47,7 @@ double innerProd(double &angle1,double &angle2){
 
 //calculate energy of site
 double siteEnergy(double *** lattice,double &L, int &s1, int &s2, int &s3){
-	double sum = 0;
+	double sum = 0.0;
 	//find indices of neighbours
 	int n1m = (s1 -1 + (int)L )%(int)L;
 	int n1p = (s1 +1 + (int)L )%(int)L;
@@ -67,7 +67,7 @@ double siteEnergy(double *** lattice,double &L, int &s1, int &s2, int &s3){
 double sinX(double ***lattice,double &L, int &s1, int &s2, int &s3,double &angle){
 	int np = (s1 + 1) %(int)L;
 	int nm = (s1 -1 + (int)L) % (int)L;	
-	double ret = 0;
+	double ret = 0.0;
 	ret = sin(lattice[nm][s2][s3] - angle) + sin(angle - lattice[np][s2][s3]);
 	return ret;
 }
@@ -75,7 +75,7 @@ double sinX(double ***lattice,double &L, int &s1, int &s2, int &s3,double &angle
 
 //testing functions
 double calcSinX(double ***lattice,double &L){
-	double sum = 0;
+	double sum = 0.0;
 	for (int i =0; i< L; ++i){
 		for (int j =0; j< L ; ++j){
 			for (int k = 0; k<L; ++k){
@@ -87,7 +87,7 @@ double calcSinX(double ***lattice,double &L){
 }
 
 double calcXMag(double ***lattice,double&L){
-	double ret = 0;
+	double ret = 0.0;
 	for (int i = 0; i<L; ++i){
 		for (int j = 0; j<L; ++j){
 			for (int k = 0; k<L; ++k){
@@ -98,7 +98,7 @@ double calcXMag(double ***lattice,double&L){
 	return ret;
 }
 double calcYMag(double ***lattice,double&L){
-	double ret = 0;
+	double ret = 0.0;
 	for (int i = 0; i<L; ++i){
 		for (int j = 0; j<L; ++j){
 			for (int k = 0; k<L; ++k){
@@ -115,7 +115,7 @@ double calcMag(double ***lattice,double&L){
 }	
 
 double calcEn(double ***lattice,double&L){
-	double en = 0;
+	double en = 0.0;
 	for (int i = 0; i< L; ++i){
 		for (int j = 0; j< L; ++j){
 			for (int k = 0; k<L; ++k){	
@@ -134,7 +134,7 @@ int growCluster(double &u,int &s1,int &s2,int &s3,double ***lattice,bool ***clus
 	// 
 	double angleBefore = lattice[s1][s2][s3];
 	double enBefore = siteEnergy(lattice,L,s1,s2,s3);
-	double angleAfter = M_PI + 2*u - angleBefore;
+	double angleAfter = M_PI + 2.0*u - angleBefore;
 	lattice[s1][s2][s3] = angleAfter;
 	cluster[s1][s2][s3] = 1;
 	TotEn += siteEnergy(lattice,L,s1,s2,s3) - enBefore;
@@ -163,7 +163,7 @@ int growCluster(double &u,int &s1,int &s2,int &s3,double ***lattice,bool ***clus
 	perimeter[n] = make_tuple(s1,s2,n3p,angleAfter); n +=1;
 
 	tuple<int,int,int,double> current;
-	double prob = 0;
+	double prob = 0.0;
 	while (n > 0){
 		//pick out the last element 
 		current = perimeter[n-1];
@@ -177,14 +177,14 @@ int growCluster(double &u,int &s1,int &s2,int &s3,double ***lattice,bool ***clus
 			//get its current angle;
 			angleBefore = lattice[get<0>(current)][get<1>(current)][get<2>(current)];
 			//calculate prob of freezing, == 1 -exp(2*beta( parent_spin * U)( this_spin*U)) 
-			prob = 1 -exp(2*beta*cos(get<3>(current) - u)*cos(angleBefore -u));
+			prob = 1.0 -exp(2.0*beta*cos(get<3>(current) - u)*cos(angleBefore -u));
 			//add this perimeter spin to the cluster with probability prob
 			if (randgen() < prob){
 				//save angle and energy before reflecting
 				angleBefore = lattice[get<0>(current)][get<1>(current)][get<2>(current)];
 				enBefore = siteEnergy(lattice,L,get<0>(current),get<1>(current),get<2>(current));
 				//get new angle
-				angleAfter = M_PI + 2*u - angleBefore;
+				angleAfter = M_PI + 2.0*u - angleBefore;
 				//reflect and mark as added to cluster
 				lattice[get<0>(current)][get<1>(current)][get<2>(current)] = angleAfter;
 				cluster[get<0>(current)][get<1>(current)][get<2>(current)] = 1;
@@ -262,7 +262,7 @@ int growCluster(double &u,int &s1,int &s2,int &s3,double ***lattice,bool ***clus
 //empty the cluster when done
 //return time  
 int newCluster(double *** lattice, bool***cluster,double &L,double &beta,auto &randgen,double& TotXMag,double& TotYMag,double& TotEn,double &TotSinX){
-	double u = 2*M_PI*randgen();
+	double u = 2.0*M_PI*randgen();
 	int s1 = L*randgen();
 	int s2 = L*randgen();
 	int s3 = L*randgen();
@@ -335,7 +335,7 @@ int main(int argc, char* argv[]){
 		for (int i = 0; i<L;++i){
 			for (int j=0; j<L;++j){
 				for (int k = 0; k<L; ++k){
-					lattice[i][j][k] = randgen()*2*M_PI;
+					lattice[i][j][k] = randgen()*2.0*M_PI;
 					cluster[i][j][k] = 0;
 				}
 			}
@@ -354,10 +354,10 @@ int main(int argc, char* argv[]){
 				}
 			}
 		}
-	TotEn = -3*L*L*L;
-	TotXMag = 0;
+	TotEn = -3.0*L*L*L;
+	TotXMag = 0.0;
 	TotYMag = L*L*L; 
-	TotSinX = 0;
+	TotSinX = 0.0;
 	}
 	//test SinX
 	/*
@@ -423,20 +423,17 @@ int main(int argc, char* argv[]){
 		newCluster(lattice,cluster,L,beta,randgen,TotXMag,TotYMag,TotEn,TotSinX);
 		//take sample data
 		for (int i = 0; i<N_temps; ++i){
-			expFac = exp(-( ((extBeta[i])) - beta)*TotEn);
+			expFac = exp(-(extBeta[i] - beta)*TotEn);
 			avgExpFac[i] += expFac;
 			avgE[i] += expFac*TotEn;
 			avgE2[i] += expFac*TotEn*TotEn;
 			avgM[i] += expFac*sqrt(TotXMag*TotXMag + TotYMag*TotYMag);
-
 			avgM2[i] += expFac*(TotXMag*TotXMag + TotYMag*TotYMag);
 			avgM4[i] += expFac*(TotXMag*TotXMag + TotYMag*TotYMag)*(TotXMag*TotXMag + TotYMag*TotYMag);
 			avgM2E[i] += TotEn*expFac*(TotXMag*TotXMag + TotYMag*TotYMag); 
 			avgM4E[i] += TotEn*expFac*(TotXMag*TotXMag + TotYMag*TotYMag)*(TotXMag*TotXMag + TotYMag*TotYMag);
-
 			avgSinX2[i] += TotSinX*TotSinX*expFac;
 		}
-
 	}
 
 
@@ -444,7 +441,7 @@ int main(int argc, char* argv[]){
 	//define some reciprocals to reduce number of divions
 	double reciNsamples = 1.0/Nsamples;
 	double reciNspins = 1.0/(L*L*L);
-	double reciExpFac = 0;
+	double reciExpFac = 0.0;
 	//derived quantites
 	double xi[(int)N_temps] = {};//susceptibility
 	double b[(int)N_temps] = {}; //Binder parameter

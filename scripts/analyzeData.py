@@ -27,13 +27,13 @@ def writeToFiles(En,Mag,Bin,Dbdt,Xi,Rs,EF,MF,M_teq,BF,DF,XF,RF,N,T,Neq):
             deltaX = 0;
         if math.isnan(deltaR):
             deltaR = 0;
-        EF.write(repr(T)+" "+repr(meanE)+" "+repr(deltaE)+"\n")
-        MF.write(repr(T)+" "+repr(meanM)+" "+repr(deltaM)+"\n")
-        M_teq.write(repr(Neq)+" "+repr(meanM)+" "+repr(deltaM)+"\n")
-        BF.write(repr(T)+" "+repr(meanB)+" "+repr(deltaB)+"\n")
-        DF.write(repr(T)+" "+repr(meanD)+" "+repr(deltaD)+"\n")
-        XF.write(repr(T)+" "+repr(meanX)+" "+repr(deltaX)+"\n")
-        RF.write(repr(T)+" "+repr(meanR)+" "+repr(deltaR)+"\n")
+        EF.write(repr(T)+"    "+repr(meanE)+"    "+repr(deltaE)+"\n")
+        MF.write(repr(T)+"    "+repr(meanM)+"    "+repr(deltaM)+"\n")
+        M_teq.write(repr(Neq)+"    "+repr(meanM)+"    "+repr(deltaM)+"\n")
+        BF.write(repr(T)+"    "+repr(meanB)+"    "+repr(deltaB)+"\n")
+        DF.write(repr(T)+"    "+repr(meanD)+"    "+repr(deltaD)+"\n")
+        XF.write(repr(T)+"    "+repr(meanX)+"    "+repr(deltaX)+"\n")
+        RF.write(repr(T)+"    "+repr(meanR)+"    "+repr(deltaR)+"\n")
         En[:]= []
         Mag[:]= []
         Bin [:]= []
@@ -58,9 +58,6 @@ for ln in data0:
 mat = np.array(vals)
 ind = np.lexsort((mat[:,8],mat[:,6],mat[:,5],mat[:,4],mat[:,3],mat[:,2],mat[:,7],mat[:,1],mat[:,0]))
 mat = mat[ind]
-#mat = mat[np.argsort(mat.A[:,0],-1,'mergesort')]
-#mat = mat[np.argsort(mat.A[:,1],-1,'mergesort')]
-#mat = mat[np.argsort(mat.A[:,7],-1,'mergesort')]
 
 L=mat[0,0];
 T=mat[0,1];
@@ -86,7 +83,7 @@ RF = open("./foutput/rs/"+str(int(L))+"_"+fName+".dat","w")
 
 TOL = 10e-10
 for i in range(mat.shape[0]):
-    #if new value of L, make 
+    #if new value of L, make new outputfile
     if(TOL < abs(mat[i,0] - L)):
         writeToFiles(En,Mag,Bin,Dbdt,Xi,Rs,EF,MF,M_teq,BF,DF,XF,RF,N,T,Neq)
         L = float(mat[i,0])
@@ -103,9 +100,9 @@ for i in range(mat.shape[0]):
         writeToFiles(En,Mag,Bin,Dbdt,Xi,Rs,EF,MF,M_teq,BF,DF,XF,RF,N,T,Neq)
         T = float(mat[i,1])
         Neq = float(mat[i,7])
-    elif (TOL < abs(mat[i,7] - Neq)):
-        writeToFiles(En,Mag,Bin,Dbdt,Xi,Rs,EF,MF,M_teq,BF,DF,XF,RF,N,T,Neq)
-        Neq = float(mat[i,7])
+    #elif (TOL < abs(mat[i,7] - Neq)):
+     #   writeToFiles(En,Mag,Bin,Dbdt,Xi,Rs,EF,MF,M_teq,BF,DF,XF,RF,N,T,Neq)
+     #   Neq = float(mat[i,7])
     #normally just append to lists
     En.append(mat[i,2])
     Mag.append(mat[i,3])

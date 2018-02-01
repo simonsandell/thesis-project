@@ -31,7 +31,7 @@ void printLattice(double***lattice,double&L){
 
 //calculates the energy of a site
 double siteEnergy(double *** lattice,double &L, int &s1, int &s2, int &s3,double&angle){
-	double sum = 0;
+	double sum = 0.0;
 	//find indices of neighbours
 	int n1m = (s1 -1 + (int)L )%(int)L;
 	int n1p = (s1 +1 + (int)L )%(int)L;
@@ -51,7 +51,7 @@ double siteEnergy(double *** lattice,double &L, int &s1, int &s2, int &s3,double
 double sinX(double ***lattice,double &L, int &s1, int &s2, int &s3,double &angle){
 	int np = (s1 + 1) %(int)L;
 	int nm = (s1 -1 + (int)L) % (int)L;	
-	double ret = 0;
+	double ret = 0.0;
 	ret = sin(lattice[nm][s2][s3] - angle) + sin(angle - lattice[np][s2][s3]);
 	return ret;
 }
@@ -59,7 +59,7 @@ double sinX(double ***lattice,double &L, int &s1, int &s2, int &s3,double &angle
 
 //testing functions
 double calcSinX(double ***lattice,double &L){
-	double sum = 0;
+	double sum = 0.0;
 	for (int i =0; i< L; ++i){
 		for (int j =0; j< L ; ++j){
 			for (int k = 0; k<L; ++k){
@@ -70,7 +70,7 @@ double calcSinX(double ***lattice,double &L){
 	return sum;
 }
 double calcXMag(double ***lattice,double&L){
-	double ret = 0;
+	double ret = 0.0;
 	for (int i = 0; i<L; ++i){
 		for (int j = 0; j<L; ++j){
 			for (int k = 0; k<L; ++k){
@@ -81,7 +81,7 @@ double calcXMag(double ***lattice,double&L){
 	return ret;
 }
 double calcYMag(double ***lattice,double&L){
-	double ret = 0;
+	double ret = 0.0;
 	for (int i = 0; i<L; ++i){
 		for (int j = 0; j<L; ++j){
 			for (int k = 0; k<L; ++k){
@@ -93,12 +93,12 @@ double calcYMag(double ***lattice,double&L){
 }
 
 double calcMag(double ***lattice,double&L){
-	double mag = sqrt(pow(calcXMag(lattice,L),2) + pow(calcYMag(lattice,L),2));
+	double mag = sqrt(pow(calcXMag(lattice,L),2.0) + pow(calcYMag(lattice,L),2.0));
 	return mag;
 }	
 
 double calcEn(double ***lattice,double&L){
-	double en = 0;
+	double en = 0.0;
 	for (int i = 0; i< L; ++i){
 		for (int j = 0; j< L; ++j){
 			for (int k = 0; k<L; ++k){	
@@ -122,7 +122,7 @@ void sweep(double***lattice,double&L,double&beta,double&TotXMag,double&TotYMag,d
 	double enAfter;
 	for (int i = 0; i<(L*L*L); ++i){
 		//select random angle in the range [-PI,PI]
-		u = -M_PI + 2*M_PI*randgen(); 
+		u = -M_PI + 2.0*M_PI*randgen(); 
 		//select random spin
 		s1 = L*randgen();
 		s2 = L*randgen();
@@ -194,7 +194,7 @@ int main(int argc, char* argv[]){
 	for (int i = 0; i<L;++i){
 		for (int j=0; j<L;++j){
 			for (int k = 0; k<L; ++k){
-				lattice[i][j][k] = 2*M_PI*randgen();
+				lattice[i][j][k] = 2.0*M_PI*randgen();
 			}
 		}
 	}
@@ -251,22 +251,22 @@ int main(int argc, char* argv[]){
 
 	//parameters and physical quantities
 	//averages
-	double avgE = 0; //energy
-	double avgE2 = 0;//squared energy
-	double avgM = 0; //abs of magnetization
-	double avgM2 = 0;//squared magnetization
-	double avgM4 = 0;//fourth power of magnetization
-	double avgM2E = 0;// squared magnetization times energy
-	double avgM4E = 0; // 4th power magnetization times energy
+	double avgE = 0.0; //energy
+	double avgE2 = 0.0;//squared energy
+	double avgM = 0.0; //abs of magnetization
+	double avgM2 = 0.0;//squared magnetization
+	double avgM4 = 0.0;//fourth power of magnetization
+	double avgM2E = 0.0;// squared magnetization times energy
+	double avgM4E = 0.0; // 4th power magnetization times energy
 
-	double avgSinX2 = 0;
+	double avgSinX2 = 0.0;
 
 
 
-	double xi = 0;//susceptibility
-	double b = 0; //Binder parameter
-	double dbdt = 0;//derivative wrt T of Binder parameter
-	double rs = 0;//superfluid density
+	double xi = 0.0;//susceptibility
+	double b = 0.0; //Binder parameter
+	double dbdt = 0.0;//derivative wrt T of Binder parameter
+	double rs = 0.0;//superfluid density
 
 	for ( int i = 0; i < Nsamples; ++i){
 		//perform 2 sweeps between taking data
