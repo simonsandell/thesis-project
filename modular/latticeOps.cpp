@@ -13,7 +13,7 @@ void emptyCluster(bool***cluster,double &L){
 }
 //calculate energy of site
 double siteEnergy(double *** lattice,double &L, int &s1, int &s2, int &s3){
-	double sum = 0;
+	double sum = 0.0;
 	//find indices of neighbours
 	int n1m = (s1 -1 + (int)L )%(int)L;
 	int n1p = (s1 +1 + (int)L )%(int)L;
@@ -33,7 +33,7 @@ double siteEnergy(double *** lattice,double &L, int &s1, int &s2, int &s3){
 double sinX(double ***lattice,double &L, int &s1, int &s2, int &s3,double &angle){
 	int np = (s1 + 1) %(int)L;
 	int nm = (s1 -1 + (int)L) % (int)L;	
-	double ret = 0;
+	double ret = 0.0;
 	ret = sin(lattice[nm][s2][s3] - angle) + sin(angle - lattice[np][s2][s3]);
 	return ret;
 }

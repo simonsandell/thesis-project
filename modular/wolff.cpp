@@ -7,7 +7,7 @@
 
 int growCluster(double ***lattice,bool ***cluster, double &L,double &beta, double& TotXMag,double& TotYMag,double& TotEn,double &TotSinX,std::uniform_real_distribution<double> &dist,std::mt19937_64 &eng){
 
-	double u = 2*M_PI*dist(eng);
+	double u = 2.0*M_PI*dist(eng);
 	int s1 = L*dist(eng);
 	int s2 = L*dist(eng);
 	int s3 = L*dist(eng);
@@ -16,7 +16,7 @@ int growCluster(double ***lattice,bool ***cluster, double &L,double &beta, doubl
 	// 
 	double angleBefore = lattice[s1][s2][s3];
 	double enBefore = siteEnergy(lattice,L,s1,s2,s3);
-	double angleAfter = M_PI + 2*u - angleBefore;
+	double angleAfter = M_PI + 2.0*u - angleBefore;
 	lattice[s1][s2][s3] = angleAfter;
 	cluster[s1][s2][s3] = 1;
 	TotEn += siteEnergy(lattice,L,s1,s2,s3) - enBefore;
@@ -45,7 +45,7 @@ int growCluster(double ***lattice,bool ***cluster, double &L,double &beta, doubl
 	perimeter[n] = std::make_tuple(s1,s2,n3p,angleAfter); n +=1;
 
 	std::tuple<int,int,int,double> current;
-	double prob = 0;
+	double prob = 0.0;
 	while (n > 0){
 		//pick out the last element 
 		current = perimeter[n-1];
@@ -59,14 +59,14 @@ int growCluster(double ***lattice,bool ***cluster, double &L,double &beta, doubl
 			//get its current angle;
 			angleBefore = lattice[std::get<0>(current)][std::get<1>(current)][std::get<2>(current)];
 			//calculate prob of freezing, == 1 -exp(2*beta( parent_spin * U)( this_spin*U)) 
-			prob = 1 -exp(2*beta*cos(std::get<3>(current) - u)*cos(angleBefore -u));
+			prob = 1.0 -exp(2.0*beta*cos(std::get<3>(current) - u)*cos(angleBefore -u));
 			//add this perimeter spin to the cluster with probability prob
 			if (dist(eng) < prob){
 				//save angle and energy before reflecting
 				angleBefore = lattice[std::get<0>(current)][std::get<1>(current)][std::get<2>(current)];
 				enBefore = siteEnergy(lattice,L,std::get<0>(current),std::get<1>(current),std::get<2>(current));
 				//std::get new angle
-				angleAfter = M_PI + 2*u - angleBefore;
+				angleAfter = M_PI + 2.0*u - angleBefore;
 				//reflect and mark as added to cluster
 				lattice[std::get<0>(current)][std::get<1>(current)][std::get<2>(current)] = angleAfter;
 				cluster[std::get<0>(current)][std::get<1>(current)][std::get<2>(current)] = 1;
@@ -135,8 +135,6 @@ int growCluster(double ***lattice,bool ***cluster, double &L,double &beta, doubl
 			}
 		}
 	}
-emptyCluster(cluster,L);
-return time;
+	emptyCluster(cluster,L);
+	return time;
 }
-
-

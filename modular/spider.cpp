@@ -24,7 +24,7 @@ int main(int argc, char* argv[]){
 	//generate random seed from system and initialize random number generator
 	unsigned long int s;
 	syscall(SYS_getrandom,&s,sizeof(unsigned long int),0);	
-	uniform_real_distribution<double> dist(0,1);
+	uniform_real_distribution<double> dist(0.0,1.0);
 	mt19937_64 eng; 
 	eng.seed(s);
 
@@ -76,7 +76,7 @@ int main(int argc, char* argv[]){
 		for (int i = 0; i<L;++i){
 			for (int j=0; j<L;++j){
 				for (int k = 0; k<L; ++k){
-					lattice[i][j][k] = dist(eng)*2*M_PI;
+					lattice[i][j][k] = dist(eng)*2.0*M_PI;
 					cluster[i][j][k] = 0;
 				}
 			}
@@ -95,24 +95,18 @@ int main(int argc, char* argv[]){
 				}
 			}
 		}
-	TotEn = -3*L*L*L;
-	TotXMag = 0;
+	TotEn = -3.0*L*L*L;
+	TotXMag = 0.0;
 	TotYMag = L*L*L; 
-	TotSinX = 0;
+	TotSinX = 0.0;
 	}
 
-	//test consistency
-	testConsistent(lattice,L,TotEn,TotXMag,TotYMag,TotSinX);
 	//eqilibration 
 	int t = 0;
 	while (t < N_equil_steps){
 		t += growCluster(lattice,cluster,L,beta,TotXMag,TotYMag,TotEn,TotSinX,dist,eng);
 	}
-	//test consistency
-	testConsistent(lattice,L,TotEn,TotXMag,TotYMag,TotSinX);
-
 	//start collecting data
-
 	//parameters and physical quantities
 	//averages
 	double avgE[(int)N_temps] = {}; //energy
@@ -122,7 +116,6 @@ int main(int argc, char* argv[]){
 	double avgM4[(int)N_temps] = {};//fourth power of magnetization
 	double avgM2E[(int)N_temps] = {};// squared magnetization times energy
 	double avgM4E[(int)N_temps] = {}; // 4th power magnetization times energy
-
 	double avgSinX2[(int)N_temps] = {}; // for superfluid density 
 
 
@@ -155,7 +148,7 @@ int main(int argc, char* argv[]){
 	//define some reciprocals to reduce number of divions
 	double reciNsamples = 1.0/Nsamples;
 	double reciNspins = 1.0/(L*L*L);
-	double reciExpFac = 0;
+	double reciExpFac = 0.0;
 	//derived quantites
 	double xi[(int)N_temps] = {};//susceptibility
 	double b[(int)N_temps] = {}; //Binder parameter

@@ -21,7 +21,7 @@ void printLattice(double ***lattice,double &L){
 
 //testing functions
 double calcSinX(double ***lattice,double &L){
-	double sum = 0;
+	double sum = 0.0;
 	for (int i =0; i< L; ++i){
 		for (int j =0; j< L ; ++j){
 			for (int k = 0; k<L; ++k){
@@ -33,7 +33,7 @@ double calcSinX(double ***lattice,double &L){
 }
 
 double calcXMag(double ***lattice,double&L){
-	double ret = 0;
+	double ret = 0.0;
 	for (int i = 0; i<L; ++i){
 		for (int j = 0; j<L; ++j){
 			for (int k = 0; k<L; ++k){
@@ -44,7 +44,7 @@ double calcXMag(double ***lattice,double&L){
 	return ret;
 }
 double calcYMag(double ***lattice,double&L){
-	double ret = 0;
+	double ret = 0.0;
 	for (int i = 0; i<L; ++i){
 		for (int j = 0; j<L; ++j){
 			for (int k = 0; k<L; ++k){
@@ -61,7 +61,7 @@ double calcMag(double ***lattice,double&L){
 }	
 
 double calcEn(double ***lattice,double&L){
-	double en = 0;
+	double en = 0.0;
 	for (int i = 0; i< L; ++i){
 		for (int j = 0; j< L; ++j){
 			for (int k = 0; k<L; ++k){	
