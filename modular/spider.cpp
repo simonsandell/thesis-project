@@ -1,5 +1,3 @@
-//This program performs montecarlo with the Wolff algorithm simulation of the 3D XY model
-//Implements histogramextrapolation to obtain values at different temperatures
 #include <iostream>
 #include <cmath>
 #include <random>
@@ -13,95 +11,22 @@
 
 #include "wolff.h"
 #include "latticeOps.h"
-
+#include "testFuncs.h"
 
 using namespace std;
-
-//print lattice
-void printLattice(double ***lattice,double &L){
-	for(int i = 0; i < L; ++i){
-		for(int j = 0; j < L; ++j){
-			for(int k =0; k<L; ++k){
-				cout << lattice[i][j][k];
-			}
-			cout << endl;
-		}
-		cout << endl;
-	}
-}
-
-
-
-//testing functions
-double calcSinX(double ***lattice,double &L){
-	double sum = 0;
-	for (int i =0; i< L; ++i){
-		for (int j =0; j< L ; ++j){
-			for (int k = 0; k<L; ++k){
-				sum += sin(lattice[i][j][k] - lattice[(i+1)%(int)L][j][k]);
-			}
-		}
-	}
-	return sum;
-}
-
-double calcXMag(double ***lattice,double&L){
-	double ret = 0;
-	for (int i = 0; i<L; ++i){
-		for (int j = 0; j<L; ++j){
-			for (int k = 0; k<L; ++k){
-				ret += cos(lattice[i][j][k]);
-			}
-		}
-	}
-	return ret;
-}
-double calcYMag(double ***lattice,double&L){
-	double ret = 0;
-	for (int i = 0; i<L; ++i){
-		for (int j = 0; j<L; ++j){
-			for (int k = 0; k<L; ++k){
-				ret += sin(lattice[i][j][k]);
-			}
-		}
-	}
-	return ret;
-}
-
-double calcMag(double ***lattice,double&L){
-	double mag = sqrt(pow(calcXMag(lattice,L),2) + pow(calcYMag(lattice,L),2));
-	return mag;
-}	
-
-double calcEn(double ***lattice,double&L){
-	double en = 0;
-	for (int i = 0; i< L; ++i){
-		for (int j = 0; j< L; ++j){
-			for (int k = 0; k<L; ++k){	
-				en += siteEnergy(lattice,L,i,j,k);
-			}
-		}
-	}
-	en = 0.5*en;
-	return en;
-}
-
-//make a cluster..
 
 //main
 int main(int argc, char* argv[]){
 
-
-
 	//set precision of cout
 	cout.precision(17);
+
 	//generate random seed from system and initialize random number generator
 	unsigned long int s;
 	syscall(SYS_getrandom,&s,sizeof(unsigned long int),0);	
 	uniform_real_distribution<double> dist(0,1);
 	mt19937_64 eng; 
 	eng.seed(s);
-	auto randgen = bind(dist,eng);
 
 	//set system size and temperature from input arguments
 	if (argc < 2){
@@ -151,7 +76,7 @@ int main(int argc, char* argv[]){
 		for (int i = 0; i<L;++i){
 			for (int j=0; j<L;++j){
 				for (int k = 0; k<L; ++k){
-					lattice[i][j][k] = randgen()*2*M_PI;
+					lattice[i][j][k] = dist(eng)*2*M_PI;
 					cluster[i][j][k] = 0;
 				}
 			}
@@ -175,47 +100,17 @@ int main(int argc, char* argv[]){
 	TotYMag = L*L*L; 
 	TotSinX = 0;
 	}
-	//test SinX
-	/*
-	   double tSinX = calcSinX(lattice,L);
-	   cout << tSinX << " " << TotSinX << endl;
-	   */
-	//test if energy and mag matches
-	//
-	/*
-	   TotMag = sqrt(pow(TotXMag,2) + pow(TotYMag,2));
-	   double testEn = calcEn(lattice,L);
-	   double testXMag = calcXMag(lattice,L);
-	   double testYMag = calcYMag(lattice,L);
-	   double testMag = calcMag(lattice,L);
-	   cout << TotEn <<" TotEn vs testEn " << testEn << endl;
-	   cout << TotXMag <<" TotXMag vs testXMag " << testXMag << endl;
-	   cout << TotYMag <<" TotYMag vs testYMag " << testYMag << endl;
-	   cout << TotMag <<" TotMag vs testMag " << testMag << endl;
-	   */
 
+	//test consistency
+	testConsistent(lattice,L,TotEn,TotXMag,TotYMag,TotSinX);
 	//eqilibration 
 	int t = 0;
 	while (t < N_equil_steps){
-		t += growCluster(lattice,cluster,L,beta,randgen,TotXMag,TotYMag,TotEn,TotSinX);
+		t += growCluster(lattice,cluster,L,beta,TotXMag,TotYMag,TotEn,TotSinX,dist,eng);
 	}
-	//test if matches after equilibration
-	/*
+	//test consistency
+	testConsistent(lattice,L,TotEn,TotXMag,TotYMag,TotSinX);
 
-	   tSinX = calcSinX(lattice,L);
-	   cout << tSinX << " " << TotSinX << endl;
-	   */
-	/*
-	   testEn = calcEn(lattice,L);
-	   testXMag = calcXMag(lattice,L);
-	   testYMag = calcYMag(lattice,L);
-	   testMag = calcMag(lattice,L);
-	   TotMag = sqrt(pow(TotYMag,2) + pow(TotXMag,2));
-	   cout << TotEn <<" TotEn vs testEn " << testEn << endl;
-	   cout << TotXMag <<" TotXMag vs testXMag " << testXMag << endl;
-	   cout << TotYMag <<" TotYMag vs testYMag " << testYMag << endl;
-	   cout << TotMag <<" TotMag vs testMag " << testMag << endl;
-	   */
 	//start collecting data
 
 	//parameters and physical quantities
@@ -236,7 +131,7 @@ int main(int argc, char* argv[]){
 
 	for ( int i = 0; i < Nsamples; ++i){
 		//make a cluster
-		growCluster(lattice,cluster,L,beta,randgen,TotXMag,TotYMag,TotEn,TotSinX);
+		growCluster(lattice,cluster,L,beta,TotXMag,TotYMag,TotEn,TotSinX,dist,eng);
 		//take sample data
 		for (int i = 0; i<N_temps; ++i){
 			expFac = exp(-( ((extBeta[i])) - beta)*TotEn);
@@ -312,6 +207,5 @@ int main(int argc, char* argv[]){
 		cout << fixed << N_equil_sweeps << " "; 
 		cout << fixed << rs[i] << " ";
 		cout << fixed << endl;
-
 	}
 }

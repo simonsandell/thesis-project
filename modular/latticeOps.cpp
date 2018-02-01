@@ -1,6 +1,4 @@
-#include "latticeOps.h"
 #include <cmath>
-
 
 //clear the cluster
 void emptyCluster(bool***cluster,double &L){
