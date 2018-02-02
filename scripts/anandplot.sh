@@ -1,7 +1,7 @@
 #!/bin/bash
 # loop over raw data files, do data analysis on them by calling analyzeData.py 
 for filename in ./output/*; do
-	python3 analyzeData.py $(basename $filename)
+	python3 ../scripts/analyzeData.py $(basename $filename)
 done
 
 #Display a selection of plots from the output of analyzeData.py using xmgrace
