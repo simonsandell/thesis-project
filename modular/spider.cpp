@@ -14,27 +14,37 @@ int main(int argc, char* argv[]){
 	//set precision of cout
 	cout.precision(17);
 
-	//generate random seed from system and initialize random number generator
 
-	//set system size and temperature from input arguments
-	if (argc < 2){
-		cout << "input arguments: L N_eq N_samp coldStart T_1 T_2 T_3 ..." << endl;
-		exit(0);
-	}
-	double L = stod(argv[1]);
-	double N_equil_sweeps = stod(argv[2]);
-	double N_samples = stod(argv[3]);
-	double cold = stod(argv[4]);
-	int N_temps = 1;
-	double Temperatures[argc - 5] = {};
-	N_temps = argc - 5;
-	for (int i = 0; i< N_temps; ++i){
-		Temperatures[i] = stod(argv[i+5]);
-	}
+	// set up run paramters
+	//
+	//wolffHistRun(double L,  double N_equil_sweeps,  double N_samples,  bool cold,  double *Temperatures, int N_temps );
+	//wolffRun(    double L,  double N_equil_sweeps,  double N_samples,  bool cold,  double Temperature );
+	//
+		double L = 4.0;
+		double N_equil_sweeps = 1000.0;
+		double N_samples = 2000.0;
+		bool coldStart = true;
+		int N_runs = 100;
 
+		double T = 	2.10;
+		double dT = 	0.01;
+		int N_temps = 10;
+		double Temps[N_temps];
+		for (int k = 0; k < N_temps; ++k){
+			Temps[k] = T;
+			T = T + dT;
+		}
 
-	wolffHistRun(L, N_equil_sweeps, N_samples,cold,Temperatures,N_temps);
-	wolffRun(L, N_equil_sweeps, N_samples,cold,Temperatures[0]);
+		for ( int i = 0; i< N_runs; ++i){
+			//regular run
+			
+			for (int j = 0;j< N_temps; ++j){
+				wolffRun(L,N_equil_sweeps,N_samples,coldStart,Temps[j]);
+			}
+			
+			//hist run
+			//wolffHistRun(L,N_equil_sweeps,N_samples,coldStart,Temps,N_temps);
+		}
 
 
 
