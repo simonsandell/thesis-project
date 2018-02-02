@@ -1,6 +1,7 @@
 import sys
 import numpy as np
 import math
+
 #funcion for writing data
 def writeToFiles(En,Mag,Bin,Dbdt,Xi,Rs,EF,MF,M_teq,BF,DF,XF,RF,N,T,Neq):
         meanE = np.mean(En);
@@ -9,12 +10,13 @@ def writeToFiles(En,Mag,Bin,Dbdt,Xi,Rs,EF,MF,M_teq,BF,DF,XF,RF,N,T,Neq):
         meanD = np.mean(Dbdt);
         meanX = np.mean(Xi);
         meanR = np.mean(Rs);
-        deltaE = np.std(En)/(N**0.5);
-        deltaM = np.std(Mag)/(N**0.5);
-        deltaB = np.std(Bin)/(N**0.5);
-        deltaD = np.std(Dbdt)/(N**0.5);
-        deltaX = np.std(Xi)/(N**0.5);
-        deltaR = np.std(Rs)/(N**0.5);
+        sqrtN = pow(N,0.5);
+        deltaE = np.std(En)/sqrtN;
+        deltaM = np.std(Mag)/sqrtN;
+        deltaB = np.std(Bin)/sqrtN;
+        deltaD = np.std(Dbdt)/sqrtN;
+        deltaX = np.std(Xi)/sqrtN;
+        deltaR = np.std(Rs)/sqrtN;
         if math.isnan(deltaE):
             deltaE = 0;
         if math.isnan(deltaM):

@@ -71,10 +71,7 @@ void wolffHistRun(double L, double N_equil_sweeps, double N_samples,bool cold,do
 	double avgM4[N_temps] = {};//fourth power of magnetization
 	double avgM2E[N_temps] = {};// squared magnetization times energy
 	double avgM4E[N_temps] = {}; // 4th power magnetization times energy
-
 	double avgSinX2[N_temps] = {}; // for superfluid density 
-
-
 	double avgExpFac[N_temps] = {};
 	double expFac;
 
@@ -105,10 +102,12 @@ void wolffHistRun(double L, double N_equil_sweeps, double N_samples,bool cold,do
 	double dbdt[N_temps] = {};//derivative wrt T of Binder parameter
 	double rs[N_temps] = {};//superfluid density
 	for (int i =0; i< N_temps; ++i){
+		
 
 		//normalize
 		avgExpFac[i] *= reciNsamples;
 		reciExpFac = 1.0/avgExpFac[i];
+		std::cout << avgExpFac[i]<< std::endl;
 		avgE[i] *= reciNsamples;
 		avgE2[i] *= reciNsamples;
 		avgM[i] *= reciNsamples;
