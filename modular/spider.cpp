@@ -31,12 +31,32 @@ double * getTrange(double start, double end, int N){
 
 //main
 int main(int argc, char* argv[]){
-
+// input args :: 'wolff'/'hist' L startT endT Tnum Neq Nsamp Cold
+// 
 	//set precision of cout
+	
 	cout.precision(17);
-	// set up run paramters
+
+	double runType = stod(argv[1]);
+	double L= stod(argv[2]);
+	double startT= stod(argv[3]);
+	double endT= stod(argv[4]);
+	double Ntemps= stod(argv[5]);
+	double Neq= stod(argv[6]);
+	double Nsamp= stod(argv[7]);
+	double icold= stod(argv[8]);
+
+	bool cold = false;
+	if (icold == 1.0){
+		cold = true;
+	}
+	double *Trange = getTrange(2.2,2.22,int(Ntemps));
+	if (runType == 0.0) {
+		wr(L,Neq,Nsamp,cold,Trange,Ntemps);
+	}
+	else if (runType == 1.0) {
+		whr(L,Neq,Nsamp,cold,Trange,Ntemps);
+	}
+}
 	//void whr( double L,double N_equil,double N_samp,bool cold, double* Temps,int N_temps){
 	//void wr( double L,double N_equil,double N_samp,bool cold, double* Temps,int N_temps){
-	double *Trange = getTrange(2.2,2.22,32);
-	whr(8,3000,4000,false,Trange,8);
-}

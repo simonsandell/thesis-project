@@ -1,4 +1,4 @@
 #!/bin/bash
 #Retrieves raw data from the cluster
 currdir=${PWD##*/}
-scp simsan@octopus.theophys.kth.se:~/$currdir/output/* ./output/
+scp simsan@octopus.theophys.kth.se:~/exjobb/$currdir/output/* ./output/
