@@ -42,8 +42,8 @@ int main(int argc, char* argv[]){
 	// set up run paramters
 	//void whr(int reps, double L,double N_equil,double N_samp,bool cold, double* Temps,int N_temps){
 	//void wr(int reps, double L,double N_equil,double N_samp,bool cold, double* Temps,int N_temps){
-	double *Trange = getTrange(2.2,2.22,32);
-	whr(1,8,2000,3000,false,Trange,32);
+	double *Trange = getTrange(2.2,2.22,8);
+	wr(100,8,2000,3000,false,Trange,8);
 
 
 }
