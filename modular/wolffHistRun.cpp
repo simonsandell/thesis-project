@@ -107,7 +107,6 @@ void wolffHistRun(double L, double N_equil_sweeps, double N_samples,bool cold,do
 		//normalize
 		avgExpFac[i] *= reciNsamples;
 		reciExpFac = 1.0/avgExpFac[i];
-		std::cout << avgExpFac[i]<< std::endl;
 		avgE[i] *= reciNsamples;
 		avgE2[i] *= reciNsamples;
 		avgM[i] *= reciNsamples;
