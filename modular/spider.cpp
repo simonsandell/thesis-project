@@ -8,19 +8,15 @@
 
 using namespace std;
 
-void whr(int reps, double L,double N_equil,double N_samp,bool cold, double* Temps,int N_temps){
-	for ( int i = 0; i< reps;++i){
-		wolffHistRun(L,N_equil,N_samp,cold,Temps,N_temps);
-	}
+void whr( double L,double N_equil,double N_samp,bool cold, double* Temps,int N_temps){
+	wolffHistRun(L,N_equil,N_samp,cold,Temps,N_temps);
 }
-void wr(int reps, double L,double N_equil,double N_samp,bool cold, double* Temps,int N_temps){
+void wr( double L,double N_equil,double N_samp,bool cold, double* Temps,int N_temps){
 	//regular run
 	double Temp;
-	for (int j = 0;j< reps; ++j){
-		for (int i = 0; i< N_temps; ++i){
-			Temp = Temps[i];
-			wolffRun(L,N_equil,N_samp,cold,Temp);
-		}
+	for (int i = 0; i< N_temps; ++i){
+		Temp = Temps[i];
+		wolffRun(L,N_equil,N_samp,cold,Temp);
 	}
 }
 double * getTrange(double start, double end, int N){
@@ -38,12 +34,9 @@ int main(int argc, char* argv[]){
 
 	//set precision of cout
 	cout.precision(17);
-
 	// set up run paramters
-	//void whr(int reps, double L,double N_equil,double N_samp,bool cold, double* Temps,int N_temps){
-	//void wr(int reps, double L,double N_equil,double N_samp,bool cold, double* Temps,int N_temps){
+	//void whr( double L,double N_equil,double N_samp,bool cold, double* Temps,int N_temps){
+	//void wr( double L,double N_equil,double N_samp,bool cold, double* Temps,int N_temps){
 	double *Trange = getTrange(2.2,2.22,8);
-	wr(100,8,2000,3000,false,Trange,8);
-
-
+	whr(8,3000,4000,false,Trange,8);
 }
