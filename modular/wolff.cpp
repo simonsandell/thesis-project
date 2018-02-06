@@ -70,8 +70,9 @@ int growCluster(double ***lattice,bool ***cluster, double &L,double &beta, doubl
 			prob = getProb(u,std::get<3>(current) ,angleBefore,beta);
 			rand = dist(eng);
 			//add this perimeter spin to the cluster with probability prob
-			if ((rand - prob) < 0 || 
-					std::abs(rand-prob) < std::abs(std::min(rand,prob))*std::numeric_limits<double>::epsilon()){
+		//	if ((rand - prob) < 0 || 
+		//			std::abs(rand-prob) < std::abs(std::min(rand,prob))*std::numeric_limits<double>::epsilon()){
+			if ( rand < prob) {
 				//save angle and energy before reflecting
 				angleBefore = lattice[std::get<0>(current)][std::get<1>(current)][std::get<2>(current)];
 				enBefore = siteEnergy(lattice,L,std::get<0>(current),std::get<1>(current),std::get<2>(current));
