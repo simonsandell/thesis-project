@@ -37,7 +37,7 @@ N = 0.0;
 
 M_teq = open("./foutput/teq/"+str(int(L))+"_"+fName+".dat","w")
 
-TOL = 10e-10
+TOL = 5 
 for i in range(mat.shape[0]):
     #if new value of L, make new outputfile
     if(TOL < abs(mat[i,0] - L)):

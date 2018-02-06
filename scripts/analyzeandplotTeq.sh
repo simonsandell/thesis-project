@@ -1,7 +1,7 @@
 #!/bin/bash
 
 for filename in ./output/*; do
-	python3 ../scripts/analyzeData.py $(basename $filename)
+	python3 ../scripts/teqanalyze.py $(basename $filename)
 done
 
 teqstring="-param ../scripts/default.par"
