@@ -6,8 +6,8 @@
 #include "latticeOps.h"
 
 double getProb(double u, double angleParent, double angle,double beta){
-	double prob = 1.0 -exp(2.0*beta*cos(angleParent - u)*cos(angle -u));
-	if (prob < 0){ return 0;}
+	double prob = 1.0 - exp(2.0*beta*cos(angleParent - u)*cos(angle -u));
+	if (prob < 0.0){ return 0.0;}
 	return std::min(1.0,prob);
 }
 
