@@ -50,7 +50,7 @@ int main(int argc, char* argv[]){
 	if (icold == 1.0){
 		cold = true;
 	}
-	double *Trange = getTrange(2.2,2.22,int(Ntemps));
+	double *Trange = getTrange(startT,endT,int(Ntemps));
 	if (runType == 0.0) {
 		wr(L,Neq,Nsamp,cold,Trange,Ntemps);
 	}
