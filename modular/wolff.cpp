@@ -2,6 +2,7 @@
 #include <random>
 #include <utility>
 #include <tuple>
+#include <vector>
 
 #include "latticeOps.h"
 
@@ -38,49 +39,75 @@ int growCluster(double ***lattice,bool ***cluster, double &L,double &beta, doubl
 	int n2p = (s2 +1 + (int)L )%(int)L;
 	int n3m = (s3 -1 + (int)L )%(int)L;
 	int n3p = (s3 +1 + (int)L )%(int)L;
+	std::tuple<int,int,int,double> neig1 = std::make_tuple(n1m,s2,s3,angleAfter);
+	std::tuple<int,int,int,double> neig2 = std::make_tuple(n1p,s2,s3,angleAfter);
+	std::tuple<int,int,int,double> neig3 = std::make_tuple(s1,n2m,s3,angleAfter);
+	std::tuple<int,int,int,double> neig4 = std::make_tuple(s1,n2p,s3,angleAfter);
+	std::tuple<int,int,int,double> neig5 = std::make_tuple(s1,s2,n3m,angleAfter);
+	std::tuple<int,int,int,double> neig6 = std::make_tuple(s1,s2,n3p,angleAfter);
+
 	//make a list for perimeter spins
-	std::tuple<int,int,int,double> perimeter[(int)(L*L*L*6)] = {};
-	//index at which we want to add another perimeter spin
-	//so if it is equal to 0, it means the list is empty
-	//consequently the index of the last spin is n-1
-	int n = 0;
+	std::vector<std::tuple<int,int,int,double>> perimeter;
 	//add neighbours to list
-	perimeter[n] = std::make_tuple(n1m,s2,s3,angleAfter); n +=1;
-	perimeter[n] = std::make_tuple(n1p,s2,s3,angleAfter); n +=1;
-	perimeter[n] = std::make_tuple(s1,n2m,s3,angleAfter); n +=1;
-	perimeter[n] = std::make_tuple(s1,n2p,s3,angleAfter); n +=1;
-	perimeter[n] = std::make_tuple(s1,s2,n3m,angleAfter); n +=1;
-	perimeter[n] = std::make_tuple(s1,s2,n3p,angleAfter); n +=1;
+	perimeter.push_back(neig1);
+	perimeter.push_back(neig2);
+	perimeter.push_back(neig3);
+	perimeter.push_back(neig4);
+	perimeter.push_back(neig5);
+	perimeter.push_back(neig6);
+	int n = 6;
 
 	std::tuple<int,int,int,double> current;
 	double prob = 0.0;
 	double rand = 0.0;
+	bool flip = false;
 	while (n > 0){
 		//pick out the last element 
-		current = perimeter[n-1];
+		current = perimeter.back();
+		perimeter.pop_back();
 		n -= 1;
 		//test that it is not already part of cluster
 		if (!cluster[std::get<0>(current)][std::get<1>(current)][std::get<2>(current)]){
 
 			//increase time for every tested spin
+			//
 			++time;
+
 			//get its current angle;
+			//
 			angleBefore = lattice[std::get<0>(current)][std::get<1>(current)][std::get<2>(current)];
+
 			//calculate prob of freezing, == 1 -exp(2*beta( parent_spin * U)( this_spin*U)) 
 			prob = getProb(u,std::get<3>(current) ,angleBefore,beta);
 			rand = dist(eng);
-			//add this perimeter spin to the cluster with probability prob
-		//	if ((rand - prob) < 0 || 
-		//			std::abs(rand-prob) < std::abs(std::min(rand,prob))*std::numeric_limits<double>::epsilon()){
 			if ( rand < prob) {
-				//save angle and energy before reflecting
-				angleBefore = lattice[std::get<0>(current)][std::get<1>(current)][std::get<2>(current)];
+				flip = true;
+			} //if rand is so close to prob that floating point precision considers them equal, flip in 50 % of those cases
+			//
+			else if ( std::abs(rand-prob) < std::abs(std::min(rand,prob)*std::numeric_limits<double>::epsilon())){
+				rand = dist(eng);
+				if (rand < 0.50){
+					flip = true;
+				}
+				else{ flip = false;
+				}
+			} 
+			else 
+			{
+				flip = false;
+			}
+			if (flip) {
+				//get energy before reflecting
+				//
 				enBefore = siteEnergy(lattice,L,std::get<0>(current),std::get<1>(current),std::get<2>(current));
+
 				//get new angle
 				angleAfter = double(M_PI) + 2.0*u - angleBefore;
+
 				//reflect and mark as added to cluster
 				lattice[std::get<0>(current)][std::get<1>(current)][std::get<2>(current)] = angleAfter;
 				cluster[std::get<0>(current)][std::get<1>(current)][std::get<2>(current)] = true;
+
 				//update energy and magnetization
 				TotEn += siteEnergy(lattice,L,std::get<0>(current),std::get<1>(current),std::get<2>(current)) - enBefore;
 				TotXMag += cos(angleAfter) - cos(angleBefore);
@@ -88,59 +115,59 @@ int growCluster(double ***lattice,bool ***cluster, double &L,double &beta, doubl
 				TotSinX += sinX(lattice,L,std::get<0>(current),std::get<1>(current),std::get<2>(current),angleAfter) - sinX(lattice,L,std::get<0>(current),std::get<1>(current),std::get<2>(current),angleBefore);
 
 				//find indices of neighbours
-				std::tuple<int,int,int,double> neig1 = std::make_tuple(
+				neig1 = std::make_tuple(
 						(std::get<0>(current) + 1) % (int)L, 
 						std::get<1>(current),
 						std::get<2>(current),
 						angleAfter);
-				std::tuple<int,int,int,double> neig2 = std::make_tuple(
+				neig2 = std::make_tuple(
 						(std::get<0>(current) + (int)L - 1) % (int)L,
 						std::get<1>(current),
 						std::get<2>(current),
 						angleAfter);
-				std::tuple<int,int,int,double> neig3 = std::make_tuple(
+				neig3 = std::make_tuple(
 						std::get<0>(current),
 						(std::get<1>(current) + 1) % (int)L,
 						std::get<2>(current),
 						angleAfter);
-				std::tuple<int,int,int,double> neig4 = std::make_tuple(
+				neig4 = std::make_tuple(
 						std::get<0>(current),
 						(std::get<1>(current) + (int)L - 1) % (int)L,
 						std::get<2>(current),
 						angleAfter);
-				std::tuple<int,int,int,double> neig5 = std::make_tuple(
+				neig5 = std::make_tuple(
 						std::get<0>(current),
 						std::get<1>(current),
 						(std::get<2>(current) + 1) % (int)L,
 						angleAfter);
-				std::tuple<int,int,int,double> neig6 = std::make_tuple(
+				neig6 = std::make_tuple(
 						std::get<0>(current),
 						std::get<1>(current),
 						(std::get<2>(current) + (int)L - 1)%(int)L,
 						angleAfter);
 				//if a neighbour is not already part of the cluster, add it to perimeter list
 				if (!cluster[std::get<0>(neig1)][std::get<1>(neig1)][std::get<2>(neig1)] ){
-					perimeter[n] = neig1;
+					perimeter.push_back(neig1);
 					n = n + 1;
 				}
 				if (!cluster[std::get<0>(neig2)][std::get<1>(neig2)][std::get<2>(neig2)] ){
-					perimeter[n] = neig2;
+					perimeter.push_back(neig2);
 					n = n + 1;
 				}
 				if (!cluster[std::get<0>(neig3)][std::get<1>(neig3)][std::get<2>(neig3)] ){
-					perimeter[n] = neig3;
+					perimeter.push_back(neig3);
 					n = n + 1;
 				}
 				if (!cluster[std::get<0>(neig4)][std::get<1>(neig4)][std::get<2>(neig4)] ){
-					perimeter[n] = neig4;
+					perimeter.push_back(neig4);
 					n = n + 1;
 				}
 				if (!cluster[std::get<0>(neig5)][std::get<1>(neig5)][std::get<2>(neig5)] ){
-					perimeter[n] = neig5;
+					perimeter.push_back(neig5);
 					n = n + 1;
 				}
 				if (!cluster[std::get<0>(neig6)][std::get<1>(neig6)][std::get<2>(neig6)] ){
-					perimeter[n] = neig6;
+					perimeter.push_back(neig6);
 					n = n + 1;
 				}
 			}
