@@ -9,14 +9,14 @@ int growCluster(double ***lattice,bool ***cluster, double &L,double &beta, doubl
 
 	int time = 1;
 	//select random plane and random staring spin
-	double u = 2.0*M_PI*dist(eng);
+	double u = 2.0*double(M_PI)*dist(eng);
 	int s1 = L*dist(eng);
 	int s2 = L*dist(eng);
 	int s3 = L*dist(eng);
 	// save angle and energy before flipping
 	double angleBefore = lattice[s1][s2][s3];
 	double enBefore = siteEnergy(lattice,L,s1,s2,s3);
-	double angleAfter = M_PI + 2.0*u - angleBefore;
+	double angleAfter = double(M_PI) + 2.0*u - angleBefore;
 	//reflect spin and mark as part of cluster
 	lattice[s1][s2][s3] = angleAfter;
 	cluster[s1][s2][s3] = true;
@@ -67,7 +67,7 @@ int growCluster(double ***lattice,bool ***cluster, double &L,double &beta, doubl
 				angleBefore = lattice[std::get<0>(current)][std::get<1>(current)][std::get<2>(current)];
 				enBefore = siteEnergy(lattice,L,std::get<0>(current),std::get<1>(current),std::get<2>(current));
 				//get new angle
-				angleAfter = M_PI + 2.0*u - angleBefore;
+				angleAfter = double(M_PI) + 2.0*u - angleBefore;
 				//reflect and mark as added to cluster
 				lattice[std::get<0>(current)][std::get<1>(current)][std::get<2>(current)] = angleAfter;
 				cluster[std::get<0>(current)][std::get<1>(current)][std::get<2>(current)] = true;
