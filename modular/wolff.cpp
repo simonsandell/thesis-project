@@ -48,6 +48,7 @@ int growCluster(double ***lattice,bool ***cluster, double &L,double &beta, doubl
 
 	std::tuple<int,int,int,double> current;
 	double prob = 0.0;
+	double rand = 0.0;
 	while (n > 0){
 		//pick out the last element 
 		current = perimeter[n-1];
@@ -61,8 +62,10 @@ int growCluster(double ***lattice,bool ***cluster, double &L,double &beta, doubl
 			angleBefore = lattice[std::get<0>(current)][std::get<1>(current)][std::get<2>(current)];
 			//calculate prob of freezing, == 1 -exp(2*beta( parent_spin * U)( this_spin*U)) 
 			prob = 1.0 -exp(2.0*beta*cos(std::get<3>(current) - u)*cos(angleBefore -u));
+			rand = dist(eng);
 			//add this perimeter spin to the cluster with probability prob
-			if (dist(eng) < prob){
+			if (rand < prob || 
+					std::abs(rand-prob) < std::abs(std::min(rand,prob))*std::numeric_limits<double>::epsilon()){
 				//save angle and energy before reflecting
 				angleBefore = lattice[std::get<0>(current)][std::get<1>(current)][std::get<2>(current)];
 				enBefore = siteEnergy(lattice,L,std::get<0>(current),std::get<1>(current),std::get<2>(current));
