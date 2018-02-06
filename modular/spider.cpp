@@ -9,8 +9,8 @@
 using namespace std;
 
 void whr( double L,double N_equil,double N_samp,bool cold, double* Temps,int N_temps){
-	int nRuns = N_temps/4;
-	int index = 3*N_temps/8;
+	int nRuns = N_temps/2;
+	int index = N_temps/4;
 	for (int i = 0; i< nRuns; ++i){
 		index++;
 		wolffHistRun(L,N_equil,N_samp,cold,Temps,N_temps,Temps[index]);
