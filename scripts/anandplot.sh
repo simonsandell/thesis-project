@@ -18,11 +18,6 @@ for filename in ./foutput/mag/*; do
 done
 xmgrace $magstring -nosafe -noask -legend load -pexec 'xaxis label "Temp"' -pexec 'yaxis label "Magnetization"' &
 
-teqstring="-param ../scripts/default.par"
-for filename in ./foutput/teq/*; do
-	teqstring="$teqstring -settype xydy $filename"
-done
-xmgrace $teqstring -log x -pexec 'xaxis label "N_equil"' -pexec 'yaxis label "Magnetization"' -nosafe -noask -legend load &
 
 binstring="-param ../scripts/default.par"
 for filename in ./foutput/bin/*; do

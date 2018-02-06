@@ -3,7 +3,7 @@ import numpy as np
 import math
 
 #funcion for writing data
-def writeToFiles(En,Mag,Bin,Dbdt,Xi,Rs,EF,MF,M_teq,BF,DF,XF,RF,N,T,Neq):
+def writeToFiles(En,Mag,Bin,Dbdt,Xi,Rs,EF,MF,BF,DF,XF,RF,N,T,Neq):
         meanE = np.mean(En);
         meanM = np.mean(Mag);
         meanB = np.mean(Bin);
@@ -31,7 +31,6 @@ def writeToFiles(En,Mag,Bin,Dbdt,Xi,Rs,EF,MF,M_teq,BF,DF,XF,RF,N,T,Neq):
             deltaR = 0;
         EF.write(repr(T)+"    "+repr(meanE)+"    "+repr(deltaE)+"\n")
         MF.write(repr(T)+"    "+repr(meanM)+"    "+repr(deltaM)+"\n")
-        M_teq.write(repr(Neq)+"    "+repr(meanM)+"    "+repr(deltaM)+"\n")
         BF.write(repr(T)+"    "+repr(meanB)+"    "+repr(deltaB)+"\n")
         DF.write(repr(T)+"    "+repr(meanD)+"    "+repr(deltaD)+"\n")
         XF.write(repr(T)+"    "+repr(meanX)+"    "+repr(deltaX)+"\n")
@@ -77,7 +76,6 @@ N = 0.0;
 
 EF = open("./foutput/en/"+str(int(L))+"_"+fName+".dat","w")
 MF = open("./foutput/mag/"+str(int(L))+"_"+fName+".dat","w")
-M_teq = open("./foutput/teq/"+str(int(L))+"_"+fName+".dat","w")
 BF = open("./foutput/bin/"+str(int(L))+"_"+fName+".dat","w")
 DF = open("./foutput/dbdt/"+str(int(L))+"_"+fName+".dat","w")
 XF = open("./foutput/xi/"+str(int(L))+"_"+fName+".dat","w")
@@ -87,24 +85,20 @@ TOL = 10e-10
 for i in range(mat.shape[0]):
     #if new value of L, make new outputfile
     if(TOL < abs(mat[i,0] - L)):
-        writeToFiles(En,Mag,Bin,Dbdt,Xi,Rs,EF,MF,M_teq,BF,DF,XF,RF,N,T,Neq)
+        writeToFiles(En,Mag,Bin,Dbdt,Xi,Rs,EF,MF,BF,DF,XF,RF,N,T,Neq)
         L = float(mat[i,0])
         T = float(mat[i,1])
         Neq = float(mat[i,7])
         EF = open("./foutput/en/"+str(int(L))+"_"+fName+".dat","w")
         MF = open("./foutput/mag/"+str(int(L))+"_"+fName+".dat","w")
-        M_teq = open("./foutput/teq/"+str(int(L))+"_"+fName+".dat","w")
         BF = open("./foutput/bin/"+str(int(L))+"_"+fName+".dat","w")
         DF = open("./foutput/dbdt/"+str(int(L))+"_"+fName+".dat","w")
         XF = open("./foutput/xi/"+str(int(L))+"_"+fName+".dat","w")
         RF = open("./foutput/rs/"+str(int(L))+"_"+fName+".dat","w")
     elif(TOL < abs(mat[i,1] - T)):
-        writeToFiles(En,Mag,Bin,Dbdt,Xi,Rs,EF,MF,M_teq,BF,DF,XF,RF,N,T,Neq)
+        writeToFiles(En,Mag,Bin,Dbdt,Xi,Rs,EF,MF,BF,DF,XF,RF,N,T,Neq)
         T = float(mat[i,1])
         Neq = float(mat[i,7])
-    #elif (TOL < abs(mat[i,7] - Neq)):
-     #   writeToFiles(En,Mag,Bin,Dbdt,Xi,Rs,EF,MF,M_teq,BF,DF,XF,RF,N,T,Neq)
-     #   Neq = float(mat[i,7])
     #normally just append to lists
     En.append(mat[i,2])
     Mag.append(mat[i,3])
@@ -113,4 +107,4 @@ for i in range(mat.shape[0]):
     Xi.append(mat[i,6])
     Rs.append(mat[i,8])
     N = N + 1.0   
-writeToFiles(En,Mag,Bin,Dbdt,Xi,Rs,EF,MF,M_teq,BF,DF,XF,RF,N,T,Neq)
+writeToFiles(En,Mag,Bin,Dbdt,Xi,Rs,EF,MF,BF,DF,XF,RF,N,T,Neq)
