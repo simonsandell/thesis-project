@@ -46,11 +46,14 @@ int main(int argc, char* argv[]){
 	double Nsamp= stod(argv[7]);
 	double icold= stod(argv[8]);
 
+	//set cold start bool
 	bool cold = false;
 	if (icold == 1.0){
 		cold = true;
 	}
+	//generate temperature range
 	double *Trange = getTrange(startT,endT,int(Ntemps));
+	//determine runtype and run
 	if (runType == 0.0) {
 		wr(L,Neq,Nsamp,cold,Trange,Ntemps);
 	}
@@ -58,5 +61,3 @@ int main(int argc, char* argv[]){
 		whr(L,Neq,Nsamp,cold,Trange,Ntemps);
 	}
 }
-	//void whr( double L,double N_equil,double N_samp,bool cold, double* Temps,int N_temps){
-	//void wr( double L,double N_equil,double N_samp,bool cold, double* Temps,int N_temps){
