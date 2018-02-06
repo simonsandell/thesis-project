@@ -3,8 +3,8 @@ batchN=4;
 for i in 1 2 .. $batchN; do
 	qsub -t 1-24 -o /home/simsan/exjobb/modular/output/parruns/ -p -1 runmain
 	#
-	sleep 3
+	sleep 30
 	while [[ $(qstat) = *simsan* ]]; do
-		sleep 3
+		sleep 30
 	done
 done
