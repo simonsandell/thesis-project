@@ -1,0 +1,5 @@
+#!/bin/bash
+for filename in $PWD/output/$1*; do
+	cat $filename >> $PWD/output/$2;
+	rm $filename
+done;
