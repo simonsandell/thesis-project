@@ -1,9 +1,10 @@
 #!/bin/bash
-# runtype L sT eT nT Neq Nsamp cold
-./main.exe 0 8 2.2025 2.2035 5 4 1 0 
-./main.exe 0 8 2.2025 2.2035 5 16 1 0 
-./main.exe 0 8 2.2025 2.2035 5 64 1 0 
-./main.exe 0 8 2.2025 2.2035 5 256 1 0 
-./main.exe 0 8 2.2025 2.2035 5 1024 1 0 
-./main.exe 0 8 2.2025 2.2035 5 4096 1 0 
-./main.exe 0 8 2.2025 2.2035 5 16384 1 0 
+batchN=4;
+for i in 1 2 .. $batchN; do
+	qsub -t 1-24 -o /home/simsan/exjobb/modular/output/parruns/ -p -1 runmain
+	#
+	sleep 3
+	while [[ $(qstat) = *simsan* ]]; do
+		sleep 3
+	done
+done
