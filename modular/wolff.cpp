@@ -5,6 +5,12 @@
 
 #include "latticeOps.h"
 
+double getProb(double u, double angleParent, double angle,double beta){
+	double prob = 1.0 -exp(2.0*beta*cos(angleParent - u)*cos(angle -u));
+	if (prob < 0){ return 0;}
+	return std::min(1.0,prob);
+}
+
 int growCluster(double ***lattice,bool ***cluster, double &L,double &beta, double& TotXMag,double& TotYMag,double& TotEn,double &TotSinX,std::uniform_real_distribution<double> &dist,std::mt19937_64 &eng){
 
 	int time = 1;
@@ -61,7 +67,7 @@ int growCluster(double ***lattice,bool ***cluster, double &L,double &beta, doubl
 			//get its current angle;
 			angleBefore = lattice[std::get<0>(current)][std::get<1>(current)][std::get<2>(current)];
 			//calculate prob of freezing, == 1 -exp(2*beta( parent_spin * U)( this_spin*U)) 
-			prob = 1.0 -exp(2.0*beta*cos(std::get<3>(current) - u)*cos(angleBefore -u));
+			prob = getProb(u,std::get<3>(current) ,angleBefore,beta);
 			rand = dist(eng);
 			//add this perimeter spin to the cluster with probability prob
 			if ((rand - prob) < 0 || 

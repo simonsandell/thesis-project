@@ -10,7 +10,7 @@
 #include "testFuncs.h"
 #include "latticeOps.h"
 
-void wolffHistRun(double L, double N_equil_sweeps, double N_samples,bool cold,double *Temperatures,int N_temps){
+void wolffHistRun(double L, double N_equil_sweeps, double N_samples,bool cold,double *Temperatures,int N_temps,double runTemp){
 
 	//initialize rng
 	unsigned long int s;
@@ -24,7 +24,7 @@ void wolffHistRun(double L, double N_equil_sweeps, double N_samples,bool cold,do
 	for (int i = 0; i< N_temps; ++i){
 		Betas[i] = 1.0/Temperatures[i];
 	}
-	double Temperature = Temperatures[(int)(N_temps/2)];
+	double Temperature = runTemp;
 	double Beta = 1.0/Temperature;		
 	//define some reciprocals to reduce number of divions
 	double reciNsamples = 1.0/N_samples;
