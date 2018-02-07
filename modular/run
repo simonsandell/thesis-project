@@ -1,10 +1,14 @@
 #!/bin/bash
 batchN=4;
-for i in 1 2 .. $batchN; do
+mkdir /home/simsan/exjobb/modular/output/parruns
+for i in 1 .. $batchN; do
 	qsub -t 1-24 -o /home/simsan/exjobb/modular/output/parruns/ -p -1 runmain
-	#
 	sleep 30
-	while [[ $(qstat) = *simsan* ]]; do
+	while [[ $(qstat) = *runmain* ]]; do
 		sleep 30
 	done
 done
+for filename in /home/simsan/exjobb/modular/output/parruns/run*; do
+	cat $filename >> /home/simsan/exjobb/modular/output/data
+done
+rm -r /home/simsan/exjobb/modular/output/parruns/
