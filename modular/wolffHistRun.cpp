@@ -62,7 +62,7 @@ void wolffHistRun(long double L, long double N_equil_sweeps, long double N_sampl
 	while (totEqSteps < N_equil_steps){
 		totEqSteps += growCluster(lattice,cluster,L,Beta,TotXMag,TotYMag,TotEn,TotSinX,dist,eng);
 	}
-	long double eqSweeps = long double(totEqSteps)*reciNspins;
+	long double eqSweeps = ((long double)totEqSteps)*reciNspins;
 
 	long double avgE[N_temps] = {}; //energy
 	long double avgE2[N_temps] = {};//squared energy

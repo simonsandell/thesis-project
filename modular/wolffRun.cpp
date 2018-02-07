@@ -57,7 +57,7 @@ void wolffRun(long double L, long double N_equil_sweeps, long double N_samples,b
 	while (totEqSteps < N_equil_steps){
 		totEqSteps += growCluster(lattice,cluster,L,Beta,TotXMag,TotYMag,TotEn,TotSinX,dist,eng);
 	}
-	long double eqSweeps = long double(totEqSteps)*reciNspins;
+	long double eqSweeps = ((long double)totEqSteps)*reciNspins;
 
 	//start collecting data
 	//parameters and physical quantities

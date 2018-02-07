@@ -2,6 +2,7 @@
 #include <cmath>
 #include <utility>
 #include <tuple>
+#include <limits>
 
 #include "wolffRun.h"
 #include "wolffHistRun.h"
@@ -39,8 +40,13 @@ int main(int argc, char* argv[]){
 // input args :: 'wolff'/'hist' L startT endT Tnum Neq Nsamp Cold
 // 
 	//set precision of cout
+	typedef numeric_limits<long double> dbl;
+	long double d = 3.12312312312312312312312312312312312345123451234512345123451234512345123451234512345;
+	cout << dbl::max_digits10 << endl;
 	
-	cout.precision(17);
+	cout.precision(dbl::max_digits10 + 2);
+
+	cout << fixed << d << endl;
 
 	long double runType = stod(argv[1]);
 	long double L= stod(argv[2]);
