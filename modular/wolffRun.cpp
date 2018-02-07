@@ -7,9 +7,9 @@
 #include <linux/random.h>
 
 #include "wolff.h"
-#include "testFuncs.h"
+#include "calcQuants.h"
 #include "latticeOps.h"
-#include "printOutput.h"
+#include "ioFuncs.h"
 
 void wolffRun(long double L, long double N_equil_sweeps, long double N_samples,bool cold,long double Temperature){
 
@@ -133,4 +133,7 @@ void wolffRun(long double L, long double N_equil_sweeps, long double N_samples,b
 
 
 	printOutput(L,Temperature,Eps,Mps,b,dbdt,xi,rs,eqSweeps,eqClusts);
+	//update maxE
+	setMaxE(maxTotE);
+	
 }
