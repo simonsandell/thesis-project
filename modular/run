@@ -1,6 +1,6 @@
 #!/bin/bash
 batchN=4;
-mkdir /home/simsan/exjobb/modular/output/parruns
+mkdir /home/simsan/exjobb/modular/output/parruns/
 for i in 1 .. $batchN; do
 	qsub -t 1-24 -o /home/simsan/exjobb/modular/output/parruns/ -p -1 runmain
 	sleep 30
@@ -9,6 +9,6 @@ for i in 1 .. $batchN; do
 	done
 done
 for filename in /home/simsan/exjobb/modular/output/parruns/run*; do
-	cat $filename >> /home/simsan/exjobb/modular/output/data
+	cat $filename >> /home/simsan/exjobb/modular/output/longdbldata
 done
 rm -r /home/simsan/exjobb/modular/output/parruns/
