@@ -133,7 +133,5 @@ void wolffRun(long double L, long double N_equil_sweeps, long double N_samples,b
 
 
 	printOutput(L,Temperature,Eps,Mps,b,dbdt,xi,rs,eqSweeps,eqClusts);
-	//update maxE
-	setMaxE(maxTotE);
 	
 }
