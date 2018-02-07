@@ -58,7 +58,7 @@ for ln in data0:
 
 #sort by L, T, N_equil in that order    
 mat = np.array(vals)
-ind = np.lexsort((mat[:,8],mat[:,6],mat[:,5],mat[:,4],mat[:,3],mat[:,2],mat[:,7],mat[:,1],mat[:,0]))
+ind = np.lexsort((mat[:,9],mat[:,7],mat[:,6],mat[:,5],mat[:,4],mat[:,3],mat[:,2],mat[:,8],mat[:,1],mat[:,0]))
 
 mat = mat[ind]
 
@@ -71,6 +71,8 @@ Bin=[];
 Dbdt=[];
 Xi=[];
 Rs=[];
+NeqSw=[];
+NeqCl=[];
 N = decimal.Decimal('0.0');
 
 #open files for writing
@@ -90,7 +92,7 @@ for i in range(mat.shape[0]):
         writeToFiles(En,Mag,Bin,Dbdt,Xi,Rs,EF,MF,BF,DF,XF,RF,N,T,Neq)
         L = decimal.Decimal(mat[i,0])
         T = decimal.Decimal(mat[i,1])
-        Neq = decimal.Decimal(mat[i,7])
+        Neq = decimal.Decimal(mat[i,8])
         EF = open("./foutput/en/"+str(int(L))+"_"+fName+".dat","w")
         MF = open("./foutput/mag/"+str(int(L))+"_"+fName+".dat","w")
         BF = open("./foutput/bin/"+str(int(L))+"_"+fName+".dat","w")
@@ -100,13 +102,15 @@ for i in range(mat.shape[0]):
     elif(TOL < abs(mat[i,1] - T)):
         writeToFiles(En,Mag,Bin,Dbdt,Xi,Rs,EF,MF,BF,DF,XF,RF,N,T,Neq)
         T = decimal.Decimal(mat[i,1])
-        Neq = decimal.Decimal(mat[i,7])
+        Neq = decimal.Decimal(mat[i,8])
     #normally just append to lists
     En.append(mat[i,2])
     Mag.append(mat[i,3])
     Bin.append(mat[i,4])
     Dbdt.append(mat[i,5])
     Xi.append(mat[i,6])
-    Rs.append(mat[i,8])
+    Rs.append(mat[i,7])
+    NeqSw.append(mat[i,8])
+    NeqCl.append(mat[i,9])
     N = N + decimal.Decimal('1.0')
 writeToFiles(En,Mag,Bin,Dbdt,Xi,Rs,EF,MF,BF,DF,XF,RF,N,T,Neq)

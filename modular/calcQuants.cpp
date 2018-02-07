@@ -1,6 +1,7 @@
 #include <cmath>
 #include <iostream>
 
+#include "calcQuants.h"
 #include "latticeOps.h"
 
 

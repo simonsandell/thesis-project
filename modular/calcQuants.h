@@ -1,5 +1,5 @@
-#ifndef TESTFUNCS_H
-#define TESTFUNCS_H
+#ifndef CALCQUANTS_H
+#define CALCQUANTS_H
 
 #include <cmath>
 

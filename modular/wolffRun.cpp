@@ -7,8 +7,9 @@
 #include <linux/random.h>
 
 #include "wolff.h"
-#include "testFuncs.h"
+#include "calcQuants.h"
 #include "latticeOps.h"
+#include "ioFuncs.h"
 
 void wolffRun(long double L, long double N_equil_sweeps, long double N_samples,bool cold,long double Temperature){
 
@@ -56,7 +57,9 @@ void wolffRun(long double L, long double N_equil_sweeps, long double N_samples,b
 	long double N_equil_steps= N_equil_sweeps*L*L*L;
 	//eqilibration 
 	int totEqSteps= 0;
+	int eqClusts = 0;
 	while (totEqSteps < N_equil_steps){
+		eqClusts++;
 		totEqSteps += growCluster(lattice,cluster,L,Beta,TotXMag,TotYMag,TotEn,TotSinX,TotSinY,TotSinZ,dist,eng);
 	}
 	long double eqSweeps = ((long double)totEqSteps)*reciNspins;
@@ -114,6 +117,8 @@ void wolffRun(long double L, long double N_equil_sweeps, long double N_samples,b
 	long double b = 0.0L; //Binder parameter
 	long double dbdt = 0.0L;//derivative wrt T of Binder parameter
 	long double rs = 0.0L;//superfluid density
+	long double Eps = avgE*reciNspins;
+	long double Mps = avgM*reciNspins;
 	//calculate
 	b = avgM4;
 	b /= (avgM2*avgM2);
@@ -125,14 +130,10 @@ void wolffRun(long double L, long double N_equil_sweeps, long double N_samples,b
 	xi *= Beta;
 	rs = -avgE - Beta*avgSinX2 - Beta*avgSinY2 -Beta*avgSinZ2;
 	rs *= (1.0L/3.0L)*L*reciNspins; 
-	std::cout << std::fixed << L << " ";
-	std::cout << std::fixed << Temperature << " ";
-	std::cout << std::fixed << avgE*reciNspins << " ";
-	std::cout << std::fixed << avgM*reciNspins << " ";
-	std::cout << std::fixed << b << " ";
-	std::cout << std::fixed << dbdt << " ";
-	std::cout << std::fixed << xi << " ";
-	std::cout << std::fixed << eqSweeps << " "; 
-	std::cout << std::fixed << rs << " ";
-	std::cout << std::fixed << std::endl;
+
+
+	printOutput(L,Temperature,Eps,Mps,b,dbdt,xi,rs,eqSweeps,eqClusts);
+	//update maxE
+	setMaxE(maxTotE);
+	
 }
