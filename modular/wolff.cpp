@@ -6,24 +6,24 @@
 
 #include "latticeOps.h"
 
-double getProb(double u, double angleParent, double angle,double beta){
-	double prob = 1.0 - exp(2.0*beta*cos(angleParent - u)*cos(angle -u));
+long double getProb(long double u, long double angleParent, long double angle,long double beta){
+	long double prob = 1.0 - exp(2.0*beta*cos(angleParent - u)*cos(angle -u));
 	if (prob < 0.0){ return 0.0;}
 	return std::min(1.0,prob);
 }
 
-int growCluster(double ***lattice,bool ***cluster, double &L,double &beta, double& TotXMag,double& TotYMag,double& TotEn,double &TotSinX,std::uniform_real_distribution<double> &dist,std::mt19937_64 &eng){
+int growCluster(long double ***lattice,bool ***cluster, long double &L,long double &beta, long double& TotXMag,long double& TotYMag,long double& TotEn,long double &TotSinX,std::uniform_real_distribution<long double> &dist,std::mt19937_64 &eng){
 
 	int time = 1;
 	//select random plane and random staring spin
-	double u = 2.0*double(M_PI)*dist(eng);
+	long double u = 2.0*long double(M_PI)*dist(eng);
 	int s1 = L*dist(eng);
 	int s2 = L*dist(eng);
 	int s3 = L*dist(eng);
 	// save angle and energy before flipping
-	double angleBefore = lattice[s1][s2][s3];
-	double enBefore = siteEnergy(lattice,L,s1,s2,s3);
-	double angleAfter = double(M_PI) + 2.0*u - angleBefore;
+	long double angleBefore = lattice[s1][s2][s3];
+	long double enBefore = siteEnergy(lattice,L,s1,s2,s3);
+	long double angleAfter = long double(M_PI) + 2.0*u - angleBefore;
 	//reflect spin and mark as part of cluster
 	lattice[s1][s2][s3] = angleAfter;
 	cluster[s1][s2][s3] = true;
@@ -39,15 +39,15 @@ int growCluster(double ***lattice,bool ***cluster, double &L,double &beta, doubl
 	int n2p = (s2 +1 + (int)L )%(int)L;
 	int n3m = (s3 -1 + (int)L )%(int)L;
 	int n3p = (s3 +1 + (int)L )%(int)L;
-	std::tuple<int,int,int,double> neig1 = std::make_tuple(n1m,s2,s3,angleAfter);
-	std::tuple<int,int,int,double> neig2 = std::make_tuple(n1p,s2,s3,angleAfter);
-	std::tuple<int,int,int,double> neig3 = std::make_tuple(s1,n2m,s3,angleAfter);
-	std::tuple<int,int,int,double> neig4 = std::make_tuple(s1,n2p,s3,angleAfter);
-	std::tuple<int,int,int,double> neig5 = std::make_tuple(s1,s2,n3m,angleAfter);
-	std::tuple<int,int,int,double> neig6 = std::make_tuple(s1,s2,n3p,angleAfter);
+	std::tuple<int,int,int,long double> neig1 = std::make_tuple(n1m,s2,s3,angleAfter);
+	std::tuple<int,int,int,long double> neig2 = std::make_tuple(n1p,s2,s3,angleAfter);
+	std::tuple<int,int,int,long double> neig3 = std::make_tuple(s1,n2m,s3,angleAfter);
+	std::tuple<int,int,int,long double> neig4 = std::make_tuple(s1,n2p,s3,angleAfter);
+	std::tuple<int,int,int,long double> neig5 = std::make_tuple(s1,s2,n3m,angleAfter);
+	std::tuple<int,int,int,long double> neig6 = std::make_tuple(s1,s2,n3p,angleAfter);
 
 	//make a list for perimeter spins
-	std::vector<std::tuple<int,int,int,double>> perimeter;
+	std::vector<std::tuple<int,int,int,long double>> perimeter;
 	//add neighbours to list
 	perimeter.push_back(neig1);
 	perimeter.push_back(neig2);
@@ -57,9 +57,9 @@ int growCluster(double ***lattice,bool ***cluster, double &L,double &beta, doubl
 	perimeter.push_back(neig6);
 	int n = 6;
 
-	std::tuple<int,int,int,double> current;
-	double prob = 0.0;
-	double rand = 0.0;
+	std::tuple<int,int,int,long double> current;
+	long double prob = 0.0;
+	long double rand = 0.0;
 	bool flip = false;
 	while (n > 0){
 		//pick out the last element 
@@ -84,7 +84,7 @@ int growCluster(double ***lattice,bool ***cluster, double &L,double &beta, doubl
 				flip = true;
 			} //if rand is so close to prob that floating point precision considers them equal, flip in 50 % of those cases
 			//
-			else if ( std::abs(rand-prob) < std::abs(std::min(rand,prob)*std::numeric_limits<double>::epsilon())){
+			else if ( std::abs(rand-prob) < std::abs(std::min(rand,prob)*std::numeric_limits<long double>::epsilon())){
 				rand = dist(eng);
 				if (rand < 0.50){
 					flip = true;
@@ -102,7 +102,7 @@ int growCluster(double ***lattice,bool ***cluster, double &L,double &beta, doubl
 				enBefore = siteEnergy(lattice,L,std::get<0>(current),std::get<1>(current),std::get<2>(current));
 
 				//get new angle
-				angleAfter = double(M_PI) + 2.0*u - angleBefore;
+				angleAfter = long double(M_PI) + 2.0*u - angleBefore;
 
 				//reflect and mark as added to cluster
 				lattice[std::get<0>(current)][std::get<1>(current)][std::get<2>(current)] = angleAfter;

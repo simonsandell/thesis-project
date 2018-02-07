@@ -10,28 +10,28 @@
 #include "testFuncs.h"
 #include "latticeOps.h"
 
-void wolffHistRun(double L, double N_equil_sweeps, double N_samples,bool cold,double *Temperatures,int N_temps,double runTemp){
+void wolffHistRun(long double L, long double N_equil_sweeps, long double N_samples,bool cold,long double *Temperatures,int N_temps,long double runTemp){
 
 	//initialize rng
 	unsigned long int s;
 	syscall(SYS_getrandom,&s,sizeof(unsigned long int),0);	
-	std::uniform_real_distribution<double> dist(0.0,1.0);
+	std::uniform_real_distribution<long double> dist(0.0,1.0);
 	std::mt19937_64 eng; 
 	eng.seed(s);
 
 	//convert temp to betas
-	double Betas[N_temps];	
+	long double Betas[N_temps];	
 	for (int i = 0; i< N_temps; ++i){
 		Betas[i] = 1.0/Temperatures[i];
 	}
-	double Temperature = runTemp;
-	double Beta = 1.0/Temperature;		
+	long double Temperature = runTemp;
+	long double Beta = 1.0/Temperature;		
 	//define some reciprocals to reduce number of divions
-	double reciNsamples = 1.0/N_samples;
-	double reciNspins = 1.0/(L*L*L);
+	long double reciNsamples = 1.0/N_samples;
+	long double reciNspins = 1.0/(L*L*L);
 
 	//initialize lattice
-	double *** lattice = newLattice(L,cold,dist,eng);
+	long double *** lattice = newLattice(L,cold,dist,eng);
 
 	//define and initialize cluster
 	bool***cluster;
@@ -50,30 +50,30 @@ void wolffHistRun(double L, double N_equil_sweeps, double N_samples,bool cold,do
 		}
 	}
 
-	double TotEn = calcEn(lattice,L);
-	double TotXMag = calcXMag(lattice,L);
-	double TotYMag = calcYMag(lattice,L);
-	double TotSinX = calcSinX(lattice,L);
+	long double TotEn = calcEn(lattice,L);
+	long double TotXMag = calcXMag(lattice,L);
+	long double TotYMag = calcYMag(lattice,L);
+	long double TotSinX = calcSinX(lattice,L);
 
 	//Set equilibration time 
-	double N_equil_steps= N_equil_sweeps*L*L*L;
+	long double N_equil_steps= N_equil_sweeps*L*L*L;
 	//eqilibration 
 	int totEqSteps= 0;
 	while (totEqSteps < N_equil_steps){
 		totEqSteps += growCluster(lattice,cluster,L,Beta,TotXMag,TotYMag,TotEn,TotSinX,dist,eng);
 	}
-	double eqSweeps = double(totEqSteps)*reciNspins;
+	long double eqSweeps = long double(totEqSteps)*reciNspins;
 
-	double avgE[N_temps] = {}; //energy
-	double avgE2[N_temps] = {};//squared energy
-	double avgM[N_temps] = {}; //abs of magnetization
-	double avgM2[N_temps] = {};//squared magnetization
-	double avgM4[N_temps] = {};//fourth power of magnetization
-	double avgM2E[N_temps] = {};// squared magnetization times energy
-	double avgM4E[N_temps] = {}; // 4th power magnetization times energy
-	double avgSinX2[N_temps] = {}; // for superfluid density 
-	double avgExpFac[N_temps] = {};
-	double expFac;
+	long double avgE[N_temps] = {}; //energy
+	long double avgE2[N_temps] = {};//squared energy
+	long double avgM[N_temps] = {}; //abs of magnetization
+	long double avgM2[N_temps] = {};//squared magnetization
+	long double avgM4[N_temps] = {};//fourth power of magnetization
+	long double avgM2E[N_temps] = {};// squared magnetization times energy
+	long double avgM4E[N_temps] = {}; // 4th power magnetization times energy
+	long double avgSinX2[N_temps] = {}; // for superfluid density 
+	long double avgExpFac[N_temps] = {};
+	long double expFac;
 
 	for ( int i = 0; i < N_samples; ++i){
 		//make a cluster
@@ -95,12 +95,12 @@ void wolffHistRun(double L, double N_equil_sweeps, double N_samples,bool cold,do
 
 
 	//calculate quantities of interest
-	double reciExpFac = 0.0;
+	long double reciExpFac = 0.0;
 
-	double xi[N_temps] = {};//susceptibility
-	double b[N_temps] = {}; //Binder parameter
-	double dbdt[N_temps] = {};//derivative wrt T of Binder parameter
-	double rs[N_temps] = {};//superfluid density
+	long double xi[N_temps] = {};//susceptibility
+	long double b[N_temps] = {}; //Binder parameter
+	long double dbdt[N_temps] = {};//derivative wrt T of Binder parameter
+	long double rs[N_temps] = {};//superfluid density
 	for (int i =0; i< N_temps; ++i){
 		
 

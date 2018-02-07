@@ -10,23 +10,23 @@
 #include "testFuncs.h"
 #include "latticeOps.h"
 
-void wolffRun(double L, double N_equil_sweeps, double N_samples,bool cold,double Temperature){
+void wolffRun(long double L, long double N_equil_sweeps, long double N_samples,bool cold,long double Temperature){
 
 	//initialize rng
 	unsigned long int s;
 	syscall(SYS_getrandom,&s,sizeof(unsigned long int),0);	
-	std::uniform_real_distribution<double> dist(0.0,1.0);
+	std::uniform_real_distribution<long double> dist(0.0,1.0);
 	std::mt19937_64 eng; 
 	eng.seed(s);
 
 	//convert temp to betas
-	double Beta = 1.0/Temperature;		
+	long double Beta = 1.0/Temperature;		
 	//define some reciprocals to reduce number of divions
-	double reciNsamples = 1.0/N_samples;
-	double reciNspins = 1.0/(L*L*L);
+	long double reciNsamples = 1.0/N_samples;
+	long double reciNspins = 1.0/(L*L*L);
 
 	//initialize lattice
-	double *** lattice = newLattice(L,cold,dist,eng);
+	long double *** lattice = newLattice(L,cold,dist,eng);
 
 	//define and initialize cluster
 	bool***cluster;
@@ -45,31 +45,31 @@ void wolffRun(double L, double N_equil_sweeps, double N_samples,bool cold,double
 		}
 	}
 
-	double TotEn = calcEn(lattice,L);
-	double TotXMag = calcXMag(lattice,L);
-	double TotYMag = calcYMag(lattice,L);
-	double TotSinX = calcSinX(lattice,L);
+	long double TotEn = calcEn(lattice,L);
+	long double TotXMag = calcXMag(lattice,L);
+	long double TotYMag = calcYMag(lattice,L);
+	long double TotSinX = calcSinX(lattice,L);
 
 	//Set equilibration time 
-	double N_equil_steps= N_equil_sweeps*L*L*L;
+	long double N_equil_steps= N_equil_sweeps*L*L*L;
 	//eqilibration 
 	int totEqSteps= 0;
 	while (totEqSteps < N_equil_steps){
 		totEqSteps += growCluster(lattice,cluster,L,Beta,TotXMag,TotYMag,TotEn,TotSinX,dist,eng);
 	}
-	double eqSweeps = double(totEqSteps)*reciNspins;
+	long double eqSweeps = long double(totEqSteps)*reciNspins;
 
 	//start collecting data
 	//parameters and physical quantities
 	//averages
-	double avgE = 0.0; //energy
-	double avgE2 = 0.0;//squared energy
-	double avgM = 0.0; //abs of magnetization
-	double avgM2 = 0.0;//squared magnetization
-	double avgM4 = 0.0;//fourth power of magnetization
-	double avgM2E = 0.0;// squared magnetization times energy
-	double avgM4E = 0.0; // 4th power magnetization times energy
-	double avgSinX2 = 0.0; // for superfluid density 
+	long double avgE = 0.0; //energy
+	long double avgE2 = 0.0;//squared energy
+	long double avgM = 0.0; //abs of magnetization
+	long double avgM2 = 0.0;//squared magnetization
+	long double avgM4 = 0.0;//fourth power of magnetization
+	long double avgM2E = 0.0;// squared magnetization times energy
+	long double avgM4E = 0.0; // 4th power magnetization times energy
+	long double avgSinX2 = 0.0; // for superfluid density 
 
 
 
@@ -101,10 +101,10 @@ void wolffRun(double L, double N_equil_sweeps, double N_samples,bool cold,double
 	avgSinX2 *= reciNsamples;
 
 	//derived quantites
-	double xi = 0.0;//susceptibility
-	double b = 0.0; //Binder parameter
-	double dbdt = 0.0;//derivative wrt T of Binder parameter
-	double rs = 0.0;//superfluid density
+	long double xi = 0.0;//susceptibility
+	long double b = 0.0; //Binder parameter
+	long double dbdt = 0.0;//derivative wrt T of Binder parameter
+	long double rs = 0.0;//superfluid density
 	//calculate
 	b = avgM4;
 	b /= (avgM2*avgM2);

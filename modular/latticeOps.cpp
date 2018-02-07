@@ -2,7 +2,7 @@
 #include <random>
 
 //clear the cluster
-void emptyCluster(bool***cluster,double &L){
+void emptyCluster(bool***cluster,long double &L){
 	int steps = 0;
 	for (int i = 0; i< L; ++i){
 		for (int j = 0; j< L; ++j){
@@ -13,8 +13,8 @@ void emptyCluster(bool***cluster,double &L){
 	}
 }
 //calculate energy of site
-double siteEnergy(double *** lattice,double &L, int &s1, int &s2, int &s3){
-	double sum = 0.0;
+long double siteEnergy(long double *** lattice,long double &L, int &s1, int &s2, int &s3){
+	long double sum = 0.0;
 	//find indices of neighbours
 	int n1m = (s1 -1 + (int)L )%(int)L;
 	int n1p = (s1 +1 + (int)L )%(int)L;
@@ -31,20 +31,20 @@ double siteEnergy(double *** lattice,double &L, int &s1, int &s2, int &s3){
 	return sum;
 }
 //calculate sin(theta - theta_x) upwards +, downward -
-double sinX(double ***lattice,double &L, int &s1, int &s2, int &s3,double &angle){
+long double sinX(long double ***lattice,long double &L, int &s1, int &s2, int &s3,long double &angle){
 	int np = (s1 + 1) %(int)L;
 	int nm = (s1 -1 + (int)L) % (int)L;	
-	double ret = 0.0;
+	long double ret = 0.0;
 	ret = sin(lattice[nm][s2][s3] - angle) + sin(angle - lattice[np][s2][s3]);
 	return ret;
 }
-double*** newLattice(double L,bool cold,std::uniform_real_distribution<double> &dist,std::mt19937_64 &eng){
-	double ***lattice;
-	lattice = new double **[(int)L];
+long double*** newLattice(long double L,bool cold,std::uniform_real_distribution<long double> &dist,std::mt19937_64 &eng){
+	long double ***lattice;
+	lattice = new long double **[(int)L];
 	for (int i = 0; i< L;++i){
-		lattice[i] = new double *[(int)L];
+		lattice[i] = new long double *[(int)L];
 		for (int j =0;j<L;++j){
-			lattice[i][j] = new double[(int)L];
+			lattice[i][j] = new long double[(int)L];
 		}
 	}
 

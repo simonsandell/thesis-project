@@ -6,7 +6,7 @@
 
 
 //print lattice
-void printLattice(double ***lattice,double &L){
+void printLattice(long double ***lattice,long double &L){
 	for(int i = 0; i < L; ++i){
 		for(int j = 0; j < L; ++j){
 			for(int k =0; k<L; ++k){
@@ -20,8 +20,8 @@ void printLattice(double ***lattice,double &L){
 
 
 //testing functions
-double calcSinX(double ***lattice,double &L){
-	double sum = 0.0;
+long double calcSinX(long double ***lattice,long double &L){
+	long double sum = 0.0;
 	for (int i =0; i< L; ++i){
 		for (int j =0; j< L ; ++j){
 			for (int k = 0; k<L; ++k){
@@ -32,8 +32,8 @@ double calcSinX(double ***lattice,double &L){
 	return sum;
 }
 
-double calcXMag(double ***lattice,double&L){
-	double ret = 0.0;
+long double calcXMag(long double ***lattice,long double&L){
+	long double ret = 0.0;
 	for (int i = 0; i<L; ++i){
 		for (int j = 0; j<L; ++j){
 			for (int k = 0; k<L; ++k){
@@ -43,8 +43,8 @@ double calcXMag(double ***lattice,double&L){
 	}
 	return ret;
 }
-double calcYMag(double ***lattice,double&L){
-	double ret = 0.0;
+long double calcYMag(long double ***lattice,long double&L){
+	long double ret = 0.0;
 	for (int i = 0; i<L; ++i){
 		for (int j = 0; j<L; ++j){
 			for (int k = 0; k<L; ++k){
@@ -55,13 +55,13 @@ double calcYMag(double ***lattice,double&L){
 	return ret;
 }
 
-double calcMag(double ***lattice,double&L){
-	double mag = sqrt(pow(calcXMag(lattice,L),2) + pow(calcYMag(lattice,L),2));
+long double calcMag(long double ***lattice,long double&L){
+	long double mag = sqrt(pow(calcXMag(lattice,L),2) + pow(calcYMag(lattice,L),2));
 	return mag;
 }	
 
-double calcEn(double ***lattice,double&L){
-	double en = 0.0;
+long double calcEn(long double ***lattice,long double&L){
+	long double en = 0.0;
 	for (int i = 0; i< L; ++i){
 		for (int j = 0; j< L; ++j){
 			for (int k = 0; k<L; ++k){	
@@ -73,13 +73,13 @@ double calcEn(double ***lattice,double&L){
 	return en;
 }
 
-void testConsistent(double ***lattice,double&L,double&TotEn,double&TotXMag,double&TotYMag,double&TotSinX){
+void testConsistent(long double ***lattice,long double&L,long double&TotEn,long double&TotXMag,long double&TotYMag,long double&TotSinX){
 
-	   double tSinX = calcSinX(lattice,L);
-	   double testEn = calcEn(lattice,L);
-	   double testXMag = calcXMag(lattice,L);
-	   double testYMag = calcYMag(lattice,L);
-	   double testMag = calcMag(lattice,L);
+	   long double tSinX = calcSinX(lattice,L);
+	   long double testEn = calcEn(lattice,L);
+	   long double testXMag = calcXMag(lattice,L);
+	   long double testYMag = calcYMag(lattice,L);
+	   long double testMag = calcMag(lattice,L);
 	   std::cout << TotEn - testEn << " E" << std::endl;
 	   std::cout << TotXMag - testXMag << " X" << std::endl;
 	   std::cout << TotYMag - testYMag << " Y" << std::endl;

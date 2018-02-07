@@ -4,13 +4,13 @@
 #include <cmath>
 
 //print lattice
-void printLattice(double ***lattice,double &L);
+void printLattice(long double ***lattice,long double &L);
 
 //testing functions
-double calcSinX(double ***lattice,double &L);
-double calcXMag(double ***lattice,double&L);
-double calcYMag(double ***lattice,double&L);
-double calcMag(double ***lattice,double&L);
-double calcEn(double ***lattice,double&L);
-void testConsistent(double ***lattice,double&L,double&TotEn,double&TotXMag,double&TotYMag,double&TotSinX);
+long double calcSinX(long double ***lattice,long double &L);
+long double calcXMag(long double ***lattice,long double&L);
+long double calcYMag(long double ***lattice,long double&L);
+long double calcMag(long double ***lattice,long double&L);
+long double calcEn(long double ***lattice,long double&L);
+void testConsistent(long double ***lattice,long double&L,long double&TotEn,long double&TotXMag,long double&TotYMag,long double&TotSinX);
 #endif
