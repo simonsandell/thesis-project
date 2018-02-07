@@ -179,7 +179,7 @@ void wolffHistRun(long double L, long double N_equil_sweeps, long double N_sampl
 		Mps[i] = avgM[i]*reciNspins;
 	}
 	for (int i = 0;i< N_temps; ++i){
-		printOutput(L,Temperatures[i],Eps[i],Mps[i],b[i],dbdt[i],xi[i],rs[i],eqSweeps,eqClusts);
+		printOutput(L,Temperatures[i],Eps[i],Mps[i],b[i],dbdt[i],xi[i],rs[i],eqSweeps,eqClusts,cold);
 
 	}
 	if (expCorr != 0.0L){

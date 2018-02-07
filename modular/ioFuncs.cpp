@@ -4,7 +4,7 @@
 #include <fstream>
 #include "ioFuncs.h"
 
-void printOutput(long double L,long double T, long double E, long double M, long double bin, long double dbdt,long double xi,long double rs, long double N_eq_sweeps, int N_eq_clusts){
+void printOutput(long double L,long double T, long double E, long double M, long double bin, long double dbdt,long double xi,long double rs, long double N_eq_sweeps, int N_eq_clusts,bool cold){
 
 	std::cout << std::fixed << L << " ";
 	std::cout << std::fixed << T << " ";
@@ -16,6 +16,7 @@ void printOutput(long double L,long double T, long double E, long double M, long
 	std::cout << std::fixed << rs << " ";
 	std::cout << std::fixed << N_eq_sweeps << " "; 
 	std::cout << std::fixed << N_eq_clusts << " "; 
+	std::cout << cold << " "; 
 	std::cout << std::fixed << std::endl;
 }
 

@@ -132,6 +132,6 @@ void wolffRun(long double L, long double N_equil_sweeps, long double N_samples,b
 	rs *= (1.0L/3.0L)*L*reciNspins; 
 
 
-	printOutput(L,Temperature,Eps,Mps,b,dbdt,xi,rs,eqSweeps,eqClusts);
+	printOutput(L,Temperature,Eps,Mps,b,dbdt,xi,rs,eqSweeps,eqClusts,cold);
 	
 }
