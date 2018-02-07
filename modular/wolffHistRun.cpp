@@ -54,13 +54,15 @@ void wolffHistRun(long double L, long double N_equil_sweeps, long double N_sampl
 	long double TotXMag = calcXMag(lattice,L);
 	long double TotYMag = calcYMag(lattice,L);
 	long double TotSinX = calcSinX(lattice,L);
+	long double TotSinY = calcSinY(lattice,L);
+	long double TotSinZ = calcSinZ(lattice,L);
 
 	//Set equilibration time 
 	long double N_equil_steps= N_equil_sweeps*L*L*L;
 	//eqilibration 
 	int totEqSteps= 0;
 	while (totEqSteps < N_equil_steps){
-		totEqSteps += growCluster(lattice,cluster,L,Beta,TotXMag,TotYMag,TotEn,TotSinX,dist,eng);
+		totEqSteps += growCluster(lattice,cluster,L,Beta,TotXMag,TotYMag,TotEn,TotSinX,TotSinY,TotSinZ,dist,eng);
 	}
 	long double eqSweeps = ((long double)totEqSteps)*reciNspins;
 
@@ -72,12 +74,14 @@ void wolffHistRun(long double L, long double N_equil_sweeps, long double N_sampl
 	long double avgM2E[N_temps] = {};// squared magnetization times energy
 	long double avgM4E[N_temps] = {}; // 4th power magnetization times energy
 	long double avgSinX2[N_temps] = {}; // for superfluid density 
+	long double avgSinY2[N_temps] = {}; // for superfluid density 
+	long double avgSinZ2[N_temps] = {}; // for superfluid density 
 	long double avgExpFac[N_temps] = {};
 	long double expFac;
 
 	for ( int i = 0; i < N_samples; ++i){
 		//make a cluster
-		growCluster(lattice,cluster,L,Beta,TotXMag,TotYMag,TotEn,TotSinX,dist,eng);
+		growCluster(lattice,cluster,L,Beta,TotXMag,TotYMag,TotEn,TotSinX,TotSinY,TotSinZ,dist,eng);
 		//take sample data
 		for (int i = 0; i<N_temps; ++i){
 			expFac = exp(-(Betas[i] - Beta)*TotEn);
@@ -90,6 +94,8 @@ void wolffHistRun(long double L, long double N_equil_sweeps, long double N_sampl
 			avgM2E[i] += TotEn*expFac*(TotXMag*TotXMag + TotYMag*TotYMag); 
 			avgM4E[i] += TotEn*expFac*(TotXMag*TotXMag + TotYMag*TotYMag)*(TotXMag*TotXMag + TotYMag*TotYMag);
 			avgSinX2[i] += TotSinX*TotSinX*expFac;
+			avgSinY2[i] += TotSinY*TotSinY*expFac;
+			avgSinZ2[i] += TotSinZ*TotSinZ*expFac;
 		}
 	}
 
@@ -115,6 +121,8 @@ void wolffHistRun(long double L, long double N_equil_sweeps, long double N_sampl
 		avgM2E[i] *= reciNsamples;
 		avgM4E[i] *= reciNsamples;
 		avgSinX2[i] *= reciNsamples;
+		avgSinY2[i] *= reciNsamples;
+		avgSinZ2[i] *= reciNsamples;
 
 		avgE[i] *= reciExpFac;
 		avgE2[i] *= reciExpFac;
@@ -124,6 +132,8 @@ void wolffHistRun(long double L, long double N_equil_sweeps, long double N_sampl
 		avgM2E[i] *= reciExpFac;
 		avgM4E[i] *= reciExpFac;
 		avgSinX2[i] *= reciExpFac;
+		avgSinY2[i] *= reciExpFac;
+		avgSinZ2[i] *= reciExpFac;
 		//calculate
 		b[i] = avgM4[i];
 		b[i] /= (avgM2[i]*avgM2[i]);
@@ -133,8 +143,8 @@ void wolffHistRun(long double L, long double N_equil_sweeps, long double N_sampl
 		xi[i] = avgM2[i] - avgM[i]*avgM[i];
 		xi[i] *= reciNspins;
 		xi[i] *= Betas[i];
-		rs[i] = -(1.0L/3.0L)*avgE[i] - (Betas[i])*avgSinX2[i];
-		rs[i] *= L*reciNspins; 
+		rs[i] = -avgE[i] - (Betas[i])*avgSinX2[i] -(Betas[i])*avgSinY2[i] -(Betas[i])*avgSinZ2[i];
+		rs[i] *= (1.0L/3.0L)*L*reciNspins; 
 	}
 	for (int i = 0;i< N_temps; ++i){
 		std::cout << std::fixed << L << " ";

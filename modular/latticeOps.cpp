@@ -38,6 +38,20 @@ long double sinX(long double ***lattice,long double &L, int &s1, int &s2, int &s
 	ret = sin(lattice[nm][s2][s3] - angle) + sin(angle - lattice[np][s2][s3]);
 	return ret;
 }
+long double sinY(long double ***lattice,long double &L, int &s1, int &s2, int &s3,long double &angle){
+	int np = (s2 + 1) %(int)L;
+	int nm = (s2 -1 + (int)L) % (int)L;	
+	long double ret = 0.0;
+	ret = sin(lattice[s1][nm][s3] - angle) + sin(angle - lattice[s1][np][s3]);
+	return ret;
+}
+long double sinZ(long double ***lattice,long double &L, int &s1, int &s2, int &s3,long double &angle){
+	int np = (s3 + 1) %(int)L;
+	int nm = (s3 -1 + (int)L) % (int)L;	
+	long double ret = 0.0;
+	ret = sin(lattice[s1][s2][nm] - angle) + sin(angle - lattice[s1][s2][np]);
+	return ret;
+}
 long double*** newLattice(long double L,bool cold,std::uniform_real_distribution<long double> &dist,std::mt19937_64 &eng){
 	long double ***lattice;
 	lattice = new long double **[(int)L];

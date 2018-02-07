@@ -9,13 +9,8 @@
 
 using namespace std;
 
-void whr( long double L,long double N_equil,long double N_samp,bool cold, long double* Temps,int N_temps){
-	int nRuns = N_temps/2;
-	int index = N_temps/4;
-	for (int i = 0; i< nRuns; ++i){
-		index++;
-		wolffHistRun(L,N_equil,N_samp,cold,Temps,N_temps,Temps[index]);
-	}
+void whr( long double L,long double N_equil,long double N_samp,bool cold, long double* Temps,int N_temps,long double runTemp){
+	wolffHistRun(L,N_equil,N_samp,cold,Temps,N_temps,runTemp);
 }
 void wr( long double L,long double N_equil,long double N_samp,bool cold, long double* Temps,int N_temps){
 	//regular run
@@ -37,11 +32,11 @@ long double * getTrange(long double start, long double end, int N){
 
 //main
 int main(int argc, char* argv[]){
-// input args :: 'wolff'/'hist' L startT endT Tnum Neq Nsamp Cold
-// 
+	// input args :: 'wolff'/'hist' L startT endT Tnum Neq Nsamp Cold
+	// 
 	//set precision of cout
 	typedef numeric_limits<long double> dbl;
-	
+
 	cout.precision(dbl::max_digits10 + 2);
 
 	long double runType = stod(argv[1]);
@@ -65,6 +60,7 @@ int main(int argc, char* argv[]){
 		wr(L,Neq,Nsamp,cold,Trange,Ntemps);
 	}
 	else if (runType == 1.0L) {
-		whr(L,Neq,Nsamp,cold,Trange,Ntemps);
+		long double runTemp = 2.2020L;
+		whr(L,Neq,Nsamp,cold,Trange,Ntemps,runTemp);
 	}
 }

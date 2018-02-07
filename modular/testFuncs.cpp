@@ -19,13 +19,34 @@ void printLattice(long double ***lattice,long double &L){
 }
 
 
-//testing functions
 long double calcSinX(long double ***lattice,long double &L){
 	long double sum = 0.0;
 	for (int i =0; i< L; ++i){
 		for (int j =0; j< L ; ++j){
 			for (int k = 0; k<L; ++k){
 				sum += sin(lattice[i][j][k] - lattice[(i+1)%(int)L][j][k]);
+			}
+		}
+	}
+	return sum;
+}
+long double calcSinY(long double ***lattice,long double &L){
+	long double sum = 0.0;
+	for (int i =0; i< L; ++i){
+		for (int j =0; j< L ; ++j){
+			for (int k = 0; k<L; ++k){
+				sum += sin(lattice[i][j][k] - lattice[i][(j+1)%(int)L][k]);
+			}
+		}
+	}
+	return sum;
+}
+long double calcSinZ(long double ***lattice,long double &L){
+	long double sum = 0.0;
+	for (int i =0; i< L; ++i){
+		for (int j =0; j< L ; ++j){
+			for (int k = 0; k<L; ++k){
+				sum += sin(lattice[i][j][k] - lattice[i][j][(k+1)%(int)L]);
 			}
 		}
 	}

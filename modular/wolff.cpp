@@ -12,7 +12,7 @@ long double getProb(long double u, long double angleParent, long double angle,lo
 	return std::min((long double)1.0L,prob);
 }
 
-int growCluster(long double ***lattice,bool ***cluster, long double &L,long double &beta, long double& TotXMag,long double& TotYMag,long double& TotEn,long double &TotSinX,std::uniform_real_distribution<long double> &dist,std::mt19937_64 &eng){
+int growCluster(long double ***lattice,bool ***cluster, long double &L,long double &beta, long double& TotXMag,long double& TotYMag,long double& TotEn,long double &TotSinX,long double &TotSinY,long double &TotSinZ,std::uniform_real_distribution<long double> &dist,std::mt19937_64 &eng){
 
 	int time = 1;
 	//select random plane and random staring spin
@@ -32,6 +32,8 @@ int growCluster(long double ***lattice,bool ***cluster, long double &L,long doub
 	TotXMag += cos(angleAfter) - cos(angleBefore);
 	TotYMag += sin(angleAfter) - sin(angleBefore);
 	TotSinX += sinX(lattice,L,s1,s2,s3,angleAfter) - sinX(lattice,L,s1,s2,s3,angleBefore);
+	TotSinY += sinY(lattice,L,s1,s2,s3,angleAfter) - sinY(lattice,L,s1,s2,s3,angleBefore);
+	TotSinZ += sinZ(lattice,L,s1,s2,s3,angleAfter) - sinZ(lattice,L,s1,s2,s3,angleBefore);
 	//find indices of nearest neighbours
 	int n1m = (s1 -1 + (int)L )%(int)L;
 	int n1p = (s1 +1 + (int)L )%(int)L;
@@ -113,6 +115,8 @@ int growCluster(long double ***lattice,bool ***cluster, long double &L,long doub
 				TotXMag += cos(angleAfter) - cos(angleBefore);
 				TotYMag += sin(angleAfter) - sin(angleBefore);
 				TotSinX += sinX(lattice,L,std::get<0>(current),std::get<1>(current),std::get<2>(current),angleAfter) - sinX(lattice,L,std::get<0>(current),std::get<1>(current),std::get<2>(current),angleBefore);
+				TotSinY += sinY(lattice,L,std::get<0>(current),std::get<1>(current),std::get<2>(current),angleAfter) - sinY(lattice,L,std::get<0>(current),std::get<1>(current),std::get<2>(current),angleBefore);
+				TotSinZ += sinZ(lattice,L,std::get<0>(current),std::get<1>(current),std::get<2>(current),angleAfter) - sinZ(lattice,L,std::get<0>(current),std::get<1>(current),std::get<2>(current),angleBefore);
 
 				//find indices of neighbours
 				neig1 = std::make_tuple(

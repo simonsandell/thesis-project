@@ -8,6 +8,8 @@ void printLattice(long double ***lattice,long double &L);
 
 //testing functions
 long double calcSinX(long double ***lattice,long double &L);
+long double calcSinY(long double ***lattice,long double &L);
+long double calcSinZ(long double ***lattice,long double &L);
 long double calcXMag(long double ***lattice,long double&L);
 long double calcYMag(long double ***lattice,long double&L);
 long double calcMag(long double ***lattice,long double&L);

@@ -49,13 +49,15 @@ void wolffRun(long double L, long double N_equil_sweeps, long double N_samples,b
 	long double TotXMag = calcXMag(lattice,L);
 	long double TotYMag = calcYMag(lattice,L);
 	long double TotSinX = calcSinX(lattice,L);
+	long double TotSinY = calcSinY(lattice,L);
+	long double TotSinZ = calcSinZ(lattice,L);
 
 	//Set equilibration time 
 	long double N_equil_steps= N_equil_sweeps*L*L*L;
 	//eqilibration 
 	int totEqSteps= 0;
 	while (totEqSteps < N_equil_steps){
-		totEqSteps += growCluster(lattice,cluster,L,Beta,TotXMag,TotYMag,TotEn,TotSinX,dist,eng);
+		totEqSteps += growCluster(lattice,cluster,L,Beta,TotXMag,TotYMag,TotEn,TotSinX,TotSinY,TotSinZ,dist,eng);
 	}
 	long double eqSweeps = ((long double)totEqSteps)*reciNspins;
 
@@ -70,12 +72,14 @@ void wolffRun(long double L, long double N_equil_sweeps, long double N_samples,b
 	long double avgM2E = 0.0L;// squared magnetization times energy
 	long double avgM4E = 0.0L; // 4th power magnetization times energy
 	long double avgSinX2 = 0.0L; // for superfluid density 
+	long double avgSinY2 = 0.0L; // for superfluid density 
+	long double avgSinZ2 = 0.0L; // for superfluid density 
 
 
 
 	for ( int i = 0; i < N_samples; ++i){
 		//make a cluster
-		growCluster(lattice,cluster,L,Beta,TotXMag,TotYMag,TotEn,TotSinX,dist,eng);
+		growCluster(lattice,cluster,L,Beta,TotXMag,TotYMag,TotEn,TotSinX,TotSinY,TotSinZ,dist,eng);
 		//take sample data
 		avgE += TotEn;
 		avgE2 += TotEn*TotEn;
@@ -85,6 +89,8 @@ void wolffRun(long double L, long double N_equil_sweeps, long double N_samples,b
 		avgM2E += TotEn*(TotXMag*TotXMag + TotYMag*TotYMag); 
 		avgM4E += TotEn*(TotXMag*TotXMag + TotYMag*TotYMag)*(TotXMag*TotXMag + TotYMag*TotYMag);
 		avgSinX2 += TotSinX*TotSinX;
+		avgSinY2 += TotSinY*TotSinY;
+		avgSinZ2 += TotSinZ*TotSinZ;
 	}
 
 
@@ -99,6 +105,9 @@ void wolffRun(long double L, long double N_equil_sweeps, long double N_samples,b
 	avgM2E *= reciNsamples;
 	avgM4E *= reciNsamples;
 	avgSinX2 *= reciNsamples;
+	avgSinY2 *= reciNsamples;
+	avgSinZ2 *= reciNsamples;
+	
 
 	//derived quantites
 	long double xi = 0.0L;//susceptibility
@@ -114,8 +123,8 @@ void wolffRun(long double L, long double N_equil_sweeps, long double N_samples,b
 	xi = avgM2 - avgM*avgM;
 	xi *= reciNspins;
 	xi *= Beta;
-	rs = -(1.0L/3.0L)*avgE - Beta*avgSinX2;
-	rs *= L*reciNspins; 
+	rs = -avgE - Beta*avgSinX2 - Beta*avgSinY2 -Beta*avgSinZ2;
+	rs *= (1.0L/3.0L)*L*reciNspins; 
 	std::cout << std::fixed << L << " ";
 	std::cout << std::fixed << Temperature << " ";
 	std::cout << std::fixed << avgE*reciNspins << " ";
