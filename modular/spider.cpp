@@ -26,7 +26,7 @@ void wr( long double L,long double N_equil,long double N_samp,bool cold, long do
 	}
 }
 long double * getTrange(long double start, long double end, int N){
-	long double dt = (end-start)/((long double)N-1.0);
+	long double dt = (end-start)/((long double)N-1.0L);
 	long double *T = new long double[N];
 	for (int i =0; i< N; ++i){
 		T[i] = start + (long double)i*dt;
@@ -55,16 +55,16 @@ int main(int argc, char* argv[]){
 
 	//set cold start bool
 	bool cold = false;
-	if (icold == 1.0){
+	if (icold == 1.0L){
 		cold = true;
 	}
 	//generate temperature range
 	long double *Trange = getTrange(startT,endT,int(Ntemps));
 	//determine runtype and run
-	if (runType == 0.0) {
+	if (runType == 0.0L) {
 		wr(L,Neq,Nsamp,cold,Trange,Ntemps);
 	}
-	else if (runType == 1.0) {
+	else if (runType == 1.0L) {
 		whr(L,Neq,Nsamp,cold,Trange,Ntemps);
 	}
 }

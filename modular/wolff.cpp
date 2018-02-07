@@ -7,23 +7,23 @@
 #include "latticeOps.h"
 
 long double getProb(long double u, long double angleParent, long double angle,long double beta){
-	long double prob = 1.0 - exp(2.0*beta*cos(angleParent - u)*cos(angle -u));
-	if (prob < 0.0){ return 0.0;}
-	return std::min((long double)1.0,prob);
+	long double prob = 1.0L - exp(2.0L*beta*cos(angleParent - u)*cos(angle -u));
+	if (prob < 0.0L){ return 0.0L;}
+	return std::min((long double)1.0L,prob);
 }
 
 int growCluster(long double ***lattice,bool ***cluster, long double &L,long double &beta, long double& TotXMag,long double& TotYMag,long double& TotEn,long double &TotSinX,std::uniform_real_distribution<long double> &dist,std::mt19937_64 &eng){
 
 	int time = 1;
 	//select random plane and random staring spin
-	long double u = 2.0*((long double)M_PI)*dist(eng);
+	long double u = 2.0L*((long double)M_PI)*dist(eng);
 	int s1 = L*dist(eng);
 	int s2 = L*dist(eng);
 	int s3 = L*dist(eng);
 	// save angle and energy before flipping
 	long double angleBefore = lattice[s1][s2][s3];
 	long double enBefore = siteEnergy(lattice,L,s1,s2,s3);
-	long double angleAfter = (long double)M_PI + 2.0*u - angleBefore;
+	long double angleAfter = (long double)M_PI + 2.0L*u - angleBefore;
 	//reflect spin and mark as part of cluster
 	lattice[s1][s2][s3] = angleAfter;
 	cluster[s1][s2][s3] = true;
@@ -58,8 +58,8 @@ int growCluster(long double ***lattice,bool ***cluster, long double &L,long doub
 	int n = 6;
 
 	std::tuple<int,int,int,long double> current;
-	long double prob = 0.0;
-	long double rand = 0.0;
+	long double prob = 0.0L;
+	long double rand = 0.0L;
 	bool flip = false;
 	while (n > 0){
 		//pick out the last element 
@@ -86,7 +86,7 @@ int growCluster(long double ***lattice,bool ***cluster, long double &L,long doub
 			//
 			else if ( std::abs(rand-prob) < std::abs(std::min(rand,prob)*std::numeric_limits<long double>::epsilon())){
 				rand = dist(eng);
-				if (rand < 0.50){
+				if (rand < 0.50L){
 					flip = true;
 				}
 				else{ flip = false;
@@ -102,7 +102,7 @@ int growCluster(long double ***lattice,bool ***cluster, long double &L,long doub
 				enBefore = siteEnergy(lattice,L,std::get<0>(current),std::get<1>(current),std::get<2>(current));
 
 				//get new angle
-				angleAfter = (long double)M_PI + 2.0*u - angleBefore;
+				angleAfter = (long double)M_PI + 2.0L*u - angleBefore;
 
 				//reflect and mark as added to cluster
 				lattice[std::get<0>(current)][std::get<1>(current)][std::get<2>(current)] = angleAfter;

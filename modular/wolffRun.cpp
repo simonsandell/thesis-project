@@ -15,15 +15,15 @@ void wolffRun(long double L, long double N_equil_sweeps, long double N_samples,b
 	//initialize rng
 	unsigned long int s;
 	syscall(SYS_getrandom,&s,sizeof(unsigned long int),0);	
-	std::uniform_real_distribution<long double> dist(0.0,1.0);
+	std::uniform_real_distribution<long double> dist(0.0L,1.0L);
 	std::mt19937_64 eng; 
 	eng.seed(s);
 
 	//convert temp to betas
-	long double Beta = 1.0/Temperature;		
+	long double Beta = 1.0L/Temperature;		
 	//define some reciprocals to reduce number of divions
-	long double reciNsamples = 1.0/N_samples;
-	long double reciNspins = 1.0/(L*L*L);
+	long double reciNsamples = 1.0L/N_samples;
+	long double reciNspins = 1.0L/(L*L*L);
 
 	//initialize lattice
 	long double *** lattice = newLattice(L,cold,dist,eng);
@@ -62,14 +62,14 @@ void wolffRun(long double L, long double N_equil_sweeps, long double N_samples,b
 	//start collecting data
 	//parameters and physical quantities
 	//averages
-	long double avgE = 0.0; //energy
-	long double avgE2 = 0.0;//squared energy
-	long double avgM = 0.0; //abs of magnetization
-	long double avgM2 = 0.0;//squared magnetization
-	long double avgM4 = 0.0;//fourth power of magnetization
-	long double avgM2E = 0.0;// squared magnetization times energy
-	long double avgM4E = 0.0; // 4th power magnetization times energy
-	long double avgSinX2 = 0.0; // for superfluid density 
+	long double avgE = 0.0L; //energy
+	long double avgE2 = 0.0L;//squared energy
+	long double avgM = 0.0L; //abs of magnetization
+	long double avgM2 = 0.0L;//squared magnetization
+	long double avgM4 = 0.0L;//fourth power of magnetization
+	long double avgM2E = 0.0L;// squared magnetization times energy
+	long double avgM4E = 0.0L; // 4th power magnetization times energy
+	long double avgSinX2 = 0.0L; // for superfluid density 
 
 
 
@@ -101,20 +101,20 @@ void wolffRun(long double L, long double N_equil_sweeps, long double N_samples,b
 	avgSinX2 *= reciNsamples;
 
 	//derived quantites
-	long double xi = 0.0;//susceptibility
-	long double b = 0.0; //Binder parameter
-	long double dbdt = 0.0;//derivative wrt T of Binder parameter
-	long double rs = 0.0;//superfluid density
+	long double xi = 0.0L;//susceptibility
+	long double b = 0.0L; //Binder parameter
+	long double dbdt = 0.0L;//derivative wrt T of Binder parameter
+	long double rs = 0.0L;//superfluid density
 	//calculate
 	b = avgM4;
 	b /= (avgM2*avgM2);
-	dbdt = avgM4E*avgM2 + avgM4*avgM2*avgE - 2.0*avgM4*avgM2E;
+	dbdt = avgM4E*avgM2 + avgM4*avgM2*avgE - 2.0L*avgM4*avgM2E;
 	dbdt *= Beta*Beta;
 	dbdt /= avgM2*avgM2*avgM2;
 	xi = avgM2 - avgM*avgM;
 	xi *= reciNspins;
 	xi *= Beta;
-	rs = -(1.0/3.0)*avgE - Beta*avgSinX2;
+	rs = -(1.0L/3.0L)*avgE - Beta*avgSinX2;
 	rs *= L*reciNspins; 
 	std::cout << std::fixed << L << " ";
 	std::cout << std::fixed << Temperature << " ";

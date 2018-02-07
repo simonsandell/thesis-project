@@ -15,20 +15,20 @@ void wolffHistRun(long double L, long double N_equil_sweeps, long double N_sampl
 	//initialize rng
 	unsigned long int s;
 	syscall(SYS_getrandom,&s,sizeof(unsigned long int),0);	
-	std::uniform_real_distribution<long double> dist(0.0,1.0);
+	std::uniform_real_distribution<long double> dist(0.0L,1.0L);
 	std::mt19937_64 eng; 
 	eng.seed(s);
 
 	//convert temp to betas
 	long double Betas[N_temps];	
 	for (int i = 0; i< N_temps; ++i){
-		Betas[i] = 1.0/Temperatures[i];
+		Betas[i] = 1.0L/Temperatures[i];
 	}
 	long double Temperature = runTemp;
-	long double Beta = 1.0/Temperature;		
+	long double Beta = 1.0L/Temperature;		
 	//define some reciprocals to reduce number of divions
-	long double reciNsamples = 1.0/N_samples;
-	long double reciNspins = 1.0/(L*L*L);
+	long double reciNsamples = 1.0L/N_samples;
+	long double reciNspins = 1.0L/(L*L*L);
 
 	//initialize lattice
 	long double *** lattice = newLattice(L,cold,dist,eng);
@@ -95,7 +95,7 @@ void wolffHistRun(long double L, long double N_equil_sweeps, long double N_sampl
 
 
 	//calculate quantities of interest
-	long double reciExpFac = 0.0;
+	long double reciExpFac = 0.0L;
 
 	long double xi[N_temps] = {};//susceptibility
 	long double b[N_temps] = {}; //Binder parameter
@@ -106,7 +106,7 @@ void wolffHistRun(long double L, long double N_equil_sweeps, long double N_sampl
 
 		//normalize
 		avgExpFac[i] *= reciNsamples;
-		reciExpFac = 1.0/avgExpFac[i];
+		reciExpFac = 1.0L/avgExpFac[i];
 		avgE[i] *= reciNsamples;
 		avgE2[i] *= reciNsamples;
 		avgM[i] *= reciNsamples;
@@ -127,13 +127,13 @@ void wolffHistRun(long double L, long double N_equil_sweeps, long double N_sampl
 		//calculate
 		b[i] = avgM4[i];
 		b[i] /= (avgM2[i]*avgM2[i]);
-		dbdt[i] = avgM4E[i]*avgM2[i] + avgM4[i]*avgM2[i]*avgE[i] - 2.0*avgM4[i]*avgM2E[i];
+		dbdt[i] = avgM4E[i]*avgM2[i] + avgM4[i]*avgM2[i]*avgE[i] - 2.0L*avgM4[i]*avgM2E[i];
 		dbdt[i] *= Betas[i]*Betas[i];
 		dbdt[i] /= avgM2[i]*avgM2[i]*avgM2[i];
 		xi[i] = avgM2[i] - avgM[i]*avgM[i];
 		xi[i] *= reciNspins;
 		xi[i] *= Betas[i];
-		rs[i] = -(1.0/3.0)*avgE[i] - (Betas[i])*avgSinX2[i];
+		rs[i] = -(1.0L/3.0L)*avgE[i] - (Betas[i])*avgSinX2[i];
 		rs[i] *= L*reciNspins; 
 	}
 	for (int i = 0;i< N_temps; ++i){
