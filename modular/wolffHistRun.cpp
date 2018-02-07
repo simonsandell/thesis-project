@@ -9,6 +9,7 @@
 #include "wolff.h"
 #include "testFuncs.h"
 #include "latticeOps.h"
+#include "printOutput.h"
 
 void wolffHistRun(long double L, long double N_equil_sweeps, long double N_samples,bool cold,long double *Temperatures,int N_temps,long double runTemp){
 
@@ -61,7 +62,9 @@ void wolffHistRun(long double L, long double N_equil_sweeps, long double N_sampl
 	long double N_equil_steps= N_equil_sweeps*L*L*L;
 	//eqilibration 
 	int totEqSteps= 0;
+	int eqClusts =0;
 	while (totEqSteps < N_equil_steps){
+		eqClusts++;
 		totEqSteps += growCluster(lattice,cluster,L,Beta,TotXMag,TotYMag,TotEn,TotSinX,TotSinY,TotSinZ,dist,eng);
 	}
 	long double eqSweeps = ((long double)totEqSteps)*reciNspins;
@@ -103,6 +106,8 @@ void wolffHistRun(long double L, long double N_equil_sweeps, long double N_sampl
 	//calculate quantities of interest
 	long double reciExpFac = 0.0L;
 
+	long double Eps[N_temps] = {};//energy per spin
+	long double Mps[N_temps] = {};//magnetization per spin
 	long double xi[N_temps] = {};//susceptibility
 	long double b[N_temps] = {}; //Binder parameter
 	long double dbdt[N_temps] = {};//derivative wrt T of Binder parameter
@@ -145,18 +150,12 @@ void wolffHistRun(long double L, long double N_equil_sweeps, long double N_sampl
 		xi[i] *= Betas[i];
 		rs[i] = -avgE[i] - (Betas[i])*avgSinX2[i] -(Betas[i])*avgSinY2[i] -(Betas[i])*avgSinZ2[i];
 		rs[i] *= (1.0L/3.0L)*L*reciNspins; 
+		
+		Eps[i] = avgE[i]*reciNspins;
+		Mps[i] = avgM[i]*reciNspins;
 	}
 	for (int i = 0;i< N_temps; ++i){
-		std::cout << std::fixed << L << " ";
-		std::cout << std::fixed << Temperatures[i] << " ";
-		std::cout << std::fixed << avgE[i]*reciNspins << " ";
-		std::cout << std::fixed << avgM[i]*reciNspins << " ";
-		std::cout << std::fixed << b[i] << " ";
-		std::cout << std::fixed << dbdt[i] << " ";
-		std::cout << std::fixed << xi[i] << " ";
-		std::cout << std::fixed << N_equil_sweeps << " "; 
-		std::cout << std::fixed << rs[i] << " ";
-		std::cout << std::fixed << std::endl;
+		printOutput(L,Temperatures[i],Eps[i],Mps[i],b[i],dbdt[i],xi[i],rs[i],eqSweeps,eqClusts);
 
 	}
 }
