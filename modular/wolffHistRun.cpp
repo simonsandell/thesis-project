@@ -84,7 +84,7 @@ void wolffHistRun(long double L, long double N_equil_sweeps, long double N_sampl
 
 
 
-	long double maxTotE = getMaxE(); 
+	long double maxTotE = getMaxE(L); 
 	long double expCorr = 0.0L;
 
 	for ( int j = 0; j < N_samples; ++j){
@@ -183,6 +183,6 @@ void wolffHistRun(long double L, long double N_equil_sweeps, long double N_sampl
 
 	}
 	if (expCorr != 0.0L){
-		setMaxE(maxTotE);
+		setMaxE(L,maxTotE);
 	}
 }

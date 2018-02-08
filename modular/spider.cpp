@@ -55,12 +55,13 @@ int main(int argc, char* argv[]){
 	}
 	//generate temperature range
 	//determine runtype and run
+	long double* Trange;
 	if (abs(Ntemps - 1) < 0.1) {
-		long double Trange[1] = {};
+		Trange = new long double[1];
 		Trange[0] = startT;
 	}
 	else {
-		long double *Trange = getTrange(startT,endT,int(Ntemps));
+		Trange = getTrange(startT,endT,int(Ntemps));
 	}
 
 	if (runType == 0.0L) {

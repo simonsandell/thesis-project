@@ -1,3 +1,5 @@
+#include <string>
+#include <sstream>
 #include <limits>
 #include <ctime>
 #include <iostream>
@@ -20,23 +22,27 @@ void printOutput(long double L,long double T, long double E, long double M, long
 	std::cout << std::fixed << std::endl;
 }
 
-long double getMaxE(){
-
-	std::ifstream file("maxE.txt");
+long double getMaxE(long double L){
+	std::ostringstream mstream;
+	mstream << "./maxE/" << L << "_maxE.txt";
+	std::string fname = mstream.str();
+	std::ifstream file(fname);
 	long double maxE;
 	file >> std::fixed >> maxE;
 	return maxE;
 }
-void setMaxE(long double newE){
+void setMaxE(long double L,long double newE){
 
 	time_t  t = time(0);
 	struct tm * now = localtime(& t);
 
 	char buffer [80];
 	strftime (buffer,80,"%Y-%m-%d.%H:%M:%S",now);
-
+	std::ostringstream mstream;
+	mstream << "./maxE/" << L <<"_"<< buffer;
+	std::string fname = mstream.str();
 	std::ofstream file;
-	file.open(buffer);
+	file.open(fname);
 
 	typedef std::numeric_limits<long double> dbl;
 	file.precision(dbl::max_digits10 +2);
