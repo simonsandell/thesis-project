@@ -1,5 +1,5 @@
 #!/bin/bash
-batchN=4;
+batchN=8;
 mkdir /home/simsan/exjobb/modular/output/parruns/
 sleep 2
 for i in {1 .. $batchN}; do

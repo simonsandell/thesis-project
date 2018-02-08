@@ -68,7 +68,8 @@ int main(int argc, char* argv[]){
 		wr(L,Neq,Nsamp,cold,Trange,Ntemps);
 	}
 	else if (runType == 1.0L) {
-		long double runTemp = 2.2020L;
+		//long double runTemp = 2.2020L;
+		long double runTemp = Trange[(int)(Ntemps/2)];
 		whr(L,Neq,Nsamp,cold,Trange,Ntemps,runTemp);
 	}
 }
