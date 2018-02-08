@@ -24,7 +24,7 @@ void printOutput(long double L,long double T, long double E, long double M, long
 
 long double getMaxE(long double L){
 	std::ostringstream mstream;
-	mstream << "./maxE/" << L << "_maxE.txt";
+	mstream << "/home/simsan/exjobb/modular/maxE/" << L << "_maxE.txt";
 	std::string fname = mstream.str();
 	std::ifstream file(fname);
 	long double maxE;
@@ -39,7 +39,7 @@ void setMaxE(long double L,long double newE){
 	char buffer [80];
 	strftime (buffer,80,"%Y-%m-%d.%H:%M:%S",now);
 	std::ostringstream mstream;
-	mstream << "./maxE/" << L <<"_"<< buffer;
+	mstream << "/home/simsan/exjobb/modular/maxE/" << L <<"_"<< buffer;
 	std::string fname = mstream.str();
 	std::ofstream file;
 	file.open(fname);
