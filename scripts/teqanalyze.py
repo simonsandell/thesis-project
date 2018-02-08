@@ -4,13 +4,15 @@ import math
 
 #funcion for writing data
 def writeToFiles(Mag,M_teq,N,Neq):
+        meanNeq = np.mean(Neq);
         meanM = np.mean(Mag);
         sqrtN = pow(N,0.5);
         deltaM = np.std(Mag)/sqrtN;
         if math.isnan(deltaM):
             deltaM = 0;
-        M_teq.write(repr(Neq)+"    "+repr(meanM)+"    "+repr(deltaM)+"\n")
+        M_teq.write(repr(meanNeq)+"    "+repr(meanM)+"    "+repr(deltaM)+"\n")
         Mag[:]= []
+        Neq[:]= []
         N = 0.0
         
 arguments = sys.argv
@@ -25,29 +27,41 @@ for ln in data0:
 
 #sort by L, N_equil, T 
 mat = np.array(vals)
-ind = np.lexsort((mat[:,8],mat[:,6],mat[:,5],mat[:,4],mat[:,3],mat[:,2],mat[:,1],mat[:,7],mat[:,0]))
+ind = np.lexsort((mat[:,7],mat[:,6],mat[:,5],mat[:,4],mat[:,3],mat[:,2],mat[:,1],mat[:,9],mat[:,8],mat[:,10],mat[:,0]))
 mat = mat[ind]
 
-L=mat[0,0];
-Neq = mat[0,7];
+cold = float(mat[0,10])
+L=float(mat[0,0])
+Neq_sav = float(mat[0,8])
+Neq = [];
 Mag=[];
 N = 0.0;
 
 #open files for writing
-
-M_teq = open("./foutput/teq/"+str(int(L))+"_"+fName+".dat","w")
+strFn = "./foutput/teq/" + str(int(cold)) + "_" + str(int(L)) + "_" + fName + ".dat"
+M_teq = open(strFn,"w")
 
 TOL = 5 
 for i in range(mat.shape[0]):
-    #if new value of L, make new outputfile
-    if(TOL < abs(mat[i,0] - L)):
+    #if new value of L or cold, make new outputfile
+    if (abs(mat[i,10] - cold) >0.1):
+        writeToFiles(Mag,M_teq,N,Neq)
+        L=float(mat[i,0])
+        Neq_sav = float(mat[i,8])
+        cold = float(mat[i,10])
+        strFn = "./foutput/teq/" + str(int(cold)) + "_" + str(int(L)) + "_" + fName + ".dat"
+        M_teq = open(strFn,"w")
+    elif(TOL < abs(mat[i,0] - L)):
         writeToFiles(Mag,M_teq,N,Neq)
         L = float(mat[i,0])
-        Neq = float(mat[i,7])
-        M_teq = open("./foutput/teq/"+str(int(L))+"_"+fName+".dat","w")
-    elif (TOL < abs(mat[i,7] - Neq)):
+        Neq_sav = float(mat[i,8])
+        strFn = "./foutput/teq/" + str(int(cold)) + "_" + str(int(L)) + "_" + fName + ".dat"
+        M_teq = open(strFn,"w")
+        #if new value of N_eq, take mean and write to file
+    elif (TOL < abs(mat[i,8] - Neq_sav)):
         writeToFiles(Mag,M_teq,N,Neq)
-        Neq = float(mat[i,7])
+        Neq_sav = float(mat[i,8])
     Mag.append(mat[i,3])
+    Neq.append(mat[i,8])
     N = N + 1.0   
 writeToFiles(Mag,M_teq,N,Neq)
