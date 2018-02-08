@@ -9,8 +9,5 @@ for i in {1 .. $batchN}; do
 		sleep 30
 	done
 done
-#for filename in /home/simsan/exjobb/modular/output/parruns/run*; do
-#	cat $filename >> /home/simsan/exjobb/modular/output/test_Emax
-#done
-#rm -r /home/simsan/exjobb/modular/output/parruns/
+/home/simsan/exjobb/modular/merge
 python3 /home/simsan/exjobb/modular/updMaxE.py
