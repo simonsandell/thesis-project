@@ -93,7 +93,7 @@ void wolffHistRun(long double L, long double N_equil_sweeps, long double N_sampl
 
 		//update maxE if necessary
 		if (std::abs(TotEn) > std::abs(maxTotE)){
-			expCorr = exp(TotEn- maxTotE);	
+			expCorr = exp(-TotEn+ maxTotE);	
 			for (int k = 0; k<N_temps;++k){
 				avgExpFac[k] *= expCorr;
 				avgE[k] *= expCorr;
@@ -111,7 +111,7 @@ void wolffHistRun(long double L, long double N_equil_sweeps, long double N_sampl
 		}
 		//take sample data
 		for (int i = 0; i<N_temps; ++i){
-			expFac = exp((Betas[i] - Beta)*(TotEn-maxTotE));
+			expFac = exp(-(Betas[i] - Beta)*(TotEn-maxTotE));
 			avgExpFac[i] += expFac;
 			avgE[i] += expFac*TotEn;
 			avgE2[i] += expFac*TotEn*TotEn;
