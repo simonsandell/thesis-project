@@ -58,7 +58,7 @@ for ln in data0:
 
 #sort by L, T, N_equil in that order    
 mat = np.array(vals)
-ind = np.lexsort((mat[:,9],mat[:,7],mat[:,6],mat[:,5],mat[:,4],mat[:,3],mat[:,2],mat[:,8],mat[:,1],mat[:,0]))
+ind = np.lexsort((mat[:,10],mat[:,9],mat[:,7],mat[:,6],mat[:,5],mat[:,4],mat[:,3],mat[:,2],mat[:,8],mat[:,1],mat[:,0]))
 
 mat = mat[ind]
 
