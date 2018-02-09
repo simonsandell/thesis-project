@@ -1,15 +1,16 @@
 #!/bin/bash
-batchN=16;
+
 mkdir $PWD/output/parruns/
-sleep 2
-for i in {1 .. $batchN}; do
-	qsub -t 1-12 -o $PWD/output/parruns/ -p -1 runmain
-	sleep 30
+sleep 1
+for i in {1..3}; do
+	qsub -t 1-12 -o $PWD/output/parruns/ -p -1 runmain $PWD
+	echo $i
+	sleep 20
 	while [[ $(qstat) = *runmain* ]]; do
-		sleep 30
+		sleep 20
 	done
 done
-for filename in $PWD/output/parruns/runmain*; do
+for filename in $PWD/output/parruns/*; do
 	cat $filename >> $PWD/output/regWolff
 done
 rm -r $PWD/output/parruns/
