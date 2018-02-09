@@ -30,19 +30,18 @@ def writeToFiles(En,Mag,Bin,Dbdt,Xi,Rs,EF,MF,BF,DF,XF,RF,N,T,Neq):
             deltaX = decimal.Decimal('0');
         if math.isnan(deltaR):
             deltaR = decimal.Decimal('0');
-        EF.write(str(T)+"    "+str(meanE)+"    "+str(deltaE)+"\n")
-        MF.write(str(T)+"    "+str(meanM)+"    "+str(deltaM)+"\n")
-        BF.write(str(T)+"    "+str(meanB)+"    "+str(deltaB)+"\n")
-        DF.write(str(T)+"    "+str(meanD)+"    "+str(deltaD)+"\n")
-        XF.write(str(T)+"    "+str(meanX)+"    "+str(deltaX)+"\n")
-        RF.write(str(T)+"    "+str(meanR)+"    "+str(deltaR)+"\n")
+        EF.write(str(T)+"    "+str(meanE)+"    "+str(deltaE)+"    "+str(N)+"\n")
+        MF.write(str(T)+"    "+str(meanM)+"    "+str(deltaM)+"    "+str(N)+"\n")
+        BF.write(str(T)+"    "+str(meanB)+"    "+str(deltaB)+"    "+str(N)+"\n")
+        DF.write(str(T)+"    "+str(meanD)+"    "+str(deltaD)+"    "+str(N)+"\n")
+        XF.write(str(T)+"    "+str(meanX)+"    "+str(deltaX)+"    "+str(N)+"\n")
+        RF.write(str(T)+"    "+str(meanR)+"    "+str(deltaR)+"    "+str(N)+"\n")
         En[:]= []
         Mag[:]= []
         Bin [:]= []
         Dbdt[:]= []
         Xi[:]= []
         Rs[:]= []
-        N = decimal.Decimal('0')
 
 #read raw data from file in ./output
 
@@ -90,6 +89,7 @@ for i in range(mat.shape[0]):
     #if new value of L, make new outputfile
     if(TOL < abs(mat[i,0] - L)):
         writeToFiles(En,Mag,Bin,Dbdt,Xi,Rs,EF,MF,BF,DF,XF,RF,N,T,Neq)
+        N=0;
         L = decimal.Decimal(mat[i,0])
         T = decimal.Decimal(mat[i,1])
         Neq = decimal.Decimal(mat[i,8])
@@ -101,6 +101,7 @@ for i in range(mat.shape[0]):
         RF = open("./foutput/rs/"+str(int(L))+"_"+fName+".dat","w")
     elif(TOL < abs(mat[i,1] - T)):
         writeToFiles(En,Mag,Bin,Dbdt,Xi,Rs,EF,MF,BF,DF,XF,RF,N,T,Neq)
+        N=0;
         T = decimal.Decimal(mat[i,1])
         Neq = decimal.Decimal(mat[i,8])
     #normally just append to lists

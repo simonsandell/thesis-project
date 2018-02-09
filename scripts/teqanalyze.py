@@ -13,7 +13,6 @@ def writeToFiles(Mag,M_teq,N,Neq):
         M_teq.write(repr(meanNeq)+"    "+repr(meanM)+"    "+repr(deltaM)+"\n")
         Mag[:]= []
         Neq[:]= []
-        N = 0.0
         
 arguments = sys.argv
 fName = arguments[1]
@@ -46,6 +45,7 @@ for i in range(mat.shape[0]):
     #if new value of L or cold, make new outputfile
     if (abs(mat[i,10] - cold) >0.1):
         writeToFiles(Mag,M_teq,N,Neq)
+        N = 0;
         L=float(mat[i,0])
         Neq_sav = float(mat[i,8])
         cold = float(mat[i,10])
@@ -53,6 +53,7 @@ for i in range(mat.shape[0]):
         M_teq = open(strFn,"w")
     elif(TOL < abs(mat[i,0] - L)):
         writeToFiles(Mag,M_teq,N,Neq)
+        N = 0;
         L = float(mat[i,0])
         Neq_sav = float(mat[i,8])
         strFn = "./foutput/teq/" + str(int(cold)) + "_" + str(int(L)) + "_" + fName + ".dat"
@@ -60,6 +61,7 @@ for i in range(mat.shape[0]):
         #if new value of N_eq, take mean and write to file
     elif (TOL < abs(mat[i,8] - Neq_sav)):
         writeToFiles(Mag,M_teq,N,Neq)
+        N = 0;
         Neq_sav = float(mat[i,8])
     Mag.append(mat[i,3])
     Neq.append(mat[i,8])
