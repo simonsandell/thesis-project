@@ -37,7 +37,7 @@ int main(int argc, char* argv[]){
 	//set precision of cout
 	typedef numeric_limits<long double> dbl;
 
-	cout.precision(dbl::max_digits10 + 2);
+	cout.precision(dbl::max_digits10 + 5);
 
 	long double runType = stod(argv[1]);
 	long double L= stod(argv[2]);
