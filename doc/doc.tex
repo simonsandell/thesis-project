@@ -3,13 +3,26 @@
 % Last Change: tor feb 08 01:00  2018 C
 %
 \documentclass[a4paper]{article}
+\usepackage{amsmath}
 \begin{document}
 \section{Introduction}
 \section{Monte Carlo}
 \section{Wolff Algorithm}
 \section{Helium-4}
 \section{XY-model}
-
+\section{Histrogram extrapolation}
+Histogram extrapolation is a method to extract more data from a run. 
+Averages are calculated as
+\begin{equation}
+  \langleA\rangle_{\beta_0} =  \frac{\sum_{x}A_x e^{-\beta_0 H_x}}{\sum_{x}e^{-\beta_0 H_x}}
+  \label{}
+\end{equation}
+To get the average of A at some different temperature, say $\beta_1$, we can do
+\begin{align}
+  \langleA\rangle_{\beta_1} =  \frac{\sum_{x}A_x e^{-\beta_1 H_x}}{\sum_{x}e^{-\beta_1 H_x}} = \\
+  = \frac{\sum_x A_x e^{-(\beta_1 - \beta_0)H_x} e^{-\beta_0 H_x}}{\sum_x e^{-(\beta_1 - \beta_0)H_x}e^{-\beta_0 H_x}} = \\
+  = \frac{\langle A e^{-(\beta_1 - \beta_0)H}\rangle_{\beta_0}}{\langle e^{-(\beta_1 - \beta_0)H}\rangle_{\beta_0}}
+\end{align}
+Since the value of $abs(\beta_1 -\beta_0)$ will be small in practice, and the value of the energy will increase with the systemsize, precision will be lost in the calculation of $\exp\left( \beta_1 - \beta_0 \right)H_x$. To mitigate this, one can subtract a constant from the energy of the system, $H_max$, since a constant shift in energy will not change expectation values, since it just factors out of both sums and cancels.
 \end{document}
-
 
