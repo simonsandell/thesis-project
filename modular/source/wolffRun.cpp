@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include <random>
 #include <functional>
@@ -23,9 +22,6 @@ void wolffRun(long double L, long double N_equil_sweeps, long double Nsamples,bo
 
 	//convert temp to betas
 	long double Beta = 1.0L/Temperature;		
-	//define some reciprocals to reduce number of divions
-	long double reciNsamples = 1.0L/Nsamples;
-	long double reciNspins = 1.0L/(L*L*L);
 	long double Nspins = (L*L*L);
 
 	//initialize lattice

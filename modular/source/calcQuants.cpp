@@ -101,7 +101,6 @@ void testConsistent(long double ***lattice,long double&L,long double&TotEn,long 
 	   long double testEn = calcEn(lattice,L);
 	   long double testXMag = calcXMag(lattice,L);
 	   long double testYMag = calcYMag(lattice,L);
-	   long double testMag = calcMag(lattice,L);
 	   std::cout << TotEn - testEn << " E" << std::endl;
 	   std::cout << TotXMag - testXMag << " X" << std::endl;
 	   std::cout << TotYMag - testYMag << " Y" << std::endl;

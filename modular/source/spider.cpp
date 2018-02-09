@@ -35,6 +35,10 @@ int main(int argc, char* argv[]){
 	// input args :: 'wolff'/'hist' L startT endT Tnum Neq Nsamp Cold
 	// 
 	//set precision of cout
+	if (argc != 9){
+		cout << "wrong number of arguments" << endl;
+		exit(-1);
+	}
 	typedef numeric_limits<long double> dbl;
 
 	cout.precision(dbl::max_digits10 + 5);

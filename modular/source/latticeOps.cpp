@@ -3,7 +3,6 @@
 
 //clear the cluster
 void emptyCluster(bool***cluster,long double &L){
-	int steps = 0;
 	for (int i = 0; i< L; ++i){
 		for (int j = 0; j< L; ++j){
 			for (int k = 0; k<L; ++k){	

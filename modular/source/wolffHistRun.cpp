@@ -92,20 +92,23 @@ void wolffHistRun(long double L, long double N_equil_sweeps, long double N_sampl
 		growCluster(lattice,cluster,L,Beta,TotXMag,TotYMag,TotEn,TotSinX,TotSinY,TotSinZ,dist,eng);
 
 		//update maxE if necessary
+		
 		if (std::abs(TotEn) > std::abs(maxTotE)){
-			expCorr = exp(-maxTotE +TotEn);	
-			for (int k = 0; k<N_temps;++k){
-				avgExpFac[k] *= expCorr;
-				avgE[k] *= expCorr;
-				avgE2[k] *= expCorr;
-				avgM[k] *= expCorr;
-				avgM2[k] *= expCorr;
-				avgM4[k] *= expCorr;
-				avgM2E[k] *= expCorr;
-				avgM4E[k] *= expCorr;
-				avgSinX2[k] *= expCorr;
-				avgSinY2[k] *= expCorr;
-				avgSinZ2[k] *= expCorr;
+			if (j > 0){
+				expCorr = exp(-maxTotE +TotEn);	
+				for (int k = 0; k<N_temps;++k){
+					avgExpFac[k] *= expCorr;
+					avgE[k] *= expCorr;
+					avgE2[k] *= expCorr;
+					avgM[k] *= expCorr;
+					avgM2[k] *= expCorr;
+					avgM4[k] *= expCorr;
+					avgM2E[k] *= expCorr;
+					avgM4E[k] *= expCorr;
+					avgSinX2[k] *= expCorr;
+					avgSinY2[k] *= expCorr;
+					avgSinZ2[k] *= expCorr;
+				}
 			}
 			maxTotE = TotEn;
 		}
