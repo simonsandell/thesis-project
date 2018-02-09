@@ -2,12 +2,12 @@
 
 mkdir $PWD/output/parruns/
 sleep 1
-for i in {1..3}; do
-	qsub -t 1-12 -o $PWD/output/parruns/ -p -1 runmain $PWD
+for i in {1..20}; do
+	qsub -t 1-6 -o $PWD/output/parruns/ -p -1 runmain $PWD
 	echo $i
-	sleep 20
+	sleep 60
 	while [[ $(qstat) = *runmain* ]]; do
-		sleep 20
+		sleep 60
 	done
 done
 for filename in $PWD/output/parruns/*; do
