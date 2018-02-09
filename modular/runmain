@@ -1,4 +1,4 @@
 #!/bin/bash
-/home/simsan/exjobb/modular/main.exe 1 4 2.20 2.204 30 6000 7000 1
-/home/simsan/exjobb/modular/main.exe 1 8 2.20 2.204 30 6000 7000 1
-/home/simsan/exjobb/modular/main.exe 1 16 2.20 2.204 30 6000 7000 1
+$PWD/main.exe 0 4 2.20 2.204 30 6000 7000 1
+$PWD/main.exe 0 8 2.20 2.204 30 6000 7000 1
+$PWD/main.exe 0 16 2.20 2.204 30 6000 7000 1
