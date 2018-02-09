@@ -1,16 +1,16 @@
 #!/bin/bash
-batchN=8;
-mkdir /home/simsan/exjobb/modular/output/parruns/
+batchN=16;
+mkdir $PWD/output/parruns/
 sleep 2
 for i in {1 .. $batchN}; do
-	qsub -t 1-12 -o /home/simsan/exjobb/modular/output/parruns/ -p -1 runmain
+	qsub -t 1-12 -o $PWD/output/parruns/ -p -1 runmain
 	sleep 30
 	while [[ $(qstat) = *runmain* ]]; do
 		sleep 30
 	done
 done
-for filename in /home/simsan/exjobb/modular/output/parruns/run*; do
-	cat $filename >> /home/simsan/exjobb/modular/output/test_Emax
+for filename in $PWD/output/parruns/runmain*; do
+	cat $filename >> $PWD/output/regWolff
 done
-rm -r /home/simsan/exjobb/modular/output/parruns/
-python3 /home/simsan/exjobb/modular/updMaxE.py
+rm -r $PWD/output/parruns/
+python3 $PWD/updMaxE.py
