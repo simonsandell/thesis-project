@@ -40,7 +40,8 @@ N = 0.0;
 strFn = "./foutput/teq/" + str(int(cold)) + "_" + str(int(L)) + "_" + fName + ".dat"
 M_teq = open(strFn,"w")
 
-TOL = 5 
+TOL = 4 
+relTOL = 0.5 
 for i in range(mat.shape[0]):
     #if new value of L or cold, make new outputfile
     if (abs(mat[i,10] - cold) >0.1):
@@ -59,11 +60,12 @@ for i in range(mat.shape[0]):
         strFn = "./foutput/teq/" + str(int(cold)) + "_" + str(int(L)) + "_" + fName + ".dat"
         M_teq = open(strFn,"w")
         #if new value of N_eq, take mean and write to file
-    elif (TOL < abs(mat[i,8] - Neq_sav)):
+    elif (relTOL < (1.0/(Neq_sav))*abs(mat[i,8] - Neq_sav)):
         writeToFiles(Mag,M_teq,N,Neq)
         N = 0;
         Neq_sav = float(mat[i,8])
     Mag.append(mat[i,3])
     Neq.append(mat[i,8])
+    Neq_sav = np.mean(Neq)
     N = N + 1.0   
 writeToFiles(Mag,M_teq,N,Neq)

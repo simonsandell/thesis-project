@@ -2,3 +2,4 @@
 #Retrieves raw data from the cluster
 currdir=${PWD##*/}
 rsync -u -v simsan@octopus.theophys.kth.se:~/exjobb/$currdir/output/* ./output/
+rsync -u -v simsan@octopus.theophys.kth.se:~/exjobb/$currdir/teqoutput/* ./teqoutput/
