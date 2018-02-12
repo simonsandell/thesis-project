@@ -4,8 +4,9 @@ sleep 1
 for i in {1..20}; do
 	qsub -t 1-6 -o $PWD/teqoutput/tempteq/ -p -1 runteqdef $PWD
 	echo $i
+	date +"%Y"
 	sleep 5
-	while [[ $(qstat) = *run2teqdef* ]]; do
+	while [[ $(qstat) = *runteqdef* ]]; do
 		sleep 5
 	done
 done
