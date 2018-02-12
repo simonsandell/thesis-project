@@ -1,0 +1,171 @@
+\documentclass[nocoverpage,swedish,g5paper]{thesis}
+%
+%   optional options to documentclass:
+%
+%   coverpage   : Create both cover, inside front and text.
+%                 Useful for web publishing.
+% 
+%   nocoverpage : Inner part of thesis only, do not create cover sheet.
+%                 Useful for printing.
+%   
+%   onlycoverpage : Only create cover page. Ignores all text.
+%                   Useful for printing.  
+%
+%   onlytext : Only print the text of the work. No cover and no inside front.
+%              Useful for proof-reading copies.
+%  
+%  g5paper, s5paper, a4paper : Choose paper format, 
+%
+%  9pt, 10pt, 11pt, 12pt : Choose typeface size.
+%
+%  draft, final : Draft marks errors with a black box in text.
+%
+%  openright, openany : openright makes chapters only open at
+%                       right hand pages.
+%
+%  * : Anything else is intepreted as the babel name of a
+%      foregin language which is applied to the 'foregincommand'.
+%
+%
+%  Default : s5paper,10pt,final,openright
+%
+%
+%
+%  required parameters
+%
+\title{Monte Carlo study of $\lambda$ transition in $^{4}$He}
+\author{Simon Sandell}
+\date{June 2018}
+\shortdate{2018}
+\type{Master Thesis}
+\department{Department of Theoretical Physics,\\School of Engineering Sciences}
+\address{SE-106 91 Stockholm, Sweden}
+\city{Stockholm}
+\country{Sweden}
+\publisher{Printed in Sweden by Universitetsservice US AB, Stockholm January 2010}
+\copyrightline{\copyright\ Simon Sandell, June 2018}
+\trita{FYS-9999:99}
+\isbn{999-99-9999-999-9}
+\issn{9999-999X}
+\isrn{KTH/FYS/-{}-99:99-{}-SE}
+\comment{Scientific thesis for the degree of Master in Science of Engineering (MSc) in the subject area of Theoretical physics.\\ \\ \textbf{Cover illustration:} Non-existent.}
+%
+%  optional parameters
+%
+\cplogo{\includegraphics[height=2.5cm]{./kthlogo.eps}}
+\innerlogo{\includegraphics[height=2.5cm]{./kthlogo.eps}}
+%\subtitle{A carefully crafted subtitle for people not settling with the\\usual title, giving yet longer, funnier, and better smelling, title}
+\division{Theoretical Particle Physics}
+\centercomment{\centerline{Typeset in \LaTeX}}
+%\foregincomment{Akademisk avhandling f\"or avl\"aggande av teknologie licentiatexamen (TeknL) inom
+%\"amnesomr{\aa}det teoretisk fysik.}
+%\dedication{To Someone}
+
+%\usepackage[swedish]{babel}
+\usepackage[dvips]{graphicx}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage[utf8]{inputenc}
+\usepackage{url}
+\usepackage[square, comma, sort&compress]{natbib}
+
+\unitlength=1mm
+
+\def\slc#1{\setbox0=\hbox{$#1$}           % set a box for #1
+    \dimen0=\wd0                                 % and get its size
+    \setbox1=\hbox{/} \dimen1=\wd1               % get size of /
+    \ifdim\dimen0>\dimen1                        % #1 is bigger
+       \rlap{\hbox to \dimen0{\hfil/\hfil}}      % so center / in box
+       #1                                        % and print #1
+    \else                                        % / is bigger
+       \rlap{\hbox to \dimen1{\hfil$#1$\hfil}}   % so center #1
+       /                                         % and print /
+    \fi}
+
+\newcommand{\todo}[1]{(\textbf{TODO:} #1)}
+\newcommand{\ud}{\mathrm{d}}
+\newcommand{\dd}[2]{\frac{{\rm d}#1}{{\rm d}#2}}
+\newcommand{\citeb}[1]{[\citen{#1}]}
+\newcommand{\Ref}{[{\bf REF}]}
+\newcommand{\Fig}{[{\bf FIG}]}
+\newcommand{\chk}{[{\bf CHECK}]}
+\newcommand{\im}{\mathrm{i}}
+\newcommand{\Mpl}{M_{\rm Pl}}
+\newcommand{\Mpr}{\bar{M}_{\rm Pl}}
+\newcommand{\Ms}{M_*}
+\newcommand{\Msr}{\bar{M}_*}
+\newcommand{\ie}{{\it i.e.}}
+\newcommand{\eg}{{\it e.g.}}
+\newcommand{\hc}{{\rm h.c.}}
+\newcommand{\trm}[1]{\textrm{#1}}
+
+\begin{document}
+
+%\def\@cite#1{[#1]}
+
+\begin{abstract}
+Put abstract here.
+
+And here.
+
+And here..
+\\\noindent \strut \\
+{\bf Key words}: Put keywords here.
+\end{abstract}
+
+%\begin{otherlanguage}{swedish}
+%\begin{foreginabstract}
+%\todo{Skriv ett abstract p{\aa} svenska.}
+%\\\noindent \strut \\
+%{\bf Nyckelord}: Extradimensionella kvantf{\"a}ltteorier, universella extra dimensioner, ADD-modeller, Kaluza--Klein-m\"ork materia, neutrinomassor, LHC-fenomenologi
+%\end{foreginabstract}
+%\end{otherlanguage}
+
+\begin{preface}
+\input{preface}
+\end{preface}
+
+\tableofcontents
+
+% This separates the introduction from the main part of the thesis.
+\mainmatter
+
+\part{Introduction and background material}
+
+\chapter{Introduction}
+\input{introduction}
+
+\chapter{Background}\label{ch:ExtraDimensions}
+\input{background}
+
+\chapter{Model}\label{ch:DarkMatter}
+\input{model}
+
+\chapter{Simulations}\label{ch:NeutrinoPhysics}
+\input{simulations}
+
+\chapter{Results}\label{ch:ColliderPhenomenology}
+\input{results}
+
+\chapter{Summary and conclusions}\label{ch:Summary}
+\input{summary}
+
+% This starts the appendices.
+%\appendix
+
+%\chapter{Appendix about something}
+%\input{appendix}
+
+\addcontentsline{toc}{chapter}{Bibliography}
+\bibliographystyle{thesis_bib_style}
+\bibliography{references}
+
+%\part{Scientific papers}
+
+%\input{prepapers}
+
+\end{document}
+
+
+
+
+

@@ -1,0 +1,27 @@
+%        File: preface.tex
+%     Created: mån feb 12 01:00  2018 C
+% Last Change: mån feb 12 01:00  2018 C
+%
+This is the background.
+
+\section{Monte Carlo}
+In statistical physics averages are calculated from 
+\begin{equation}
+  \langle A\rangle = \frac{1}{Z}\trm{Tr} e^{-H/T} = \sum_x A(x) P(x)
+  \label{}
+\end{equation}
+where  $P(x) = (1/Z)exp(-H(x))$ is the Boltzmann distribution.
+The practical and convievable way to evaluate these averages using Monte Carlo is to use importance sampling, i.e. do not form averages from uniformly random system configurations, but instead generate configurations that are Boltzmann distributed.   
+Thus thermal Monte Carlo averages have the form 
+\begin{equation}
+  \langle A \rangle = \frac{1}{N} \sum_x A(x) \pm \frac{\sigma	}{\sqrt N}
+  \label{}
+\end{equation}
+where the states $x$ are Boltzmann distributed.
+However, the Boltzmann distribution may be unsuitable for some systems/configurations we want to study, so we can use any other distribution as 
+\begin{equation}
+  \langle A \rangle = \frac{\frac{1}{N}\sum_y \frac{A(y) e^{-H(x)/T}}{P'(y)}}{\frac{1}{N}\sum_y \frac{e^{-H(y)/T}}{P'(y)}}  
+  \label{}
+\end{equation}
+ where the states $y$ are distributed according to $P'(y)$.
+

@@ -1,0 +1,23 @@
+%        File: preface.tex
+%     Created: mån feb 12 01:00  2018 C
+% Last Change: mån feb 12 01:00  2018 C
+%
+This is the simulations.
+
+\section{Histrogram extrapolation}
+Histogram extrapolation is a method to extract more data from a run. 
+Averages are calculated as
+\begin{equation}
+  \langle A \rangle_{\beta_0} =  \frac{\sum_{x}A_x e^{-\beta_0 H_x}}{\sum_{x}e^{-\beta_0 H_x}}
+  \label{}
+\end{equation}
+To get the average of A at some different temperature, say $\beta_1$, we can do
+\begin{align}
+  \langle A\rangle_{\beta_1} =  \frac{\sum_{x}A_x e^{-\beta_1 H_x}}{\sum_{x}e^{-\beta_1 H_x}} = \\
+  = \frac{\sum_x A_x e^{-(\beta_1 - \beta_0)H_x} e^{-\beta_0 H_x}}{\sum_x e^{-(\beta_1 - \beta_0)H_x}e^{-\beta_0 H_x}} = \\
+  = \frac{\langle A e^{-(\beta_1 - \beta_0)H}\rangle_{\beta_0}}{\langle e^{-(\beta_1 - \beta_0)H}\rangle_{\beta_0}}
+\end{align}
+Since the value of $abs(\beta_1 -\beta_0)$ will be small in practice, and the value of the energy will increase with the systemsize, precision will be lost in the calculation of $\exp\left( \beta_1 - \beta_0 \right)H_x$. To mitigate this, one can subtract a constant from the energy of the system, $H_max$, since a constant shift in energy will not change expectation values, since it just factors out of both sums and cancels.
+\section{Binder cumulant}
+The quantity $b =\frac{\langle M^4 \rangle}{\langle M^2\rangle^2}$ is useful in determining the critical temperature, as it in the thermodynamic limit $L\rightarrow \infty $ essentially becomes a heaviside function, discontinous at the critical temperature. Whats more is that the intersection point for Binder cumulants of different finite sizes depend weakly on the size, thus 
+
