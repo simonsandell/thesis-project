@@ -1,15 +1,15 @@
 #!/bin/bash
-mkdir $PWD/output/tempteq/
+mkdir $PWD/output/tempteqtwo/
 sleep 1
-for i in {1..3}; do
-	qsub -t 1-12 -o $PWD/output/tempteq/ -p -1 runteqdef $PWD
+for i in {1..10}; do
+	qsub -t 1-6 -o $PWD/output/tempteqtwo/ -p -1 run2teqdef $PWD
 	echo $i
 	sleep 20
-	while [[ $(qstat) = *runteqdef* ]]; do
+	while [[ $(qstat) = *run2teqdef* ]]; do
 		sleep 20
 	done
 done
-for filename in $PWD/output/tempteq/*; do
+for filename in $PWD/output/tempteqtwo/*; do
 	cat $filename >> $PWD/output/newTeqRun
 done
-rm -r $PWD/output/tempteq/
+rm -r $PWD/output/tempteqtwo/
