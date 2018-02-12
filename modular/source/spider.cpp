@@ -39,9 +39,6 @@ int main(int argc, char* argv[]){
 		cout << "wrong number of arguments" << endl;
 		exit(-1);
 	}
-	typedef numeric_limits<long double> dbl;
-
-	cout.precision(dbl::max_digits10 + 5);
 
 	long double runType = stod(argv[1]);
 	long double L= stod(argv[2]);
