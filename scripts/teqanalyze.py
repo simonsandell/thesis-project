@@ -10,13 +10,13 @@ def writeToFiles(Mag,M_teq,N,Neq):
         deltaM = np.std(Mag)/sqrtN;
         if math.isnan(deltaM):
             deltaM = 0;
-        M_teq.write(repr(meanNeq)+"    "+repr(meanM)+"    "+repr(deltaM)+"\n")
+        M_teq.write(repr(meanNeq)+"    "+repr(meanM)+"    "+repr(deltaM)+"    "+repr(N)+"\n")
         Mag[:]= []
         Neq[:]= []
         
 arguments = sys.argv
 fName = arguments[1]
-data0 = open("./output/" + fName,"r")
+data0 = open("./teqoutput/" + fName,"r")
 vals = []
 for ln in data0:
     strlist = ln.rsplit(" ")

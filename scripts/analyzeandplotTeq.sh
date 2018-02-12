@@ -1,6 +1,6 @@
 #!/bin/bash
 
-for filename in ./output/*; do
+for filename in ./teqoutput/*; do
 	python3 ../scripts/teqanalyze.py $(basename $filename)
 done
 
