@@ -2,7 +2,7 @@
 
 mkdir $PWD/output/parruns/
 sleep 1
-for i in {1..20}; do
+for i in {1..30}; do
 	qsub -t 1-6 -o $PWD/output/parruns/ -p -1 runmain $PWD
 	echo $i
 	sleep 60
