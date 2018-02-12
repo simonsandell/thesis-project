@@ -38,6 +38,12 @@
 .Trashes
 ehthumbs.db
 Thumbs.db
+# latex files
+*.aux
+*.ps
+*.pdf
+*.dvi
+
 # Directories containing raw and formatted data #
 #################################################
 output/
