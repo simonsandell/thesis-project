@@ -44,11 +44,13 @@ Thumbs.db
 *.pdf
 *.dvi
 
-# Directories containing raw and formatted data #
+# Directories 
 #################################################
 output/
 teqoutput/
 foutput/
 saved_output/
-# cluster output files
+test/
+# ocotpus cluster output files
+##############################
 run*.o*
