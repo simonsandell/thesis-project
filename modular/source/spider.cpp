@@ -11,14 +11,6 @@
 
 using namespace std;
 
-void wr( long double L,long double N_equil,long double N_samp,bool cold, long double* Temps,int N_temps){
-	//regular run
-	long double Temp;
-	for (int i = 0; i< N_temps; ++i){
-		Temp = Temps[i];
-		wolffRun(L,N_equil,N_samp,cold,Temp);
-	}
-}
 //generate range of temperatures
 long double * getTrange(long double start, long double end, int N){
 	long double dt = (end-start)/((long double)N-1.0L);

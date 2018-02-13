@@ -1,3 +1,4 @@
+
 #include <iostream>
 #include <random>
 #include <functional>
@@ -10,8 +11,7 @@
 #include "latticeOps.h"
 #include "ioFuncs.h"
 
-
-void wolffRun(long double L, long double N_equil_sweeps, long double Nsamples,bool cold,long double Temperature){
+void wolffRun(long double L,long double ***lattice,long double Neq_sweeps,long double Neq_clusts, long double N_sample_sweeps,bool cold,long double Temperature){
 
 	//initialize rng
 	unsigned long int s;
@@ -20,12 +20,8 @@ void wolffRun(long double L, long double N_equil_sweeps, long double Nsamples,bo
 	std::mt19937_64 eng; 
 	eng.seed(s);
 
-	//convert temp to betas
 	long double Beta = 1.0L/Temperature;		
-	long double Nspins = (L*L*L);
 
-	//initialize lattice
-	long double *** lattice = newLattice(L,cold,dist,eng);
 
 	//define and initialize cluster
 	bool***cluster;
@@ -39,7 +35,7 @@ void wolffRun(long double L, long double N_equil_sweeps, long double Nsamples,bo
 	for (int i = 0; i<L;++i){
 		for (int j=0; j<L;++j){
 			for (int k = 0; k<L; ++k){
-				cluster[i][j][k] = false;
+				cluster[i][j][k] = 0;
 			}
 		}
 	}
@@ -51,20 +47,7 @@ void wolffRun(long double L, long double N_equil_sweeps, long double Nsamples,bo
 	long double TotSinY = calcSinY(lattice,L);
 	long double TotSinZ = calcSinZ(lattice,L);
 
-	//Set equilibration time 
-	long double N_equil_steps= N_equil_sweeps*L*L*L;
-	//eqilibration 
-	int totEqSteps= 0;
-	int eqClusts = 0;
-	while (totEqSteps < N_equil_steps){
-		eqClusts++;
-		totEqSteps += growCluster(lattice,cluster,L,Beta,TotXMag,TotYMag,TotEn,TotSinX,TotSinY,TotSinZ,dist,eng);
-	}
-	long double eqSweeps = ((long double)totEqSteps)/Nspins;
 
-	//start collecting data
-	//parameters and physical quantities
-	//averages
 	long double avgE = 0.0L; //energy
 	long double avgE2 = 0.0L;//squared energy
 	long double avgM = 0.0L; //abs of magnetization
@@ -76,11 +59,14 @@ void wolffRun(long double L, long double N_equil_sweeps, long double Nsamples,bo
 	long double avgSinY2 = 0.0L; // for superfluid density 
 	long double avgSinZ2 = 0.0L; // for superfluid density 
 
-
-
-	for ( int i = 0; i < Nsamples; ++i){
+	int steps = 0;
+	int Nsample_clusts = 0;
+	long double leaststeps = N_sample_sweeps*L*L*L;
+	while (steps < leaststeps){
 		//make a cluster
-		growCluster(lattice,cluster,L,Beta,TotXMag,TotYMag,TotEn,TotSinX,TotSinY,TotSinZ,dist,eng);
+		steps += growCluster(lattice,cluster,L,Beta,TotXMag,TotYMag,TotEn,TotSinX,TotSinY,TotSinZ,dist,eng);
+		++Nsample_clusts;
+
 		//take sample data
 		avgE += TotEn;
 		avgE2 += TotEn*TotEn;
@@ -93,39 +79,48 @@ void wolffRun(long double L, long double N_equil_sweeps, long double Nsamples,bo
 		avgSinY2 += TotSinY*TotSinY;
 		avgSinZ2 += TotSinZ*TotSinZ;
 	}
+	long double actNsamp_sweeps = (long double)steps/(L*L*L);
 
+	//define some reciprocals to reduce number of divions
+	long double reciNsample_clusts= 1.0L/(long double)Nsample_clusts;
+	long double reciNspins = 1.0L/(L*L*L);
 
 	//calculate quantities of interest
 
-	//normalize
-	avgE /= Nsamples;
-	avgE2 /= Nsamples;
-	avgM /= Nsamples;
-	avgM2 /= Nsamples;
-	avgM4 /= Nsamples;
-	avgM2E /= Nsamples;
-	avgM4E /= Nsamples;
-	avgSinX2 /= Nsamples;
-	avgSinY2 /= Nsamples;
-	avgSinZ2 /= Nsamples;
-	
-
-	//derived quantites
+	long double Eps = 0.0L;//energy per spin
+	long double Mps = 0.0L;//magnetization per spin
 	long double xi = 0.0L;//susceptibility
 	long double b = 0.0L; //Binder parameter
 	long double dbdt = 0.0L;//derivative wrt T of Binder parameter
 	long double rs = 0.0L;//superfluid density
-	long double Eps = avgE/Nspins;//energy per spin
-	long double Mps = avgM/Nspins;//mag per spin
+
+
+	//normalize
+	avgE *= reciNsample_clusts;
+	avgE2 *= reciNsample_clusts;
+	avgM *= reciNsample_clusts;
+	avgM2 *= reciNsample_clusts;
+	avgM4 *= reciNsample_clusts;
+	avgM2E *= reciNsample_clusts;
+	avgM4E *= reciNsample_clusts;
+	avgSinX2 *= reciNsample_clusts;
+	avgSinY2 *= reciNsample_clusts;
+	avgSinZ2 *= reciNsample_clusts;
+
 	//calculate
-	
-	b = avgM4/(avgM2*avgM2);
+	b = avgM4;
+	b /= (avgM2*avgM2);
 	dbdt = avgM4E*avgM2 + avgM4*avgM2*avgE - 2.0L*avgM4*avgM2E;
+	dbdt *= Beta*Beta;
 	dbdt /= avgM2*avgM2*avgM2;
-	dbdt /= Temperature*Temperature;
 	xi = avgM2 - avgM*avgM;
-	xi /= (Nspins*Temperature);
-	rs = (-(avgE/(L*L*3.0L))- (avgSinX2/(Temperature*L*L*3.0L)) - (avgSinY2/(Temperature*L*L*3.0L)) -(avgSinZ2/(Temperature*L*L*3.0L))) ;
-	printOutput(L,Temperature,Eps,Mps,b,dbdt,xi,rs,eqSweeps,eqClusts,cold);
-	
+	xi *= reciNspins;
+	xi *= Beta;
+	rs = -avgE - (Beta)*avgSinX2 -(Beta)*avgSinY2 -(Beta)*avgSinZ2;
+	rs *= (1.0L/3.0L)*L*reciNspins; 
+
+	Eps = avgE*reciNspins;
+	Mps = avgM*reciNspins;
+	printOutput(L,Temperature,Eps,Mps,b,dbdt,xi,rs,Neq_sweeps,Neq_clusts,actNsamp_sweeps,Nsample_clusts,cold);
+
 }
