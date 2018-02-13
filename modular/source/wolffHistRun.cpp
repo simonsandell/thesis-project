@@ -11,7 +11,7 @@
 #include "latticeOps.h"
 #include "ioFuncs.h"
 
-void wolffHistRun(long double L,long double ***lattice,long double Neq_sweeps,long double Neq_clusts, long double N_samples,bool cold,long double *Temperatures,int N_temps,long double runTemp){
+void wolffHistRun(long double L,long double ***lattice,long double Neq_sweeps,long double Neq_clusts, long double N_sample_sweeps,bool cold,long double *Temperatures,int N_temps,long double runTemp){
 
 	//initialize rng
 	unsigned long int s;
@@ -27,9 +27,6 @@ void wolffHistRun(long double L,long double ***lattice,long double Neq_sweeps,lo
 	}
 	long double Temperature = runTemp;
 	long double Beta = 1.0L/Temperature;		
-	//define some reciprocals to reduce number of divions
-	long double reciNsamples = 1.0L/N_samples;
-	long double reciNspins = 1.0L/(L*L*L);
 
 
 	//define and initialize cluster
@@ -75,14 +72,18 @@ void wolffHistRun(long double L,long double ***lattice,long double Neq_sweeps,lo
 	long double maxTotE = getMaxE(L); 
 	long double expCorr = 0.0L;
 
-	for ( int j = 0; j < N_samples; ++j){
+	int steps = 0;
+	int Nsample_clusts = 0;
+	long double leaststeps = N_sample_sweeps*L*L*L;
+	while (steps < leaststeps){
 		//make a cluster
-		growCluster(lattice,cluster,L,Beta,TotXMag,TotYMag,TotEn,TotSinX,TotSinY,TotSinZ,dist,eng);
+		steps += growCluster(lattice,cluster,L,Beta,TotXMag,TotYMag,TotEn,TotSinX,TotSinY,TotSinZ,dist,eng);
+		++Nsample_clusts;
 
 		//update maxE if necessary
 		
 		if (std::abs(TotEn) > std::abs(maxTotE)){
-			if (j > 0){
+			if (avgE[0] != 0.0L){
 				expCorr = exp(-maxTotE +TotEn);	
 				for (int k = 0; k<N_temps;++k){
 					avgExpFac[k] *= expCorr;
@@ -116,7 +117,11 @@ void wolffHistRun(long double L,long double ***lattice,long double Neq_sweeps,lo
 			avgSinZ2[i] += TotSinZ*TotSinZ*expFac;
 		}
 	}
+	long double actNsamp_sweeps = (long double)steps/(L*L*L);
 
+	//define some reciprocals to reduce number of divions
+	long double reciNsample_clusts= 1.0L/(long double)Nsample_clusts;
+	long double reciNspins = 1.0L/(L*L*L);
 
 	//calculate quantities of interest
 	long double reciExpFac = 0.0L;
@@ -131,18 +136,18 @@ void wolffHistRun(long double L,long double ***lattice,long double Neq_sweeps,lo
 
 
 		//normalize
-		avgExpFac[i] *= reciNsamples;
+		avgExpFac[i] *= reciNsample_clusts;
 		reciExpFac = 1.0L/avgExpFac[i];
-		avgE[i] *= reciNsamples;
-		avgE2[i] *= reciNsamples;
-		avgM[i] *= reciNsamples;
-		avgM2[i] *= reciNsamples;
-		avgM4[i] *= reciNsamples;
-		avgM2E[i] *= reciNsamples;
-		avgM4E[i] *= reciNsamples;
-		avgSinX2[i] *= reciNsamples;
-		avgSinY2[i] *= reciNsamples;
-		avgSinZ2[i] *= reciNsamples;
+		avgE[i] *= reciNsample_clusts;
+		avgE2[i] *= reciNsample_clusts;
+		avgM[i] *= reciNsample_clusts;
+		avgM2[i] *= reciNsample_clusts;
+		avgM4[i] *= reciNsample_clusts;
+		avgM2E[i] *= reciNsample_clusts;
+		avgM4E[i] *= reciNsample_clusts;
+		avgSinX2[i] *= reciNsample_clusts;
+		avgSinY2[i] *= reciNsample_clusts;
+		avgSinZ2[i] *= reciNsample_clusts;
 
 		avgE[i] *= reciExpFac;
 		avgE2[i] *= reciExpFac;
@@ -170,7 +175,7 @@ void wolffHistRun(long double L,long double ***lattice,long double Neq_sweeps,lo
 		Mps[i] = avgM[i]*reciNspins;
 	}
 	for (int i = 0;i< N_temps; ++i){
-		printOutput(L,Temperatures[i],Eps[i],Mps[i],b[i],dbdt[i],xi[i],rs[i],Neq_sweeps,Neq_clusts,cold);
+		printOutput(L,Temperatures[i],Eps[i],Mps[i],b[i],dbdt[i],xi[i],rs[i],Neq_sweeps,Neq_clusts,actNsamp_sweeps,Nsample_clusts,cold);
 
 	}
 	if (expCorr != 0.0L){

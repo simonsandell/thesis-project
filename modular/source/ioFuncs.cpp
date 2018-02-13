@@ -25,7 +25,7 @@ std::string get_selfpath(){
 	}
 }
 
-void printOutput(long double L,long double T, long double E, long double M, long double bin, long double dbdt,long double xi,long double rs, long double N_eq_sweeps, int N_eq_clusts,bool cold){
+void printOutput(long double L,long double T, long double E, long double M, long double bin, long double dbdt,long double xi,long double rs, long double N_eq_sweeps, int N_eq_clusts,long double N_samp_sweeps, int N_samp_clusts,bool cold){
 	typedef std::numeric_limits<long double> dbl;
 
 	std::cout.precision(dbl::max_digits10 + 5);
@@ -40,6 +40,8 @@ void printOutput(long double L,long double T, long double E, long double M, long
 	std::cout << std::fixed << rs << " ";
 	std::cout << std::fixed << N_eq_sweeps << " "; 
 	std::cout << std::fixed << N_eq_clusts << " "; 
+	std::cout << std::fixed << N_samp_sweeps << " "; 
+	std::cout << std::fixed << N_samp_clusts << " "; 
 	std::cout << cold << " "; 
 	std::cout << std::fixed << std::endl;
 }
