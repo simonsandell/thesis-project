@@ -25,9 +25,13 @@ for ln in data0:
     fllist = [decimal.Decimal(x) for x in strlist] 
     vals.append(fllist)
 
+#################################
+# Format::
+# 0      1      2      3      4      5      6      7      8      9      10      11      12      
+# L      T      E      M      B      dBdT   xi     rs     eqsw   eqcl   smsw    smcl    cold
 #sort by L, N_equil, T 
 mat = np.array(vals)
-ind = np.lexsort((mat[:,7],mat[:,6],mat[:,5],mat[:,4],mat[:,3],mat[:,2],mat[:,1],mat[:,9],mat[:,8],mat[:,10],mat[:,0]))
+ind = np.lexsort((mat[:,11],mat[:,10],mat[:,7],mat[:,6],mat[:,5],mat[:,4],mat[:,3],mat[:,2],mat[:,1],mat[:,9],mat[:,8],mat[:,12],mat[:,0]))
 mat = mat[ind]
 
 cold = decimal.Decimal(mat[0,10])

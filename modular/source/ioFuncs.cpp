@@ -30,20 +30,20 @@ void printOutput(long double L,long double T, long double E, long double M, long
 
 	std::cout.precision(dbl::max_digits10 + 5);
 
-	std::cout << std::fixed << L << " ";
-	std::cout << std::fixed << T << " ";
-	std::cout << std::fixed << E << " ";
-	std::cout << std::fixed << M << " ";
-	std::cout << std::fixed << bin << " ";
-	std::cout << std::fixed << dbdt << " ";
-	std::cout << std::fixed << xi << " ";
-	std::cout << std::fixed << rs << " ";
-	std::cout << std::fixed << N_eq_sweeps << " "; 
-	std::cout << std::fixed << N_eq_clusts << " "; 
-	std::cout << std::fixed << N_samp_sweeps << " "; 
-	std::cout << std::fixed << N_samp_clusts << " "; 
-	std::cout << cold << " "; 
-	std::cout << std::fixed << std::endl;
+	std::cout << std::fixed << L << " ";				//0
+	std::cout << std::fixed << T << " ";				//1
+	std::cout << std::fixed << E << " ";				//2
+	std::cout << std::fixed << M << " ";				//3
+	std::cout << std::fixed << bin << " ";				//4
+	std::cout << std::fixed << dbdt << " ";				//5
+	std::cout << std::fixed << xi << " ";				//6
+	std::cout << std::fixed << rs << " ";				//7
+	std::cout << std::fixed << N_eq_sweeps << " ";			//8
+	std::cout << std::fixed << N_eq_clusts << " "; 			//9
+	std::cout << std::fixed << N_samp_sweeps << " ";		//10
+	std::cout << std::fixed << N_samp_clusts << " "; 		//11
+	std::cout << cold << " "; 					//12
+	std::cout << std::endl;				
 }
 
 long double getMaxE(long double L){
