@@ -1,5 +1,5 @@
 #!/bin/bash
-for filename in /home/simsan/exjobb/modular/output/parruns/run*; do
-	cat $filename >> /home/simsan/exjobb/modular/output/test_Emax
+for filename in /home/simsan/exjobb/modular/output/temphist/*; do
+	cat $filename >> /home/simsan/exjobb/modular/output/histWolff
 done
-rm -r /home/simsan/exjobb/modular/output/parruns/
+rm -r /home/simsan/exjobb/modular/output/temphist/

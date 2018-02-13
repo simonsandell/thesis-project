@@ -32,4 +32,5 @@ for l in lists:
             maxV = v;
     Wfile = open(directory + str(l) + "_maxE.txt","w")
     Wfile.write(repr(maxV))
+    Wfile.close();
 

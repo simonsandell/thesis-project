@@ -1,0 +1,18 @@
+#!/bin/bash
+
+mkdir $PWD/output/temphist/
+sleep 1
+for i in {1..10}; do
+	qsub -t 1-6 -o $PWD/output/temphist/ -p -1 runhistdef $PWD
+	echo $i
+	date +"%T"
+	sleep 60
+	while [[ $(qstat) = *runhistdef* ]]; do
+		sleep 60
+	done
+done
+for filename in $PWD/output/temphist/*; do
+	cat $filename >> $PWD/output/histWolff
+done
+rm -r $PWD/output/temphist/
+python3 $PWD/updMaxE.py

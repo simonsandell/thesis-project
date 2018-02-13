@@ -5,7 +5,7 @@ sleep 1
 for i in {1..30}; do
 	qsub -t 1-6 -o $PWD/output/parruns/ -p -1 runmain $PWD
 	echo $i
-	date +"%Y"
+	date +"%T"
 	sleep 60
 	while [[ $(qstat) = *runmain* ]]; do
 		sleep 60
