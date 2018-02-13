@@ -1,5 +1,11 @@
 #include <cmath>
+#include <unistd.h>
+#include <sys/syscall.h>
 #include <random>
+
+#include "calcQuants.h"
+#include "wolff.h"
+#include "ioFuncs.h"
 
 //clear the cluster
 void emptyCluster(bool***cluster,long double &L){
@@ -78,6 +84,58 @@ long double*** newLattice(long double L,bool cold,std::uniform_real_distribution
 				}
 			}
 		}
+	}
+	return lattice;
+}
+
+long double ***warmup( long double L,long double N_equil,bool cold, long double runTemp,bool save){
+	//initialize rng
+	unsigned long int s;
+	syscall(SYS_getrandom,&s,sizeof(unsigned long int),0);	
+	std::uniform_real_distribution<long double> dist(0.0L,1.0L);
+	std::mt19937_64 eng; 
+	eng.seed(s);
+
+
+	long double Nspins = L*L*L;
+	long double Beta = 1.0L/runTemp;
+	//initialize lattice
+	long double *** lattice = newLattice(L,cold,dist,eng);
+
+	//define and initialize cluster
+	bool***cluster;
+	cluster = new bool**[(int)L];
+	for (int i = 0; i< L;++i){
+		cluster[i] = new bool*[(int)L];
+		for (int j =0;j<L;++j){
+			cluster[i][j] = new bool[(int)L];
+		}
+	}
+	for (int i = 0; i<L;++i){
+		for (int j=0; j<L;++j){
+			for (int k = 0; k<L; ++k){
+				cluster[i][j][k] = false;
+			}
+		}
+	}
+	long double TotEn = calcEn(lattice,L);
+	long double TotXMag = calcXMag(lattice,L);
+	long double TotYMag = calcYMag(lattice,L);
+	long double TotSinX = calcSinX(lattice,L);
+	long double TotSinY = calcSinY(lattice,L);
+	long double TotSinZ = calcSinZ(lattice,L);
+
+	long double N_equil_steps= N_equil*Nspins;
+	//eqilibration 
+	int totEqSteps= 0;
+	long double Nclusts = 0.0L;
+	while (totEqSteps < N_equil_steps){
+		totEqSteps += growCluster(lattice,cluster,L,Beta,TotXMag,TotYMag,TotEn,TotSinX,TotSinY,TotSinZ,dist,eng);
+		++Nclusts;
+	}
+	long double actualNsweeps = totEqSteps/(L*L*L);
+	if (save){
+	saveLattice(L,actualNsweeps,Nclusts,lattice);
 	}
 	return lattice;
 }

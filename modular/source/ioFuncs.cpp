@@ -72,3 +72,53 @@ void setMaxE(long double L,long double newE){
 	file.precision(dbl::max_digits10 +2);
 	file << std::fixed << newE;
 }
+
+void saveLattice(long double L,long double Neqsw,long double Neqcl, long double***lattice){
+
+	std::ostringstream mstream;
+	std::string exePath = get_selfpath();
+	mstream << exePath<< "/warmLattice/" << L <<"_warm.lat";
+	std::string fname = mstream.str();
+	std::ofstream file;
+	file.open(fname);
+	//first values saved is the number of equilibration sweeps and clusters
+	file << Neqsw;
+	file << " ";
+	file << Neqcl;
+	file << " ";
+
+	typedef std::numeric_limits<long double> dbl;
+	file.precision(dbl::max_digits10 +2);
+	for (int p = 0; p<L; ++p){
+		for (int q = 0; q<L; ++q){
+			for (int r = 0; r<L; ++r){
+				file << std::fixed << lattice[p][q][r];
+				file << " ";
+			}
+		}
+	}
+}
+long double *** getLattice(long double L,long double & Neqsw,long double& Neqcl){
+
+	std::ostringstream mstream;
+	std::string exePath = get_selfpath();
+	mstream << exePath << "/warmLattice/" << L << "_warm.lat";
+	std::string fname = mstream.str();
+	std::ifstream file(fname);
+	//first value saved is actually the # of equilibration sweeps.
+	file >> Neqsw;
+	file >> Neqcl;
+	long double ***lattice;
+	lattice = new long double **[(int)L];
+	for (int i = 0; i< L;++i){
+		lattice[i] = new long double *[(int)L];
+		for (int j =0;j<L;++j){
+			lattice[i][j] = new long double[(int)L];
+			for (int k =0; k<L; ++k){
+				file >> lattice[i][j][k];
+			}
+		}
+	}
+	return lattice;
+}
+

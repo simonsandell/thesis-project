@@ -7,7 +7,9 @@ long double getMaxE(long double L);
 
 void setMaxE(long double L,long double newE);
 
+void saveLattice(long double L,long double Neqsw,long double Neqcl,long double *** lattice);
 
+long double ***getLattice(long double L,long double&Neqsw,long double&Neqcl);
 
 
 

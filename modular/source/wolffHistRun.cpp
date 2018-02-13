@@ -11,7 +11,7 @@
 #include "latticeOps.h"
 #include "ioFuncs.h"
 
-void wolffHistRun(long double L, long double N_equil_sweeps, long double N_samples,bool cold,long double *Temperatures,int N_temps,long double runTemp){
+void wolffHistRun(long double L,long double ***lattice,long double Neq_sweeps,long double Neq_clusts, long double N_samples,bool cold,long double *Temperatures,int N_temps,long double runTemp){
 
 	//initialize rng
 	unsigned long int s;
@@ -31,8 +31,6 @@ void wolffHistRun(long double L, long double N_equil_sweeps, long double N_sampl
 	long double reciNsamples = 1.0L/N_samples;
 	long double reciNspins = 1.0L/(L*L*L);
 
-	//initialize lattice
-	long double *** lattice = newLattice(L,cold,dist,eng);
 
 	//define and initialize cluster
 	bool***cluster;
@@ -58,16 +56,6 @@ void wolffHistRun(long double L, long double N_equil_sweeps, long double N_sampl
 	long double TotSinY = calcSinY(lattice,L);
 	long double TotSinZ = calcSinZ(lattice,L);
 
-	//Set equilibration time 
-	long double N_equil_steps= N_equil_sweeps*L*L*L;
-	//eqilibration 
-	int totEqSteps= 0;
-	int eqClusts =0;
-	while (totEqSteps < N_equil_steps){
-		eqClusts++;
-		totEqSteps += growCluster(lattice,cluster,L,Beta,TotXMag,TotYMag,TotEn,TotSinX,TotSinY,TotSinZ,dist,eng);
-	}
-	long double eqSweeps = ((long double)totEqSteps)*reciNspins;
 
 	long double avgE[N_temps] = {}; //energy
 	long double avgE2[N_temps] = {};//squared energy
@@ -182,7 +170,7 @@ void wolffHistRun(long double L, long double N_equil_sweeps, long double N_sampl
 		Mps[i] = avgM[i]*reciNspins;
 	}
 	for (int i = 0;i< N_temps; ++i){
-		printOutput(L,Temperatures[i],Eps[i],Mps[i],b[i],dbdt[i],xi[i],rs[i],eqSweeps,eqClusts,cold);
+		printOutput(L,Temperatures[i],Eps[i],Mps[i],b[i],dbdt[i],xi[i],rs[i],Neq_sweeps,Neq_clusts,cold);
 
 	}
 	if (expCorr != 0.0L){
