@@ -96,7 +96,7 @@ long double*** newLattice(long double L,bool cold){
 	return lattice;
 }
 
-long double ***warmup( long double L,long double ***lattice,long double N_equil, long double runTemp,bool save){
+long double ***warmup( long double L,long double ***lattice,long double &N_equil_sweeps,long double &N_equil_clusts, long double runTemp,bool save){
 	//initialize rng
 	unsigned long int s;
 	syscall(SYS_getrandom,&s,sizeof(unsigned long int),0);	
@@ -130,7 +130,7 @@ long double ***warmup( long double L,long double ***lattice,long double N_equil,
 	long double TotSinY = calcSinY(lattice,L);
 	long double TotSinZ = calcSinZ(lattice,L);
 
-	long double N_equil_steps= N_equil*Nspins;
+	long double N_equil_steps= N_equil_sweeps*Nspins;
 	//eqilibration 
 	int totEqSteps= 0;
 	long double Nclusts = 0.0L;
@@ -142,5 +142,7 @@ long double ***warmup( long double L,long double ***lattice,long double N_equil,
 	if (save){
 		saveLattice(L,actualNsweeps,Nclusts,lattice);
 	}
+	N_equil_sweeps = actualNsweeps;
+	N_equil_clusts = Nclusts;
 	return lattice;
 }

@@ -5,12 +5,45 @@
 #include <limits>
 
 #include "ioFuncs.h"
+#include "calcQuants.h"
 #include "latticeOps.h"
 #include "wolffRun.h"
 #include "wolffHistRun.h"
 
 using namespace std;
-
+//warmup and save to file
+void warmupandsave(long double L,long double Neq,bool cold,long double runTemp){
+	long double ***lattice = newLattice(L,cold);
+	bool save = true;
+	long double Ncl;
+	warmup(L,lattice,Neq,Ncl,runTemp,save);
+}
+//runhist
+void runhist(long double L,long double***lattice,long double Neqsw,long double Neqcl,long double Nsamp,bool cold,long double*Trange,long double Ntemps,long double runTemp,long double Nreps,long double Nwarmup){
+	long double Ncl;
+	bool save = false;
+	for (int i = 0; i< Nreps; ++i){
+		warmup(L,lattice,Nwarmup,Ncl,runTemp,save);
+		wolffHistRun(L,lattice,Neqsw,Neqcl,Nsamp,cold,Trange,Ntemps,runTemp);
+	}
+}
+//runteq
+void runteq(long double L,bool cold,long double runTemp){
+	long double Nwarms= 4.0L;
+	long double Neqsw;
+	long double Neqcl;
+	long double Nsamples = 1;
+	bool save = false;
+	
+	long double ***lattice = newLattice(L,cold);
+	for (int i =0; i<15; ++i){
+		Neqsw = Nwarms;
+		lattice= newLattice(L,cold);
+		warmup(L,lattice,Neqsw,Neqcl,runTemp,save);
+		wolffRun(L,lattice,Neqsw,Neqcl,Nsamples ,cold,runTemp);
+		Nwarms *= 2.0L;
+	}
+}
 //generate range of temperatures
 long double * getTrange(long double start, long double end, int N){
 	long double dt = (end-start)/((long double)N-1.0L);
@@ -28,11 +61,10 @@ int main(int argc, char* argv[]){
 	//Set Run Parameters
 	//
 	//
-	
+
 	string runNumber = argv[1];
 
 	long double 	L =			4.0L;
-	long double 	Nreps = 		10000.0L;
 	long double	startT=			2.200L;
 	long double	endT=			2.204L;
 	long double	Ntemps=			30.0L;
@@ -55,29 +87,37 @@ int main(int argc, char* argv[]){
 
 	//Initial warmups
 	if (runNumber == "saveWarmup"){
-		lattice = newLattice(4.0L,cold);	
-		save = true;
-		warmup(L,lattice,Neq,runTemp,save);
+		warmupandsave(L,Neq,cold,runTemp);
 		L = 8.0L;
-		lattice = newLattice(L,cold);
-		warmup(L,lattice,Neq,runTemp,save);
+		warmupandsave(L,Neq,cold,runTemp);
 		exit(0);
 	}
-
-	long double Neqsw;
-	long double Neqcl;
-
-	save = false;
-	L = 4.0L;
-	lattice = getLattice(L,Neqsw,Neqcl);
-	for (int i = 0; i< Nreps; ++i){
-		warmup(L,lattice,100,runTemp,save);
-		wolffHistRun(L,lattice,Neqsw,Neqcl,Nsamp,cold,Trange,Ntemps,runTemp);
+	if (runNumber == "histRun"){
+		long double Neqsw;
+		long double Neqcl;
+		long double Nreps = 10000.0L;
+		long double Nwarmup = 100.0L;
+		save = false;
+		L = 4.0L;
+		lattice = getLattice(L,Neqsw,Neqcl);
+		runhist(L,lattice, Neqsw, Neqcl, Nsamp,cold,Trange, Ntemps, runTemp, Nreps, Nwarmup);
+		L = 8.0L;
+		lattice = getLattice(L,Neqsw,Neqcl);
+		runhist(L,lattice, Neqsw, Neqcl, Nsamp,cold,Trange, Ntemps, runTemp, Nreps, Nwarmup);
 	}
-	L = 8.0L;
-	lattice = getLattice(L,Neqsw,Neqcl);
-	for (int i = 0; i< Nreps; ++i){
-		warmup(L,lattice,100,runTemp,save);
-		wolffHistRun(L,lattice,Neqsw,Neqcl,Nsamp,cold,Trange,Ntemps,runTemp);
+	if (runNumber == "teqRun"){
+		bool cold;
+		int N_teq = 100;
+		for (int i = 0; i< N_teq; ++i){
+			cold	= false;
+			runteq(4.0L,cold,runTemp);
+			runteq(8.0L,cold,runTemp);
+			runteq(16.0L,cold,runTemp);
+			cold = false;
+			runteq(4.0L,cold,runTemp);
+			runteq(8.0L,cold,runTemp);
+			runteq(16.0L,cold,runTemp);
+		}
 	}
+
 }
