@@ -1,4 +1,5 @@
 #include <cmath>
+#include <string>
 #include <unistd.h>
 #include <sys/syscall.h>
 #include <random>
@@ -57,7 +58,8 @@ long double sinZ(long double ***lattice,long double &L, int &s1, int &s2, int &s
 	ret = sin(lattice[s1][s2][nm] - angle) + sin(angle - lattice[s1][s2][np]);
 	return ret;
 }
-long double*** newLattice(long double L,bool cold,std::uniform_real_distribution<long double> &dist,std::mt19937_64 &eng){
+long double*** newLattice(long double L,bool cold){
+	//make new lattice
 	long double ***lattice;
 	lattice = new long double **[(int)L];
 	for (int i = 0; i< L;++i){
@@ -77,6 +79,12 @@ long double*** newLattice(long double L,bool cold,std::uniform_real_distribution
 		}
 	}
 	else {
+		//initialize rng
+		unsigned long int s;
+		syscall(SYS_getrandom,&s,sizeof(unsigned long int),0);	
+		std::uniform_real_distribution<long double> dist(0.0L,1.0L);
+		std::mt19937_64 eng; 
+		eng.seed(s);
 		for (int i = 0; i<L;++i){
 			for (int j=0; j<L;++j){
 				for (int k = 0; k<L; ++k){
@@ -88,7 +96,7 @@ long double*** newLattice(long double L,bool cold,std::uniform_real_distribution
 	return lattice;
 }
 
-long double ***warmup( long double L,long double N_equil,bool cold, long double runTemp,bool save){
+long double ***warmup( long double L,long double ***lattice,long double N_equil, long double runTemp,bool save,std::string runNumber){
 	//initialize rng
 	unsigned long int s;
 	syscall(SYS_getrandom,&s,sizeof(unsigned long int),0);	
@@ -99,9 +107,6 @@ long double ***warmup( long double L,long double N_equil,bool cold, long double 
 
 	long double Nspins = L*L*L;
 	long double Beta = 1.0L/runTemp;
-	//initialize lattice
-	long double *** lattice = newLattice(L,cold,dist,eng);
-
 	//define and initialize cluster
 	bool***cluster;
 	cluster = new bool**[(int)L];
@@ -135,7 +140,7 @@ long double ***warmup( long double L,long double N_equil,bool cold, long double 
 	}
 	long double actualNsweeps = totEqSteps/(L*L*L);
 	if (save){
-	saveLattice(L,actualNsweeps,Nclusts,lattice);
+		saveLattice(L,actualNsweeps,Nclusts,lattice,runNumber);
 	}
 	return lattice;
 }
