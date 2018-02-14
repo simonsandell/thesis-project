@@ -1,4 +1,3 @@
-import decimal
 import sys
 import numpy as np
 import math
@@ -11,7 +10,7 @@ def writeToFiles(En,Mag,Bin,Dbdt,Xi,Rs,EF,MF,BF,DF,XF,RF,N,T,Neq):
         meanD = np.mean(Dbdt);
         meanX = np.mean(Xi);
         meanR = np.mean(Rs);
-        sqrtN = N.sqrt();
+        sqrtN = pow(N,0.5);
         deltaE = np.std(En)/sqrtN;
         deltaM = np.std(Mag)/sqrtN;
         deltaB = np.std(Bin)/sqrtN;
@@ -19,17 +18,17 @@ def writeToFiles(En,Mag,Bin,Dbdt,Xi,Rs,EF,MF,BF,DF,XF,RF,N,T,Neq):
         deltaX = np.std(Xi)/sqrtN;
         deltaR = np.std(Rs)/sqrtN;
         if math.isnan(deltaE):
-            deltaE = decimal.Decimal('0');
+            deltaE = float('0');
         if math.isnan(deltaM):
-            deltaM = decimal.Decimal('0');
+            deltaM = float('0');
         if math.isnan(deltaB):
-            deltaB = decimal.Decimal('0');
+            deltaB = float('0');
         if math.isnan(deltaD):
-            deltaD = decimal.Decimal('0');
+            deltaD = float('0');
         if math.isnan(deltaX):
-            deltaX = decimal.Decimal('0');
+            deltaX = float('0');
         if math.isnan(deltaR):
-            deltaR = decimal.Decimal('0');
+            deltaR = float('0');
         EF.write(str(T)+"    "+str(meanE)+"    "+str(deltaE)+"    "+str(N)+"\n")
         MF.write(str(T)+"    "+str(meanM)+"    "+str(deltaM)+"    "+str(N)+"\n")
         BF.write(str(T)+"    "+str(meanB)+"    "+str(deltaB)+"    "+str(N)+"\n")
@@ -56,7 +55,7 @@ vals = []
 for ln in data0:
     strlist = ln.rsplit(" ")
     strlist = [x for x in strlist if not (x=="\n")]
-    fllist = [decimal.Decimal(x) for x in strlist] 
+    fllist = [float(x) for x in strlist] 
     vals.append(fllist)
 
 #sort by L, T, N_equil in that order    
@@ -76,7 +75,7 @@ Xi=[];
 Rs=[];
 NeqSw=[];
 NeqCl=[];
-N = decimal.Decimal('0.0');
+N = float('0.0');
 
 #open files for writing
 #separate files for different systemsizes
@@ -88,15 +87,15 @@ DF = open("./foutput/dbdt/"+str(int(L))+"_"+fName+".dat","w")
 XF = open("./foutput/xi/"+str(int(L))+"_"+fName+".dat","w")
 RF = open("./foutput/rs/"+str(int(L))+"_"+fName+".dat","w")
 
-TOL = decimal.Decimal('0.0000000000001');
+TOL = float('0.0000000000001');
 for i in range(mat.shape[0]):
     #if new value of L, make new outputfile
     if(TOL < abs(mat[i,0] - L)):
         writeToFiles(En,Mag,Bin,Dbdt,Xi,Rs,EF,MF,BF,DF,XF,RF,N,T,Neq)
         N=0;
-        L = decimal.Decimal(mat[i,0])
-        T = decimal.Decimal(mat[i,1])
-        Neq = decimal.Decimal(mat[i,8])
+        L = float(mat[i,0])
+        T = float(mat[i,1])
+        Neq = float(mat[i,8])
         EF = open("./foutput/en/"+str(int(L))+"_"+fName+".dat","w")
         MF = open("./foutput/mag/"+str(int(L))+"_"+fName+".dat","w")
         BF = open("./foutput/bin/"+str(int(L))+"_"+fName+".dat","w")
@@ -106,8 +105,8 @@ for i in range(mat.shape[0]):
     elif(TOL < abs(mat[i,1] - T)):
         writeToFiles(En,Mag,Bin,Dbdt,Xi,Rs,EF,MF,BF,DF,XF,RF,N,T,Neq)
         N=0;
-        T = decimal.Decimal(mat[i,1])
-        Neq = decimal.Decimal(mat[i,8])
+        T = float(mat[i,1])
+        Neq = float(mat[i,8])
     #normally just append to lists
     En.append(mat[i,2])
     Mag.append(mat[i,3])
@@ -117,5 +116,5 @@ for i in range(mat.shape[0]):
     Rs.append(mat[i,7])
     NeqSw.append(mat[i,8])
     NeqCl.append(mat[i,9])
-    N = N + decimal.Decimal('1.0')
+    N = N + float('1.0')
 writeToFiles(En,Mag,Bin,Dbdt,Xi,Rs,EF,MF,BF,DF,XF,RF,N,T,Neq)
