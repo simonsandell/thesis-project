@@ -50,29 +50,34 @@ int main(int argc, char* argv[]){
 	}
 	long double runTemp = Trange[(int)(Ntemps/2)];
 
+	bool save;
+	long double ***lattice;
 
 	//Initial warmups
-	long double ***lattice = newLattice(4.0L,cold);	
-	bool save = true;
-	warmup(L,lattice,Neq,runTemp,save,runNumber);
-	L = 8.0L;
-	lattice = newLattice(L,cold);
-	warmup(L,lattice,Neq,runTemp,save,runNumber);
+	if (runNumber == "saveWarmup"){
+		lattice = newLattice(4.0L,cold);	
+		save = true;
+		warmup(L,lattice,Neq,runTemp,save);
+		L = 8.0L;
+		lattice = newLattice(L,cold);
+		warmup(L,lattice,Neq,runTemp,save);
+		exit(0);
+	}
 
 	long double Neqsw;
 	long double Neqcl;
 
 	save = false;
 	L = 4.0L;
-	lattice = getLattice(L,Neqsw,Neqcl,runNumber);
+	lattice = getLattice(L,Neqsw,Neqcl);
 	for (int i = 0; i< Nreps; ++i){
-		warmup(L,lattice,100,runTemp,save,runNumber);
+		warmup(L,lattice,100,runTemp,save);
 		wolffHistRun(L,lattice,Neqsw,Neqcl,Nsamp,cold,Trange,Ntemps,runTemp);
 	}
 	L = 8.0L;
-	lattice = getLattice(L,Neqsw,Neqcl,runNumber);
+	lattice = getLattice(L,Neqsw,Neqcl);
 	for (int i = 0; i< Nreps; ++i){
-		warmup(L,lattice,100,runTemp,save,runNumber);
+		warmup(L,lattice,100,runTemp,save);
 		wolffHistRun(L,lattice,Neqsw,Neqcl,Nsamp,cold,Trange,Ntemps,runTemp);
 	}
 }

@@ -96,7 +96,7 @@ long double*** newLattice(long double L,bool cold){
 	return lattice;
 }
 
-long double ***warmup( long double L,long double ***lattice,long double N_equil, long double runTemp,bool save,std::string runNumber){
+long double ***warmup( long double L,long double ***lattice,long double N_equil, long double runTemp,bool save){
 	//initialize rng
 	unsigned long int s;
 	syscall(SYS_getrandom,&s,sizeof(unsigned long int),0);	
@@ -140,7 +140,7 @@ long double ***warmup( long double L,long double ***lattice,long double N_equil,
 	}
 	long double actualNsweeps = totEqSteps/(L*L*L);
 	if (save){
-		saveLattice(L,actualNsweeps,Nclusts,lattice,runNumber);
+		saveLattice(L,actualNsweeps,Nclusts,lattice);
 	}
 	return lattice;
 }

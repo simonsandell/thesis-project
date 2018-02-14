@@ -75,11 +75,11 @@ void setMaxE(long double L,long double newE){
 	file << std::fixed << newE;
 }
 
-void saveLattice(long double L,long double Neqsw,long double Neqcl, long double***lattice,std::string runNumber){
+void saveLattice(long double L,long double Neqsw,long double Neqcl, long double***lattice){
 
 	std::ostringstream mstream;
 	std::string exePath = get_selfpath();
-	mstream << exePath<< "/warmLattice/" << L <<"__" << runNumber;
+	mstream << exePath<< "/warmLattice/" << L <<"_warm.lat";
 	std::string fname = mstream.str();
 	std::ofstream file;
 	file.open(fname);
@@ -100,11 +100,11 @@ void saveLattice(long double L,long double Neqsw,long double Neqcl, long double*
 		}
 	}
 }
-long double *** getLattice(long double L,long double & Neqsw,long double& Neqcl,std::string runNumber){
+long double *** getLattice(long double L,long double & Neqsw,long double& Neqcl){
 
 	std::ostringstream mstream;
 	std::string exePath = get_selfpath();
-	mstream << exePath << "/warmLattice/" << L << "__"<< runNumber;
+	mstream << exePath << "/warmLattice/" << L << "_warm.lat";
 	std::string fname = mstream.str();
 	std::ifstream file(fname);
 	//first value saved is actually the # of equilibration sweeps.
