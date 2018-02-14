@@ -40,14 +40,14 @@ int main(int argc, char* argv[]){
 	if (argc != 10){
 		//cout << "wrong number of arguments" << endl;
 		//exit(-1);
-		runType = 1.0L;
-		L= 4.0L;
-		startT=2.201L;
-		endT=2.203L;
-		Ntemps=30.0L;
-		Neq=6000.0L;
-		Nsamp=20000.0L;
-		icold=1.0L;
+		runType = 		1.0L;
+		L= 			4.0L;
+		startT=			2.201L;
+		endT=			2.203L;
+		Ntemps=			30.0L;
+		Neq=			6000.0L;
+		Nsamp=			20000.0L;
+		icold=			1.0L;
 	}
 	else{
 

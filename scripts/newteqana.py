@@ -55,14 +55,14 @@ for i in range(mat.shape[0]):
         L=decimal.Decimal(mat[i,0])
         Neq_sav = decimal.Decimal(mat[i,8])
         cold = decimal.Decimal(mat[i,12])
-        strFn = "./foutput/teq/" + str(int(cold)) + "_" + str(int(L)) + "_" + fName + ".dat"
+        strFn = "./foutput/teqmod/" + str(int(cold)) + "_" + str(int(L)) + "_" + fName + ".dat"
         M_teq = open(strFn,"w")
     elif(TOL < abs(mat[i,0] - L)):
         writeToFiles(L,Mag,M_teq,N,Neq)
         N = decimal.Decimal('0');
         L = decimal.Decimal(mat[i,0])
         Neq_sav = decimal.Decimal(mat[i,8])
-        strFn = "./foutput/teq/" + str(int(cold)) + "_" + str(int(L)) + "_" + fName + ".dat"
+        strFn = "./foutput/teqmod/" + str(int(cold)) + "_" + str(int(L)) + "_" + fName + ".dat"
         M_teq = open(strFn,"w")
         #if new value of N_eq, take mean and write to file
     elif (relTOL < (decimal.Decimal('1.0')/(Neq_sav))*abs(mat[i,8] - Neq_sav)):
