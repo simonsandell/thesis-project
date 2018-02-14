@@ -33,6 +33,8 @@ int main(int argc, char* argv[]){
 	long double Neq;
 	long double Nsamp;
 	long double icold;
+	
+	long double Nruns = 100.0L;
 	// 
 	//set precision of cout
 	if (argc != 10){
@@ -78,13 +80,13 @@ int main(int argc, char* argv[]){
 	long double Neqsw;
 	long double Neqcl;
 	long double *** lattice;
-	for (int i = 0; i< 5; ++i){
+	for (int i = 0; i< Nruns; ++i){
 		lattice = getLattice(L,Neqsw,Neqcl);
 		wolffHistRun(L,lattice,Neqsw,Neqcl,Nsamp,cold,Trange,Ntemps,runTemp);
 	}
 	L = 8.0L;
 	warmup(L,Neq,cold,runTemp,true);
-	for (int i = 0; i< 10000; ++i){
+	for (int i = 0; i< Nruns; ++i){
 		lattice = getLattice(L,Neqsw,Neqcl);
 		wolffHistRun(L,lattice,Neqsw,Neqcl,Nsamp,cold,Trange,Ntemps,runTemp);
 	}

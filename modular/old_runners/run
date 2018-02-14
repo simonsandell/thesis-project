@@ -1,0 +1,19 @@
+#!/bin/bash
+qsub -t 1-6 -p -1 runmain
+
+#mkdir $PWD/output/parruns/
+#sleep 1
+#for i in {1..1}; do
+#	qsub -t 1-6 -o $PWD/output/parruns/ -p -1 runmain $PWD
+#	echo $i
+#	date +"%T"
+#	sleep 60
+#	while [[ $(qstat) = *runmain* ]]; do
+#		sleep 60
+#	done
+#done
+#for filename in $PWD/output/parruns/*; do
+#	cat $filename >> $PWD/output/savedLatticeHist
+#done
+#rm -r $PWD/output/parruns/
+#python3 $PWD/updMaxE.py
