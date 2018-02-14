@@ -1,0 +1,8 @@
+#!/bin/bash
+#$1/main.exe 1 4 2.20 2.204 30 600 700 1 save
+#$1/main.exe 1 8 2.20 2.204 30 600 700 1 save
+#$1/main.exe 1 16 2.20 2.204 30 600 700 1 save
+#$1/main.exe 1 4 2.20 2.204 30 600 700 1 load
+#$1/main.exe 1 8 2.20 2.204 30 600 700 1 load
+#$1/main.exe 1 16 2.20 2.204 30 600 700 1 load
+/home/simsan/exjobb/modular/main.exe
