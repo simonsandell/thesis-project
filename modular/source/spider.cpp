@@ -65,10 +65,10 @@ int main(int argc, char* argv[]){
 	string runNumber = argv[1];
 
 	long double 	L =			4.0L;
-	long double	startT=			2.200L;
-	long double	endT=			2.204L;
-	long double	Ntemps=			30.0L;
-	long double	Neq=			6000.0L;
+	long double	startT=			2.20150L;
+	long double	endT=			2.20350L;
+	long double	Ntemps=			21.0L;
+	long double	Neq=			10000.0L;
 	long double	Nsamp=			1000.0L;
 	bool 		cold=			true;
 	//generate temperature range
