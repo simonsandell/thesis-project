@@ -2,15 +2,15 @@ import decimal
 import sys
 import numpy as np
 import math
-
+# beta/nu ~ 0.5187891440
 #funcion for writing data
 def writeToFiles(L,Mag,M_teq,N,Neq):
-        meanNeq = np.mean(Neq);
-        meanM = pow(L,-0.518)*np.mean(Mag);
-        sqrtN = N.sqrt();
+        meanNeq = pow(L,-1.40)*np.mean(Neq);
+        meanM = pow(L,0.44)*np.mean(Mag);
+        sqrtN = pow(N,0.5);
         deltaM = np.std(Mag)/sqrtN;
         if math.isnan(deltaM):
-            deltaM = decimal.Decimal('0');
+            deltaM = float('0');
         M_teq.write(str(meanNeq)+"    "+str(meanM)+"    "+str(deltaM)+"    "+str(N)+"\n")
         Mag[:]= []
         Neq[:]= []
@@ -22,7 +22,7 @@ vals = []
 for ln in data0:
     strlist = ln.rsplit(" ")
     strlist = [x for x in strlist if not (x=="\n")]
-    fllist = [decimal.Decimal(x) for x in strlist] 
+    fllist = [float(x) for x in strlist] 
     vals.append(fllist)
 
 #################################
@@ -34,43 +34,43 @@ mat = np.array(vals)
 ind = np.lexsort((mat[:,11],mat[:,10],mat[:,7],mat[:,6],mat[:,5],mat[:,4],mat[:,3],mat[:,2],mat[:,1],mat[:,9],mat[:,8],mat[:,12],mat[:,0]))
 mat = mat[ind]
 
-cold = decimal.Decimal(mat[0,12])
-L=decimal.Decimal(mat[0,0])
-Neq_sav = decimal.Decimal(mat[0,8])
+cold = float(mat[0,12])
+L=float(mat[0,0])
+Neq_sav = float(mat[0,8])
 Neq = [];
 Mag=[];
-N = decimal.Decimal('0.0');
+N = float('0.0');
 
 #open files for writing
 strFn = "./foutput/teqmod/" + str(int(cold)) + "_" + str(int(L)) + "_" + fName + ".dat"
 M_teq = open(strFn,"w")
 
-TOL = decimal.Decimal('4') 
-relTOL = decimal.Decimal('0.5')
+TOL = float('4') 
+relTOL = float('0.5')
 for i in range(mat.shape[0]):
     #if new value of L or cold, make new outputfile
-    if (abs(mat[i,12] - cold) > decimal.Decimal('0.1')):
+    if (abs(mat[i,12] - cold) > float('0.1')):
         writeToFiles(L,Mag,M_teq,N,Neq)
-        N = decimal.Decimal('0');
-        L=decimal.Decimal(mat[i,0])
-        Neq_sav = decimal.Decimal(mat[i,8])
-        cold = decimal.Decimal(mat[i,12])
+        N = float('0');
+        L=float(mat[i,0])
+        Neq_sav = float(mat[i,8])
+        cold = float(mat[i,12])
         strFn = "./foutput/teqmod/" + str(int(cold)) + "_" + str(int(L)) + "_" + fName + ".dat"
         M_teq = open(strFn,"w")
     elif(TOL < abs(mat[i,0] - L)):
         writeToFiles(L,Mag,M_teq,N,Neq)
-        N = decimal.Decimal('0');
-        L = decimal.Decimal(mat[i,0])
-        Neq_sav = decimal.Decimal(mat[i,8])
+        N = float('0');
+        L = float(mat[i,0])
+        Neq_sav = float(mat[i,8])
         strFn = "./foutput/teqmod/" + str(int(cold)) + "_" + str(int(L)) + "_" + fName + ".dat"
         M_teq = open(strFn,"w")
         #if new value of N_eq, take mean and write to file
-    elif (relTOL < (decimal.Decimal('1.0')/(Neq_sav))*abs(mat[i,8] - Neq_sav)):
+    elif (relTOL < (float('1.0')/(Neq_sav))*abs(mat[i,8] - Neq_sav)):
         writeToFiles(L,Mag,M_teq,N,Neq)
-        N = decimal.Decimal('0');
-        Neq_sav = decimal.Decimal(mat[i,8])
+        N = float('0');
+        Neq_sav = float(mat[i,8])
     Mag.append(mat[i,3])
     Neq.append(mat[i,8])
     Neq_sav = np.mean(Neq)
-    N = N + decimal.Decimal('1.0')
+    N = N + float('1.0')
 writeToFiles(L,Mag,M_teq,N,Neq)
