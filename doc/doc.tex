@@ -29,7 +29,10 @@ However, the Boltzmann distribution may be unsuitable for some systems/configura
  where the states $y$ are distributed according to $P'(y)$.
 
  \\
- Importance sampling is a way of reducing the error in the Monte Carlo estimate. Instead of choosing 
+ Importance sampling is a way of reducing the error in the Monte Carlo estimate. Instead of choosing sample points distributed uniformly, one can try to choose the most probable states. Since thermal systems are Boltzmann-distributed, we want a way to randomly generate states distributed according to the Boltzmann distribution.
+ \section{Markov process}
+ A Markovian process is one for which the probility of getting to any state in the system is determined solely by the current state. I.e. the probability of going from state $x_i$ to $x_{j}$ is given by a transition probability $w(x_i \rightarrow x_j)$. The master equation describing the evolution of the probability distribution can then be written $P(x_i $<++>
+ 
 \section{Detailed Balance}
 \section{Wolff Algorithm}
 
