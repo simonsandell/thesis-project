@@ -1,17 +1,16 @@
-import decimal
 import sys
 import numpy as np
 import math
 # beta/nu ~ 0.5187891440
 #funcion for writing data
 def writeToFiles(L,Mag,M_teq,N,Neq):
-        meanNeq = pow(L,-1.40)*np.mean(Neq);
+        meanNeq = pow(L,-1.00)*np.mean(Neq);
         meanM = pow(L,0.44)*np.mean(Mag);
         sqrtN = pow(N,0.5);
         deltaM = np.std(Mag)/sqrtN;
         if math.isnan(deltaM):
             deltaM = float('0');
-        M_teq.write(str(meanNeq)+"    "+str(meanM)+"    "+str(deltaM)+"    "+str(N)+"\n")
+        M_teq.write(repr(meanNeq)+"    "+repr(meanM)+"    "+repr(deltaM)+"    "+repr(N)+"\n")
         Mag[:]= []
         Neq[:]= []
         

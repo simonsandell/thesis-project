@@ -29,12 +29,12 @@ def writeToFiles(En,Mag,Bin,Dbdt,Xi,Rs,EF,MF,BF,DF,XF,RF,N,T,Neq):
             deltaX = float('0');
         if math.isnan(deltaR):
             deltaR = float('0');
-        EF.write(str(T)+"    "+str(meanE)+"    "+str(deltaE)+"    "+str(N)+"\n")
-        MF.write(str(T)+"    "+str(meanM)+"    "+str(deltaM)+"    "+str(N)+"\n")
-        BF.write(str(T)+"    "+str(meanB)+"    "+str(deltaB)+"    "+str(N)+"\n")
-        DF.write(str(T)+"    "+str(meanD)+"    "+str(deltaD)+"    "+str(N)+"\n")
-        XF.write(str(T)+"    "+str(meanX)+"    "+str(deltaX)+"    "+str(N)+"\n")
-        RF.write(str(T)+"    "+str(meanR)+"    "+str(deltaR)+"    "+str(N)+"\n")
+        EF.write(repr(T)+"    "+repr(meanE)+"    "+repr(deltaE)+"    "+repr(N)+"\n")
+        MF.write(repr(T)+"    "+repr(meanM)+"    "+repr(deltaM)+"    "+repr(N)+"\n")
+        BF.write(repr(T)+"    "+repr(meanB)+"    "+repr(deltaB)+"    "+repr(N)+"\n")
+        DF.write(repr(T)+"    "+repr(meanD)+"    "+repr(deltaD)+"    "+repr(N)+"\n")
+        XF.write(repr(T)+"    "+repr(meanX)+"    "+repr(deltaX)+"    "+repr(N)+"\n")
+        RF.write(repr(T)+"    "+repr(meanR)+"    "+repr(deltaR)+"    "+repr(N)+"\n")
         En[:]= []
         Mag[:]= []
         Bin [:]= []
