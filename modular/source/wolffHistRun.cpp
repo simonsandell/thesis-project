@@ -161,14 +161,18 @@ void wolffHistRun(long double L,long double ***lattice,long double Neq_sweeps,lo
 		//calculate
 		b[i] = avgM4[i]*avgExpFac[i];
 		b[i] /= (avgM2[i]*avgM2[i]);
-		dbdt[i] = avgExpFac[i]*avgM4E[i]*avgM2[i] + avgM4[i]*avgM2[i]*avgE[i] - 2.0L*avgExpFac[i]*avgM4[i]*avgM2E[i];
+		dbdt[i] = avgExpFac[i]*avgM4E[i]*avgM2[i] 
+			+ avgM4[i]*avgM2[i]*avgE[i] 
+			- 2.0L*avgExpFac[i]*avgM4[i]*avgM2E[i];
 		dbdt[i] *= Betas[i]*Betas[i];
 		dbdt[i] /= avgM2[i]*avgM2[i]*avgM2[i];
-		xi[i] = avgM2[i] - avgM[i]*avgM[i];
-		xi[i] /= (avgExpFac[i]*avgExpFac[i]);
+		xi[i] = (avgM2[i]/avgExpFac[i]) -
+		       	(avgM[i]*avgM[i]/(avgExpFac[i]*avgExpFac[i]));
 		xi[i] *= reciNspins;
 		xi[i] *= Betas[i];
-		rs[i] = -avgE[i] - (Betas[i])*avgSinX2[i] -(Betas[i])*avgSinY2[i] -(Betas[i])*avgSinZ2[i];
+		rs[i] = -avgE[i] - (Betas[i])*avgSinX2[i] 
+			-(Betas[i])*avgSinY2[i] 
+			-(Betas[i])*avgSinZ2[i];
 		rs[i] *= (1.0L/3.0L)*L*reciNspins; 
 		rs[i] /= avgExpFac[i];
 	}
