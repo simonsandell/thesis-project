@@ -34,7 +34,7 @@ void runteq(long double L,bool cold,long double runTemp){
 	long double Neqcl;
 	long double Nsamples = 1;
 	bool save = false;
-	
+
 	long double ***lattice = newLattice(L,cold);
 	for (int i =0; i<15; ++i){
 		Neqsw = Nwarms;
@@ -80,15 +80,18 @@ int main(int argc, char* argv[]){
 	else {
 		Trange = getTrange(startT,endT,int(Ntemps));
 	}
-	long double runTemp = Trange[(int)(Ntemps/2)];
+	long double runTemp = 2.20200000000000L;
 
 	bool save;
 	long double ***lattice;
 
 	//Initial warmups
 	if (runNumber == "saveWarmup"){
+		L = 4.0L;
 		warmupandsave(L,Neq,cold,runTemp);
 		L = 8.0L;
+		warmupandsave(L,Neq,cold,runTemp);
+		L = 16.0L;
 		warmupandsave(L,Neq,cold,runTemp);
 		exit(0);
 	}
@@ -119,5 +122,30 @@ int main(int argc, char* argv[]){
 			runteq(16.0L,cold,runTemp);
 		}
 	}
-
+	if (runNumber == "normalRun"){
+		long double Neqsw;
+		long double Neqcl;
+		long double Ncl;
+		long double Nreps = 10000.0L;
+		long double Nwarmup = 100.0L;
+		L = 4.0L;
+		lattice = getLattice(L,Neqsw,Neqcl);	
+		for (int i = 0; i< Nreps; ++i){
+			warmup(L,lattice,Nwarmup,Ncl,runTemp,save);
+			wolffRun(L,lattice,Neqsw+Nwarmup,Neqcl+Ncl,Nsamp,cold,runTemp);
+		}
+		L = 8.0L;
+		lattice = getLattice(L,Neqsw,Neqcl);	
+		for (int i = 0; i< Nreps; ++i){
+			warmup(L,lattice,Nwarmup,Ncl,runTemp,save);
+			wolffRun(L,lattice,Neqsw+Nwarmup,Neqcl+Ncl,Nsamp,cold,runTemp);
+		}
+		L = 16.0L;
+		lattice = getLattice(L,Neqsw,Neqcl);	
+		for (int i = 0; i< Nreps; ++i){
+			warmup(L,lattice,Nwarmup,Ncl,runTemp,save);
+			wolffRun(L,lattice,Neqsw+Nwarmup,Neqcl+Ncl,Nsamp,cold,runTemp);
+		}
+	}
 }
+
