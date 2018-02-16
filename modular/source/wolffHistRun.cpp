@@ -77,13 +77,16 @@ void wolffHistRun(long double L,long double ***lattice,long double Neq_sweeps,lo
 	long double leaststeps = N_sample_sweeps*L*L*L;
 	while (steps < leaststeps){
 		//make a cluster
-		steps += growCluster(lattice,cluster,L,Beta,TotXMag,TotYMag,TotEn,TotSinX,TotSinY,TotSinZ,dist,eng);
+		steps += growCluster(lattice,cluster,L,Beta,
+				TotXMag,TotYMag,TotEn,TotSinX,TotSinY,TotSinZ,
+				dist,eng);
+
 		++Nsample_clusts;
 
 		//update maxE if necessary
 		
 		if (std::abs(TotEn) > std::abs(maxTotE)){
-			if (avgE[0] != 0.0L){
+			if (Nsample_clusts > 1){
 				expCorr = exp(-maxTotE +TotEn);	
 				for (int k = 0; k<N_temps;++k){
 					avgExpFac[k] *= expCorr;
@@ -124,10 +127,7 @@ void wolffHistRun(long double L,long double ***lattice,long double Neq_sweeps,lo
 	long double reciNspins = 1.0L/(L*L*L);
 
 	//calculate quantities of interest
-	long double reciExpFac = 0.0L;
 
-	long double Eps[N_temps] = {};//energy per spin
-	long double Mps[N_temps] = {};//magnetization per spin
 	long double xi[N_temps] = {};//susceptibility
 	long double b[N_temps] = {}; //Binder parameter
 	long double dbdt[N_temps] = {};//derivative wrt T of Binder parameter
@@ -137,7 +137,6 @@ void wolffHistRun(long double L,long double ***lattice,long double Neq_sweeps,lo
 
 		//normalize
 		avgExpFac[i] *= reciNsample_clusts;
-		reciExpFac = 1.0L/avgExpFac[i];
 		avgE[i] *= reciNsample_clusts;
 		avgE2[i] *= reciNsample_clusts;
 		avgM[i] *= reciNsample_clusts;
@@ -149,34 +148,39 @@ void wolffHistRun(long double L,long double ***lattice,long double Neq_sweeps,lo
 		avgSinY2[i] *= reciNsample_clusts;
 		avgSinZ2[i] *= reciNsample_clusts;
 
-		avgE[i] *= reciExpFac;
-		avgE2[i] *= reciExpFac;
-		avgM[i] *= reciExpFac;
-		avgM2[i] *= reciExpFac;
-		avgM4[i] *= reciExpFac;
-		avgM2E[i] *= reciExpFac;
-		avgM4E[i] *= reciExpFac;
-		avgSinX2[i] *= reciExpFac;
-		avgSinY2[i] *= reciExpFac;
-		avgSinZ2[i] *= reciExpFac;
+//		avgE[i] *= reciExpFac;
+//		avgE2[i] *= reciExpFac;
+//		avgM[i] *= reciExpFac;
+//		avgM2[i] *= reciExpFac;
+//		avgM4[i] *= reciExpFac;
+//		avgM2E[i] *= reciExpFac;
+//		avgM4E[i] *= reciExpFac;
+//		avgSinX2[i] *= reciExpFac;
+//		avgSinY2[i] *= reciExpFac;
+//		avgSinZ2[i] *= reciExpFac;
 		//calculate
-		b[i] = avgM4[i];
+		b[i] = avgM4[i]*avgExpFac[i];
 		b[i] /= (avgM2[i]*avgM2[i]);
-		dbdt[i] = avgM4E[i]*avgM2[i] + avgM4[i]*avgM2[i]*avgE[i] - 2.0L*avgM4[i]*avgM2E[i];
+		dbdt[i] = avgExpFac[i]*avgM4E[i]*avgM2[i] + avgM4[i]*avgM2[i]*avgE[i] - 2.0L*avgExpFac[i]*avgM4[i]*avgM2E[i];
 		dbdt[i] *= Betas[i]*Betas[i];
 		dbdt[i] /= avgM2[i]*avgM2[i]*avgM2[i];
 		xi[i] = avgM2[i] - avgM[i]*avgM[i];
+		xi[i] /= (avgExpFac[i]*avgExpFac[i]);
 		xi[i] *= reciNspins;
 		xi[i] *= Betas[i];
 		rs[i] = -avgE[i] - (Betas[i])*avgSinX2[i] -(Betas[i])*avgSinY2[i] -(Betas[i])*avgSinZ2[i];
 		rs[i] *= (1.0L/3.0L)*L*reciNspins; 
-
-		Eps[i] = avgE[i]*reciNspins;
-		Mps[i] = avgM[i]*reciNspins;
+		rs[i] /= avgExpFac[i];
 	}
 	for (int i = 0;i< N_temps; ++i){
-		printOutput(L,Temperatures[i],Eps[i],Mps[i],b[i],dbdt[i],xi[i],rs[i],Neq_sweeps,Neq_clusts,actNsamp_sweeps,Nsample_clusts,cold);
-
+		printOutput(L,Temperatures[i],
+				Neq_sweeps,Neq_clusts,
+				actNsamp_sweeps,Nsample_clusts,cold,
+				avgE[i],avgE2[i],avgM[i],avgM2[i],avgM4[i],
+				avgM2E[i],avgM4E[i],
+				avgSinX2[i],avgSinY2[i],avgSinZ2[i],
+				b[i],dbdt[i],xi[i],rs[i],
+				avgExpFac[i]);
 	}
 	if (expCorr != 0.0L){
 		setMaxE(L,maxTotE);

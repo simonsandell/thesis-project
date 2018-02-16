@@ -24,25 +24,33 @@ std::string get_selfpath(){
 		exit(-1);
 	}
 }
-
-void printOutput(long double L,long double T, long double E, long double M, long double bin, long double dbdt,long double xi,long double rs, long double N_eq_sweeps, int N_eq_clusts,long double N_samp_sweeps, int N_samp_clusts,bool cold){
+void printOutput(long double L, long double T, long double Neqsw, long double Neqcl,long double Nsmsw,long double Nsmcl, long double cold, long double E, long double E2, long double M, long double M2, long double M4, long double M2E, long double M4E, long double SX2, long double SY2, long double SZ2, long double bin, long double dbdt, long double xi, long double rs, long double expFac){
 	typedef std::numeric_limits<long double> dbl;
 
 	std::cout.precision(dbl::max_digits10 + 5);
 
 	std::cout << std::fixed << L << " ";				//0
 	std::cout << std::fixed << T << " ";				//1
+	std::cout << std::fixed << Neqsw << " ";				//1
+	std::cout << std::fixed << Neqcl << " ";				//1
+	std::cout << std::fixed << Nsmsw << " ";				//1
+	std::cout << std::fixed << Nsmcl << " ";				//1
+	std::cout << std::fixed << cold << " ";				//1
 	std::cout << std::fixed << E << " ";				//2
+	std::cout << std::fixed << E2 << " ";				//2
 	std::cout << std::fixed << M << " ";				//3
+	std::cout << std::fixed << M2 << " ";				//3
+	std::cout << std::fixed << M4 << " ";				//3
+	std::cout << std::fixed << M2E << " ";				//3
+	std::cout << std::fixed << M4E << " ";				//3
+	std::cout << std::fixed << SX2 << " ";				//3
+	std::cout << std::fixed << SY2 << " ";				//3
+	std::cout << std::fixed << SZ2 << " ";				//3
 	std::cout << std::fixed << bin << " ";				//4
 	std::cout << std::fixed << dbdt << " ";				//5
 	std::cout << std::fixed << xi << " ";				//6
 	std::cout << std::fixed << rs << " ";				//7
-	std::cout << std::fixed << N_eq_sweeps << " ";			//8
-	std::cout << std::fixed << N_eq_clusts << " "; 			//9
-	std::cout << std::fixed << N_samp_sweeps << " ";		//10
-	std::cout << std::fixed << N_samp_clusts << " "; 		//11
-	std::cout << cold << " "; 					//12
+	std::cout << std::fixed << expFac << " ";				//7
 	std::cout << std::endl;				
 }
 

@@ -87,8 +87,6 @@ void wolffRun(long double L,long double ***lattice,long double Neq_sweeps,long d
 
 	//calculate quantities of interest
 
-	long double Eps = 0.0L;//energy per spin
-	long double Mps = 0.0L;//magnetization per spin
 	long double xi = 0.0L;//susceptibility
 	long double b = 0.0L; //Binder parameter
 	long double dbdt = 0.0L;//derivative wrt T of Binder parameter
@@ -118,9 +116,15 @@ void wolffRun(long double L,long double ***lattice,long double Neq_sweeps,long d
 	xi *= Beta;
 	rs = -avgE - (Beta)*avgSinX2 -(Beta)*avgSinY2 -(Beta)*avgSinZ2;
 	rs *= (1.0L/3.0L)*L*reciNspins; 
+		
+	printOutput(L,Temperature,
+				Neq_sweeps,Neq_clusts,
+				actNsamp_sweeps,Nsample_clusts,cold,
+				avgE,avgE2,avgM,avgM2,avgM4,
+				avgM2E,avgM4E,
+				avgSinX2,avgSinY2,avgSinZ2,
+				b,dbdt,xi,rs,
+				1.0L);
 
-	Eps = avgE*reciNspins;
-	Mps = avgM*reciNspins;
-	printOutput(L,Temperature,Eps,Mps,b,dbdt,xi,rs,Neq_sweeps,Neq_clusts,actNsamp_sweeps,Nsample_clusts,cold);
 
 }
