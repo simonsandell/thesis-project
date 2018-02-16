@@ -2,16 +2,6 @@ import sys
 import numpy as np
 import math
 
-#funcion for writing data
-def writeToFile(X,Y,FILE):
-        meanY = np.mean(Y);
-        sqrtN = pow(len(Y),0.5);
-        deltaY = np.std(m)/sqrtN;
-        if math.isnan(deltaY):
-            deltaY = float('0');
-        FILE.write(repr(X)+"    "+repr(meanY)+"    "+repr(deltaY)+"    "+repr(len(N))+"\n")
-        Y[:]= []
-
 def calcAvg(mat,i,istart,FileList):
     N = i - istart;
     T = mat[istart,1];
@@ -35,6 +25,21 @@ def calcAvg(mat,i,istart,FileList):
     xi = np.mean(mat[istart:iend,21]);
     rs = np.mean(mat[istart:iend,21]);
     
+    deltaE = np.std(mat[istart:iend,21])/pow(N,0.5);
+    deltaE2 = np.std(mat[istart:iend,21])/pow(N,0.5);
+    deltaM = np.std(mat[istart:iend,21])/pow(N,0.5);
+    deltaM2 = np.std(mat[istart:iend,21])/pow(N,0.5);
+    deltaM4 = np.std(mat[istart:iend,21])/pow(N,0.5);
+    deltaM2E = np.std(mat[istart:iend,21])/pow(N,0.5);
+    deltaM4E = np.std(mat[istart:iend,21])/pow(N,0.5);
+    deltaSX = np.std(mat[istart:iend,21])/pow(N,0.5);
+    deltaSY = np.std(mat[istart:iend,21])/pow(N,0.5);
+    deltaSZ = np.std(mat[istart:iend,21])/pow(N,0.5);
+    deltaB = np.std(mat[istart:iend,21])/pow(N,0.5);
+    deltadBdT = np.std(mat[istart:iend,21])/pow(N,0.5);
+    deltaxi = np.std(mat[istart:iend,21])/pow(N,0.5);
+    deltars = np.std(mat[istart:iend,21])/pow(N,0.5);
+
     calcB = expFac*E/pow(E2,2);
     calcdBdT =  expFac*M4E*M2 + M4*M2*E -2.0*expFac*M4*M2E;
     calcdBdT = calcdBdT/(T*T*M2*M2*M2);
@@ -42,8 +47,11 @@ def calcAvg(mat,i,istart,FileList):
     calcxi = calcxi/(L*L*L*T);
     calcrs = -E -SX/T - SY/T - SZ/T;
     calcrs = calcrs/(3.0*L*L*expFac);
-    for F in FileList:
-        F.write(
+    Ylist = [E,M,B,calcB,dBdT,calcdBdT,xi,calcxi,rs,calcrs];
+    #Deltalist = [deltaE,deltaM,deltaB,0,deltadBdT,0,deltaxi,0,deltars,0];
+    for i in range(len(Ylist)):
+        #Flist[i].write(repr(T)+"    "+repr(Ylist[i])+"    "+repr(deltaY)+"    "+repr(N)+"\n")
+        Flist[i].write(repr(T)+"    "+repr(Ylist[i])+"    "+repr(0.0)+"    "+repr(N)+"\n")
 
 #
 #read raw data from file in ./output
