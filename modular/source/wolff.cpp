@@ -132,23 +132,19 @@ int growCluster(long double ***lattice,bool ***cluster, long double &L,long doub
 				cluster[std::get<0>(current)][std::get<1>(current)][std::get<2>(current)] = true;
 
 				//update energy and magnetization
-				enAfter = siteEnergy(lattice,L,std::get<1>(current),std::get<2>(current),std::get<3>(current))
-
-					updateQuants(TotEn,TotXMag,TotYMag,TotSinX,TotSinY,TotSinZ,
-							enBefore,enAfter,
-							angleBefore,angleAfter,
-							sxBef,sxAft,
-							syBef,syAft,
-							szBef,szAft);
-				updatequants(toten,totxmag,totymag,totsinx,totsiny,totsinz,
-						enbefore,enafter,
-						anglebefore,angleafter,
-						sxBef = sinX(lattice,l,std::get<1>(current),std::get<2>(current),std::get<3>(current),anglebefore),
-						sxAft = sinx(lattice,l,std::get<1>(current),std::get<2>(current),std::get<3>(current),angleafter),
-						syBef = siny(lattice,l,std::get<1>(current),std::get<2>(current),std::get<3>(current),anglebefore),
-						syAft = siny(lattice,l,std::get<1>(current),std::get<2>(current),std::get<3>(current),angleafter),
-						szBef = sinz(lattice,l,std::get<1>(current),std::get<2>(current),std::get<3>(current),anglebefore),
-						szAft = sinZ(lattice,L,std::get<1>(current),std::get<2>(current),std::get<3>(current),angleAfter));
+				enAfter = siteEnergy(lattice,L,std::get<0>(current),std::get<1>(current),std::get<2>(current));
+				sxBef = sinX(lattice,L,std::get<0>(current),std::get<1>(current),std::get<2>(current),angleBefore);
+				sxAft = sinX(lattice,L,std::get<0>(current),std::get<1>(current),std::get<2>(current),angleAfter);
+				syBef = sinY(lattice,L,std::get<0>(current),std::get<1>(current),std::get<2>(current),angleBefore);
+				syAft = sinY(lattice,L,std::get<0>(current),std::get<1>(current),std::get<2>(current),angleAfter);
+				szBef = sinZ(lattice,L,std::get<0>(current),std::get<1>(current),std::get<2>(current),angleBefore);
+				szAft = sinZ(lattice,L,std::get<0>(current),std::get<1>(current),std::get<2>(current),angleAfter);
+				updateQuants(TotEn,TotXMag,TotYMag,TotSinX,TotSinY,TotSinZ,
+						enBefore,enAfter,
+						angleBefore,angleAfter,
+						sxBef,sxAft,
+						syBef,syAft,
+						szBef,szAft);
 				//find indices of neighbours
 				neig1 = std::make_tuple(
 						(std::get<0>(current) + 1) % (int)L, 

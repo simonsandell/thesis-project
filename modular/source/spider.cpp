@@ -23,6 +23,7 @@ void runhist(long double L,long double***lattice,long double Neqsw,long double N
 	long double Ncl;
 	bool save = false;
 	for (int i = 0; i< Nreps; ++i){
+		cout << i << endl;
 		warmup(L,lattice,Nwarmup,Ncl,runTemp,save);
 		wolffHistRun(L,lattice,Neqsw,Neqcl,Nsamp,cold,Trange,Ntemps,runTemp);
 	}
@@ -98,7 +99,7 @@ int main(int argc, char* argv[]){
 	if (runNumber == "histRun"){
 		long double Neqsw;
 		long double Neqcl;
-		long double Nreps = 10000.0L;
+		long double Nreps = 1000.0L;
 		long double Nwarmup = 100.0L;
 		save = false;
 		L = 4.0L;
