@@ -2,6 +2,32 @@ import sys
 import numpy as np
 import math
 
+def openFiles(FileList,L,fName):
+    #open files for writing
+    #separate files for different systemsizes
+    EF = open("./foutput/en/"+str(int(L))+"_"+fName+".dat","w")
+    MF = open("./foutput/mag/"+str(int(L))+"_"+fName+".dat","w")
+    BF = open("./foutput/bin/"+str(int(L))+"_"+fName+".dat","w")
+    newBF = open("./foutput/bin/"+str(int(L))+"_"+fName+"new.dat","w")
+    DF = open("./foutput/dbdt/"+str(int(L))+"_"+fName+".dat","w")
+    newDF = open("./foutput/dbdt/"+str(int(L))+"_"+fName+"new.dat","w")
+    XF = open("./foutput/xi/"+str(int(L))+"_"+fName+".dat","w")
+    newXF = open("./foutput/xi/"+str(int(L))+"_"+fName+"new.dat","w")
+    RF = open("./foutput/rs/"+str(int(L))+"_"+fName+".dat","w")
+    newRF = open("./foutput/rs/"+str(int(L))+"_"+fName+"new.dat","w")
+    FileList[:] = [];
+    FileList.append(EF)
+    FileList.append(MF)
+    FileList.append(BF)
+    FileList.append(newBF)
+    FileList.append(DF)
+    FileList.append(newDF)
+    FileList.append(XF)
+    FileList.append(newXF)
+    FileList.append(RF)
+    FileList.append(newRF)
+    
+
 def calcAvg(mat,i,istart,FileList):
     N = i - istart;
     T = mat[istart,1];
@@ -51,7 +77,7 @@ def calcAvg(mat,i,istart,FileList):
     #Deltalist = [deltaE,deltaM,deltaB,0,deltadBdT,0,deltaxi,0,deltars,0];
     for i in range(len(Ylist)):
         #Flist[i].write(repr(T)+"    "+repr(Ylist[i])+"    "+repr(deltaY)+"    "+repr(N)+"\n")
-        Flist[i].write(repr(T)+"    "+repr(Ylist[i])+"    "+repr(0.0)+"    "+repr(N)+"\n")
+        FileList[i].write(repr(T)+"    "+repr(Ylist[i])+"    "+repr(0.0)+"    "+repr(N)+"\n")
 
 #
 #read raw data from file in ./output
@@ -86,25 +112,12 @@ L=mat[0,0];
 T=mat[0,1];
 Neq_sw = mat[0,2];
 
-collection = [mat[0,:]];
-
-N = float('0.0');
-
-#open files for writing
-#separate files for different systemsizes
-
-EF = open("./foutput/en/"+str(int(L))+"_"+fName+".dat","w")
-MF = open("./foutput/mag/"+str(int(L))+"_"+fName+".dat","w")
-BF = open("./foutput/bin/"+str(int(L))+"_"+fName+".dat","w")
-newBF = open("./foutput/bin/"+str(int(L))+"_"+fName+"new.dat","w")
-DF = open("./foutput/dbdt/"+str(int(L))+"_"+fName+".dat","w")
-newDF = open("./foutput/dbdt/"+str(int(L))+"_"+fName+"new.dat","w")
-XF = open("./foutput/xi/"+str(int(L))+"_"+fName+".dat","w")
-newXF = open("./foutput/xi/"+str(int(L))+"_"+fName+"new.dat","w")
-RF = open("./foutput/rs/"+str(int(L))+"_"+fName+".dat","w")
-newRF = open("./foutput/rs/"+str(int(L))+"_"+fName+"new.dat","w")
-
-FileList = [EF,MF,BF,newBF,DF,newDF,XF,newXF,RF,newRF]
+FileList =[]
+    
+print(len(FileList));
+openFiles(FileList,L,fName);
+    
+print(len(FileList));
 
 TOL = float('0.00000000001');
 ifirst = 0;
@@ -112,24 +125,14 @@ for i in range(mat.shape[0]):
     #if new value of L, make new outputfile
     if(TOL < abs(mat[i,0] - L)):
         calcAvg(mat,i,ifirst);
-        writeToFile(X,Y,FILE);
-        writeToFile(T,sumlist[7],EF);
-        writeToFile(T,sumlist[9],EF);
-        writeToFile(T,sumlist[9],EF);
-        N=0;
+        ifirst = i;
         L = float(mat[i,0])
         T = float(mat[i,1])
-        Neq = float(mat[i,8])
-        EF = open("./foutput/en/"+str(int(L))+"_"+fName+".dat","w")
-        MF = open("./foutput/mag/"+str(int(L))+"_"+fName+".dat","w")
-        BF = open("./foutput/bin/"+str(int(L))+"_"+fName+".dat","w")
-        DF = open("./foutput/dbdt/"+str(int(L))+"_"+fName+".dat","w")
-        XF = open("./foutput/xi/"+str(int(L))+"_"+fName+".dat","w")
-        RF = open("./foutput/rs/"+str(int(L))+"_"+fName+".dat","w")
+        #open new files since L has changed
+        openFiles(FileList,L,fName);
     elif(TOL < abs(mat[i,1] - T)):
-        writeToFiles(En,Mag,Bin,Dbdt,Xi,Rs,EF,MF,BF,DF,XF,RF,N,T,Neq)
-        N=0;
+        calcAvg(mat,i,ifirst,FileList);
+        ifirst = i;
         T = float(mat[i,1])
-        Neq = float(mat[i,8])
-    N = N + float('1.0')
-writeToFiles(En,Mag,Bin,Dbdt,Xi,Rs,EF,MF,BF,DF,XF,RF,N,T,Neq)
+#one final write
+calcAvg(mat,i,ifirst,FileList);
