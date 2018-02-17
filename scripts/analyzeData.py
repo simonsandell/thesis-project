@@ -33,38 +33,46 @@ def calcAvg(mat,i,istart,FileList):
     T = mat[istart,1];
     L = mat[istart,0];
     iend = i -1;
+# Format::
+# 0      1      2      3      4      5      6            
+# L      T      neqsw  neqcl  nsmsw  nsmcl  cold
+#
+# 7      8      9      10     11     12     13                
+# E      E2     M      M2     M4     M2E    M4E
+#
+# 14     15     16     17     18     19     20     21                
+# SX     SY     SZ     bin    dBdT   xi     rs     expFac
     expFac = np.mean(mat[istart:iend,21]);
-    E = np.mean(mat[istart:iend,21]);
-    E2 = np.mean(mat[istart:iend,21]);
-    M = np.mean(mat[istart:iend,21]);
-    M2 = np.mean(mat[istart:iend,21]);
-    M4 = np.mean(mat[istart:iend,21]);
-    M2E = np.mean(mat[istart:iend,21]);
-    M4E = np.mean(mat[istart:iend,21]);
+    E = np.mean(mat[istart:iend,7]);
+    E2 = np.mean(mat[istart:iend,8]);
+    M = np.mean(mat[istart:iend,9]);
+    M2 = np.mean(mat[istart:iend,10]);
+    M4 = np.mean(mat[istart:iend,11]);
+    M2E = np.mean(mat[istart:iend,12]);
+    M4E = np.mean(mat[istart:iend,13]);
+    SX = np.mean(mat[istart:iend,14]);
+    SY = np.mean(mat[istart:iend,15]);
+    SZ = np.mean(mat[istart:iend,16]);
+    B = np.mean(mat[istart:iend,17]);
+    dBdT = np.mean(mat[istart:iend,18]);
+    xi = np.mean(mat[istart:iend,19]);
+    rs = np.mean(mat[istart:iend,20]);
     
-    SX = np.mean(mat[istart:iend,21]);
-    SY = np.mean(mat[istart:iend,21]);
-    SZ = np.mean(mat[istart:iend,21]);
-
-    B = np.mean(mat[istart:iend,21]);
-    dBdT = np.mean(mat[istart:iend,21]);
-    xi = np.mean(mat[istart:iend,21]);
-    rs = np.mean(mat[istart:iend,21]);
-    
-    deltaE = np.std(mat[istart:iend,21])/pow(N,0.5);
-    deltaE2 = np.std(mat[istart:iend,21])/pow(N,0.5);
-    deltaM = np.std(mat[istart:iend,21])/pow(N,0.5);
-    deltaM2 = np.std(mat[istart:iend,21])/pow(N,0.5);
-    deltaM4 = np.std(mat[istart:iend,21])/pow(N,0.5);
-    deltaM2E = np.std(mat[istart:iend,21])/pow(N,0.5);
-    deltaM4E = np.std(mat[istart:iend,21])/pow(N,0.5);
-    deltaSX = np.std(mat[istart:iend,21])/pow(N,0.5);
-    deltaSY = np.std(mat[istart:iend,21])/pow(N,0.5);
-    deltaSZ = np.std(mat[istart:iend,21])/pow(N,0.5);
-    deltaB = np.std(mat[istart:iend,21])/pow(N,0.5);
-    deltadBdT = np.std(mat[istart:iend,21])/pow(N,0.5);
-    deltaxi = np.std(mat[istart:iend,21])/pow(N,0.5);
-    deltars = np.std(mat[istart:iend,21])/pow(N,0.5);
+    deltaexpFac = np.std(mat[istart:iend,21])/pow(N,0.5);
+    deltaE = np.std(mat[istart:iend,7])/pow(N,0.5);
+    deltaE2 = np.std(mat[istart:iend,8])/pow(N,0.5);
+    deltaM = np.std(mat[istart:iend,9])/pow(N,0.5);
+    deltaM2 = np.std(mat[istart:iend,10])/pow(N,0.5);
+    deltaM4 = np.std(mat[istart:iend,11])/pow(N,0.5);
+    deltaM2E = np.std(mat[istart:iend,12])/pow(N,0.5);
+    deltaM4E = np.std(mat[istart:iend,13])/pow(N,0.5);
+    deltaSX = np.std(mat[istart:iend,14])/pow(N,0.5);
+    deltaSY = np.std(mat[istart:iend,15])/pow(N,0.5);
+    deltaSZ = np.std(mat[istart:iend,16])/pow(N,0.5);
+    deltaB = np.std(mat[istart:iend,17])/pow(N,0.5);
+    deltadBdT = np.std(mat[istart:iend,18])/pow(N,0.5);
+    deltaxi = np.std(mat[istart:iend,19])/pow(N,0.5);
+    deltars = np.std(mat[istart:iend,20])/pow(N,0.5);
 
     calcB = expFac*E/pow(E2,2);
     calcdBdT =  expFac*M4E*M2 + M4*M2*E -2.0*expFac*M4*M2E;
@@ -124,7 +132,7 @@ ifirst = 0;
 for i in range(mat.shape[0]):
     #if new value of L, make new outputfile
     if(TOL < abs(mat[i,0] - L)):
-        calcAvg(mat,i,ifirst);
+        calcAvg(mat,i,ifirst,FileList);
         ifirst = i;
         L = float(mat[i,0])
         T = float(mat[i,1])
