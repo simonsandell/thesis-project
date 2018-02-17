@@ -123,8 +123,6 @@ void wolffHistRun(long double L,long double ***lattice,long double Neq_sweeps,lo
 	long double actNsamp_sweeps = (long double)steps/(L*L*L);
 
 	//define some reciprocals to reduce number of divions
-	long double reciNsample_clusts= 1.0L/(long double)Nsample_clusts;
-	long double reciNspins = 1.0L/(L*L*L);
 
 	//calculate quantities of interest
 
@@ -136,17 +134,17 @@ void wolffHistRun(long double L,long double ***lattice,long double Neq_sweeps,lo
 
 
 		//normalize
-		avgExpFac[i] *= reciNsample_clusts;
-		avgE[i] *= reciNsample_clusts;
-		avgE2[i] *= reciNsample_clusts;
-		avgM[i] *= reciNsample_clusts;
-		avgM2[i] *= reciNsample_clusts;
-		avgM4[i] *= reciNsample_clusts;
-		avgM2E[i] *= reciNsample_clusts;
-		avgM4E[i] *= reciNsample_clusts;
-		avgSinX2[i] *= reciNsample_clusts;
-		avgSinY2[i] *= reciNsample_clusts;
-		avgSinZ2[i] *= reciNsample_clusts;
+		avgExpFac[i] /= Nsample_clusts;
+		avgE[i] /= Nsample_clusts;
+		avgE2[i] /= Nsample_clusts;
+		avgM[i] /= Nsample_clusts;
+		avgM2[i] /= Nsample_clusts;
+		avgM4[i] /= Nsample_clusts;
+		avgM2E[i] /= Nsample_clusts;
+		avgM4E[i] /= Nsample_clusts;
+		avgSinX2[i] /= Nsample_clusts;
+		avgSinY2[i] /= Nsample_clusts;
+		avgSinZ2[i] /= Nsample_clusts;
 
 //		avgE[i] *= reciExpFac;
 //		avgE2[i] *= reciExpFac;
@@ -164,17 +162,14 @@ void wolffHistRun(long double L,long double ***lattice,long double Neq_sweeps,lo
 		dbdt[i] = avgExpFac[i]*avgM4E[i]*avgM2[i] 
 			+ avgM4[i]*avgM2[i]*avgE[i] 
 			- 2.0L*avgExpFac[i]*avgM4[i]*avgM2E[i];
-		dbdt[i] *= Betas[i]*Betas[i];
-		dbdt[i] /= avgM2[i]*avgM2[i]*avgM2[i];
+		dbdt[i] /= Temperatures[i]*Temperatures[i]*avgM2[i]*avgM2[i]*avgM2[i];
 		xi[i] = (avgM2[i]/avgExpFac[i]) -
 		       	(avgM[i]*avgM[i]/(avgExpFac[i]*avgExpFac[i]));
-		xi[i] *= reciNspins;
-		xi[i] *= Betas[i];
-		rs[i] = -avgE[i] - (Betas[i])*avgSinX2[i] 
-			-(Betas[i])*avgSinY2[i] 
-			-(Betas[i])*avgSinZ2[i];
-		rs[i] *= (1.0L/3.0L)*L*reciNspins; 
-		rs[i] /= avgExpFac[i];
+		xi[i] /= (Temperatures[i]*L*L*L);
+		rs[i] = -avgE[i] - avgSinX2[i]/Temperatures[i] 
+			-avgSinY2[i]/Temperatures[i] 
+			-avgSinZ2[i]/Temperatures[i];
+		rs[i] /= (3.0L*L*L*avgExpFac[i]);
 	}
 	for (int i = 0;i< N_temps; ++i){
 		printOutput(L,Temperatures[i],

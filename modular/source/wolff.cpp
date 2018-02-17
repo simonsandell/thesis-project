@@ -11,7 +11,21 @@ long double getProb(long double u, long double angleParent, long double angle,lo
 	if (prob < 0.0L){ return 0.0L;}
 	return std::min((long double)1.0L,prob);
 }
-
+void updateQuants(long double& TotXMag,long double& TotYMag,long double& TotEn,long double &TotSinX,long double &TotSinY,long double &TotSinZ
+,long double e0,long double e1,long double a0,long double a1,long double sx0,long double sx1,long double sy0,long double sy1,long double sz0,long double sz1){
+	TotEn += e1;
+       	TotEn += -e0;
+	TotXMag += cos(a1);
+	TotXMag += -cos(a0);
+	TotYMag += sin(a1);
+        TotYMag += -sin(a0);
+	TotSinX += sx1;
+        TotSinX += -sx0;
+	TotSinY += sy1;
+        TotSinY += -sy0;
+	TotSinZ += sz1;
+	TotSinZ += -sz0;
+}
 int growCluster(long double ***lattice,bool ***cluster, long double &L,long double &beta, long double& TotXMag,long double& TotYMag,long double& TotEn,long double &TotSinX,long double &TotSinY,long double &TotSinZ,std::uniform_real_distribution<long double> &dist,std::mt19937_64 &eng){
 
 	int time = 1;
@@ -28,12 +42,19 @@ int growCluster(long double ***lattice,bool ***cluster, long double &L,long doub
 	lattice[s1][s2][s3] = angleAfter;
 	cluster[s1][s2][s3] = true;
 	//update energy, mag etc..
-	TotEn += siteEnergy(lattice,L,s1,s2,s3) - enBefore;
-	TotXMag += cos(angleAfter) - cos(angleBefore);
-	TotYMag += sin(angleAfter) - sin(angleBefore);
-	TotSinX += sinX(lattice,L,s1,s2,s3,angleAfter) - sinX(lattice,L,s1,s2,s3,angleBefore);
-	TotSinY += sinY(lattice,L,s1,s2,s3,angleAfter) - sinY(lattice,L,s1,s2,s3,angleBefore);
-	TotSinZ += sinZ(lattice,L,s1,s2,s3,angleAfter) - sinZ(lattice,L,s1,s2,s3,angleBefore);
+	long double enAfter = siteEnergy(lattice,L,s1,s2,s3);
+	long double sxBef = sinX(lattice,L,s1,s2,s3,angleBefore);
+	long double sxAft = sinX(lattice,L,s1,s2,s3,angleAfter);
+	long double syBef = sinY(lattice,L,s1,s2,s3,angleBefore);
+	long double syAft = sinY(lattice,L,s1,s2,s3,angleAfter);
+	long double szBef = sinZ(lattice,L,s1,s2,s3,angleBefore);
+	long double szAft = sinZ(lattice,L,s1,s2,s3,angleAfter);
+	updateQuants(TotEn,TotXMag,TotYMag,TotSinX,TotSinY,TotSinZ,
+			enBefore,enAfter,
+			angleBefore,angleAfter,
+			sxBef,sxAft,
+			syBef,syAft,
+			szBef,szAft);
 	//find indices of nearest neighbours
 	int n1m = (s1 -1 + (int)L )%(int)L;
 	int n1p = (s1 +1 + (int)L )%(int)L;
@@ -111,13 +132,23 @@ int growCluster(long double ***lattice,bool ***cluster, long double &L,long doub
 				cluster[std::get<0>(current)][std::get<1>(current)][std::get<2>(current)] = true;
 
 				//update energy and magnetization
-				TotEn += siteEnergy(lattice,L,std::get<0>(current),std::get<1>(current),std::get<2>(current)) - enBefore;
-				TotXMag += cos(angleAfter) - cos(angleBefore);
-				TotYMag += sin(angleAfter) - sin(angleBefore);
-				TotSinX += sinX(lattice,L,std::get<0>(current),std::get<1>(current),std::get<2>(current),angleAfter) - sinX(lattice,L,std::get<0>(current),std::get<1>(current),std::get<2>(current),angleBefore);
-				TotSinY += sinY(lattice,L,std::get<0>(current),std::get<1>(current),std::get<2>(current),angleAfter) - sinY(lattice,L,std::get<0>(current),std::get<1>(current),std::get<2>(current),angleBefore);
-				TotSinZ += sinZ(lattice,L,std::get<0>(current),std::get<1>(current),std::get<2>(current),angleAfter) - sinZ(lattice,L,std::get<0>(current),std::get<1>(current),std::get<2>(current),angleBefore);
+				enAfter = siteEnergy(lattice,L,std::get<1>(current),std::get<2>(current),std::get<3>(current))
 
+					updateQuants(TotEn,TotXMag,TotYMag,TotSinX,TotSinY,TotSinZ,
+							enBefore,enAfter,
+							angleBefore,angleAfter,
+							sxBef,sxAft,
+							syBef,syAft,
+							szBef,szAft);
+				updatequants(toten,totxmag,totymag,totsinx,totsiny,totsinz,
+						enbefore,enafter,
+						anglebefore,angleafter,
+						sxBef = sinX(lattice,l,std::get<1>(current),std::get<2>(current),std::get<3>(current),anglebefore),
+						sxAft = sinx(lattice,l,std::get<1>(current),std::get<2>(current),std::get<3>(current),angleafter),
+						syBef = siny(lattice,l,std::get<1>(current),std::get<2>(current),std::get<3>(current),anglebefore),
+						syAft = siny(lattice,l,std::get<1>(current),std::get<2>(current),std::get<3>(current),angleafter),
+						szBef = sinz(lattice,l,std::get<1>(current),std::get<2>(current),std::get<3>(current),anglebefore),
+						szAft = sinZ(lattice,L,std::get<1>(current),std::get<2>(current),std::get<3>(current),angleAfter));
 				//find indices of neighbours
 				neig1 = std::make_tuple(
 						(std::get<0>(current) + 1) % (int)L, 
