@@ -74,7 +74,7 @@ def calcAvg(mat,i,istart,FileList):
     deltaxi = np.std(mat[istart:iend,19])/pow(N,0.5);
     deltars = np.std(mat[istart:iend,20])/pow(N,0.5);
 
-    calcB = expFac*E/pow(E2,2);
+    calcB = expFac*M4/pow(M2,2);
     calcdBdT =  expFac*M4E*M2 + M4*M2*E -2.0*expFac*M4*M2E;
     calcdBdT = calcdBdT/(T*T*M2*M2*M2);
     calcxi = (M2/ expFac) - M*M/(expFac*expFac);
@@ -118,14 +118,9 @@ mat = mat[ind]
 #form averages and print to file
 L=mat[0,0];
 T=mat[0,1];
-Neq_sw = mat[0,2];
 
 FileList =[]
-    
-print(len(FileList));
 openFiles(FileList,L,fName);
-    
-print(len(FileList));
 
 TOL = float('0.00000000001');
 ifirst = 0;
