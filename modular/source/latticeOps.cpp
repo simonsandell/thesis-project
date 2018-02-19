@@ -135,12 +135,10 @@ long double ***warmup( long double L,long double ***lattice,long double &N_equil
 	//eqilibration 
 	int totEqSteps= 0;
 	long double Nclusts = 0.0L;
-	testConsistent(lattice,L,TotEn,TotXMag,TotYMag,TotSinX,TotSinY,TotSinZ);
 	while (totEqSteps < N_equil_steps){
 		totEqSteps += growCluster(lattice,cluster,L,Beta,TotXMag,TotYMag,TotEn,TotSinX,TotSinY,TotSinZ,dist,eng);
 		++Nclusts;
 	}
-	testConsistent(lattice,L,TotEn,TotXMag,TotYMag,TotSinX,TotSinY,TotSinZ);
 	long double actualNsweeps = totEqSteps/(L*L*L);
 	if (save){
 		saveLattice(L,actualNsweeps,Nclusts,lattice);

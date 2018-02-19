@@ -12,11 +12,12 @@
 
 using namespace std;
 //warmup and save to file
-void warmupandsave(long double L,long double Neq,bool cold,long double runTemp){
+long double ***warmupandsave(long double L,long double Neq,bool cold,long double runTemp){
 	long double ***lattice = newLattice(L,cold);
 	bool save = true;
 	long double Ncl;
 	lattice = warmup(L,lattice,Neq,Ncl,runTemp,save);
+	return lattice;
 }
 //runhist
 void runhist(long double L,long double***lattice,long double Neqsw,long double Neqcl,long double Nsamp,bool cold,long double*Trange,long double Ntemps,long double runTemp,long double Nreps,long double Nwarmup){
@@ -89,13 +90,10 @@ int main(int argc, char* argv[]){
 	long double ***lattice;
 
 	//test
-	warmupandsave(L,Neq,cold,runTemp);
-	
-
-	
-
-
-
+	lattice = warmupandsave(L,Neq,cold,runTemp);
+	long double Neqsw,Neqcl;
+	lattice = getLattice(L,Neqsw,Neqcl);
+	wolffRun(L,lattice,Neqsw,Neqcl,1000,true,runTemp);
 
 
 

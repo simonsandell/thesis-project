@@ -95,16 +95,20 @@ long double calcEn(long double ***lattice,long double L){
 
 void testConsistent(long double ***lattice,long double L,long double TotEn,long double TotXMag,long double TotYMag,long double TotSinX,long double TotSinY,long double TotSinZ){
 
-	   long double tSinX = calcSinX(lattice,L);
-	   long double tSinY = calcSinY(lattice,L);
-	   long double tSinZ = calcSinZ(lattice,L);
-	   long double testEn = calcEn(lattice,L);
-	   long double testXMag = calcXMag(lattice,L);
-	   long double testYMag = calcYMag(lattice,L);
-	   std::cout << TotEn - testEn << " E" << std::endl;
-	   std::cout << TotXMag - testXMag << " X" << std::endl;
-	   std::cout << TotYMag - testYMag << " Y" << std::endl;
-	   std::cout << TotSinX - tSinX << " Sx" << std::endl;
-	   std::cout << TotSinY - tSinY << " Sy" << std::endl;
-	   std::cout << TotSinZ - tSinZ << " Sz" << std::endl;
+	typedef std::numeric_limits<long double> dbl;
+	std::cout.precision(dbl::max_digits10 + 5);
+	long double testSinX = calcSinX(lattice,L);
+	long double testSinY = calcSinY(lattice,L);
+	long double testSinZ = calcSinZ(lattice,L);
+	long double testEn = calcEn(lattice,L);
+	long double testXMag = calcXMag(lattice,L);
+	long double testYMag = calcYMag(lattice,L);
+	std::cout <<std::fixed<< TotEn - testEn << " E"<< TotEn << " "<< testEn << std::endl;
+	std::cout <<std::fixed<< TotXMag - testXMag << " X"<< TotXMag << " "<< testXMag << std::endl;
+	std::cout <<std::fixed<< TotYMag - testYMag << " Y"<< TotYMag << " "<< testYMag << std::endl;
+	std::cout <<std::fixed<< TotSinX - testSinX << " Sx"<< TotSinX << " "<< testSinX << std::endl;
+	std::cout <<std::fixed<< TotSinY - testSinY << " Sy"<< TotSinY << " "<< testSinY << std::endl;
+	std::cout <<std::fixed<< TotSinZ - testSinZ << " Sz"<< TotSinZ << " "<< testSinZ << std::endl;
+	long double calcM2 = TotXMag*TotXMag + TotYMag*TotYMag;
+	long double calcM4 = calcM2*calcM2;
 }

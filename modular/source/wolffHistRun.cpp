@@ -123,11 +123,6 @@ void wolffHistRun(long double L,long double ***lattice,long double Neq_sweeps,lo
 	}
 	long double actNsamp_sweeps = (long double)steps/(L*L*L);
 
-<<<<<<< HEAD
-=======
-	//define some reciprocals to reduce number of divions
->>>>>>> restored
-
 	//calculate quantities of interest
 
 	long double xi[N_temps] = {};//susceptibility
@@ -150,19 +145,6 @@ void wolffHistRun(long double L,long double ***lattice,long double Neq_sweeps,lo
 		avgSinY2[i] /= Nsample_clusts;
 		avgSinZ2[i] /= Nsample_clusts;
 
-<<<<<<< HEAD
-=======
-//		avgE[i] *= reciExpFac;
-//		avgE2[i] *= reciExpFac;
-//		avgM[i] *= reciExpFac;
-//		avgM2[i] *= reciExpFac;
-//		avgM4[i] *= reciExpFac;
-//		avgM2E[i] *= reciExpFac;
-//		avgM4E[i] *= reciExpFac;
-//		avgSinX2[i] *= reciExpFac;
-//		avgSinY2[i] *= reciExpFac;
-//		avgSinZ2[i] *= reciExpFac;
->>>>>>> restored
 		//calculate
 		b[i] = avgM4[i]*avgExpFac[i];
 		b[i] /= (avgM2[i]*avgM2[i]);

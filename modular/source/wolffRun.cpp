@@ -46,6 +46,7 @@ void wolffRun(long double L,long double ***lattice,long double Neq_sweeps,long d
 	long double TotSinX = calcSinX(lattice,L);
 	long double TotSinY = calcSinY(lattice,L);
 	long double TotSinZ = calcSinZ(lattice,L);
+	testConsistent(lattice,L,TotEn,TotXMag,TotYMag,TotSinX,TotSinY,TotSinZ);
 
 
 	long double avgE = 0.0L; //energy
@@ -107,21 +108,13 @@ void wolffRun(long double L,long double ***lattice,long double Neq_sweeps,long d
 	b = avgM4;
 	b /= (avgM2*avgM2);
 	dbdt = avgM4E*avgM2 + avgM4*avgM2*avgE - 2.0L*avgM4*avgM2E;
-<<<<<<< HEAD
 	dbdt /= Temperature*Temperature*avgM2*avgM2*avgM2;
 	xi = avgM2 - avgM*avgM;
 	xi /= Temperature*L*L*L;
 	rs = -avgE - (Beta)*avgSinX2 -(Beta)*avgSinY2 -(Beta)*avgSinZ2;
 	rs /= 3.0L*L*L; 
-=======
-	dbdt /= Temperature*Temperature;
-	dbdt /= avgM2*avgM2*avgM2;
-	xi = avgM2 - avgM*avgM;
-	xi /= (L*L*L*Temperature);
-	rs = -avgE - avgSinX2/Temperature -avgSinY2/Temperature -avgSinZ2/Temperature;
-	rs /= (3.0L*L*L); 
->>>>>>> restored
 		
+	testConsistent(lattice,L,TotEn,TotXMag,TotYMag,TotSinX,TotSinY,TotSinZ);
 	printOutput(L,Temperature,
 				Neq_sweeps,Neq_clusts,
 				actNsamp_sweeps,Nsample_clusts,cold,

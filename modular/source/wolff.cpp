@@ -14,36 +14,27 @@ long double getProb(long double u, long double angleParent, long double angle,lo
 	return std::min((long double)1.0L,prob);
 }
 
-<<<<<<< HEAD
-int growCluster(long double ***lattice,bool ***cluster, long double &L,
-		long double &beta, long double& TotXMag,long double& TotYMag,
-		long double& TotEn,long double &TotSinX,
-		long double &TotSinY,long double &TotSinZ,
-		std::uniform_real_distribution<long double> &dist,
-		std::mt19937_64 &eng){
-=======
 void updateQuants(long double& TotEn,long double& TotXMag,long double& TotYMag,long double &TotSinX,long double &TotSinY,long double &TotSinZ
-,		long double e0,long double e1,
+		,		long double e0,long double e1,
 		long double a0,long double a1,
 		long double sx0,long double sx1,
 		long double sy0,long double sy1,
 		long double sz0,long double sz1){
 
 	TotEn += e1;
-       	TotEn += -e0;
+	TotEn += -e0;
 	TotXMag += cos(a1);
 	TotXMag += -cos(a0);
 	TotYMag += sin(a1);
-        TotYMag += -sin(a0);
+	TotYMag += -sin(a0);
 	TotSinX += sx1;
-        TotSinX += -sx0;
+	TotSinX += -sx0;
 	TotSinY += sy1;
-        TotSinY += -sy0;
+	TotSinY += -sy0;
 	TotSinZ += sz1;
 	TotSinZ += -sz0;
 }
 int growCluster(long double ***lattice,bool ***cluster, long double &L,long double &beta, long double& TotXMag,long double& TotYMag,long double& TotEn,long double &TotSinX,long double &TotSinY,long double &TotSinZ,std::uniform_real_distribution<long double> &dist,std::mt19937_64 &eng){
->>>>>>> restored
 
 	int time = 1;
 	//select random plane and random staring spin
