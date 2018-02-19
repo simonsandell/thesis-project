@@ -123,21 +123,24 @@ long double ***warmup( long double L,long double ***lattice,long double &N_equil
 			}
 		}
 	}
-	long double TotEn = calcEn(lattice,L);
+	long double TotEn   = calcEn(lattice,L);
 	long double TotXMag = calcXMag(lattice,L);
 	long double TotYMag = calcYMag(lattice,L);
 	long double TotSinX = calcSinX(lattice,L);
 	long double TotSinY = calcSinY(lattice,L);
 	long double TotSinZ = calcSinZ(lattice,L);
 
-	long double N_equil_steps= N_equil_sweeps*Nspins;
+	long double N_equil_steps = N_equil_sweeps*Nspins;
+
 	//eqilibration 
 	int totEqSteps= 0;
 	long double Nclusts = 0.0L;
+	testConsistent(lattice,L,TotEn,TotXMag,TotYMag,TotSinX,TotSinY,TotSinZ);
 	while (totEqSteps < N_equil_steps){
 		totEqSteps += growCluster(lattice,cluster,L,Beta,TotXMag,TotYMag,TotEn,TotSinX,TotSinY,TotSinZ,dist,eng);
 		++Nclusts;
 	}
+	testConsistent(lattice,L,TotEn,TotXMag,TotYMag,TotSinX,TotSinY,TotSinZ);
 	long double actualNsweeps = totEqSteps/(L*L*L);
 	if (save){
 		saveLattice(L,actualNsweeps,Nclusts,lattice);

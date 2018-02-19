@@ -29,28 +29,28 @@ void printOutput(long double L, long double T, long double Neqsw, long double Ne
 
 	std::cout.precision(dbl::max_digits10 + 5);
 
-	std::cout << std::fixed << L << " ";				//0
-	std::cout << std::fixed << T << " ";				//1
-	std::cout << std::fixed << Neqsw << " ";				//1
-	std::cout << std::fixed << Neqcl << " ";				//1
-	std::cout << std::fixed << Nsmsw << " ";				//1
-	std::cout << std::fixed << Nsmcl << " ";				//1
-	std::cout << std::fixed << cold << " ";				//1
-	std::cout << std::fixed << E << " ";				//2
-	std::cout << std::fixed << E2 << " ";				//2
-	std::cout << std::fixed << M << " ";				//3
-	std::cout << std::fixed << M2 << " ";				//3
-	std::cout << std::fixed << M4 << " ";				//3
-	std::cout << std::fixed << M2E << " ";				//3
-	std::cout << std::fixed << M4E << " ";				//3
-	std::cout << std::fixed << SX2 << " ";				//3
-	std::cout << std::fixed << SY2 << " ";				//3
-	std::cout << std::fixed << SZ2 << " ";				//3
-	std::cout << std::fixed << bin << " ";				//4
-	std::cout << std::fixed << dbdt << " ";				//5
-	std::cout << std::fixed << xi << " ";				//6
-	std::cout << std::fixed << rs << " ";				//7
-	std::cout << std::fixed << expFac << " ";				//7
+	std::cout << std::fixed << L << " ";				
+	std::cout << std::fixed << T << " ";				
+	std::cout << std::fixed << Neqsw << " ";			
+	std::cout << std::fixed << Neqcl << " ";			
+	std::cout << std::fixed << Nsmsw << " ";			
+	std::cout << std::fixed << Nsmcl << " ";			
+	std::cout << std::fixed << cold << " ";				
+	std::cout << std::fixed << E << " ";				
+	std::cout << std::fixed << E2 << " ";				
+	std::cout << std::fixed << M << " ";				
+	std::cout << std::fixed << M2 << " ";				
+	std::cout << std::fixed << M4 << " ";				
+	std::cout << std::fixed << M2E << " ";				
+	std::cout << std::fixed << M4E << " ";				
+	std::cout << std::fixed << SX2 << " ";				
+	std::cout << std::fixed << SY2 << " ";				
+	std::cout << std::fixed << SZ2 << " ";				
+	std::cout << std::fixed << bin << " ";				
+	std::cout << std::fixed << dbdt << " ";				
+	std::cout << std::fixed << xi << " ";				
+	std::cout << std::fixed << rs << " ";				
+	std::cout << std::fixed << expFac << " ";			
 	std::cout << std::endl;				
 }
 
@@ -108,8 +108,8 @@ void saveLattice(long double L,long double Neqsw,long double Neqcl, long double*
 		}
 	}
 }
-long double *** getLattice(long double L,long double & Neqsw,long double& Neqcl){
 
+long double *** getLattice(long double L,long double & Neqsw,long double& Neqcl){
 	std::ostringstream mstream;
 	std::string exePath = get_selfpath();
 	mstream << exePath << "/warmLattice/" << L << "_warm.lat";

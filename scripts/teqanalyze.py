@@ -44,7 +44,7 @@ N = decimal.Decimal('0.0');
 #open files for writing
 strFn = "./foutput/teq/" + str(int(cold)) + "_" + str(int(L)) + "_" + fName + ".dat"
 M_teq = open(strFn,"w")
-
+LTOL = decimal.Decimal('1');
 TOL = decimal.Decimal('4') 
 relTOL = decimal.Decimal('0.5')
 for i in range(mat.shape[0]):
@@ -57,7 +57,7 @@ for i in range(mat.shape[0]):
         cold = decimal.Decimal(mat[i,12])
         strFn = "./foutput/teq/" + str(int(cold)) + "_" + str(int(L)) + "_" + fName + ".dat"
         M_teq = open(strFn,"w")
-    elif(TOL < abs(mat[i,0] - L)):
+    elif(LTOL < abs(mat[i,0] - L)):
         writeToFiles(Mag,M_teq,N,Neq)
         N = decimal.Decimal('0');
         L = decimal.Decimal(mat[i,0])

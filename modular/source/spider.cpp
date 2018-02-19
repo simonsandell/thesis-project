@@ -16,13 +16,14 @@ void warmupandsave(long double L,long double Neq,bool cold,long double runTemp){
 	long double ***lattice = newLattice(L,cold);
 	bool save = true;
 	long double Ncl;
-	warmup(L,lattice,Neq,Ncl,runTemp,save);
+	lattice = warmup(L,lattice,Neq,Ncl,runTemp,save);
 }
 //runhist
 void runhist(long double L,long double***lattice,long double Neqsw,long double Neqcl,long double Nsamp,bool cold,long double*Trange,long double Ntemps,long double runTemp,long double Nreps,long double Nwarmup){
 	long double Ncl;
 	bool save = false;
 	for (int i = 0; i< Nreps; ++i){
+		cout << i << endl;
 		warmup(L,lattice,Nwarmup,Ncl,runTemp,save);
 		wolffHistRun(L,lattice,Neqsw,Neqcl,Nsamp,cold,Trange,Ntemps,runTemp);
 	}
@@ -64,13 +65,15 @@ int main(int argc, char* argv[]){
 
 	string runNumber = argv[1];
 
-	long double 	L =			4.0L;
 	long double	startT=			2.20150L;
 	long double	endT=			2.20350L;
 	long double	Ntemps=			21.0L;
+
+	long double 	L =			4.0L;
 	long double	Neq=			10000.0L;
-	long double	Nsamp=			1000.0L;
 	bool 		cold=			true;
+
+	long double	Nsamp=			1000.0L;
 	//generate temperature range
 	long double* Trange;
 	if (abs(Ntemps - 1) < 0.1) {
@@ -85,6 +88,36 @@ int main(int argc, char* argv[]){
 	bool save;
 	long double ***lattice;
 
+	//test
+	warmupandsave(L,Neq,cold,runTemp);
+	
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	//Initial warmups
 	if (runNumber == "saveWarmup"){
 		L = 4.0L;
@@ -98,7 +131,7 @@ int main(int argc, char* argv[]){
 	if (runNumber == "histRun"){
 		long double Neqsw;
 		long double Neqcl;
-		long double Nreps = 10000.0L;
+		long double Nreps = 1000.0L;
 		long double Nwarmup = 100.0L;
 		save = false;
 		L = 4.0L;
