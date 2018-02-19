@@ -6,7 +6,7 @@
 
 #include "latticeOps.h"
 
-void metrosweep(long double***lattice,long double&L,long double&beta,long double&TotXMag,long double&TotYMag,long double&TotEn,long double &TotSinX,long double &TotSinY,long double &TotSinZ,auto &randgen){
+void metrosweep(long double***lattice,long double&L,long double&beta,long double&TotXMag,long double&TotYMag,long double&TotEn,long double &TotSinX,long double &TotSinY,long double &TotSinZ,std::uniform_real_distribution<long double> &dist,std::mt19937_64 &eng){
 	long double prob;
 	long double u;
 	int s1;
@@ -18,19 +18,21 @@ void metrosweep(long double***lattice,long double&L,long double&beta,long double
 	long double enAfter;
 	for (int i = 0; i<(L*L*L); ++i){
 		//select random angle in the range [-PI,PI]
-		u = -M_PI + 2.0*M_PI*randgen(); 
+		u = -M_PI + 2.0*M_PI*dist(eng); 
 		//select random spin
-		s1 = L*randgen();
-		s2 = L*randgen();
-		s3 = L*randgen();
+		s1 = L*dist(eng);
+		s2 = L*dist(eng);
+		s3 = L*dist(eng);
 		//calculate energy difference and probability of flipping
 		//and try to flip
 		angleBefore = lattice[s1][s2][s3];
 		angleAfter = angleBefore + u;
-		enBefore = siteEnergy(lattice,L,s1,s2,s3,angleBefore);
-		enAfter = siteEnergy(lattice,L,s1,s2,s3,angleAfter);
+		enBefore = siteEnergy(lattice,L,s1,s2,s3);
+		lattice[s1][s2][s3] = angleAfter;
+		enAfter = siteEnergy(lattice,L,s1,s2,s3);
+		lattice[s1][s2][s3] = angleBefore;
 		prob = exp(-beta*(enAfter - enBefore));
-		if (randgen() < prob){
+		if (dist(eng) < prob){
 			lattice[s1][s2][s3] = angleAfter;
 			TotEn += enAfter - enBefore;
 			TotXMag += cos(angleAfter) - cos(angleBefore);

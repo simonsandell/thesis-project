@@ -7,6 +7,7 @@
 #include "ioFuncs.h"
 #include "calcQuants.h"
 #include "latticeOps.h"
+#include "metroRun.h"
 #include "wolffRun.h"
 #include "wolffHistRun.h"
 
@@ -24,7 +25,6 @@ void runhist(long double L,long double***lattice,long double Neqsw,long double N
 	long double Ncl;
 	bool save = false;
 	for (int i = 0; i< Nreps; ++i){
-		cout << i << endl;
 		warmup(L,lattice,Nwarmup,Ncl,runTemp,save);
 		wolffHistRun(L,lattice,Neqsw,Neqcl,Nsamp,cold,Trange,Ntemps,runTemp);
 	}
@@ -86,14 +86,21 @@ int main(int argc, char* argv[]){
 	}
 	long double runTemp = 2.20200000000000L;
 
-	bool save;
+	bool save = false;
 	long double ***lattice;
 
 	//test
+	//warmup with wolff, then run with metropolis
+	
 	lattice = warmupandsave(L,Neq,cold,runTemp);
 	long double Neqsw,Neqcl;
+	Neqsw=100.0L;
 	lattice = getLattice(L,Neqsw,Neqcl);
-	wolffRun(L,lattice,Neqsw,Neqcl,1000,true,runTemp);
+	for (int i = 0; i < 1000; ++i){
+		metroRun(L,lattice,Neqsw,1000,true,runTemp);
+		lattice = warmup(L,lattice,Neqsw,Neqcl,runTemp,save);
+		cout << Neqsw << endl;
+	}
 
 
 

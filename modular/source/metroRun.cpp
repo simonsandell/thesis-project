@@ -6,12 +6,12 @@
 #include <unistd.h>
 #include <linux/random.h>
 
-#include "wolff.h"
 #include "calcQuants.h"
 #include "latticeOps.h"
 #include "ioFuncs.h"
+#include "metropolis.h"
 
-void wolffRun(long double L,long double ***lattice,long double Neq_sweeps,long double Neq_clusts, long double N_sample_sweeps,bool cold,long double Temperature){
+void metroRun(long double L,long double ***lattice,long double Neq_sweeps, long double N_sample_sweeps,bool cold,long double Temperature){
 
 	//initialize rng
 	unsigned long int s;
@@ -22,23 +22,6 @@ void wolffRun(long double L,long double ***lattice,long double Neq_sweeps,long d
 
 	long double Beta = 1.0L/Temperature;		
 
-
-	//define and initialize cluster
-	bool***cluster;
-	cluster = new bool**[(int)L];
-	for (int i = 0; i< L;++i){
-		cluster[i] = new bool*[(int)L];
-		for (int j =0;j<L;++j){
-			cluster[i][j] = new bool[(int)L];
-		}
-	}
-	for (int i = 0; i<L;++i){
-		for (int j=0; j<L;++j){
-			for (int k = 0; k<L; ++k){
-				cluster[i][j][k] = 0;
-			}
-		}
-	}
 
 	long double TotEn = calcEn(lattice,L);
 	long double TotXMag = calcXMag(lattice,L);
@@ -59,14 +42,9 @@ void wolffRun(long double L,long double ***lattice,long double Neq_sweeps,long d
 	long double avgSinY2 = 0.0L; // for superfluid density 
 	long double avgSinZ2 = 0.0L; // for superfluid density 
 
-	int steps = 0;
-	int Nsample_clusts = 0;
-	long double leaststeps = N_sample_sweeps*L*L*L;
-	while (steps < leaststeps){
-		//make a cluster
-		steps += growCluster(lattice,cluster,L,Beta,TotXMag,TotYMag,TotEn,TotSinX,TotSinY,TotSinZ,dist,eng);
-		++Nsample_clusts;
-
+	for (int i = 0; i < N_sample_sweeps; ++i){
+		metrosweep(lattice,L,Beta,TotXMag,TotYMag,TotEn,TotSinX,TotSinY,TotSinZ,dist,eng);
+		metrosweep(lattice,L,Beta,TotXMag,TotYMag,TotEn,TotSinX,TotSinY,TotSinZ,dist,eng);
 		//take sample data
 		avgE += TotEn;
 		avgE2 += TotEn*TotEn;
@@ -79,7 +57,6 @@ void wolffRun(long double L,long double ***lattice,long double Neq_sweeps,long d
 		avgSinY2 += TotSinY*TotSinY;
 		avgSinZ2 += TotSinZ*TotSinZ;
 	}
-	long double actNsamp_sweeps = (long double)steps/(L*L*L);
 
 	//define some reciprocals to reduce number of divions
 
@@ -92,16 +69,16 @@ void wolffRun(long double L,long double ***lattice,long double Neq_sweeps,long d
 
 
 	//normalize
-	avgE /= Nsample_clusts;
-	avgE2 /= Nsample_clusts;
-	avgM /= Nsample_clusts;
-	avgM2 /= Nsample_clusts;
-	avgM4 /= Nsample_clusts;
-	avgM2E /= Nsample_clusts;
-	avgM4E /= Nsample_clusts;
-	avgSinX2 /= Nsample_clusts;
-	avgSinY2 /= Nsample_clusts;
-	avgSinZ2 /= Nsample_clusts;
+	avgE /= N_sample_sweeps;
+	avgE2 /= N_sample_sweeps;
+	avgM /= N_sample_sweeps;
+	avgM2 /= N_sample_sweeps;
+	avgM4 /= N_sample_sweeps;
+	avgM2E /= N_sample_sweeps;
+	avgM4E /= N_sample_sweeps;
+	avgSinX2 /= N_sample_sweeps;
+	avgSinY2 /= N_sample_sweeps;
+	avgSinZ2 /= N_sample_sweeps;
 
 	//calculate
 	b = avgM4;
@@ -114,8 +91,8 @@ void wolffRun(long double L,long double ***lattice,long double Neq_sweeps,long d
 	rs /= 3.0L*L*L; 
 		
 	printOutput(L,Temperature,
-				Neq_sweeps,Neq_clusts,
-				actNsamp_sweeps,Nsample_clusts,cold,
+				Neq_sweeps,0,
+				N_sample_sweeps,0,cold,
 				avgE,avgE2,avgM,avgM2,avgM4,
 				avgM2E,avgM4E,
 				avgSinX2,avgSinY2,avgSinZ2,

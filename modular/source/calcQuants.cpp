@@ -109,6 +109,4 @@ void testConsistent(long double ***lattice,long double L,long double TotEn,long 
 	std::cout <<std::fixed<< TotSinX - testSinX << " Sx"<< TotSinX << " "<< testSinX << std::endl;
 	std::cout <<std::fixed<< TotSinY - testSinY << " Sy"<< TotSinY << " "<< testSinY << std::endl;
 	std::cout <<std::fixed<< TotSinZ - testSinZ << " Sz"<< TotSinZ << " "<< testSinZ << std::endl;
-	long double calcM2 = TotXMag*TotXMag + TotYMag*TotYMag;
-	long double calcM4 = calcM2*calcM2;
 }

@@ -82,10 +82,10 @@ def calcAvg(mat,i,istart,FileList):
     calcrs = -E -SX/T - SY/T - SZ/T;
     calcrs = calcrs/(3.0*L*L*expFac);
     Ylist = [E,M,B,calcB,dBdT,calcdBdT,xi,calcxi,rs,calcrs];
-    #Deltalist = [deltaE,deltaM,deltaB,0,deltadBdT,0,deltaxi,0,deltars,0];
+    Deltalist = [deltaE,deltaM,deltaB,0,deltadBdT,0,deltaxi,0,deltars,0];
     for i in range(len(Ylist)):
-        #Flist[i].write(repr(T)+"    "+repr(Ylist[i])+"    "+repr(deltaY)+"    "+repr(N)+"\n")
-        FileList[i].write(repr(T)+"    "+repr(Ylist[i])+"    "+repr(0.0)+"    "+repr(N)+"\n")
+        FileList[i].write(repr(T)+"    "+repr(Ylist[i])+"    "+repr(Deltalist[i])+"    "+repr(N)+"\n")
+        #FileList[i].write(repr(T)+"    "+repr(Ylist[i])+"    "+repr(0.0)+"    "+repr(N)+"\n")
 
 #
 #read raw data from file in ./output
