@@ -8,11 +8,18 @@
 
 long double getProb(long double u, long double angleParent, long double angle,long double beta){
 	long double prob = 1.0L - exp(2.0L*beta*cos(angleParent - u)*cos(angle -u));
-	if (prob < 0.0L){ return 0.0L;}
+	if (prob < 0.0L){ 
+		return 0.0L;
+	}
 	return std::min((long double)1.0L,prob);
 }
-void updateQuants(long double& TotXMag,long double& TotYMag,long double& TotEn,long double &TotSinX,long double &TotSinY,long double &TotSinZ
-,long double e0,long double e1,long double a0,long double a1,long double sx0,long double sx1,long double sy0,long double sy1,long double sz0,long double sz1){
+
+void updateQuants(long double& TotEn,long double& TotXMag,long double& TotYMag,long double &TotSinX,long double &TotSinY,long double &TotSinZ
+,		long double e0,long double e1,
+		long double a0,long double a1,
+		long double sx0,long double sx1,
+		long double sy0,long double sy1,
+		long double sz0,long double sz1){
 	TotEn += e1;
        	TotEn += -e0;
 	TotXMag += cos(a1);
