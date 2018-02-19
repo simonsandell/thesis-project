@@ -4,8 +4,6 @@
 #include "calcQuants.h"
 #include "latticeOps.h"
 
-
-
 //print lattice
 void printLattice(long double ***lattice,long double &L){
 	for(int i = 0; i < L; ++i){
