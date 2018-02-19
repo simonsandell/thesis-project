@@ -20,6 +20,7 @@ void updateQuants(long double& TotEn,long double& TotXMag,long double& TotYMag,l
 		long double sx0,long double sx1,
 		long double sy0,long double sy1,
 		long double sz0,long double sz1){
+
 	TotEn += e1;
        	TotEn += -e0;
 	TotXMag += cos(a1);
