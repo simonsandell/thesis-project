@@ -14,5 +14,5 @@ long double calcXMag(long double ***lattice,long double L);
 long double calcYMag(long double ***lattice,long double L);
 long double calcMag(long double ***lattice,long double L);
 long double calcEn(long double ***lattice,long double L);
-void testConsistent(long double ***lattice,long double L,long double TotEn,long double TotXMag,long double TotYMag,long double TotSinX);
+void testConsistent(long double ***lattice,long double L,long double TotEn,long double TotXMag,long double TotYMag,long double TotSinX,long double TotSinY,long double TotSinZ);
 #endif

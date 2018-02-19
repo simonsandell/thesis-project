@@ -93,14 +93,18 @@ long double calcEn(long double ***lattice,long double L){
 	return en;
 }
 
-void testConsistent(long double ***lattice,long double L,long double TotEn,long double TotXMag,long double TotYMag,long double TotSinX){
+void testConsistent(long double ***lattice,long double L,long double TotEn,long double TotXMag,long double TotYMag,long double TotSinX,long double TotSinY,long double TotSinZ){
 
 	   long double tSinX = calcSinX(lattice,L);
+	   long double tSinY = calcSinY(lattice,L);
+	   long double tSinZ = calcSinZ(lattice,L);
 	   long double testEn = calcEn(lattice,L);
 	   long double testXMag = calcXMag(lattice,L);
 	   long double testYMag = calcYMag(lattice,L);
 	   std::cout << TotEn - testEn << " E" << std::endl;
 	   std::cout << TotXMag - testXMag << " X" << std::endl;
 	   std::cout << TotYMag - testYMag << " Y" << std::endl;
-	   std::cout << TotSinX - tSinX << " S" << std::endl;
+	   std::cout << TotSinX - tSinX << " Sx" << std::endl;
+	   std::cout << TotSinY - tSinY << " Sy" << std::endl;
+	   std::cout << TotSinZ - tSinZ << " Sz" << std::endl;
 }
