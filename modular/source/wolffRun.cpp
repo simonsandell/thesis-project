@@ -82,8 +82,6 @@ void wolffRun(long double L,long double ***lattice,long double Neq_sweeps,long d
 	long double actNsamp_sweeps = (long double)steps/(L*L*L);
 
 	//define some reciprocals to reduce number of divions
-	long double reciNsample_clusts= 1.0L/(long double)Nsample_clusts;
-	long double reciNspins = 1.0L/(L*L*L);
 
 	//calculate quantities of interest
 
@@ -94,28 +92,26 @@ void wolffRun(long double L,long double ***lattice,long double Neq_sweeps,long d
 
 
 	//normalize
-	avgE *= reciNsample_clusts;
-	avgE2 *= reciNsample_clusts;
-	avgM *= reciNsample_clusts;
-	avgM2 *= reciNsample_clusts;
-	avgM4 *= reciNsample_clusts;
-	avgM2E *= reciNsample_clusts;
-	avgM4E *= reciNsample_clusts;
-	avgSinX2 *= reciNsample_clusts;
-	avgSinY2 *= reciNsample_clusts;
-	avgSinZ2 *= reciNsample_clusts;
+	avgE /= Nsample_clusts;
+	avgE2 /= Nsample_clusts;
+	avgM /= Nsample_clusts;
+	avgM2 /= Nsample_clusts;
+	avgM4 /= Nsample_clusts;
+	avgM2E /= Nsample_clusts;
+	avgM4E /= Nsample_clusts;
+	avgSinX2 /= Nsample_clusts;
+	avgSinY2 /= Nsample_clusts;
+	avgSinZ2 /= Nsample_clusts;
 
 	//calculate
 	b = avgM4;
 	b /= (avgM2*avgM2);
 	dbdt = avgM4E*avgM2 + avgM4*avgM2*avgE - 2.0L*avgM4*avgM2E;
-	dbdt *= Beta*Beta;
-	dbdt /= avgM2*avgM2*avgM2;
+	dbdt /= Temperature*Temperature*avgM2*avgM2*avgM2;
 	xi = avgM2 - avgM*avgM;
-	xi *= reciNspins;
-	xi *= Beta;
+	xi /= Temperature*L*L*L;
 	rs = -avgE - (Beta)*avgSinX2 -(Beta)*avgSinY2 -(Beta)*avgSinZ2;
-	rs *= (1.0L/3.0L)*L*reciNspins; 
+	rs /= 3.0L*L*L; 
 		
 	printOutput(L,Temperature,
 				Neq_sweeps,Neq_clusts,
@@ -125,6 +121,4 @@ void wolffRun(long double L,long double ***lattice,long double Neq_sweeps,long d
 				avgSinX2,avgSinY2,avgSinZ2,
 				b,dbdt,xi,rs,
 				1.0L);
-
-
 }

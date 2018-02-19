@@ -12,11 +12,16 @@ long double getProb(long double u, long double angleParent, long double angle,lo
 	return std::min((long double)1.0L,prob);
 }
 
-int growCluster(long double ***lattice,bool ***cluster, long double &L,long double &beta, long double& TotXMag,long double& TotYMag,long double& TotEn,long double &TotSinX,long double &TotSinY,long double &TotSinZ,std::uniform_real_distribution<long double> &dist,std::mt19937_64 &eng){
+int growCluster(long double ***lattice,bool ***cluster, long double &L,
+		long double &beta, long double& TotXMag,long double& TotYMag,
+		long double& TotEn,long double &TotSinX,
+		long double &TotSinY,long double &TotSinZ,
+		std::uniform_real_distribution<long double> &dist,
+		std::mt19937_64 &eng){
 
 	int time = 1;
 	//select random plane and random staring spin
-	long double u = 2.0L*((long double)M_PI)*dist(eng);
+	long double u = -(long double)M_PI + 2.0L*((long double)M_PI)*dist(eng);
 	int s1 = L*dist(eng);
 	int s2 = L*dist(eng);
 	int s3 = L*dist(eng);
