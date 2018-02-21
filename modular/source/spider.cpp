@@ -97,9 +97,8 @@ int main(int argc, char* argv[]){
 	Neqsw=100.0L;
 	lattice = getLattice(L,Neqsw,Neqcl);
 	for (int i = 0; i < 1000; ++i){
-		metroRun(L,lattice,Neqsw,1000,true,runTemp);
+		wolffRun(L,lattice,Neqsw,Neqcl,1000,true,runTemp);
 		lattice = warmup(L,lattice,Neqsw,Neqcl,runTemp,save);
-		cout << Neqsw << endl;
 	}
 
 
