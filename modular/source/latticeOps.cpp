@@ -9,15 +9,6 @@
 #include "ioFuncs.h"
 
 //clear the cluster
-void emptyCluster(bool***cluster,long double &L){
-	for (int i = 0; i< L; ++i){
-		for (int j = 0; j< L; ++j){
-			for (int k = 0; k<L; ++k){	
-				cluster[i][j][k] = false;
-			}
-		}
-	}
-}
 //calculate energy of site
 long double siteEnergy(long double *** lattice,long double &L, int &s1, int &s2, int &s3){
 	long double sum = 0.0L;

@@ -7,6 +7,8 @@
 
 #include "latticeOps.h"
 #include "latticeStruct.h"
+#include "randStruct.h"
+#include "clusterStruct.h"
 
 long double getProb(long double u, long double angleParent, long double angle,long double beta){
 	long double prob = 1.0L - exp(2.0L*beta*cos(angleParent - u)*cos(angle -u));
@@ -39,21 +41,21 @@ void updateQuants(Lattice& lat,long double e0,long double e1,
 	lat.sinz+= -sz0;
 }
 
-int growCluster(Lattice& lat,bool ***cluster,long double &beta,std::uniform_real_distribution<long double> &dist,std::mt19937_64 &eng){
+int growCluster(Lattice& lat,Cluster& cluster,long double beta,RandStruct& randgen){
 
 	int time = 1;
 	//select random plane and random staring spin
-	long double u = -(long double)M_PI + 2.0L*((long double)M_PI)*dist(eng);
-	int s1 = lat.L*dist(eng);
-	int s2 = lat.L*dist(eng);
-	int s3 = lat.L*dist(eng);
+	long double u = -(long double)M_PI + 2.0L*((long double)M_PI)*randgen.rnd();
+	int s1 = lat.L*randgen.rnd();
+	int s2 = lat.L*randgen.rnd();
+	int s3 = lat.L*randgen.rnd();
 	// save angle and energy before flipping
 	long double angleBefore = lat.theLattice[s1][s2][s3];
 	long double enBefore = siteEnergy(lat.theLattice,lat.L,s1,s2,s3);
 	long double angleAfter = (long double)M_PI + 2.0L*u - angleBefore;
 	//reflect spin and mark as part of cluster
 	lat.theLattice[s1][s2][s3] = angleAfter;
-	cluster[s1][s2][s3] = true;
+	cluster.theCluster[s1][s2][s3] = true;
 	//update energy, mag etc..
 	long double enAfter = siteEnergy(lat.theLattice,lat.L,s1,s2,s3);
 	long double sxBef = sinX(lat.theLattice,lat.L,s1,s2,s3,angleBefore);
@@ -103,7 +105,7 @@ int growCluster(Lattice& lat,bool ***cluster,long double &beta,std::uniform_real
 		perimeter.pop_back();
 		n -= 1;
 		//test that it is not already part of cluster
-		if (!cluster[std::get<0>(current)][std::get<1>(current)][std::get<2>(current)]){
+		if (!cluster.theCluster[std::get<0>(current)][std::get<1>(current)][std::get<2>(current)]){
 
 			//increase time for every tested spin
 			//
@@ -115,13 +117,13 @@ int growCluster(Lattice& lat,bool ***cluster,long double &beta,std::uniform_real
 
 			//calculate prob of freezing, == 1 -exp(2*beta( parent_spin * U)( this_spin*U)) 
 			prob = getProb(u,std::get<3>(current) ,angleBefore,beta);
-			rand = dist(eng);
+			rand = randgen.rnd();
 			if ( rand < prob) {
 				flip = true;
 			} //if rand is so close to prob that floating point precision considers them equal, flip in 50 % of those cases
 			//
 			else if ( std::abs(rand-prob) < std::abs(std::min(rand,prob)*std::numeric_limits<long double>::epsilon())){
-				rand = dist(eng);
+				rand = randgen.rnd();
 				if (rand < 0.50L){
 					flip = true;
 				}
@@ -142,7 +144,7 @@ int growCluster(Lattice& lat,bool ***cluster,long double &beta,std::uniform_real
 
 				//reflect and mark as added to cluster
 				lat.theLattice[std::get<0>(current)][std::get<1>(current)][std::get<2>(current)] = angleAfter;
-				cluster[std::get<0>(current)][std::get<1>(current)][std::get<2>(current)] = true;
+				cluster.theCluster[std::get<0>(current)][std::get<1>(current)][std::get<2>(current)] = true;
 
 				//update energy and magnetization
 				enAfter = siteEnergy(lat.theLattice,lat.L,std::get<0>(current),std::get<1>(current),std::get<2>(current));
@@ -190,27 +192,27 @@ int growCluster(Lattice& lat,bool ***cluster,long double &beta,std::uniform_real
 						(std::get<2>(current) + (int)lat.L - 1)%(int)lat.L,
 						angleAfter);
 				//if a neighbour is not already part of the cluster, add it to perimeter list
-				if (!cluster[std::get<0>(neig1)][std::get<1>(neig1)][std::get<2>(neig1)] ){
+				if (!cluster.theCluster[std::get<0>(neig1)][std::get<1>(neig1)][std::get<2>(neig1)] ){
 					perimeter.push_back(neig1);
 					n = n + 1;
 				}
-				if (!cluster[std::get<0>(neig2)][std::get<1>(neig2)][std::get<2>(neig2)] ){
+				if (!cluster.theCluster[std::get<0>(neig2)][std::get<1>(neig2)][std::get<2>(neig2)] ){
 					perimeter.push_back(neig2);
 					n = n + 1;
 				}
-				if (!cluster[std::get<0>(neig3)][std::get<1>(neig3)][std::get<2>(neig3)] ){
+				if (!cluster.theCluster[std::get<0>(neig3)][std::get<1>(neig3)][std::get<2>(neig3)] ){
 					perimeter.push_back(neig3);
 					n = n + 1;
 				}
-				if (!cluster[std::get<0>(neig4)][std::get<1>(neig4)][std::get<2>(neig4)] ){
+				if (!cluster.theCluster[std::get<0>(neig4)][std::get<1>(neig4)][std::get<2>(neig4)] ){
 					perimeter.push_back(neig4);
 					n = n + 1;
 				}
-				if (!cluster[std::get<0>(neig5)][std::get<1>(neig5)][std::get<2>(neig5)] ){
+				if (!cluster.theCluster[std::get<0>(neig5)][std::get<1>(neig5)][std::get<2>(neig5)] ){
 					perimeter.push_back(neig5);
 					n = n + 1;
 				}
-				if (!cluster[std::get<0>(neig6)][std::get<1>(neig6)][std::get<2>(neig6)] ){
+				if (!cluster.theCluster[std::get<0>(neig6)][std::get<1>(neig6)][std::get<2>(neig6)] ){
 					perimeter.push_back(neig6);
 					n = n + 1;
 				}
@@ -218,7 +220,7 @@ int growCluster(Lattice& lat,bool ***cluster,long double &beta,std::uniform_real
 		}
 	}
 	//empty the cluster
-	emptyCluster(cluster,lat.L);
+	cluster.emptyCluster();	
 	//return # of tested spins
 	return time;
 }

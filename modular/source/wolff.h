@@ -3,8 +3,10 @@
 
 #include <random>
 #include "latticeStruct.h"
+#include "randStruct.h"
+#include "clusterStruct.h"
 
-int growCluster(Lattice& lat,bool ***cluster, long double &beta,std::uniform_real_distribution<long double> &dist,std::mt19937_64 &eng);
+int growCluster(Lattice& lat,Cluster& cluster, long double beta,RandStruct& randgen);
 
 
 

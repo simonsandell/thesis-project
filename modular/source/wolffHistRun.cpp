@@ -10,15 +10,12 @@
 #include "calcQuants.h"
 #include "latticeOps.h"
 #include "ioFuncs.h"
+#include "clusterStruct.h"
+#include "randStruct.h"
 
 void wolffHistRun(Lattice& lat, long double N_sample_sweeps,long double *Temperatures,int N_temps,long double runTemp){
 
 	//initialize rng
-	unsigned long int s;
-	syscall(SYS_getrandom,&s,sizeof(unsigned long int),0);	
-	std::uniform_real_distribution<long double> dist(0.0L,1.0L);
-	std::mt19937_64 eng; 
-	eng.seed(s);
 
 	//convert temp to betas
 	long double Betas[N_temps];	
@@ -28,25 +25,8 @@ void wolffHistRun(Lattice& lat, long double N_sample_sweeps,long double *Tempera
 	long double Beta = 1.0L/runTemp;		
 
 
-	//define and initialize cluster
-	bool***cluster;
-	cluster = new bool**[(int)lat.L];
-	for (int i = 0; i< lat.L;++i){
-		cluster[i] = new bool*[(int)lat.L];
-		for (int j =0;j<lat.L;++j){
-			cluster[i][j] = new bool[(int)lat.L];
-		}
-	}
-	for (int i = 0; i<lat.L;++i){
-		for (int j=0; j<lat.L;++j){
-			for (int k = 0; k<lat.L; ++k){
-				cluster[i][j][k] = 0;
-			}
-		}
-	}
 	//update lattice quantities
 	lat.updateQuants();
-	testConsistent(lat);
 
 	long double avgE[N_temps] = {}; //energy
 	long double avgE2[N_temps] = {};//squared energy
@@ -69,9 +49,14 @@ void wolffHistRun(Lattice& lat, long double N_sample_sweeps,long double *Tempera
 	int steps = 0;
 	int Nsample_clusts = 0;
 	long double leaststeps = N_sample_sweeps*lat.Nspins;
+
+	Cluster cluster(lat.L);
+	RandStruct rand;
+	std::cout << rand.seed << std::endl;
+
 	while (steps < leaststeps){
 		//make a cluster
-		steps += growCluster(lat,cluster,Beta,dist,eng);
+		steps += growCluster(lat,cluster,Beta,rand);
 
 		++Nsample_clusts;
 
@@ -114,7 +99,6 @@ void wolffHistRun(Lattice& lat, long double N_sample_sweeps,long double *Tempera
 		}
 	}//end of samples
 
-	testConsistent(lat);
 
 
 
