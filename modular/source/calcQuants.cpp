@@ -4,18 +4,6 @@
 #include "calcQuants.h"
 #include "latticeOps.h"
 
-//print lattice
-void printLattice(long double ***lattice,long double  L){
-	for(int i = 0; i < L; ++i){
-		for(int j = 0; j < L; ++j){
-			for(int k =0; k<L; ++k){
-				std::cout << lattice[i][j][k];
-			}
-			std::cout << std::endl;
-		}
-		std::cout << std::endl;
-	}
-}
 
 
 long double calcSinX(long double ***lattice,long double  L){

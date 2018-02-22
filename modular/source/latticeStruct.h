@@ -6,8 +6,10 @@ struct Lattice{
 	long double L,Nspins,Neqsweeps,Nsmsweeps;
 	int Neqclusts,Nsmclusts;	
 
-	Lattice(int L, bool cold){};
-	Lattice(int L){};
+	long double energy,xmag,ymag,sinx,siny,sinz;
+
+	Lattice(int L, bool cold);
+	Lattice();
 
 	};
 #endif

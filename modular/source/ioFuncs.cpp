@@ -8,6 +8,20 @@
 #include <limits.h>
 
 #include "ioFuncs.h"
+#include "latticeStruct.h"
+
+//print lattice
+void printLattice(long double ***lattice,long double  L){
+	for(int i = 0; i < L; ++i){
+		for(int j = 0; j < L; ++j){
+			for(int k =0; k<L; ++k){
+				std::cout << lattice[i][j][k] << " ";
+			}
+			std::cout << std::endl;
+		}
+		std::cout << std::endl;
+	}
+}
 
 std::string get_selfpath(){
 	char buff[PATH_MAX];
@@ -83,52 +97,36 @@ void setMaxE(long double L,long double newE){
 	file << std::fixed << newE;
 }
 
-void saveLattice(long double L,long double Neqsw,long double Neqcl, long double***lattice){
+void saveLattice(Lattice lat){
 
+	int L = lat.L;
 	std::ostringstream mstream;
 	std::string exePath = get_selfpath();
 	mstream << exePath<< "/warmLattice/" << L <<"_warm.lat";
 	std::string fname = mstream.str();
-	std::ofstream file;
-	file.open(fname);
-	//first values saved is the number of equilibration sweeps and clusters
-	file << Neqsw;
-	file << " ";
-	file << Neqcl;
-	file << " ";
+	FILE* output;
+	output = std::fopen(fname.c_str(),"wb");
+	fwrite(&lat,sizeof(lat),1,output);
+	fclose(output);
 
-	typedef std::numeric_limits<long double> dbl;
-	file.precision(dbl::max_digits10 +2);
-	for (int p = 0; p<L; ++p){
-		for (int q = 0; q<L; ++q){
-			for (int r = 0; r<L; ++r){
-				file << std::fixed << lattice[p][q][r];
-				file << " ";
-			}
-		}
-	}
 }
 
-long double *** getLattice(long double L,long double & Neqsw,long double& Neqcl){
+Lattice getLattice(int l){
 	std::ostringstream mstream;
 	std::string exePath = get_selfpath();
-	mstream << exePath << "/warmLattice/" << L << "_warm.lat";
+	mstream << exePath << "/warmLattice/" << l << "_warm.lat";
 	std::string fname = mstream.str();
-	std::ifstream file(fname);
-	//first value saved is actually the # of equilibration sweeps.
-	file >> Neqsw;
-	file >> Neqcl;
-	long double ***lattice;
-	lattice = new long double **[(int)L];
-	for (int i = 0; i< L;++i){
-		lattice[i] = new long double *[(int)L];
-		for (int j =0;j<L;++j){
-			lattice[i][j] = new long double[(int)L];
-			for (int k =0; k<L; ++k){
-				file >> lattice[i][j][k];
-			}
-		}
-	}
-	return lattice;
+
+	Lattice lat;
+	FILE* input;
+
+	input = fopen(fname.c_str(),"rb");
+
+
+	fread(&lat,sizeof(lat),1,input);
+
+	fclose(input);
+
+	return lat;
 }
 
