@@ -9,7 +9,6 @@
 #include "latticeOps.h"
 #include "latticeStruct.h"
 #include "metroRun.h"
-#include "wolffRun.h"
 #include "wolffHistRun.h"
 
 using namespace std;
@@ -35,7 +34,7 @@ int main(int argc, char* argv[]){
 
 	long double	startT=			2.20150L;
 	long double	endT=			2.20350L;
-	long double	Ntemps=			21.0L;
+	int 		Ntemps=			21.0L;
 
 	long double 	L =			4.0L;
 	long double	Neq=			10000.0L;
@@ -63,7 +62,13 @@ int main(int argc, char* argv[]){
 	saveLattice(lat);
 
 	lat = getLattice((int)L);
+	testConsistent(lat);
 	printLattice(lat.theLattice,lat.L);
+
+	wolffHistRun(lat,Nsamp,Trange,Ntemps,runTemp);
+	printLattice(lat.theLattice,lat.L);
+
+	testConsistent(lat);
 
 
 

@@ -12,6 +12,8 @@
 
 //print lattice
 void printLattice(long double ***lattice,long double  L){
+	typedef std::numeric_limits<long double> dbl;
+	std::cout.precision(dbl::max_digits10 + 5);
 	for(int i = 0; i < L; ++i){
 		for(int j = 0; j < L; ++j){
 			for(int k =0; k<L; ++k){

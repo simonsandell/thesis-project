@@ -5,11 +5,14 @@ struct Lattice{
 	long double *** theLattice;
 	long double L,Nspins,Neqsweeps,Nsmsweeps;
 	int Neqclusts,Nsmclusts;	
+	bool coldstart;
 
 	long double energy,xmag,ymag,sinx,siny,sinz;
 
 	Lattice(int L, bool cold);
 	Lattice();
+
+	void updateQuants();
 
 	};
 #endif

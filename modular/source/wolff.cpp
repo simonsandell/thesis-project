@@ -6,6 +6,7 @@
 #include <iostream>
 
 #include "latticeOps.h"
+#include "latticeStruct.h"
 
 long double getProb(long double u, long double angleParent, long double angle,long double beta){
 	long double prob = 1.0L - exp(2.0L*beta*cos(angleParent - u)*cos(angle -u));
@@ -18,63 +19,62 @@ long double getProb(long double u, long double angleParent, long double angle,lo
 	return prob;
 }
 
-void updateQuants(long double& TotEn,long double& TotXMag,long double& TotYMag,long double &TotSinX,long double &TotSinY,long double &TotSinZ
-		,		long double e0,long double e1,
+void updateQuants(Lattice& lat,long double e0,long double e1,
 		long double a0,long double a1,
 		long double sx0,long double sx1,
 		long double sy0,long double sy1,
 		long double sz0,long double sz1){
 
-	TotEn += e1;
-	TotEn += -e0;
-	TotXMag += cos(a1);
-	TotXMag += -cos(a0);
-	TotYMag += sin(a1);
-	TotYMag += -sin(a0);
-	TotSinX += sx1;
-	TotSinX += -sx0;
-	TotSinY += sy1;
-	TotSinY += -sy0;
-	TotSinZ += sz1;
-	TotSinZ += -sz0;
+	lat.energy+= e1;
+	lat.energy += -e0;
+	lat.xmag+= cos(a1);
+	lat.xmag+= -cos(a0);
+	lat.ymag+= sin(a1);
+	lat.ymag+= -sin(a0);
+	lat.sinx+= sx1;
+	lat.sinx+= -sx0;
+	lat.siny+= sy1;
+	lat.siny+= -sy0;
+	lat.sinz+= sz1;
+	lat.sinz+= -sz0;
 }
 
-int growCluster(long double ***lattice,bool ***cluster, long double &L,long double &beta, long double& TotXMag,long double& TotYMag,long double& TotEn,long double &TotSinX,long double &TotSinY,long double &TotSinZ,std::uniform_real_distribution<long double> &dist,std::mt19937_64 &eng){
+int growCluster(Lattice& lat,bool ***cluster,long double &beta,std::uniform_real_distribution<long double> &dist,std::mt19937_64 &eng){
 
 	int time = 1;
 	//select random plane and random staring spin
 	long double u = -(long double)M_PI + 2.0L*((long double)M_PI)*dist(eng);
-	int s1 = L*dist(eng);
-	int s2 = L*dist(eng);
-	int s3 = L*dist(eng);
+	int s1 = lat.L*dist(eng);
+	int s2 = lat.L*dist(eng);
+	int s3 = lat.L*dist(eng);
 	// save angle and energy before flipping
-	long double angleBefore = lattice[s1][s2][s3];
-	long double enBefore = siteEnergy(lattice,L,s1,s2,s3);
+	long double angleBefore = lat.theLattice[s1][s2][s3];
+	long double enBefore = siteEnergy(lat.theLattice,lat.L,s1,s2,s3);
 	long double angleAfter = (long double)M_PI + 2.0L*u - angleBefore;
 	//reflect spin and mark as part of cluster
-	lattice[s1][s2][s3] = angleAfter;
+	lat.theLattice[s1][s2][s3] = angleAfter;
 	cluster[s1][s2][s3] = true;
 	//update energy, mag etc..
-	long double enAfter = siteEnergy(lattice,L,s1,s2,s3);
-	long double sxBef = sinX(lattice,L,s1,s2,s3,angleBefore);
-	long double sxAft = sinX(lattice,L,s1,s2,s3,angleAfter);
-	long double syBef = sinY(lattice,L,s1,s2,s3,angleBefore);
-	long double syAft = sinY(lattice,L,s1,s2,s3,angleAfter);
-	long double szBef = sinZ(lattice,L,s1,s2,s3,angleBefore);
-	long double szAft = sinZ(lattice,L,s1,s2,s3,angleAfter);
-	updateQuants(TotEn,TotXMag,TotYMag,TotSinX,TotSinY,TotSinZ,
+	long double enAfter = siteEnergy(lat.theLattice,lat.L,s1,s2,s3);
+	long double sxBef = sinX(lat.theLattice,lat.L,s1,s2,s3,angleBefore);
+	long double sxAft = sinX(lat.theLattice,lat.L,s1,s2,s3,angleAfter);
+	long double syBef = sinY(lat.theLattice,lat.L,s1,s2,s3,angleBefore);
+	long double syAft = sinY(lat.theLattice,lat.L,s1,s2,s3,angleAfter);
+	long double szBef = sinZ(lat.theLattice,lat.L,s1,s2,s3,angleBefore);
+	long double szAft = sinZ(lat.theLattice,lat.L,s1,s2,s3,angleAfter);
+	updateQuants(lat,
 			enBefore,enAfter,
 			angleBefore,angleAfter,
 			sxBef,sxAft,
 			syBef,syAft,
 			szBef,szAft);
 	//find indices of nearest neighbours
-	int n1m = (s1 -1 + (int)L )%(int)L;
-	int n1p = (s1 +1 + (int)L )%(int)L;
-	int n2m = (s2 -1 + (int)L )%(int)L;
-	int n2p = (s2 +1 + (int)L )%(int)L;
-	int n3m = (s3 -1 + (int)L )%(int)L;
-	int n3p = (s3 +1 + (int)L )%(int)L;
+	int n1m = (s1 -1 + (int)lat.L )%(int)lat.L;
+	int n1p = (s1 +1 + (int)lat.L )%(int)lat.L;
+	int n2m = (s2 -1 + (int)lat.L )%(int)lat.L;
+	int n2p = (s2 +1 + (int)lat.L )%(int)lat.L;
+	int n3m = (s3 -1 + (int)lat.L )%(int)lat.L;
+	int n3p = (s3 +1 + (int)lat.L )%(int)lat.L;
 	std::tuple<int,int,int,long double> neig1 = std::make_tuple(n1m,s2,s3,angleAfter);
 	std::tuple<int,int,int,long double> neig2 = std::make_tuple(n1p,s2,s3,angleAfter);
 	std::tuple<int,int,int,long double> neig3 = std::make_tuple(s1,n2m,s3,angleAfter);
@@ -111,7 +111,7 @@ int growCluster(long double ***lattice,bool ***cluster, long double &L,long doub
 
 			//get its current angle;
 			//
-			angleBefore = lattice[std::get<0>(current)][std::get<1>(current)][std::get<2>(current)];
+			angleBefore = lat.theLattice[std::get<0>(current)][std::get<1>(current)][std::get<2>(current)];
 
 			//calculate prob of freezing, == 1 -exp(2*beta( parent_spin * U)( this_spin*U)) 
 			prob = getProb(u,std::get<3>(current) ,angleBefore,beta);
@@ -135,24 +135,24 @@ int growCluster(long double ***lattice,bool ***cluster, long double &L,long doub
 			if (flip) {
 				//get energy before reflecting
 				//
-				enBefore = siteEnergy(lattice,L,std::get<0>(current),std::get<1>(current),std::get<2>(current));
+				enBefore = siteEnergy(lat.theLattice,lat.L,std::get<0>(current),std::get<1>(current),std::get<2>(current));
 
 				//get new angle
 				angleAfter = (long double)M_PI + 2.0L*u - angleBefore;
 
 				//reflect and mark as added to cluster
-				lattice[std::get<0>(current)][std::get<1>(current)][std::get<2>(current)] = angleAfter;
+				lat.theLattice[std::get<0>(current)][std::get<1>(current)][std::get<2>(current)] = angleAfter;
 				cluster[std::get<0>(current)][std::get<1>(current)][std::get<2>(current)] = true;
 
 				//update energy and magnetization
-				enAfter = siteEnergy(lattice,L,std::get<0>(current),std::get<1>(current),std::get<2>(current));
-				sxBef = sinX(lattice,L,std::get<0>(current),std::get<1>(current),std::get<2>(current),angleBefore);
-				sxAft = sinX(lattice,L,std::get<0>(current),std::get<1>(current),std::get<2>(current),angleAfter);
-				syBef = sinY(lattice,L,std::get<0>(current),std::get<1>(current),std::get<2>(current),angleBefore);
-				syAft = sinY(lattice,L,std::get<0>(current),std::get<1>(current),std::get<2>(current),angleAfter);
-				szBef = sinZ(lattice,L,std::get<0>(current),std::get<1>(current),std::get<2>(current),angleBefore);
-				szAft = sinZ(lattice,L,std::get<0>(current),std::get<1>(current),std::get<2>(current),angleAfter);
-				updateQuants(TotEn,TotXMag,TotYMag,TotSinX,TotSinY,TotSinZ,
+				enAfter = siteEnergy(lat.theLattice,lat.L,std::get<0>(current),std::get<1>(current),std::get<2>(current));
+				sxBef = sinX(lat.theLattice,lat.L,std::get<0>(current),std::get<1>(current),std::get<2>(current),angleBefore);
+				sxAft = sinX(lat.theLattice,lat.L,std::get<0>(current),std::get<1>(current),std::get<2>(current),angleAfter);
+				syBef = sinY(lat.theLattice,lat.L,std::get<0>(current),std::get<1>(current),std::get<2>(current),angleBefore);
+				syAft = sinY(lat.theLattice,lat.L,std::get<0>(current),std::get<1>(current),std::get<2>(current),angleAfter);
+				szBef = sinZ(lat.theLattice,lat.L,std::get<0>(current),std::get<1>(current),std::get<2>(current),angleBefore);
+				szAft = sinZ(lat.theLattice,lat.L,std::get<0>(current),std::get<1>(current),std::get<2>(current),angleAfter);
+				updateQuants(lat,
 						enBefore,enAfter,
 						angleBefore,angleAfter,
 						sxBef,sxAft,
@@ -160,34 +160,34 @@ int growCluster(long double ***lattice,bool ***cluster, long double &L,long doub
 						szBef,szAft);
 				//find indices of neighbours
 				neig1 = std::make_tuple(
-						(std::get<0>(current) + 1) % (int)L, 
+						(std::get<0>(current) + 1) % (int)lat.L, 
 						std::get<1>(current),
 						std::get<2>(current),
 						angleAfter);
 				neig2 = std::make_tuple(
-						(std::get<0>(current) + (int)L - 1) % (int)L,
+						(std::get<0>(current) + (int)lat.L - 1) % (int)lat.L,
 						std::get<1>(current),
 						std::get<2>(current),
 						angleAfter);
 				neig3 = std::make_tuple(
 						std::get<0>(current),
-						(std::get<1>(current) + 1) % (int)L,
+						(std::get<1>(current) + 1) % (int)lat.L,
 						std::get<2>(current),
 						angleAfter);
 				neig4 = std::make_tuple(
 						std::get<0>(current),
-						(std::get<1>(current) + (int)L - 1) % (int)L,
+						(std::get<1>(current) + (int)lat.L - 1) % (int)lat.L,
 						std::get<2>(current),
 						angleAfter);
 				neig5 = std::make_tuple(
 						std::get<0>(current),
 						std::get<1>(current),
-						(std::get<2>(current) + 1) % (int)L,
+						(std::get<2>(current) + 1) % (int)lat.L,
 						angleAfter);
 				neig6 = std::make_tuple(
 						std::get<0>(current),
 						std::get<1>(current),
-						(std::get<2>(current) + (int)L - 1)%(int)L,
+						(std::get<2>(current) + (int)lat.L - 1)%(int)lat.L,
 						angleAfter);
 				//if a neighbour is not already part of the cluster, add it to perimeter list
 				if (!cluster[std::get<0>(neig1)][std::get<1>(neig1)][std::get<2>(neig1)] ){
@@ -218,7 +218,7 @@ int growCluster(long double ***lattice,bool ***cluster, long double &L,long doub
 		}
 	}
 	//empty the cluster
-	emptyCluster(cluster,L);
+	emptyCluster(cluster,lat.L);
 	//return # of tested spins
 	return time;
 }

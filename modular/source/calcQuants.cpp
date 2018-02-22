@@ -3,11 +3,12 @@
 
 #include "calcQuants.h"
 #include "latticeOps.h"
+#include "latticeStruct.h"
 
 
 
 long double calcSinX(long double ***lattice,long double  L){
-	long double sum = 0.0;
+	long double sum = 0.0L;
 	for (int i =0; i< L; ++i){
 		for (int j =0; j< L ; ++j){
 			for (int k = 0; k<L; ++k){
@@ -18,7 +19,7 @@ long double calcSinX(long double ***lattice,long double  L){
 	return sum;
 }
 long double calcSinY(long double ***lattice,long double  L){
-	long double sum = 0.0;
+	long double sum = 0.0L;
 	for (int i =0; i< L; ++i){
 		for (int j =0; j< L ; ++j){
 			for (int k = 0; k<L; ++k){
@@ -29,7 +30,7 @@ long double calcSinY(long double ***lattice,long double  L){
 	return sum;
 }
 long double calcSinZ(long double ***lattice,long double  L){
-	long double sum = 0.0;
+	long double sum = 0.0L;
 	for (int i =0; i< L; ++i){
 		for (int j =0; j< L ; ++j){
 			for (int k = 0; k<L; ++k){
@@ -41,7 +42,7 @@ long double calcSinZ(long double ***lattice,long double  L){
 }
 
 long double calcXMag(long double ***lattice,long double L){
-	long double ret = 0.0;
+	long double ret = 0.0L;
 	for (int i = 0; i<L; ++i){
 		for (int j = 0; j<L; ++j){
 			for (int k = 0; k<L; ++k){
@@ -52,7 +53,7 @@ long double calcXMag(long double ***lattice,long double L){
 	return ret;
 }
 long double calcYMag(long double ***lattice,long double L){
-	long double ret = 0.0;
+	long double ret = 0.0L;
 	for (int i = 0; i<L; ++i){
 		for (int j = 0; j<L; ++j){
 			for (int k = 0; k<L; ++k){
@@ -69,7 +70,7 @@ long double calcMag(long double ***lattice,long double L){
 }	
 
 long double calcEn(long double ***lattice,long double L){
-	long double en = 0.0;
+	long double en = 0.0L;
 	for (int i = 0; i< L; ++i){
 		for (int j = 0; j< L; ++j){
 			for (int k = 0; k<L; ++k){	
@@ -77,24 +78,30 @@ long double calcEn(long double ***lattice,long double L){
 			}
 		}
 	}
-	en = 0.5*en;
+	en = 0.5L*en;
 	return en;
 }
 
-void testConsistent(long double ***lattice,long double L,long double TotEn,long double TotXMag,long double TotYMag,long double TotSinX,long double TotSinY,long double TotSinZ){
+void testConsistent(Lattice lat){
 
 	typedef std::numeric_limits<long double> dbl;
 	std::cout.precision(dbl::max_digits10 + 5);
-	long double testSinX = calcSinX(lattice,L);
-	long double testSinY = calcSinY(lattice,L);
-	long double testSinZ = calcSinZ(lattice,L);
-	long double testEn = calcEn(lattice,L);
-	long double testXMag = calcXMag(lattice,L);
-	long double testYMag = calcYMag(lattice,L);
-	std::cout <<std::fixed<< TotEn - testEn << " E"<< TotEn << " "<< testEn << std::endl;
-	std::cout <<std::fixed<< TotXMag - testXMag << " X"<< TotXMag << " "<< testXMag << std::endl;
-	std::cout <<std::fixed<< TotYMag - testYMag << " Y"<< TotYMag << " "<< testYMag << std::endl;
-	std::cout <<std::fixed<< TotSinX - testSinX << " Sx"<< TotSinX << " "<< testSinX << std::endl;
-	std::cout <<std::fixed<< TotSinY - testSinY << " Sy"<< TotSinY << " "<< testSinY << std::endl;
-	std::cout <<std::fixed<< TotSinZ - testSinZ << " Sz"<< TotSinZ << " "<< testSinZ << std::endl;
+	long double testSinX = calcSinX(lat.theLattice,lat.L);
+	long double testSinY = calcSinY(lat.theLattice,lat.L);
+	long double testSinZ = calcSinZ(lat.theLattice,lat.L);
+	long double testEn = calcEn(lat.theLattice,lat.L);
+	long double testXMag = calcXMag(lat.theLattice,lat.L);
+	long double testYMag = calcYMag(lat.theLattice,lat.L);
+	long double& TotEn = lat.energy;
+	long double& TotXMag= lat.xmag;
+	long double& TotYMag= lat.ymag;
+	long double& TotSinX= lat.sinx;
+	long double& TotSinY = lat.siny;
+	long double& TotSinZ = lat.sinz;
+	std::cout <<std::fixed<< TotEn - testEn << "  E    "<< TotEn << " "<< testEn << std::endl;
+	std::cout <<std::fixed<< TotXMag - testXMag << "  X    "<< TotXMag << " "<< testXMag << std::endl;
+	std::cout <<std::fixed<< TotYMag - testYMag << "  Y    "<< TotYMag << " "<< testYMag << std::endl;
+	std::cout <<std::fixed<< TotSinX - testSinX << "  Sx    "<< TotSinX << " "<< testSinX << std::endl;
+	std::cout <<std::fixed<< TotSinY - testSinY << "  Sy    "<< TotSinY << " "<< testSinY << std::endl;
+	std::cout <<std::fixed<< TotSinZ - testSinZ << "  Sz    "<< TotSinZ << " "<< testSinZ << std::endl;
 }

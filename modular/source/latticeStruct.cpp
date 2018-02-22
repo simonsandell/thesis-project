@@ -43,7 +43,15 @@ long double*** newLattice(long double L,bool cold){
 	}
 	return lattice;
 }
-
+//update quantiites of the lattice
+void Lattice::updateQuants(){
+	energy = calcEn(theLattice,L);
+	xmag = calcXMag(theLattice,L);
+	ymag = calcYMag(theLattice,L);
+	sinx = calcSinX(theLattice,L);
+	siny = calcSinY(theLattice,L);
+	sinz = calcSinZ(theLattice,L);
+};
 
 //initialize new lattice
 Lattice::Lattice(int l, bool cold){
@@ -54,6 +62,7 @@ Lattice::Lattice(int l, bool cold){
 	Neqclusts = 0;
 	Nsmclusts = 0;
 	Nsmsweeps = 0.0L;
+	coldstart = cold;
 	if (cold) {
 		energy = -3.0L*Nspins;
 		xmag = Nspins;

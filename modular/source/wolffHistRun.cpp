@@ -11,7 +11,7 @@
 #include "latticeOps.h"
 #include "ioFuncs.h"
 
-void wolffHistRun(long double L,long double ***lattice,long double Neq_sweeps,long double Neq_clusts, long double N_sample_sweeps,bool cold,long double *Temperatures,int N_temps,long double runTemp){
+void wolffHistRun(Lattice& lat, long double N_sample_sweeps,long double *Temperatures,int N_temps,long double runTemp){
 
 	//initialize rng
 	unsigned long int s;
@@ -25,34 +25,28 @@ void wolffHistRun(long double L,long double ***lattice,long double Neq_sweeps,lo
 	for (int i = 0; i< N_temps; ++i){
 		Betas[i] = 1.0L/Temperatures[i];
 	}
-	long double Temperature = runTemp;
-	long double Beta = 1.0L/Temperature;		
+	long double Beta = 1.0L/runTemp;		
 
 
 	//define and initialize cluster
 	bool***cluster;
-	cluster = new bool**[(int)L];
-	for (int i = 0; i< L;++i){
-		cluster[i] = new bool*[(int)L];
-		for (int j =0;j<L;++j){
-			cluster[i][j] = new bool[(int)L];
+	cluster = new bool**[(int)lat.L];
+	for (int i = 0; i< lat.L;++i){
+		cluster[i] = new bool*[(int)lat.L];
+		for (int j =0;j<lat.L;++j){
+			cluster[i][j] = new bool[(int)lat.L];
 		}
 	}
-	for (int i = 0; i<L;++i){
-		for (int j=0; j<L;++j){
-			for (int k = 0; k<L; ++k){
+	for (int i = 0; i<lat.L;++i){
+		for (int j=0; j<lat.L;++j){
+			for (int k = 0; k<lat.L; ++k){
 				cluster[i][j][k] = 0;
 			}
 		}
 	}
-
-	long double TotEn = calcEn(lattice,L);
-	long double TotXMag = calcXMag(lattice,L);
-	long double TotYMag = calcYMag(lattice,L);
-	long double TotSinX = calcSinX(lattice,L);
-	long double TotSinY = calcSinY(lattice,L);
-	long double TotSinZ = calcSinZ(lattice,L);
-
+	//update lattice quantities
+	lat.updateQuants();
+	testConsistent(lat);
 
 	long double avgE[N_temps] = {}; //energy
 	long double avgE2[N_temps] = {};//squared energy
@@ -69,26 +63,24 @@ void wolffHistRun(long double L,long double ***lattice,long double Neq_sweeps,lo
 
 
 
-	long double maxTotE = getMaxE(L); 
+	long double maxTotE = getMaxE(lat.L); 
 	long double expCorr = 0.0L;
 
 	int steps = 0;
 	int Nsample_clusts = 0;
-	long double leaststeps = N_sample_sweeps*L*L*L;
+	long double leaststeps = N_sample_sweeps*lat.Nspins;
 	while (steps < leaststeps){
 		//make a cluster
-		steps += growCluster(lattice,cluster,L,Beta,
-				TotXMag,TotYMag,TotEn,TotSinX,TotSinY,TotSinZ,
-				dist,eng);
+		steps += growCluster(lat,cluster,Beta,dist,eng);
 
 		++Nsample_clusts;
 
 		//update maxE if necessary
 		
-		if (std::abs(TotEn) > std::abs(maxTotE)){
+		if (std::abs(lat.energy) > std::abs(maxTotE)){
 			expCorr = 1.0L;
 			if (Nsample_clusts > 1){
-				expCorr = exp(-maxTotE +TotEn);	
+				expCorr = exp(-maxTotE +lat.energy);	
 				for (int k = 0; k<N_temps;++k){
 					avgExpFac[k] *= expCorr;
 					avgE[k] *= expCorr;
@@ -103,25 +95,30 @@ void wolffHistRun(long double L,long double ***lattice,long double Neq_sweeps,lo
 					avgSinZ2[k] *= expCorr;
 				}
 			}
-			maxTotE = TotEn;
+			maxTotE = lat.energy;
 		}
 		//take sample data
 		for (int i = 0; i<N_temps; ++i){
-			expFac = exp(-(Betas[i] - Beta)*(TotEn-maxTotE));
+			expFac = exp(-(Betas[i] - Beta)*(lat.energy-maxTotE));
 			avgExpFac[i] += expFac;
-			avgE[i] += expFac*TotEn;
-			avgE2[i] += expFac*TotEn*TotEn;
-			avgM[i] += expFac*sqrt(TotXMag*TotXMag + TotYMag*TotYMag);
-			avgM2[i] += expFac*(TotXMag*TotXMag + TotYMag*TotYMag);
-			avgM4[i] += expFac*(TotXMag*TotXMag + TotYMag*TotYMag)*(TotXMag*TotXMag + TotYMag*TotYMag);
-			avgM2E[i] += TotEn*expFac*(TotXMag*TotXMag + TotYMag*TotYMag); 
-			avgM4E[i] += TotEn*expFac*(TotXMag*TotXMag + TotYMag*TotYMag)*(TotXMag*TotXMag + TotYMag*TotYMag);
-			avgSinX2[i] += TotSinX*TotSinX*expFac;
-			avgSinY2[i] += TotSinY*TotSinY*expFac;
-			avgSinZ2[i] += TotSinZ*TotSinZ*expFac;
+			avgE[i] += expFac*lat.energy;
+			avgE2[i] += expFac*lat.energy*lat.energy;
+			avgM[i] += expFac*sqrt(lat.xmag*lat.xmag + lat.ymag*lat.ymag);
+			avgM2[i] += expFac*(lat.xmag*lat.xmag + lat.ymag*lat.ymag);
+			avgM4[i] += expFac*(lat.xmag*lat.xmag + lat.ymag*lat.ymag)*(lat.xmag*lat.xmag + lat.ymag*lat.ymag);
+			avgM2E[i] += lat.energy*expFac*(lat.xmag*lat.xmag + lat.ymag*lat.ymag); 
+			avgM4E[i] += lat.energy*expFac*(lat.xmag*lat.xmag + lat.ymag*lat.ymag)*(lat.xmag*lat.xmag + lat.ymag*lat.ymag);
+			avgSinX2[i] += lat.sinx*lat.sinx*expFac;
+			avgSinY2[i] += lat.siny*lat.siny*expFac;
+			avgSinZ2[i] += lat.sinz*lat.sinz*expFac;
 		}
-	}
-	long double actNsamp_sweeps = (long double)steps/(L*L*L);
+	}//end of samples
+
+	testConsistent(lat);
+
+
+
+	long double actNsamp_sweeps = (long double)steps/(lat.Nspins);
 
 	//calculate quantities of interest
 
@@ -154,16 +151,16 @@ void wolffHistRun(long double L,long double ***lattice,long double Neq_sweeps,lo
 		dbdt[i] /= Temperatures[i]*Temperatures[i]*avgM2[i]*avgM2[i]*avgM2[i];
 		xi[i] = (avgM2[i]/avgExpFac[i]) -
 		       	(avgM[i]*avgM[i]/(avgExpFac[i]*avgExpFac[i]));
-		xi[i] /= (Temperatures[i]*L*L*L);
+		xi[i] /= (Temperatures[i]*lat.Nspins);
 		rs[i] = -avgE[i] - avgSinX2[i]/Temperatures[i] 
 			-avgSinY2[i]/Temperatures[i] 
 			-avgSinZ2[i]/Temperatures[i];
-		rs[i] /= (3.0L*L*L*avgExpFac[i]);
+		rs[i] /= (3.0L*lat.L*lat.L*avgExpFac[i]);
 	}
 	for (int i = 0;i< N_temps; ++i){
-		printOutput(L,Temperatures[i],
-				Neq_sweeps,Neq_clusts,
-				actNsamp_sweeps,Nsample_clusts,cold,
+		printOutput(lat.L,Temperatures[i],
+				lat.Neqsweeps,lat.Neqclusts,
+				actNsamp_sweeps,Nsample_clusts,lat.coldstart,
 				avgE[i],avgE2[i],avgM[i],avgM2[i],avgM4[i],
 				avgM2E[i],avgM4E[i],
 				avgSinX2[i],avgSinY2[i],avgSinZ2[i],
@@ -171,6 +168,6 @@ void wolffHistRun(long double L,long double ***lattice,long double Neq_sweeps,lo
 				avgExpFac[i]);
 	}
 	if (expCorr != 0.0L){
-		setMaxE(L,maxTotE);
+		setMaxE(lat.L,maxTotE);
 	}
 }
