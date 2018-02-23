@@ -5,7 +5,7 @@ struct Lattice{
 	long double *** theLattice;
 	long double L,Nspins,Neqsweeps,Nsmsweeps;
 	int Neqclusts,Nsmclusts;	
-	bool coldstart;
+	bool coldstart,warmedUp;
 
 	long double energy,xmag,ymag,sinx,siny,sinz;
 

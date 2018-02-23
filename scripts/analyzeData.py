@@ -44,8 +44,16 @@ def calcAvg(mat,i,istart,FileList):
 # SX     SY     SZ     bin    dBdT   xi     rs     expFac
     expFac = np.mean(mat[istart:iend,21]);
     E = np.mean(mat[istart:iend,7]);
+    Elist = mat[istart:iend,7];
+    Elist[:] = [x /expFac for x in Elist];
+    Elist[:] = [x /(L*L*L) for x in Elist];
+    Eps = np.mean(Elist);
     E2 = np.mean(mat[istart:iend,8]);
     M = np.mean(mat[istart:iend,9]);
+    Mlist = mat[istart:iend,9];
+    Mlist[:] = [x /expFac for x in Mlist];
+    Mlist[:] = [x /(L*L*L) for x in Mlist];
+    Mps = np.mean(Mlist);
     M2 = np.mean(mat[istart:iend,10]);
     M4 = np.mean(mat[istart:iend,11]);
     M2E = np.mean(mat[istart:iend,12]);
@@ -58,10 +66,22 @@ def calcAvg(mat,i,istart,FileList):
     xi = np.mean(mat[istart:iend,19]);
     rs = np.mean(mat[istart:iend,20]);
     
+
+    calcB = expFac*M4/pow(M2,2);
+    calcdBdT =  expFac*M4E*M2 + M4*M2*E -2.0*expFac*M4*M2E;
+    calcdBdT = calcdBdT/(T*T*M2*M2*M2);
+    calcxi = (M2/ expFac) - M*M/(expFac*expFac);
+    calcxi = calcxi/(L*L*L*T);
+    calcrs = -E -SX/T - SY/T - SZ/T;
+    calcrs = calcrs/(3.0*L*L*expFac);
+
+    Ylist = [Eps,Mps,B,calcB,dBdT,calcdBdT,xi,calcxi,rs,calcrs];
+
+
     deltaexpFac = np.std(mat[istart:iend,21])/pow(N,0.5);
-    deltaE = np.std(mat[istart:iend,7])/pow(N,0.5);
+    deltaE = np.std(Elist)/pow(N,0.5);
     deltaE2 = np.std(mat[istart:iend,8])/pow(N,0.5);
-    deltaM = np.std(mat[istart:iend,9])/pow(N,0.5);
+    deltaM = np.std(Mlist)/pow(N,0.5);
     deltaM2 = np.std(mat[istart:iend,10])/pow(N,0.5);
     deltaM4 = np.std(mat[istart:iend,11])/pow(N,0.5);
     deltaM2E = np.std(mat[istart:iend,12])/pow(N,0.5);
@@ -73,15 +93,6 @@ def calcAvg(mat,i,istart,FileList):
     deltadBdT = np.std(mat[istart:iend,18])/pow(N,0.5);
     deltaxi = np.std(mat[istart:iend,19])/pow(N,0.5);
     deltars = np.std(mat[istart:iend,20])/pow(N,0.5);
-
-    calcB = expFac*M4/pow(M2,2);
-    calcdBdT =  expFac*M4E*M2 + M4*M2*E -2.0*expFac*M4*M2E;
-    calcdBdT = calcdBdT/(T*T*M2*M2*M2);
-    calcxi = (M2/ expFac) - M*M/(expFac*expFac);
-    calcxi = calcxi/(L*L*L*T);
-    calcrs = -E -SX/T - SY/T - SZ/T;
-    calcrs = calcrs/(3.0*L*L*expFac);
-    Ylist = [E,M,B,calcB,dBdT,calcdBdT,xi,calcxi,rs,calcrs];
     Deltalist = [deltaE,deltaM,deltaB,0,deltadBdT,0,deltaxi,0,deltars,0];
     for i in range(len(Ylist)):
         FileList[i].write(repr(T)+"    "+repr(Ylist[i])+"    "+repr(Deltalist[i])+"    "+repr(N)+"\n")
@@ -138,4 +149,4 @@ for i in range(mat.shape[0]):
         ifirst = i;
         T = float(mat[i,1])
 #one final write
-calcAvg(mat,i,ifirst,FileList);
+calcAvg(mat,i+1,ifirst,FileList);

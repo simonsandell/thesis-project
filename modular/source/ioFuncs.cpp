@@ -40,18 +40,18 @@ std::string get_selfpath(){
 		exit(-1);
 	}
 }
-void printOutput(long double L, long double T, long double Neqsw, long double Neqcl,long double Nsmsw,long double Nsmcl, long double cold, long double E, long double E2, long double M, long double M2, long double M4, long double M2E, long double M4E, long double SX2, long double SY2, long double SZ2, long double bin, long double dbdt, long double xi, long double rs, long double expFac){
+void printOutput(Lattice lat, long double T, long double E, long double E2, long double M, long double M2, long double M4, long double M2E, long double M4E, long double SX2, long double SY2, long double SZ2, long double bin, long double dbdt, long double xi, long double rs, long double expFac){
 	typedef std::numeric_limits<long double> dbl;
 
 	std::cout.precision(dbl::max_digits10 + 5);
 
-	std::cout << std::fixed << L << " ";				
+	std::cout << std::fixed << lat.L << " ";				
 	std::cout << std::fixed << T << " ";				
-	std::cout << std::fixed << Neqsw << " ";			
-	std::cout << std::fixed << Neqcl << " ";			
-	std::cout << std::fixed << Nsmsw << " ";			
-	std::cout << std::fixed << Nsmcl << " ";			
-	std::cout << std::fixed << cold << " ";				
+	std::cout << std::fixed << lat.Neqsweeps << " ";			
+	std::cout << std::fixed << lat.Neqclusts << " ";			
+	std::cout << std::fixed << lat.Nsmsweeps << " ";			
+	std::cout << std::fixed << lat.Nsmclusts << " ";			
+	std::cout << std::fixed << lat.coldstart << " ";				
 	std::cout << std::fixed << E << " ";				
 	std::cout << std::fixed << E2 << " ";				
 	std::cout << std::fixed << M << " ";				

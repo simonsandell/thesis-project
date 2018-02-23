@@ -11,6 +11,7 @@
 #include "clusterStruct.h"
 #include "randStruct.h"
 #include "metroRun.h"
+#include "metropolis.h"
 #include "wolffHistRun.h"
 #include "wolff.h"
 
@@ -19,11 +20,28 @@ using namespace std;
 void warmup(Lattice& lat,Cluster&clust,long double beta,RandStruct&rand,int N){
 	int Nspins = lat.L*lat.L*lat.L;
 	int fliptries = 0;
+	int clusts = 0;
 	while ((fliptries/Nspins) < N){
+		clusts++;
 		fliptries += growCluster(lat,clust,beta,rand);
+		
+	}
+	if( !lat.warmedUp){
+		lat.Neqclusts = clusts;
+		lat.Neqsweeps = ((long double)fliptries)/((long double)Nspins);
+		lat.warmedUp = true;
 	}
 }
-
+void warmupMetro(Lattice& lat,long double beta,RandStruct&rand,int N){
+	for (int i = 0; i < N; i++){
+		metrosweep(lat,beta,rand);
+	}
+	if( !lat.warmedUp){
+		lat.Neqclusts = 0;
+		lat.Neqsweeps =(long double)N;
+		lat.warmedUp = true;
+	}
+}
 
 //generate range of temperatures
 long double * getTrange(long double start, long double end, int N){
@@ -78,12 +96,11 @@ int main(){
 	RandStruct rand;
 	//initial warmup
 	long double beta = 1.0L/runTemp;
-	warmup(lat,clust,beta,rand,(Neq-Nbetw));
+	warmupMetro(lat,beta,rand,(Neq-Nbetw));
 	//sample
 	for (int i=0; i< Nruns; ++i){	
-		warmup(lat,clust,beta,rand,Nbetw);
-		wolffHistRun(lat,Nsamp,Trange,Ntemps,runTemp);
-
+		warmupMetro(lat,beta,rand,Nbetw);
+		metroRun(lat,Nsamp,runTemp);
 	}
 
 }

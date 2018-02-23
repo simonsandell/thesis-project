@@ -63,6 +63,7 @@ Lattice::Lattice(int l, bool cold){
 	Nsmclusts = 0;
 	Nsmsweeps = 0.0L;
 	coldstart = cold;
+	warmedUp = false;
 	if (cold) {
 		energy = -3.0L*Nspins;
 		xmag = Nspins;

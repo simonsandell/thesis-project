@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include <random>
 #include <functional>
@@ -10,25 +9,22 @@
 #include "latticeOps.h"
 #include "ioFuncs.h"
 #include "metropolis.h"
+#include "latticeStruct.h"
+#include "randStruct.h"
 
-void metroRun(long double L,long double ***lattice,long double Neq_sweeps, long double N_sample_sweeps,bool cold,long double Temperature){
+
+void metroRun(Lattice&lat, long double N_sample_sweeps,long double Temperature){
 
 	//initialize rng
-	unsigned long int s;
-	syscall(SYS_getrandom,&s,sizeof(unsigned long int),0);	
-	std::uniform_real_distribution<long double> dist(0.0L,1.0L);
-	std::mt19937_64 eng; 
-	eng.seed(s);
+	RandStruct rand;
 
 	long double Beta = 1.0L/Temperature;		
 
+	lat.Nsmclusts = 0;
+	lat.Nsmsweeps = N_sample_sweeps;
 
-	long double TotEn = calcEn(lattice,L);
-	long double TotXMag = calcXMag(lattice,L);
-	long double TotYMag = calcYMag(lattice,L);
-	long double TotSinX = calcSinX(lattice,L);
-	long double TotSinY = calcSinY(lattice,L);
-	long double TotSinZ = calcSinZ(lattice,L);
+	lat.updateQuants();
+
 
 
 	long double avgE = 0.0L; //energy
@@ -43,19 +39,19 @@ void metroRun(long double L,long double ***lattice,long double Neq_sweeps, long 
 	long double avgSinZ2 = 0.0L; // for superfluid density 
 
 	for (int i = 0; i < N_sample_sweeps; ++i){
-		metrosweep(lattice,L,Beta,TotXMag,TotYMag,TotEn,TotSinX,TotSinY,TotSinZ,dist,eng);
-		metrosweep(lattice,L,Beta,TotXMag,TotYMag,TotEn,TotSinX,TotSinY,TotSinZ,dist,eng);
+		metrosweep(lat,Beta,rand);
+		metrosweep(lat,Beta,rand);
 		//take sample data
-		avgE += TotEn;
-		avgE2 += TotEn*TotEn;
-		avgM += sqrt(TotXMag*TotXMag + TotYMag*TotYMag);
-		avgM2 += (TotXMag*TotXMag + TotYMag*TotYMag);
-		avgM4 += (TotXMag*TotXMag + TotYMag*TotYMag)*(TotXMag*TotXMag + TotYMag*TotYMag);
-		avgM2E += TotEn*(TotXMag*TotXMag + TotYMag*TotYMag); 
-		avgM4E += TotEn*(TotXMag*TotXMag + TotYMag*TotYMag)*(TotXMag*TotXMag + TotYMag*TotYMag);
-		avgSinX2 += TotSinX*TotSinX;
-		avgSinY2 += TotSinY*TotSinY;
-		avgSinZ2 += TotSinZ*TotSinZ;
+		avgE += lat.energy;
+		avgE2 += lat.energy*lat.energy;
+		avgM += sqrt(lat.xmag*lat.xmag + lat.ymag*lat.ymag);
+		avgM2 += (lat.xmag*lat.xmag + lat.ymag*lat.ymag);
+		avgM4 += (lat.xmag*lat.xmag + lat.ymag*lat.ymag)*(lat.xmag*lat.xmag + lat.ymag*lat.ymag);
+		avgM2E += lat.energy*(lat.xmag*lat.xmag + lat.ymag*lat.ymag); 
+		avgM4E += lat.energy*(lat.xmag*lat.xmag + lat.ymag*lat.ymag)*(lat.xmag*lat.xmag + lat.ymag*lat.ymag);
+		avgSinX2 += lat.sinx*lat.sinx;
+		avgSinY2 += lat.siny*lat.siny;
+		avgSinZ2 += lat.sinz*lat.sinz;
 	}
 
 	//define some reciprocals to reduce number of divions
@@ -86,16 +82,16 @@ void metroRun(long double L,long double ***lattice,long double Neq_sweeps, long 
 	dbdt = avgM4E*avgM2 + avgM4*avgM2*avgE - 2.0L*avgM4*avgM2E;
 	dbdt /= Temperature*Temperature*avgM2*avgM2*avgM2;
 	xi = avgM2 - avgM*avgM;
-	xi /= Temperature*L*L*L;
+	xi /= Temperature*lat.Nspins;
 	rs = -avgE - (Beta)*avgSinX2 -(Beta)*avgSinY2 -(Beta)*avgSinZ2;
-	rs /= 3.0L*L*L; 
-		
-	printOutput(L,Temperature,
-				Neq_sweeps,0,
-				N_sample_sweeps,0,cold,
-				avgE,avgE2,avgM,avgM2,avgM4,
-				avgM2E,avgM4E,
-				avgSinX2,avgSinY2,avgSinZ2,
-				b,dbdt,xi,rs,
-				1.0L);
+	rs /= 3.0L*lat.L*lat.L; 
+
+	printOutput(lat.L,Temperature,
+			lat.Neqsweeps,lat.Neqclusts,
+			lat.Nsmsweeps,lat.Nsmclusts,lat.coldstart,
+			avgE,avgE2,avgM,avgM2,avgM4,
+			avgM2E,avgM4E,
+			avgSinX2,avgSinY2,avgSinZ2,
+			b,dbdt,xi,rs,
+			1.0L);
 }

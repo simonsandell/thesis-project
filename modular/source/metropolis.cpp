@@ -5,8 +5,10 @@
 #include <vector>
 
 #include "latticeOps.h"
+#include "randStruct.h"
+#include "latticeStruct.h"
 
-void metrosweep(long double***lattice,long double&L,long double&beta,long double&TotXMag,long double&TotYMag,long double&TotEn,long double &TotSinX,long double &TotSinY,long double &TotSinZ,std::uniform_real_distribution<long double> &dist,std::mt19937_64 &eng){
+void metrosweep(Lattice lat,long double beta,RandStruct randgen){
 	long double prob;
 	long double u;
 	int s1;
@@ -16,30 +18,30 @@ void metrosweep(long double***lattice,long double&L,long double&beta,long double
 	long double angleAfter;
 	long double enBefore;
 	long double enAfter;
-	for (int i = 0; i<(L*L*L); ++i){
+	for (int i = 0; i<lat.Nspins; ++i){
 		//select random angle in the range [-PI,PI]
-		u = -M_PI + 2.0*M_PI*dist(eng); 
+		u = -(long double)M_PI + 2.0L*(long double)M_PI*randgen.rnd(); 
 		//select random spin
-		s1 = L*dist(eng);
-		s2 = L*dist(eng);
-		s3 = L*dist(eng);
+		s1 = lat.L*randgen.rnd();
+		s2 = lat.L*randgen.rnd();
+		s3 = lat.L*randgen.rnd();
 		//calculate energy difference and probability of flipping
 		//and try to flip
-		angleBefore = lattice[s1][s2][s3];
+		angleBefore = lat.theLattice[s1][s2][s3];
 		angleAfter = angleBefore + u;
-		enBefore = siteEnergy(lattice,L,s1,s2,s3);
-		lattice[s1][s2][s3] = angleAfter;
-		enAfter = siteEnergy(lattice,L,s1,s2,s3);
-		lattice[s1][s2][s3] = angleBefore;
+		enBefore = siteEnergy(lat.theLattice,lat.L,s1,s2,s3);
+		lat.theLattice[s1][s2][s3] = angleAfter;
+		enAfter = siteEnergy(lat.theLattice,lat.L,s1,s2,s3);
+		lat.theLattice[s1][s2][s3] = angleBefore;
 		prob = exp(-beta*(enAfter - enBefore));
-		if (dist(eng) < prob){
-			lattice[s1][s2][s3] = angleAfter;
-			TotEn += enAfter - enBefore;
-			TotXMag += cos(angleAfter) - cos(angleBefore);
-			TotYMag += sin(angleAfter) - sin(angleBefore);
-			TotSinX += sinX(lattice,L,s1,s2,s3,angleAfter) - sinX(lattice,L,s1,s2,s3,angleBefore);
-			TotSinY += sinY(lattice,L,s1,s2,s3,angleAfter) - sinY(lattice,L,s1,s2,s3,angleBefore);
-			TotSinZ += sinZ(lattice,L,s1,s2,s3,angleAfter) - sinZ(lattice,L,s1,s2,s3,angleBefore);
+		if (randgen.rnd() < prob){
+			lat.theLattice[s1][s2][s3] = angleAfter;
+			lat.energy += enAfter - enBefore;
+			lat.xmag += cos(angleAfter) - cos(angleBefore);
+			lat.ymag += sin(angleAfter) - sin(angleBefore);
+			lat.sinx += sinX(lat.theLattice,lat.L,s1,s2,s3,angleAfter) - sinX(lat.theLattice,lat.L,s1,s2,s3,angleBefore);
+			lat.siny += sinY(lat.theLattice,lat.L,s1,s2,s3,angleAfter) - sinY(lat.theLattice,lat.L,s1,s2,s3,angleBefore);
+			lat.sinz += sinZ(lat.theLattice,lat.L,s1,s2,s3,angleAfter) - sinZ(lat.theLattice,lat.L,s1,s2,s3,angleBefore);
 		}
 	}
 }

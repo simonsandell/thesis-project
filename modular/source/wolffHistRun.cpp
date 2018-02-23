@@ -15,7 +15,6 @@
 
 void wolffHistRun(Lattice& lat, long double N_sample_sweeps,long double *Temperatures,int N_temps,long double runTemp){
 
-	//initialize rng
 
 	//convert temp to betas
 	long double Betas[N_temps];	
@@ -26,23 +25,34 @@ void wolffHistRun(Lattice& lat, long double N_sample_sweeps,long double *Tempera
 
 
 	//update lattice quantities
+	
 	lat.updateQuants();
 
-	long double avgE[N_temps] = {}; //energy
-	long double avgE2[N_temps] = {};//squared energy
-	long double avgM[N_temps] = {}; //abs of magnetization
-	long double avgM2[N_temps] = {};//squared magnetization
-	long double avgM4[N_temps] = {};//fourth power of magnetization
-	long double avgM2E[N_temps] = {};// squared magnetization times energy
-	long double avgM4E[N_temps] = {}; // 4th power magnetization times energy
-	long double avgSinX2[N_temps] = {}; // for superfluid density 
-	long double avgSinY2[N_temps] = {}; // for superfluid density 
-	long double avgSinZ2[N_temps] = {}; // for superfluid density 
-	long double avgExpFac[N_temps] = {};
-	long double expFac;
-
-
-
+	long double avgE[N_temps]; //energy
+	long double avgE2[N_temps];//squared energy
+	long double avgM[N_temps]; //abs of magnetization
+	long double avgM2[N_temps];//squared magnetization
+	long double avgM4[N_temps];//fourth power of magnetization
+	long double avgM2E[N_temps];// squared magnetization times energy
+	long double avgM4E[N_temps]; // 4th power magnetization times energy
+	long double avgSinX2[N_temps]; // for superfluid density 
+	long double avgSinY2[N_temps]; // for superfluid density 
+	long double avgSinZ2[N_temps]; // for superfluid density 
+	long double avgExpFac[N_temps];
+	for (int i = 0; i< N_temps; ++i){
+		avgE[i]=0; 
+                avgE2[i]=0;
+                avgM[i]=0;
+                avgM2[i]=0;
+                avgM4[i]=0;
+                avgM2E[i]=0;
+                avgM4E[i]=0;
+                avgSinX2[i]=0; 
+                avgSinY2[i]=0; 
+                avgSinZ2[i]=0; 
+                avgExpFac[i]=0;
+	}
+	long double expFac = 0.0L;
 	long double maxTotE = getMaxE(lat.L); 
 	long double expCorr = 0.0L;
 
@@ -98,7 +108,8 @@ void wolffHistRun(Lattice& lat, long double N_sample_sweeps,long double *Tempera
 			avgSinZ2[i] += lat.sinz*lat.sinz*expFac;
 		}
 	}//end of samples
-
+	lat.Nsmclusts=Nsample_clusts; 
+	lat.Nsmsweeps = ((long double)steps)/((long double)lat.Nspins);
 
 
 
@@ -106,10 +117,10 @@ void wolffHistRun(Lattice& lat, long double N_sample_sweeps,long double *Tempera
 
 	//calculate quantities of interest
 
-	long double xi[N_temps] = {};//susceptibility
-	long double b[N_temps] = {}; //Binder parameter
-	long double dbdt[N_temps] = {};//derivative wrt T of Binder parameter
-	long double rs[N_temps] = {};//superfluid density
+	long double xi[N_temps];//susceptibility
+	long double b[N_temps]; //Binder parameter
+	long double dbdt[N_temps];//derivative wrt T of Binder parameter
+	long double rs[N_temps];//superfluid density
 	for (int i =0; i< N_temps; ++i){
 
 
@@ -144,7 +155,7 @@ void wolffHistRun(Lattice& lat, long double N_sample_sweeps,long double *Tempera
 	for (int i = 0;i< N_temps; ++i){
 		printOutput(lat.L,Temperatures[i],
 				lat.Neqsweeps,lat.Neqclusts,
-				actNsamp_sweeps,Nsample_clusts,lat.coldstart,
+				lat.Nsmsweeps,lat.Nsmclusts,lat.coldstart,
 				avgE[i],avgE2[i],avgM[i],avgM2[i],avgM4[i],
 				avgM2E[i],avgM4E[i],
 				avgSinX2[i],avgSinY2[i],avgSinZ2[i],
