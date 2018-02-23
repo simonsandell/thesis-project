@@ -92,19 +92,32 @@ void wolffHistRun(Lattice& lat, long double N_sample_sweeps,long double *Tempera
 			maxTotE = lat.energy;
 		}
 		//take sample data
+		long double tE;
+		long double tM2;
+		long double tSx;
+		long double tSy;
+		long double tSz;
 		for (int i = 0; i<N_temps; ++i){
 			expFac = exp(-(Betas[i] - Beta)*(lat.energy-maxTotE));
 			avgExpFac[i] += expFac;
-			avgE[i] += expFac*lat.energy;
-			avgE2[i] += expFac*lat.energy*lat.energy;
-			avgM[i] += expFac*sqrt(lat.xmag*lat.xmag + lat.ymag*lat.ymag);
-			avgM2[i] += expFac*(lat.xmag*lat.xmag + lat.ymag*lat.ymag);
-			avgM4[i] += expFac*(lat.xmag*lat.xmag + lat.ymag*lat.ymag)*(lat.xmag*lat.xmag + lat.ymag*lat.ymag);
-			avgM2E[i] += lat.energy*expFac*(lat.xmag*lat.xmag + lat.ymag*lat.ymag); 
-			avgM4E[i] += lat.energy*expFac*(lat.xmag*lat.xmag + lat.ymag*lat.ymag)*(lat.xmag*lat.xmag + lat.ymag*lat.ymag);
-			avgSinX2[i] += lat.sinx*lat.sinx*expFac;
-			avgSinY2[i] += lat.siny*lat.siny*expFac;
-			avgSinZ2[i] += lat.sinz*lat.sinz*expFac;
+			
+			tE = lat.energy/lat.Nspins;
+			tM2 = lat.xmag*lat.xmag + lat.ymag*lat.ymag;
+			tM2 /= lat.Nspins*lat.Nspins;
+			tSx = lat.sinx/lat.Nspins;
+			tSy = lat.siny/lat.Nspins;
+			tSz = lat.sinz/lat.Nspins;
+
+			avgE[i] += expFac*tE;
+			avgE2[i] += expFac*tE*tE;
+			avgM[i] += expFac*sqrt(tM2);
+			avgM2[i] += expFac*tM2;
+			avgM4[i] += expFac*tM2*tM2;
+			avgM2E[i] += expFac*tM2*tE; 
+			avgM4E[i] += expFac*tM2*tM2*tE;
+			avgSinX2[i] += expFac*tSx;
+			avgSinY2[i] += expFac*tSy;
+			avgSinZ2[i] += expFac*tSz;
 		}
 	}//end of samples
 	lat.Nsmclusts=Nsample_clusts; 
@@ -155,14 +168,16 @@ void wolffHistRun(Lattice& lat, long double N_sample_sweeps,long double *Tempera
 		dbdt[i] = avgExpFac[i]*avgM4E[i]*avgM2[i] 
 			+ avgM4[i]*avgM2[i]*avgE[i] 
 			- 2.0L*avgExpFac[i]*avgM4[i]*avgM2E[i];
+		dbdt[i] *= lat.Nspins;
 		dbdt[i] /= Temperatures[i]*Temperatures[i]*avgM2[i]*avgM2[i]*avgM2[i];
-		xi[i] = (avgM2[i]/avgExpFac[i]) -
-		       	(avgM[i]*avgM[i]/(avgExpFac[i]*avgExpFac[i]));
-		xi[i] /= (Temperatures[i]*lat.Nspins);
+		xi[i] = ((avgM2[i]/avgExpFac[i]) -
+		       	(avgM[i]*avgM[i]/(avgExpFac[i]*avgExpFac[i])))*lat.Nspins;
+		xi[i] /= (Temperatures[i]);
 		rs[i] = -avgE[i] - avgSinX2[i]/Temperatures[i] 
 			-avgSinY2[i]/Temperatures[i] 
 			-avgSinZ2[i]/Temperatures[i];
-		rs[i] /= (3.0L*lat.L*lat.L*avgExpFac[i]);
+		rs[i] *= lat.L;
+		rs[i] /= (3.0L*avgExpFac[i]);
 		//print values
 		/*
 		std::cout << "b = " << avgM4[i] << " * " << avgExpFac[i] << std::endl;

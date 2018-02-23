@@ -153,7 +153,7 @@ void metroJob(){
 
 //main
 int main(){
-	ThreadPool pool(24);
+	ThreadPool pool(4);
 	std::vector< std::future<void> > results;
 
 	for(int i = 0; i < 8; ++i) {

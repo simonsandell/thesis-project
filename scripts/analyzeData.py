@@ -46,13 +46,13 @@ def calcAvg(mat,i,istart,FileList):
     E = np.mean(mat[istart:iend,7]);
     Elist = mat[istart:iend,7];
     Elist[:] = [x /expFac for x in Elist];
-    Elist[:] = [x /(L*L*L) for x in Elist];
+    #Elist[:] = [x /(L*L*L) for x in Elist];
     Eps = np.mean(Elist);
     E2 = np.mean(mat[istart:iend,8]);
     M = np.mean(mat[istart:iend,9]);
     Mlist = mat[istart:iend,9];
     Mlist[:] = [x /expFac for x in Mlist];
-    Mlist[:] = [x /(L*L*L) for x in Mlist];
+    #Mlist[:] = [x /(L*L*L) for x in Mlist];
     Mps = np.mean(Mlist);
     M2 = np.mean(mat[istart:iend,10]);
     M4 = np.mean(mat[istart:iend,11]);
@@ -69,11 +69,12 @@ def calcAvg(mat,i,istart,FileList):
 
     calcB = expFac*M4/pow(M2,2);
     calcdBdT =  expFac*M4E*M2 + M4*M2*E -2.0*expFac*M4*M2E;
+    calcdBdT = calcdBdT*L*L*L;
     calcdBdT = calcdBdT/(T*T*M2*M2*M2);
     calcxi = (M2/ expFac) - M*M/(expFac*expFac);
-    calcxi = calcxi/(L*L*L*T);
+    calcxi = calcxi*(L*L*L)/T;
     calcrs = -E -SX/T - SY/T - SZ/T;
-    calcrs = calcrs/(3.0*L*L*expFac);
+    calcrs = calcrs*L/(3.0*expFac);
 
     Ylist = [Eps,Mps,B,calcB,dBdT,calcdBdT,xi,calcxi,rs,calcrs];
 
