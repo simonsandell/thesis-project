@@ -44,30 +44,33 @@ void printOutput(Lattice lat, long double T, long double E, long double E2, long
 	typedef std::numeric_limits<long double> dbl;
 
 	std::cout.precision(dbl::max_digits10 + 5);
+	std::stringstream sstrm;
+	sstrm.precision(dbl::max_digits10 + 5);
 
-	std::cout << std::fixed << lat.L << " ";				
-	std::cout << std::fixed << T << " ";				
-	std::cout << std::fixed << lat.Neqsweeps << " ";			
-	std::cout << std::fixed << lat.Neqclusts << " ";			
-	std::cout << std::fixed << lat.Nsmsweeps << " ";			
-	std::cout << std::fixed << lat.Nsmclusts << " ";			
-	std::cout << std::fixed << lat.coldstart << " ";				
-	std::cout << std::fixed << E << " ";				
-	std::cout << std::fixed << E2 << " ";				
-	std::cout << std::fixed << M << " ";				
-	std::cout << std::fixed << M2 << " ";				
-	std::cout << std::fixed << M4 << " ";				
-	std::cout << std::fixed << M2E << " ";				
-	std::cout << std::fixed << M4E << " ";				
-	std::cout << std::fixed << SX2 << " ";				
-	std::cout << std::fixed << SY2 << " ";				
-	std::cout << std::fixed << SZ2 << " ";				
-	std::cout << std::fixed << bin << " ";				
-	std::cout << std::fixed << dbdt << " ";				
-	std::cout << std::fixed << xi << " ";				
-	std::cout << std::fixed << rs << " ";				
-	std::cout << std::fixed << expFac << " ";			
-	std::cout << std::endl;				
+	sstrm << std::fixed << lat.L << " ";				
+	sstrm << std::fixed << T << " ";				
+	sstrm << std::fixed << lat.Neqsweeps << " ";			
+	sstrm << std::fixed << lat.Neqclusts << " ";			
+	sstrm << std::fixed << lat.Nsmsweeps << " ";			
+	sstrm << std::fixed << lat.Nsmclusts << " ";			
+	sstrm << std::fixed << lat.coldstart << " ";				
+	sstrm << std::fixed << E << " ";				
+	sstrm << std::fixed << E2 << " ";				
+	sstrm << std::fixed << M << " ";				
+	sstrm << std::fixed << M2 << " ";				
+	sstrm << std::fixed << M4 << " ";				
+	sstrm << std::fixed << M2E << " ";				
+	sstrm << std::fixed << M4E << " ";				
+	sstrm << std::fixed << SX2 << " ";				
+	sstrm << std::fixed << SY2 << " ";				
+	sstrm << std::fixed << SZ2 << " ";				
+	sstrm << std::fixed << bin << " ";				
+	sstrm << std::fixed << dbdt << " ";				
+	sstrm << std::fixed << xi << " ";				
+	sstrm << std::fixed << rs << " ";				
+	sstrm << std::fixed << expFac << " ";			
+	sstrm << std::endl;				
+	std::cout << sstrm.str();
 }
 
 long double getMaxE(long double L){
