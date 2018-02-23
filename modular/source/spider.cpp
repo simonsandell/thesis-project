@@ -55,7 +55,7 @@ long double * getTrange(long double start, long double end, int N){
 	}
 	return T;
 }
-void wolffHistJob(){
+void wolffHistJob(long double L){
 
 	//
 	//Set Run Parameters
@@ -76,8 +76,6 @@ void wolffHistJob(){
 		Trange = getTrange(startT,endT,int(Ntemps));
 	}
 	long double runTemp = 2.20200000000000L;
-	//system size
-	long double 	L =			4.0L;
 	//initial equilibration sweeps
 	int 		Neq=			20000;
 	//initial configuration
@@ -161,7 +159,7 @@ int main(){
 	for(int i = 0; i < 8; ++i) {
 		results.emplace_back(
 				pool.enqueue([i] {
-					wolffHistJob();
+					wolffHistJob(8.0L);
 					})
 				);
 	}

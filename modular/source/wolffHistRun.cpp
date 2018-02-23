@@ -121,6 +121,20 @@ void wolffHistRun(Lattice& lat, long double N_sample_sweeps,long double *Tempera
 	long double rs[N_temps];//superfluid density
 	for (int i =0; i< N_temps; ++i){
 
+		//print values
+		/*
+		std::cout <<"avgExpFac[i]"<<	avgExpFac[i]<<std::endl;
+        	std::cout <<"avgE[i]     "<<        avgE[i] <<std::endl;
+        	std::cout <<"avgE2[i]    "<<        avgE2[i]  <<std::endl;
+        	std::cout <<"avgM[i]     "<<        avgM[i] <<std::endl;
+        	std::cout <<"avgM2[i]    "<<        avgM2[i]<<std::endl;
+        	std::cout <<"avgM4[i]    "<<        avgM4[i] <<std::endl;
+        	std::cout <<"avgM2E[i]   "<<        avgM2E[i]<<std::endl;
+        	std::cout <<"avgM4E[i]   "<<        avgM4E[i]<<std::endl;
+        	std::cout <<"avgSinX2[i] "<<        avgSinX2[i] <<std::endl;
+        	std::cout <<"avgSinY2[i] "<<        avgSinY2[i] <<std::endl;
+        	std::cout <<"avgSinZ2[i] "<<        avgSinZ2[i] <<std::endl;
+		*/
 
 		//normalize
 		avgExpFac[i] /= Nsample_clusts;
@@ -149,6 +163,22 @@ void wolffHistRun(Lattice& lat, long double N_sample_sweeps,long double *Tempera
 			-avgSinY2[i]/Temperatures[i] 
 			-avgSinZ2[i]/Temperatures[i];
 		rs[i] /= (3.0L*lat.L*lat.L*avgExpFac[i]);
+		//print values
+		/*
+		std::cout << "b = " << avgM4[i] << " * " << avgExpFac[i] << std::endl;
+		std::cout << "b /= " << avgM2[i] << " * " << avgM2[i] << std::endl;
+		std::cout << "dbdt[i] = " << avgExpFac[i] << " * " << avgM4E[i] << 
+			" * " << avgM2[i]<<" + "<< avgM4[i]<< " * " <<avgM2[i]<< 
+			" * " << avgE[i] << " - 2.0L* " << avgExpFac[i]<< " * " <<
+		       	avgM4[i] << " * " << avgM2E[i] << std::endl;
+		std::cout << "dbdt[i] /= " << Temperatures[i] << "^2 * " << avgM2 << "^3" << std::endl;
+		std::cout << "xi[i] = " << " ( " << avgM2[i]<<" / "<<avgExpFac[i] <<") - "<<"("<<avgM[i]<<"*"<<avgM[i]<<" / "<<"("<<avgExpFac[i]<<"*"<<avgExpFac[i]<<"))"<< std::endl;
+		std::cout << "xi[i] /= " << Temperatures[i] << "*" << lat.Nspins << std::endl;
+		std::cout <<"rs[i] = -"<<avgE[i] <<" - "<< avgSinX2[i]<<" / "<<Temperatures[i] 
+			<<" - "<<avgSinY2[i]<<" / "<<Temperatures[i] 
+			<<" - "<<avgSinZ2[i]<<" / "<<Temperatures[i] << std::endl;
+		std::cout <<"rs[i] /= (3.0L*" <<lat.L<<" * "<<lat.L<<" * "<<avgExpFac[i]<<")" << std::endl;
+		*/
 	}
 	for (int i = 0;i< N_temps; ++i){
 		printOutput(lat,Temperatures[i],				
