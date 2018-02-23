@@ -62,7 +62,6 @@ void wolffHistRun(Lattice& lat, long double N_sample_sweeps,long double *Tempera
 
 	Cluster cluster(lat.L);
 	RandStruct rand;
-	std::cout << rand.seed << std::endl;
 
 	while (steps < leaststeps){
 		//make a cluster
