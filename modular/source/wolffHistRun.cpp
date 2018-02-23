@@ -112,7 +112,6 @@ void wolffHistRun(Lattice& lat, long double N_sample_sweeps,long double *Tempera
 
 
 
-	long double actNsamp_sweeps = (long double)steps/(lat.Nspins);
 
 	//calculate quantities of interest
 
@@ -152,9 +151,7 @@ void wolffHistRun(Lattice& lat, long double N_sample_sweeps,long double *Tempera
 		rs[i] /= (3.0L*lat.L*lat.L*avgExpFac[i]);
 	}
 	for (int i = 0;i< N_temps; ++i){
-		printOutput(lat.L,Temperatures[i],
-				lat.Neqsweeps,lat.Neqclusts,
-				lat.Nsmsweeps,lat.Nsmclusts,lat.coldstart,
+		printOutput(lat,Temperatures[i],				
 				avgE[i],avgE2[i],avgM[i],avgM2[i],avgM4[i],
 				avgM2E[i],avgM4E[i],
 				avgSinX2[i],avgSinY2[i],avgSinZ2[i],

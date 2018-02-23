@@ -86,9 +86,7 @@ void metroRun(Lattice&lat, long double N_sample_sweeps,long double Temperature){
 	rs = -avgE - (Beta)*avgSinX2 -(Beta)*avgSinY2 -(Beta)*avgSinZ2;
 	rs /= 3.0L*lat.L*lat.L; 
 
-	printOutput(lat.L,Temperature,
-			lat.Neqsweeps,lat.Neqclusts,
-			lat.Nsmsweeps,lat.Nsmclusts,lat.coldstart,
+	printOutput(lat,Temperature,
 			avgE,avgE2,avgM,avgM2,avgM4,
 			avgM2E,avgM4E,
 			avgSinX2,avgSinY2,avgSinZ2,
