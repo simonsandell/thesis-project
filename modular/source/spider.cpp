@@ -27,7 +27,7 @@ void warmup(Lattice& lat,Cluster&clust,long double beta,RandStruct&rand,int N){
 	while ((fliptries/Nspins) < N){
 		clusts++;
 		fliptries += growCluster(lat,clust,beta,rand);
-		
+
 	}
 	if( !lat.warmedUp){
 		lat.Neqclusts = clusts;
@@ -56,6 +56,7 @@ long double * getTrange(long double start, long double end, int N){
 	return T;
 }
 void wolffHistJob(long double L){
+<<<<<<< HEAD
 
 	//
 	//Set Run Parameters
@@ -63,10 +64,11 @@ void wolffHistJob(long double L){
 	//
 
 	//temperatures
+=======
+>>>>>>> 94dad2e2bf15a72f67c39460eabe7ad07973e8f1
 	long double	startT=			2.20150L;
 	long double	endT=			2.20350L;
 	int 		Ntemps=			21.0L;
-	//generate temperature range
 	long double* Trange;
 	if (abs(Ntemps - 1) < 0.1) {
 		Trange = new long double[1];
@@ -76,32 +78,27 @@ void wolffHistJob(long double L){
 		Trange = getTrange(startT,endT,int(Ntemps));
 	}
 	long double runTemp = 2.20200000000000L;
+<<<<<<< HEAD
 	//initial equilibration sweeps
+=======
+>>>>>>> 94dad2e2bf15a72f67c39460eabe7ad07973e8f1
 	int 		Neq=			20000;
-	//initial configuration
 	bool 		cold=			true;
-	//sample sweeps per run
 	long double	Nsamp=			1000.0L;
-	//eq sweeps between runs
 	int 		Nbetw=			100;
-	//number of total runs
-	int 		Nruns=			1000;
-	//
-	//End of parameters
-	//
+	int 		Nruns=			10000;
 	Lattice lat(L,cold);
 	Cluster clust(L);
 	RandStruct rand;
-	//initial warmup
 	long double beta = 1.0L/runTemp;
 	warmup(lat,clust,beta,rand,(Neq-Nbetw));
-	//sample
 	for (int i=0; i< Nruns; ++i){	
 		warmup(lat,clust,beta,rand,Nbetw);
 		wolffHistRun(lat,Nsamp,Trange,Ntemps,runTemp);
 	}
 
 }
+<<<<<<< HEAD
 void metroJob(long double L){
 
 	//
@@ -110,10 +107,12 @@ void metroJob(long double L){
 	//
 
 	//temperatures
+=======
+void metroJob(){
+>>>>>>> 94dad2e2bf15a72f67c39460eabe7ad07973e8f1
 	long double	startT=			2.20150L;
 	long double	endT=			2.20350L;
 	int 		Ntemps=			21.0L;
-	//generate temperature range
 	long double* Trange;
 	if (abs(Ntemps - 1) < 0.1) {
 		Trange = new long double[1];
@@ -123,31 +122,25 @@ void metroJob(long double L){
 		Trange = getTrange(startT,endT,int(Ntemps));
 	}
 	long double runTemp = 2.20200000000000L;
+<<<<<<< HEAD
 	//system size
 	//initial equilibration sweeps
+=======
+	long double 	L =			4.0L;
+>>>>>>> 94dad2e2bf15a72f67c39460eabe7ad07973e8f1
 	int 		Neq=			20000;
-	//initial configuration
 	bool 		cold=			true;
-	//sample sweeps per run
 	long double	Nsamp=			1000.0L;
-	//eq sweeps between runs
 	int 		Nbetw=			100;
-	//number of total runs
 	int 		Nruns=			1000;
-	//
-	//End of parameters
-	//
 	Lattice lat(L,cold);
 	RandStruct rand;
-	//initial warmup
 	long double beta = 1.0L/runTemp;
 	warmupMetro(lat,beta,rand,(Neq-Nbetw));
-	//sample
 	for (int i=0; i< Nruns; ++i){	
 		warmupMetro(lat,beta,rand,Nbetw);
 		metroRun(lat,Nsamp,runTemp);
 	}
-
 }
 
 //main
@@ -155,10 +148,21 @@ int main(){
 	ThreadPool pool(4);
 	std::vector< std::future<void> > results;
 
-	for(int i = 0; i < 8; ++i) {
+	for(int i = 0; i < 20; ++i) {
 		results.emplace_back(
 				pool.enqueue([i] {
+					wolffHistJob(8.0L);
+					})
+				);
+	}
+	for(int i = 0; i < 20; ++i) {
+		results.emplace_back(
+				pool.enqueue([i] {
+<<<<<<< HEAD
 					metroJob(4.0L);
+=======
+					wolffHistJob(16.0L);
+>>>>>>> 94dad2e2bf15a72f67c39460eabe7ad07973e8f1
 					})
 				);
 	}
