@@ -56,16 +56,6 @@ long double * getTrange(long double start, long double end, int N){
 	return T;
 }
 void wolffHistJob(long double L){
-<<<<<<< HEAD
-
-	//
-	//Set Run Parameters
-	//
-	//
-
-	//temperatures
-=======
->>>>>>> 94dad2e2bf15a72f67c39460eabe7ad07973e8f1
 	long double	startT=			2.20150L;
 	long double	endT=			2.20350L;
 	int 		Ntemps=			21.0L;
@@ -78,10 +68,6 @@ void wolffHistJob(long double L){
 		Trange = getTrange(startT,endT,int(Ntemps));
 	}
 	long double runTemp = 2.20200000000000L;
-<<<<<<< HEAD
-	//initial equilibration sweeps
-=======
->>>>>>> 94dad2e2bf15a72f67c39460eabe7ad07973e8f1
 	int 		Neq=			20000;
 	bool 		cold=			true;
 	long double	Nsamp=			1000.0L;
@@ -98,18 +84,7 @@ void wolffHistJob(long double L){
 	}
 
 }
-<<<<<<< HEAD
 void metroJob(long double L){
-
-	//
-	//Set Run Parameters
-	//
-	//
-
-	//temperatures
-=======
-void metroJob(){
->>>>>>> 94dad2e2bf15a72f67c39460eabe7ad07973e8f1
 	long double	startT=			2.20150L;
 	long double	endT=			2.20350L;
 	int 		Ntemps=			21.0L;
@@ -122,12 +97,6 @@ void metroJob(){
 		Trange = getTrange(startT,endT,int(Ntemps));
 	}
 	long double runTemp = 2.20200000000000L;
-<<<<<<< HEAD
-	//system size
-	//initial equilibration sweeps
-=======
-	long double 	L =			4.0L;
->>>>>>> 94dad2e2bf15a72f67c39460eabe7ad07973e8f1
 	int 		Neq=			20000;
 	bool 		cold=			true;
 	long double	Nsamp=			1000.0L;
@@ -158,11 +127,7 @@ int main(){
 	for(int i = 0; i < 20; ++i) {
 		results.emplace_back(
 				pool.enqueue([i] {
-<<<<<<< HEAD
 					metroJob(4.0L);
-=======
-					wolffHistJob(16.0L);
->>>>>>> 94dad2e2bf15a72f67c39460eabe7ad07973e8f1
 					})
 				);
 	}
