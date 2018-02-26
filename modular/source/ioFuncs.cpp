@@ -9,6 +9,7 @@
 
 #include "ioFuncs.h"
 #include "latticeStruct.h"
+#include "avgStruct.h"
 
 //print lattice
 void printLattice(long double ***lattice,long double  L){
@@ -40,7 +41,7 @@ std::string get_selfpath(){
 		exit(-1);
 	}
 }
-void printOutput(Lattice lat, long double T, long double E, long double E2, long double M, long double M2, long double M4, long double M2E, long double M4E, long double SX2, long double SY2, long double SZ2, long double bin, long double dbdt, long double xi, long double rs, long double expFac){
+void printOutput(Lattice lat, long double T,avgStruct avgs, long double bin, long double dbdt, long double xi, long double rs){
 	typedef std::numeric_limits<long double> dbl;
 
 	std::cout.precision(dbl::max_digits10 + 5);
@@ -54,21 +55,21 @@ void printOutput(Lattice lat, long double T, long double E, long double E2, long
 	sstrm << std::fixed << lat.Nsmsweeps << " ";			
 	sstrm << std::fixed << lat.Nsmclusts << " ";			
 	sstrm << std::fixed << lat.coldstart << " ";				
-	sstrm << std::fixed << E << " ";				
-	sstrm << std::fixed << E2 << " ";				
-	sstrm << std::fixed << M << " ";				
-	sstrm << std::fixed << M2 << " ";				
-	sstrm << std::fixed << M4 << " ";				
-	sstrm << std::fixed << M2E << " ";				
-	sstrm << std::fixed << M4E << " ";				
-	sstrm << std::fixed << SX2 << " ";				
-	sstrm << std::fixed << SY2 << " ";				
-	sstrm << std::fixed << SZ2 << " ";				
-	sstrm << std::fixed << bin << " ";				
-	sstrm << std::fixed << dbdt << " ";				
-	sstrm << std::fixed << xi << " ";				
-	sstrm << std::fixed << rs << " ";				
-	sstrm << std::fixed << expFac << " ";			
+	sstrm << std::fixed << avgs.e	<< " ";				
+	sstrm << std::fixed << avgs.e2	<< " ";				
+	sstrm << std::fixed << avgs.m	<< " ";				
+	sstrm << std::fixed << avgs.m2	<< " ";				
+	sstrm << std::fixed << avgs.m4	<< " ";				
+	sstrm << std::fixed << avgs.m2e	<< " ";				
+	sstrm << std::fixed << avgs.m4e	<< " ";				
+	sstrm << std::fixed << avgs.s2x	<< " ";				
+	sstrm << std::fixed << avgs.s2y	<< " ";				
+	sstrm << std::fixed << avgs.s2z << " ";				
+	sstrm << std::fixed << bin	<< " ";				
+	sstrm << std::fixed << dbdt	<< " ";				
+	sstrm << std::fixed << xi	<< " ";				
+	sstrm << std::fixed << rs	<< " ";				
+	sstrm << std::fixed << avgs.exp << " ";			
 	sstrm << std::endl;				
 	std::cout << sstrm.str();
 }

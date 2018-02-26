@@ -102,7 +102,7 @@ void wolffHistJob(long double L){
 	}
 
 }
-void metroJob(){
+void metroJob(long double L){
 
 	//
 	//Set Run Parameters
@@ -124,7 +124,6 @@ void metroJob(){
 	}
 	long double runTemp = 2.20200000000000L;
 	//system size
-	long double 	L =			4.0L;
 	//initial equilibration sweeps
 	int 		Neq=			20000;
 	//initial configuration
@@ -159,7 +158,7 @@ int main(){
 	for(int i = 0; i < 8; ++i) {
 		results.emplace_back(
 				pool.enqueue([i] {
-					wolffHistJob(8.0L);
+					metroJob(4.0L);
 					})
 				);
 	}

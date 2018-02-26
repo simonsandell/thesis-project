@@ -2,7 +2,8 @@
 #define IOFUNCS_H
 
 #include "latticeStruct.h"
-void printOutput(Lattice lat, long double T, long double E, long double E2, long double M, long double M2, long double M4, long double M2E, long double M4E, long double SX2, long double SY2, long double SZ2, long double bin, long double dbdt, long double xi, long double rs, long double expFac);
+#include "avgStruct.h"
+void printOutput(Lattice lat,long double T, avgStruct avg, long double bin, long double dbdt, long double xi, long double rs);
 
 long double getMaxE(long double L);
 

@@ -11,6 +11,7 @@
 #include "metropolis.h"
 #include "latticeStruct.h"
 #include "randStruct.h"
+#include "avgStruct.h"
 
 
 void metroRun(Lattice&lat, long double N_sample_sweeps,long double Temperature){
@@ -25,33 +26,35 @@ void metroRun(Lattice&lat, long double N_sample_sweeps,long double Temperature){
 
 	lat.updateQuants();
 
+	avgStruct avgs;
+	avgs.exp = 1.0L;
 
 
-	long double avgE = 0.0L; //energy
-	long double avgE2 = 0.0L;//squared energy
-	long double avgM = 0.0L; //abs of magnetization
-	long double avgM2 = 0.0L;//squared magnetization
-	long double avgM4 = 0.0L;//fourth power of magnetization
-	long double avgM2E = 0.0L;// squared magnetization times energy
-	long double avgM4E = 0.0L; // 4th power magnetization times energy
-	long double avgSinX2 = 0.0L; // for superfluid density 
-	long double avgSinY2 = 0.0L; // for superfluid density 
-	long double avgSinZ2 = 0.0L; // for superfluid density 
+
+
+
+
+
+
+
+
+
+
 
 	for (int i = 0; i < N_sample_sweeps; ++i){
 		metrosweep(lat,Beta,rand);
 		metrosweep(lat,Beta,rand);
 		//take sample data
-		avgE += lat.energy;
-		avgE2 += lat.energy*lat.energy;
-		avgM += sqrt(lat.xmag*lat.xmag + lat.ymag*lat.ymag);
-		avgM2 += (lat.xmag*lat.xmag + lat.ymag*lat.ymag);
-		avgM4 += (lat.xmag*lat.xmag + lat.ymag*lat.ymag)*(lat.xmag*lat.xmag + lat.ymag*lat.ymag);
-		avgM2E += lat.energy*(lat.xmag*lat.xmag + lat.ymag*lat.ymag); 
-		avgM4E += lat.energy*(lat.xmag*lat.xmag + lat.ymag*lat.ymag)*(lat.xmag*lat.xmag + lat.ymag*lat.ymag);
-		avgSinX2 += lat.sinx*lat.sinx;
-		avgSinY2 += lat.siny*lat.siny;
-		avgSinZ2 += lat.sinz*lat.sinz;
+		avgs.e += lat.energy;
+		avgs.e2+= lat.energy*lat.energy;
+		avgs.m += sqrt(lat.xmag*lat.xmag + lat.ymag*lat.ymag);
+		avgs.m2+= (lat.xmag*lat.xmag + lat.ymag*lat.ymag);
+		avgs.m4+= (lat.xmag*lat.xmag + lat.ymag*lat.ymag)*(lat.xmag*lat.xmag + lat.ymag*lat.ymag);
+		avgs.m2e+= lat.energy*(lat.xmag*lat.xmag + lat.ymag*lat.ymag); 
+		avgs.m4e+= lat.energy*(lat.xmag*lat.xmag + lat.ymag*lat.ymag)*(lat.xmag*lat.xmag + lat.ymag*lat.ymag);
+		avgs.s2x+= lat.sinx*lat.sinx;
+		avgs.s2y+= lat.siny*lat.siny;
+		avgs.s2z+= lat.sinz*lat.sinz;
 	}
 
 	//define some reciprocals to reduce number of divions
@@ -65,31 +68,25 @@ void metroRun(Lattice&lat, long double N_sample_sweeps,long double Temperature){
 
 
 	//normalize
-	avgE /= N_sample_sweeps;
-	avgE2 /= N_sample_sweeps;
-	avgM /= N_sample_sweeps;
-	avgM2 /= N_sample_sweeps;
-	avgM4 /= N_sample_sweeps;
-	avgM2E /= N_sample_sweeps;
-	avgM4E /= N_sample_sweeps;
-	avgSinX2 /= N_sample_sweeps;
-	avgSinY2 /= N_sample_sweeps;
-	avgSinZ2 /= N_sample_sweeps;
-
+	avgs.e /= N_sample_sweeps;
+	avgs.e2 /= N_sample_sweeps;
+	avgs.m  /= N_sample_sweeps;
+	avgs.m2 /= N_sample_sweeps;
+	avgs.m4 /= N_sample_sweeps;
+	avgs.m2e/= N_sample_sweeps;
+	avgs.m4e/= N_sample_sweeps;
+	avgs.s2x/= N_sample_sweeps;
+	avgs.s2y/= N_sample_sweeps;
+	avgs.s2z/= N_sample_sweeps;
 	//calculate
-	b = avgM4;
-	b /= (avgM2*avgM2);
-	dbdt = avgM4E*avgM2 + avgM4*avgM2*avgE - 2.0L*avgM4*avgM2E;
-	dbdt /= Temperature*Temperature*avgM2*avgM2*avgM2;
-	xi = avgM2 - avgM*avgM;
+	b = avgs.m4;
+	b /= (avgs.m2*avgs.m2);
+	dbdt = avgs.m4e*avgs.m2 + avgs.m4*avgs.m2*avgs.e - 2.0L*avgs.m4*avgs.m2e;
+	dbdt /= Temperature*Temperature*avgs.m2*avgs.m2*avgs.m2;
+	xi = avgs.m2 - avgs.m*avgs.m;
 	xi /= Temperature*lat.Nspins;
-	rs = -avgE - (Beta)*avgSinX2 -(Beta)*avgSinY2 -(Beta)*avgSinZ2;
+	rs = -avgs.e - (Beta)*avgs.s2x -(Beta)*avgs.s2y-(Beta)*avgs.s2z;
 	rs /= 3.0L*lat.L*lat.L; 
 
-	printOutput(lat,Temperature,
-			avgE,avgE2,avgM,avgM2,avgM4,
-			avgM2E,avgM4E,
-			avgSinX2,avgSinY2,avgSinZ2,
-			b,dbdt,xi,rs,
-			1.0L);
+	printOutput(lat,Temperature,avgs,b,dbdt,xi,rs);
 }
