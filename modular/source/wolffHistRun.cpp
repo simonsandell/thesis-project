@@ -106,17 +106,14 @@ void wolffHistRun(Lattice& lat, long double N_sample_sweeps,long double *Tempera
 
 		//print values
 		/*
-		   std::cout <<"avgExpFac[i]"<<	avgExpFac[i]<<std::endl;
-		   std::cout <<"avgE[i]     "<<        avgE[i] <<std::endl;
-		   std::cout <<"avgE2[i]    "<<        avgE2[i]  <<std::endl;
-		   std::cout <<"avgM[i]     "<<        avgM[i] <<std::endl;
-		   std::cout <<"avgM2[i]    "<<        avgM2[i]<<std::endl;
-		   std::cout <<"avgM4[i]    "<<        avgM4[i] <<std::endl;
-		   std::cout <<"avgM2E[i]   "<<        avgM2E[i]<<std::endl;
-		   std::cout <<"avgM4E[i]   "<<        avgM4E[i]<<std::endl;
-		   std::cout <<"avgs[i].s2x "<<        avgs[i].s2x <<std::endl;
-		   std::cout <<"avgSinY2[i] "<<        avgSinY2[i] <<std::endl;
-		   std::cout <<"avgs[i].s2z "<<        avgs[i].s2z <<std::endl;
+		   std::cout <<"avgExpFac[i]"<<	       avgs[i].exp <<std::endl;
+		   std::cout <<"avgE[i]     "<<        avgs[i].e <<std::endl;
+		   std::cout <<"avgE2[i]     "<<        avgs[i].e2 <<std::endl;
+		   std::cout <<"avgM[i]    "<<        avgs[i].m  <<std::endl;
+		   std::cout <<"avgM2[i]     "<<        avgs[i].m2 <<std::endl;
+		   std::cout <<"avgM4[i]    "<<        avgs[i].m4 <<std::endl;
+		   std::cout <<"avgM2E[i]    "<<        avgs[i].m2e <<std::endl;
+		   std::cout <<"avgM4E[i]   "<<        avgs[i].m4e<<std::endl;
 		   */
 
 		//normalize
@@ -152,12 +149,9 @@ void wolffHistRun(Lattice& lat, long double N_sample_sweeps,long double *Tempera
 		   " * " << avgs[i].m2<<" + "<< avgs[i].m4<< " * " <<avgs[i].m2<< 
 		   " * " << avgs[i].e << " - 2.0L* " << avgs[i].exp<< " * " <<
 		   avgs[i].m4 << " * " << avgs[i].m2e << std::endl;
-		   std::cout << "dbdt[i] /= " << Temperatures[i] << "^2 * " << avgM2 << "^3" << std::endl;
+		   std::cout << "dbdt[i] /= " << Temperatures[i] << "^2 * " << avgs[i].m2<< "^3" << std::endl;
 		   std::cout << "xi[i] = " << " ( " << avgs[i].m2<<" / "<<avgs[i].exp <<") - "<<"("<<avgs[i].m<<"*"<<avgs[i].m<<" / "<<"("<<avgs[i].exp<<"*"<<avgs[i].exp<<"))"<< std::endl;
 		   std::cout << "xi[i] /= " << Temperatures[i] << "*" << lat.Nspins << std::endl;
-		   std::cout <<"rs[i] = -"<<avgs[i].e <<" - "<< avgs[i].s2x<<" / "<<Temperatures[i] 
-		   <<" - "<<avgs[i].s2y<<" / "<<Temperatures[i] 
-		   <<" - "<<avgs[i].s2z<<" / "<<Temperatures[i] << std::endl;
 		   std::cout <<"rs[i] /= (3.0L*" <<lat.L<<" * "<<lat.L<<" * "<<avgs[i].exp<<")" << std::endl;
 		   */
 	}

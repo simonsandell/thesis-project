@@ -26,7 +26,7 @@ void updateVals(Lattice& lat,long double e0,long double e1,
 	lat.energy+= e1;
 	lat.energy += -e0;
 	lat.mag+= a1;
-	lat.mag+= a0;
+	lat.mag-= a0;
 }
 
 int growCluster(Lattice& lat,Cluster& cluster,long double beta,RandStruct& randgen){

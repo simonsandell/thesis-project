@@ -134,12 +134,5 @@ int main(){
 					})
 				);
 	}
-	for(int i = 0; i < 20; ++i) {
-		results.emplace_back(
-				pool.enqueue([i] {
-					metroJob(8.0L);
-					})
-				);
-	}
 }
 
