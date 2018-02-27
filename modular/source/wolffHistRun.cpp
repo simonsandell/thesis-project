@@ -102,7 +102,6 @@ void wolffHistRun(Lattice& lat, long double N_sample_sweeps,long double *Tempera
 	long double xi[N_temps];//susceptibility
 	long double b[N_temps]; //Binder parameter
 	long double dbdt[N_temps];//derivative wrt T of Binder parameter
-	long double rs[N_temps];//superfluid density
 	for (int i =0; i< N_temps; ++i){
 
 		//print values
@@ -128,9 +127,6 @@ void wolffHistRun(Lattice& lat, long double N_sample_sweeps,long double *Tempera
 		avgs[i].m4  /= intNsampClust;
 		avgs[i].m2e /= intNsampClust;
 		avgs[i].m4e /= intNsampClust;
-		avgs[i].s2x /= intNsampClust;
-		avgs[i].s2y /= intNsampClust;
-		avgs[i].s2z /= intNsampClust;
 		avgs[i].exp /= intNsampClust;
 
 		//calculate
@@ -144,13 +140,6 @@ void wolffHistRun(Lattice& lat, long double N_sample_sweeps,long double *Tempera
 		xi[i] = ((avgs[i].m2/avgs[i].exp) -
 				(avgs[i].m*avgs[i].m/(avgs[i].exp*avgs[i].exp)))*lat.Nspins;
 		xi[i] /= (Temperatures[i]);
-		rs[i] = -avgs[i].e 
-			-lat.Nspins*avgs[i].s2x/Temperatures[i] 
-			-lat.Nspins*avgs[i].s2y/Temperatures[i] 
-			-lat.Nspins*avgs[i].s2z/Temperatures[i];
-		rs[i] *= lat.L;
-		rs[i] /= (3.0L*avgs[i].exp);
-
 
 		c[i] = (avgs[i].e2/avgs[i].exp)	- (avgs[i].e*avgs[i].e/(avgs[i].exp*avgs[i].exp));
 		c[i] /= Temperatures[i]*Temperatures[i];
@@ -174,7 +163,7 @@ void wolffHistRun(Lattice& lat, long double N_sample_sweeps,long double *Tempera
 	}
 	for (int i = 0;i< N_temps; ++i){
 		printOutput(lat,Temperatures[i],avgs[i],
-				b[i],dbdt[i],xi[i],rs[i]);
+				b[i],dbdt[i],xi[i],c[i]);
 	}
 	if (expCorr != 0.0L){
 		setMaxE(lat.L,maxTotE);

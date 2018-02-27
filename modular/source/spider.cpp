@@ -11,8 +11,8 @@
 #include "latticeStruct.h"
 #include "clusterStruct.h"
 #include "randStruct.h"
-#include "metroRun.h"
-#include "metropolis.h"
+//#include "metroRun.h"
+//#include "metropolis.h"
 #include "wolffHistRun.h"
 #include "wolff.h"
 
@@ -33,6 +33,7 @@ void warmup(Lattice& lat,Cluster&clust,long double beta,RandStruct&rand,int N){
 		lat.warmedUp = true;
 	}
 }
+/*
 void warmupMetro(Lattice& lat,long double beta,RandStruct&rand,int N){
 	for (int i = 0; i < N; i++){
 		metrosweep(lat,beta,rand);
@@ -43,6 +44,7 @@ void warmupMetro(Lattice& lat,long double beta,RandStruct&rand,int N){
 		lat.warmedUp = true;
 	}
 }
+*/
 
 //generate range of temperatures
 long double * getTrange(long double start, long double end, int N){
@@ -53,11 +55,12 @@ long double * getTrange(long double start, long double end, int N){
 	}
 	return T;
 }
-void wolffHistJob(long double L){
-	long double runTemp = 2.20200000000000L;
 
-	long double	startT=			2.20150L;
-	long double	endT=			2.20350L;
+void wolffHistJob(long double L){
+	long double runTemp = 4.50000000000000L;
+
+	long double	startT=			4.49150L;
+	long double	endT=			4.50350L;
 	int 		Ntemps=			21;
 	long double* Trange;
 	if (Ntemps < 2) {
@@ -67,23 +70,24 @@ void wolffHistJob(long double L){
 	else {
 		Trange = getTrange(startT,endT,int(Ntemps));
 	}
-	int 		Neq=			20000;
+	int 		Neq=			10000;
 	bool 		cold=			true;
 	long double	Nsamp=			1000.0L;
 	int 		Nbetw=			100;
-	int 		Nruns=			10000;
+	int 		Nruns=			1000;
 	Lattice lat(L,cold);
 	Cluster clust(L);
 	RandStruct rand;
 	long double beta = 1.0L/runTemp;
 	warmup(lat,clust,beta,rand,(Neq-Nbetw));
+	cout << "after warmup" << endl;
 	for (int i=0; i< Nruns; ++i){	
 		warmup(lat,clust,beta,rand,Nbetw);
 		wolffHistRun(lat,Nsamp,Trange,Ntemps,runTemp);
-		lat.testConsistent();
 	}
 
 }
+/*
 void metroJob(long double L){
 
 	long double 	runTemp = 		2.20200000000000L;
@@ -103,6 +107,7 @@ void metroJob(long double L){
 		cout << "this is after metroRun();" << endl;
 	}
 }
+*/
 
 //main
 //
@@ -110,10 +115,24 @@ int main(){
 	ThreadPool pool(24);
 	std::vector< std::future<void> > results;
 
-	for(int i = 0; i < 20; ++i) {
+	for(int i = 0; i < 8; ++i) {
 		results.emplace_back(
 				pool.enqueue([i] {
-					metroJob(4.0L);
+					wolffHistJob(4.0L);
+					})
+				);
+	}
+	for(int i = 0; i < 8; ++i) {
+		results.emplace_back(
+				pool.enqueue([i] {
+					wolffHistJob(8.0L);
+					})
+				);
+	}
+	for(int i = 0; i < 8; ++i) {
+		results.emplace_back(
+				pool.enqueue([i] {
+					wolffHistJob(16.0L);
 					})
 				);
 	}

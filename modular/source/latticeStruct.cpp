@@ -49,14 +49,14 @@ long double calcEn(Lattice* lat){
 	en = 0.5L*en;
 	return en;
 }
-long double*** newLattice(long double L,bool cold){
+long double *** newLattice(long double L,bool cold){
 	//make new lattice
-	int ***lattice;
-	lattice = new int**[(int)L];
+	long double ***lattice;
+	lattice = new long double **[(int)L];
 	for (int i = 0; i< L;++i){
-		lattice[i] = new int*[(int)L];
+		lattice[i] = new long double *[(int)L];
 		for (int j =0;j<L;++j){
-			lattice[i][j] = new int[(int)L];
+			lattice[i][j] = new long double[(int)L];
 		}
 	}
 
@@ -64,7 +64,7 @@ long double*** newLattice(long double L,bool cold){
 		for (int i = 0; i<L;++i){
 			for (int j=0; j<L;++j){
 				for (int k = 0; k<L; ++k){
-					lattice[i][j][k] = 1;
+					lattice[i][j][k] = 1.0L;
 				}
 			}
 		}
@@ -80,10 +80,10 @@ long double*** newLattice(long double L,bool cold){
 			for (int j=0; j<L;++j){
 				for (int k = 0; k<L; ++k){
 					if ( dist(eng) >0.5L){
-						lattice[i][j][k] =1;
+						lattice[i][j][k] =1.0L;
 					}
 					else {
-						lattice[i][j][k] =-1;
+						lattice[i][j][k] =-1.0L;
 					}
 				}
 			}
@@ -95,9 +95,6 @@ long double*** newLattice(long double L,bool cold){
 void Lattice::updateQuants(){
 	energy = calcEn(this);
 	mag = calcMag(theLattice,L);
-	sinx = calcSinX(theLattice,L);
-	siny = calcSinY(theLattice,L);
-	sinz = calcSinZ(theLattice,L);
 };
 
 //initialize new lattice
@@ -114,16 +111,10 @@ Lattice::Lattice(int l, bool cold){
 	if (cold) {
 		energy = -3.0L*Nspins;
 		mag = Nspins;
-		sinx = 0.0L;
-		siny = 0.0L;
-		sinz = 0.0L;
 	}
 	else {
 		energy = calcEn(this);
 		mag = calcMag(theLattice,L);
-		sinx = calcSinX(theLattice,L);
-		siny = calcSinY(theLattice,L);
-		sinz = calcSinZ(theLattice,L);
 	}
 
 
@@ -136,17 +127,10 @@ void Lattice::testConsistent(){
 
 	typedef std::numeric_limits<long double> dbl;
 	std::cout.precision(dbl::max_digits10 + 5);
-	long double testSinX = calcSinX(theLattice,L);
-	long double testSinY = calcSinY(theLattice,L);
-	long double testSinZ = calcSinZ(theLattice,L);
 	long double testEn = calcEn(this);
 	long double testMag = calcMag(theLattice,L);
 	long double TotEn = energy;
-	long double TotXMag= xmag;
-	long double TotYMag= ymag;
-	long double TotSinX= sinx;
-	long double TotSinY = siny;
-	long double TotSinZ = sinz;
+	long double TotMag = mag;
 	std::cout <<std::fixed<< TotEn - testEn << "  E    "<< TotEn << " "<< testEn << std::endl;
 	std::cout <<std::fixed<< TotMag - testMag << "  M    "<< TotMag << " "<< testMag << std::endl;
 }

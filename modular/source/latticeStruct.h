@@ -7,7 +7,7 @@ struct Lattice{
 	int Neqclusts,Nsmclusts;	
 	bool coldstart,warmedUp;
 
-	long double energy,mag,sinx,siny,sinz;
+	long double energy,mag;
 
 	Lattice(int L, bool cold);
 	Lattice();
