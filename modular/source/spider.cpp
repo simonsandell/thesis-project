@@ -56,18 +56,19 @@ long double * getTrange(long double start, long double end, int N){
 	return T;
 }
 void wolffHistJob(long double L){
+	long double runTemp = 2.20200000000000L;
+
 	long double	startT=			2.20150L;
 	long double	endT=			2.20350L;
-	int 		Ntemps=			21.0L;
+	int 		Ntemps=			21;
 	long double* Trange;
-	if (abs(Ntemps - 1) < 0.1) {
+	if (Ntemps < 2) {
 		Trange = new long double[1];
-		Trange[0] = startT;
+		Trange[0] = runTemp;
 	}
 	else {
 		Trange = getTrange(startT,endT,int(Ntemps));
 	}
-	long double runTemp = 2.20200000000000L;
 	int 		Neq=			20000;
 	bool 		cold=			true;
 	long double	Nsamp=			1000.0L;
@@ -85,18 +86,8 @@ void wolffHistJob(long double L){
 
 }
 void metroJob(long double L){
-	long double	startT=			2.20150L;
-	long double	endT=			2.20350L;
-	int 		Ntemps=			21.0L;
-	long double* Trange;
-	if (abs(Ntemps - 1) < 0.1) {
-		Trange = new long double[1];
-		Trange[0] = startT;
-	}
-	else {
-		Trange = getTrange(startT,endT,int(Ntemps));
-	}
-	long double runTemp = 2.20200000000000L;
+
+	long double 	runTemp = 		2.20200000000000L;
 	int 		Neq=			20000;
 	bool 		cold=			true;
 	long double	Nsamp=			1000.0L;
@@ -113,21 +104,22 @@ void metroJob(long double L){
 }
 
 //main
+//
 int main(){
-	ThreadPool pool(4);
+	ThreadPool pool(24);
 	std::vector< std::future<void> > results;
 
 	for(int i = 0; i < 20; ++i) {
 		results.emplace_back(
 				pool.enqueue([i] {
-					wolffHistJob(8.0L);
+					wolffHistJob(4.0L);
 					})
 				);
 	}
 	for(int i = 0; i < 20; ++i) {
 		results.emplace_back(
 				pool.enqueue([i] {
-					metroJob(4.0L);
+					wolffHistJob(8.0L);
 					})
 				);
 	}
