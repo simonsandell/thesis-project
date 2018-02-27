@@ -70,7 +70,7 @@ def calcAvg(mat,i,istart,FileList):
     calcxi = (M2/ expFac) - M*M/(expFac*expFac);
     calcxi = calcxi*(L*L*L)/T;
 
-    calcC = E2 - Eps;
+    calcC = (E2/expFac - Eps);
     calcC = calcC*(L*L*L*L*L*L);
     calcC = calcC/(T*T);
 
