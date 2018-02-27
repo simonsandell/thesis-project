@@ -41,7 +41,7 @@ std::string get_selfpath(){
 		exit(-1);
 	}
 }
-void printOutput(Lattice lat, long double T,avgStruct avgs, long double bin, long double dbdt, long double xi, long double rs){
+void printOutput(Lattice lat, long double T,avgStruct avgs, long double bin, long double dbdt, long double xi, long double c){
 	typedef std::numeric_limits<long double> dbl;
 
 	std::cout.precision(dbl::max_digits10 + 5);
@@ -62,13 +62,10 @@ void printOutput(Lattice lat, long double T,avgStruct avgs, long double bin, lon
 	sstrm << std::fixed << avgs.m4	<< " ";				
 	sstrm << std::fixed << avgs.m2e	<< " ";				
 	sstrm << std::fixed << avgs.m4e	<< " ";				
-	sstrm << std::fixed << avgs.s2x	<< " ";				
-	sstrm << std::fixed << avgs.s2y	<< " ";				
-	sstrm << std::fixed << avgs.s2z << " ";				
 	sstrm << std::fixed << bin	<< " ";				
 	sstrm << std::fixed << dbdt	<< " ";				
 	sstrm << std::fixed << xi	<< " ";				
-	sstrm << std::fixed << rs	<< " ";				
+	sstrm << std::fixed << c	<< " ";				
 	sstrm << std::fixed << avgs.exp << " ";			
 	sstrm << std::endl;				
 	std::cout << sstrm.str();
