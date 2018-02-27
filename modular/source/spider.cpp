@@ -82,6 +82,7 @@ void wolffHistJob(long double L){
 	for (int i=0; i< Nruns; ++i){	
 		warmup(lat,clust,beta,rand,Nbetw);
 		wolffHistRun(lat,Nsamp,Trange,Ntemps,runTemp);
+		testConsistent(lat);
 	}
 
 }

@@ -104,4 +104,18 @@ void testConsistent(Lattice lat){
 	std::cout <<std::fixed<< TotSinX - testSinX << "  Sx    "<< TotSinX << " "<< testSinX << std::endl;
 	std::cout <<std::fixed<< TotSinY - testSinY << "  Sy    "<< TotSinY << " "<< testSinY << std::endl;
 	std::cout <<std::fixed<< TotSinZ - testSinZ << "  Sz    "<< TotSinZ << " "<< testSinZ << std::endl;
+	//new test of magnetization
+	long double sitemag;
+	long double accum = 0.0L;
+	for (int i = 0; i< lat.L; ++i){
+		for (int j = 0; j< lat.L; ++j){
+			for (int k = 0; k<lat.L; ++k){	
+				sitemag = std::pow(sin(lat.theLattice[i][j][k]),2.0L) + 
+					std::pow(cos(lat.theLattice[i][j][k]),2.0L);
+				std::cout << std::fixed << sitemag << std::endl;
+				accum += std::abs(sitemag - 1.0L);
+			}
+		}
+	}
+	std::cout << std::fixed << accum << std::endl;
 }
