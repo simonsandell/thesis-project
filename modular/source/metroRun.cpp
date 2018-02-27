@@ -23,8 +23,6 @@ void metroRun(Lattice&lat, long double N_sample_sweeps,long double Temperature){
 	lat.Nsmsweeps = N_sample_sweeps;
 
 	lat.updateQuants();
-	lat.testConsistent();
-	std::cout << "this is after updateQuants();" << std::endl;
 
 	avgStruct avgs;
 	avgs.exp = 1.0L;
