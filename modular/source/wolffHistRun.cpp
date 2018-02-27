@@ -7,8 +7,6 @@
 #include <linux/random.h>
 
 #include "wolff.h"
-#include "calcQuants.h"
-#include "latticeOps.h"
 #include "ioFuncs.h"
 #include "clusterStruct.h"
 #include "randStruct.h"
@@ -96,9 +94,9 @@ void wolffHistRun(Lattice& lat, long double N_sample_sweeps,long double *Tempera
 			avgs[i].m4 += expFac*tM2*tM2;
 			avgs[i].m2e += expFac*tM2*tE; 
 			avgs[i].m4e += expFac*tM2*tM2*tE;
-			avgs[i].s2x += expFac*tSx;
-			avgs[i].s2y += expFac*tSy;
-			avgs[i].s2z += expFac*tSz;
+			avgs[i].s2x += expFac*tSx*tSx;
+			avgs[i].s2y += expFac*tSy*tSy;
+			avgs[i].s2z += expFac*tSz*tSz;
 		}
 	}//end of samples
 	lat.Nsmclusts=intNsampClust; 
@@ -154,9 +152,10 @@ void wolffHistRun(Lattice& lat, long double N_sample_sweeps,long double *Tempera
 		xi[i] = ((avgs[i].m2/avgs[i].exp) -
 				(avgs[i].m*avgs[i].m/(avgs[i].exp*avgs[i].exp)))*lat.Nspins;
 		xi[i] /= (Temperatures[i]);
-		rs[i] = -avgs[i].e - avgs[i].s2x/Temperatures[i] 
-			-avgs[i].s2y/Temperatures[i] 
-			-avgs[i].s2z/Temperatures[i];
+		rs[i] = -avgs[i].e 
+			-lat.Nspins*avgs[i].s2x/Temperatures[i] 
+			-lat.Nspins*avgs[i].s2y/Temperatures[i] 
+			-lat.Nspins*avgs[i].s2z/Temperatures[i];
 		rs[i] *= lat.L;
 		rs[i] /= (3.0L*avgs[i].exp);
 		//print values

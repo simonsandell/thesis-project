@@ -1,11 +1,125 @@
+#include <iostream>
 #include <unistd.h>
 #include <random>
 #include <sys/syscall.h>
 
 #include "latticeStruct.h"
 #include "ioFuncs.h"
-#include "calcQuants.h"
 
+long double Lattice::siteEnergy( int &s1, int &s2, int &s3){
+	long double sum = 0.0L;
+	//find indices of neighbours
+	int n1m = (s1 -1 + (int)L )%(int)L;
+	int n1p = (s1 +1 + (int)L )%(int)L;
+	int n2m = (s2 -1 + (int)L )%(int)L;
+	int n2p = (s2 +1 + (int)L )%(int)L;
+	int n3m = (s3 -1 + (int)L )%(int)L;
+	int n3p = (s3 +1 + (int)L )%(int)L;
+	sum -= cos(theLattice[s1][s2][s3]-theLattice[n1m][s2][s3]);
+	sum -= cos(theLattice[s1][s2][s3]-theLattice[n1p][s2][s3]);
+	sum -= cos(theLattice[s1][s2][s3]-theLattice[s1][n2m][s3]);
+	sum -= cos(theLattice[s1][s2][s3]-theLattice[s1][n2p][s3]);
+	sum -= cos(theLattice[s1][s2][s3]-theLattice[s1][s2][n3m]);
+	sum -= cos(theLattice[s1][s2][s3]-theLattice[s1][s2][n3p]);
+	return sum;
+}
+//calculate sin(theta - theta_x) upwards +, downward -
+long double Lattice::sinX(int &s1, int &s2, int &s3,long double &angle){
+	int np = (s1 + 1) %(int)L;
+	int nm = (s1 -1 + (int)L) % (int)L;	
+	long double ret = 0.0L;
+	ret = sin(theLattice[nm][s2][s3] - angle) + sin(angle - theLattice[np][s2][s3]);
+	return ret;
+}
+long double Lattice::sinY(int &s1, int &s2, int &s3,long double &angle){
+	int np = (s2 + 1) %(int)L;
+	int nm = (s2 -1 + (int)L) % (int)L;	
+	long double ret = 0.0L;
+	ret = sin(theLattice[s1][nm][s3] - angle) + sin(angle - theLattice[s1][np][s3]);
+	return ret;
+}
+long double Lattice::sinZ(int &s1, int &s2, int &s3,long double &angle){
+	int np = (s3 + 1) %(int)L;
+	int nm = (s3 -1 + (int)L) % (int)L;	
+	long double ret = 0.0L;
+	ret = sin(theLattice[s1][s2][nm] - angle) + sin(angle - theLattice[s1][s2][np]);
+	return ret;
+}
+;
+long double calcSinX(long double ***lattice,long double  L){
+	long double sum = 0.0L;
+	for (int i =0; i< L; ++i){
+		for (int j =0; j< L ; ++j){
+			for (int k = 0; k<L; ++k){
+				sum += sin(lattice[i][j][k] - lattice[(i+1)%(int)L][j][k]);
+			}
+		}
+	}
+	return sum;
+}
+long double calcSinY(long double ***lattice,long double  L){
+	long double sum = 0.0L;
+	for (int i =0; i< L; ++i){
+		for (int j =0; j< L ; ++j){
+			for (int k = 0; k<L; ++k){
+				sum += sin(lattice[i][j][k] - lattice[i][(j+1)%(int)L][k]);
+			}
+		}
+	}
+	return sum;
+}
+long double calcSinZ(long double ***lattice,long double  L){
+	long double sum = 0.0L;
+	for (int i =0; i< L; ++i){
+		for (int j =0; j< L ; ++j){
+			for (int k = 0; k<L; ++k){
+				sum += sin(lattice[i][j][k] - lattice[i][j][(k+1)%(int)L]);
+			}
+		}
+	}
+	return sum;
+}
+
+long double calcXMag(long double ***lattice,long double L){
+	long double ret = 0.0L;
+	for (int i = 0; i<L; ++i){
+		for (int j = 0; j<L; ++j){
+			for (int k = 0; k<L; ++k){
+				ret += cos(lattice[i][j][k]);
+			}
+		}
+	}
+	return ret;
+}
+long double calcYMag(long double ***lattice,long double L){
+	long double ret = 0.0L;
+	for (int i = 0; i<L; ++i){
+		for (int j = 0; j<L; ++j){
+			for (int k = 0; k<L; ++k){
+				ret += sin(lattice[i][j][k]);
+			}
+		}
+	}
+	return ret;
+}
+
+long double calcMag(long double ***lattice,long double L){
+	long double mag = sqrt(pow(calcXMag(lattice,L),2) + pow(calcYMag(lattice,L),2));
+	return mag;
+}	
+
+long double calcEn(Lattice* lat){
+	long double en = 0.0L;
+	for (int i = 0; i< lat->L; ++i){
+		for (int j = 0; j< lat->L; ++j){
+			for (int k = 0; k<lat->L; ++k){	
+				en += lat->siteEnergy(i,j,k);
+			}
+		}
+	}
+	en = 0.5L*en;
+	return en;
+}
 long double*** newLattice(long double L,bool cold){
 	//make new lattice
 	long double ***lattice;
@@ -45,7 +159,7 @@ long double*** newLattice(long double L,bool cold){
 }
 //update quantiites of the lattice
 void Lattice::updateQuants(){
-	energy = calcEn(theLattice,L);
+	energy = calcEn(this);
 	xmag = calcXMag(theLattice,L);
 	ymag = calcYMag(theLattice,L);
 	sinx = calcSinX(theLattice,L);
@@ -73,8 +187,8 @@ Lattice::Lattice(int l, bool cold){
 		sinz = 0.0L;
 	}
 	else {
-		energy = calcEn(theLattice,L);
-		xmag = calcEn(theLattice,L);
+		energy = calcEn(this);
+		xmag = calcXMag(theLattice,L);
 		ymag = calcYMag(theLattice,L); 
 		sinx = calcSinX(theLattice,L);
 		siny = calcSinY(theLattice,L);
@@ -86,43 +200,41 @@ Lattice::Lattice(int l, bool cold){
 Lattice::Lattice(){
 
 }
-long double Lattice::siteEnergy(Lattice lat, int &s1, int &s2, int &s3){
-	long double sum = 0.0L;
-	//find indices of neighbours
-	int n1m = (s1 -1 + (int)L )%(int)L;
-	int n1p = (s1 +1 + (int)L )%(int)L;
-	int n2m = (s2 -1 + (int)L )%(int)L;
-	int n2p = (s2 +1 + (int)L )%(int)L;
-	int n3m = (s3 -1 + (int)L )%(int)L;
-	int n3p = (s3 +1 + (int)L )%(int)L;
-	sum -= cos(lat.theLattice[s1][s2][s3]-lat.theLattice[n1m][s2][s3]);
-	sum -= cos(lat.theLattice[s1][s2][s3]-lat.theLattice[n1p][s2][s3]);
-	sum -= cos(lat.theLattice[s1][s2][s3]-lat.theLattice[s1][n2m][s3]);
-	sum -= cos(lat.theLattice[s1][s2][s3]-lat.theLattice[s1][n2p][s3]);
-	sum -= cos(lat.theLattice[s1][s2][s3]-lat.theLattice[s1][s2][n3m]);
-	sum -= cos(lat.theLattice[s1][s2][s3]-lat.theLattice[s1][s2][n3p]);
-	return sum;
+
+void Lattice::testConsistent(){
+
+	typedef std::numeric_limits<long double> dbl;
+	std::cout.precision(dbl::max_digits10 + 5);
+	long double testSinX = calcSinX(theLattice,L);
+	long double testSinY = calcSinY(theLattice,L);
+	long double testSinZ = calcSinZ(theLattice,L);
+	long double testEn = calcEn(this);
+	long double testXMag = calcXMag(theLattice,L);
+	long double testYMag = calcYMag(theLattice,L);
+	long double TotEn = energy;
+	long double TotXMag= xmag;
+	long double TotYMag= ymag;
+	long double TotSinX= sinx;
+	long double TotSinY = siny;
+	long double TotSinZ = sinz;
+	std::cout <<std::fixed<< TotEn - testEn << "  E    "<< TotEn << " "<< testEn << std::endl;
+	std::cout <<std::fixed<< TotXMag - testXMag << "  X    "<< TotXMag << " "<< testXMag << std::endl;
+	std::cout <<std::fixed<< TotYMag - testYMag << "  Y    "<< TotYMag << " "<< testYMag << std::endl;
+	std::cout <<std::fixed<< TotSinX - testSinX << "  Sx    "<< TotSinX << " "<< testSinX << std::endl;
+	std::cout <<std::fixed<< TotSinY - testSinY << "  Sy    "<< TotSinY << " "<< testSinY << std::endl;
+	std::cout <<std::fixed<< TotSinZ - testSinZ << "  Sz    "<< TotSinZ << " "<< testSinZ << std::endl;
+	//new test of magnetization
+	long double sitemag;
+	long double accum = 0.0L;
+	for (int i = 0; i< L; ++i){
+		for (int j = 0; j< L; ++j){
+			for (int k = 0; k<L; ++k){	
+				sitemag = std::pow(sin(theLattice[i][j][k]),2.0L) + 
+					std::pow(cos(theLattice[i][j][k]),2.0L);
+				std::cout << std::fixed << sitemag << std::endl;
+				accum += std::abs(sitemag - 1.0L);
+			}
+		}
+	}
+	std::cout << std::fixed << accum << std::endl;
 }
-//calculate sin(theta - theta_x) upwards +, downward -
-long double Lattice::sinX(Lattice lat, int &s1, int &s2, int &s3,long double &angle){
-	int np = (s1 + 1) %(int)L;
-	int nm = (s1 -1 + (int)L) % (int)L;	
-	long double ret = 0.0L;
-	ret = sin(lat.theLattice[nm][s2][s3] - angle) + sin(angle - lat.theLattice[np][s2][s3]);
-	return ret;
-}
-long double Lattice::sinY(Lattice lat, int &s1, int &s2, int &s3,long double &angle){
-	int np = (s2 + 1) %(int)L;
-	int nm = (s2 -1 + (int)L) % (int)L;	
-	long double ret = 0.0L;
-	ret = sin(lat.theLattice[s1][nm][s3] - angle) + sin(angle - lat.theLattice[s1][np][s3]);
-	return ret;
-}
-long double Lattice::sinZ(Lattice lat, int &s1, int &s2, int &s3,long double &angle){
-	int np = (s3 + 1) %(int)L;
-	int nm = (s3 -1 + (int)L) % (int)L;	
-	long double ret = 0.0L;
-	ret = sin(lat.theLattice[s1][s2][nm] - angle) + sin(angle - lat.theLattice[s1][s2][np]);
-	return ret;
-}
-;

@@ -8,8 +8,6 @@
 
 #include "ThreadPool.h"
 #include "ioFuncs.h"
-#include "calcQuants.h"
-#include "latticeOps.h"
 #include "latticeStruct.h"
 #include "clusterStruct.h"
 #include "randStruct.h"
@@ -82,7 +80,7 @@ void wolffHistJob(long double L){
 	for (int i=0; i< Nruns; ++i){	
 		warmup(lat,clust,beta,rand,Nbetw);
 		wolffHistRun(lat,Nsamp,Trange,Ntemps,runTemp);
-		testConsistent(lat);
+		lat.testConsistent();
 	}
 
 }
@@ -101,6 +99,8 @@ void metroJob(long double L){
 	for (int i=0; i< Nruns; ++i){	
 		warmupMetro(lat,beta,rand,Nbetw);
 		metroRun(lat,Nsamp,runTemp);
+		lat.testConsistent();
+		cout << "this is after metroRun();" << endl;
 	}
 }
 
@@ -113,10 +113,11 @@ int main(){
 	for(int i = 0; i < 20; ++i) {
 		results.emplace_back(
 				pool.enqueue([i] {
-					wolffHistJob(4.0L);
+					metroJob(4.0L);
 					})
 				);
 	}
+	/*
 	for(int i = 0; i < 20; ++i) {
 		results.emplace_back(
 				pool.enqueue([i] {
@@ -124,5 +125,6 @@ int main(){
 					})
 				);
 	}
+	*/
 }
 

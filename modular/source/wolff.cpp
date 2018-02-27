@@ -5,7 +5,6 @@
 #include <vector>
 #include <iostream>
 
-#include "latticeOps.h"
 #include "latticeStruct.h"
 #include "randStruct.h"
 #include "clusterStruct.h"
@@ -21,7 +20,7 @@ long double getProb(long double u, long double angleParent, long double angle,lo
 	return prob;
 }
 
-void updateQuants(Lattice& lat,long double e0,long double e1,
+void updateVals(Lattice& lat,long double e0,long double e1,
 		long double a0,long double a1,
 		long double sx0,long double sx1,
 		long double sy0,long double sy1,
@@ -51,20 +50,20 @@ int growCluster(Lattice& lat,Cluster& cluster,long double beta,RandStruct& randg
 	int s3 = lat.L*randgen.rnd();
 	// save angle and energy before flipping
 	long double angleBefore = lat.theLattice[s1][s2][s3];
-	long double enBefore = siteEnergy(lat.theLattice,lat.L,s1,s2,s3);
+	long double enBefore = lat.siteEnergy(s1,s2,s3);
 	long double angleAfter = (long double)M_PI + 2.0L*u - angleBefore;
 	//reflect spin and mark as part of cluster
 	lat.theLattice[s1][s2][s3] = angleAfter;
 	cluster.theCluster[s1][s2][s3] = true;
 	//update energy, mag etc..
-	long double enAfter = siteEnergy(lat.theLattice,lat.L,s1,s2,s3);
-	long double sxBef = sinX(lat.theLattice,lat.L,s1,s2,s3,angleBefore);
-	long double sxAft = sinX(lat.theLattice,lat.L,s1,s2,s3,angleAfter);
-	long double syBef = sinY(lat.theLattice,lat.L,s1,s2,s3,angleBefore);
-	long double syAft = sinY(lat.theLattice,lat.L,s1,s2,s3,angleAfter);
-	long double szBef = sinZ(lat.theLattice,lat.L,s1,s2,s3,angleBefore);
-	long double szAft = sinZ(lat.theLattice,lat.L,s1,s2,s3,angleAfter);
-	updateQuants(lat,
+	long double enAfter = lat.siteEnergy(s1,s2,s3);
+	long double sxBef = lat.sinX(s1,s2,s3,angleBefore);
+	long double sxAft = lat.sinX(s1,s2,s3,angleAfter);
+	long double syBef = lat.sinY(s1,s2,s3,angleBefore);
+	long double syAft = lat.sinY(s1,s2,s3,angleAfter);
+	long double szBef = lat.sinZ(s1,s2,s3,angleBefore);
+	long double szAft = lat.sinZ(s1,s2,s3,angleAfter);
+	updateVals(lat,
 			enBefore,enAfter,
 			angleBefore,angleAfter,
 			sxBef,sxAft,
@@ -137,7 +136,7 @@ int growCluster(Lattice& lat,Cluster& cluster,long double beta,RandStruct& randg
 			if (flip) {
 				//get energy before reflecting
 				//
-				enBefore = siteEnergy(lat.theLattice,lat.L,std::get<0>(current),std::get<1>(current),std::get<2>(current));
+				enBefore = lat.siteEnergy(std::get<0>(current),std::get<1>(current),std::get<2>(current));
 
 				//get new angle
 				angleAfter = (long double)M_PI + 2.0L*u - angleBefore;
@@ -147,14 +146,14 @@ int growCluster(Lattice& lat,Cluster& cluster,long double beta,RandStruct& randg
 				cluster.theCluster[std::get<0>(current)][std::get<1>(current)][std::get<2>(current)] = true;
 
 				//update energy and magnetization
-				enAfter = siteEnergy(lat.theLattice,lat.L,std::get<0>(current),std::get<1>(current),std::get<2>(current));
-				sxBef = sinX(lat.theLattice,lat.L,std::get<0>(current),std::get<1>(current),std::get<2>(current),angleBefore);
-				sxAft = sinX(lat.theLattice,lat.L,std::get<0>(current),std::get<1>(current),std::get<2>(current),angleAfter);
-				syBef = sinY(lat.theLattice,lat.L,std::get<0>(current),std::get<1>(current),std::get<2>(current),angleBefore);
-				syAft = sinY(lat.theLattice,lat.L,std::get<0>(current),std::get<1>(current),std::get<2>(current),angleAfter);
-				szBef = sinZ(lat.theLattice,lat.L,std::get<0>(current),std::get<1>(current),std::get<2>(current),angleBefore);
-				szAft = sinZ(lat.theLattice,lat.L,std::get<0>(current),std::get<1>(current),std::get<2>(current),angleAfter);
-				updateQuants(lat,
+				enAfter = lat.siteEnergy(std::get<0>(current),std::get<1>(current),std::get<2>(current));
+				sxBef = lat.sinX(std::get<0>(current),std::get<1>(current),std::get<2>(current),angleBefore);
+				sxAft = lat.sinX(std::get<0>(current),std::get<1>(current),std::get<2>(current),angleAfter);
+				syBef = lat.sinY(std::get<0>(current),std::get<1>(current),std::get<2>(current),angleBefore);
+				syAft = lat.sinY(std::get<0>(current),std::get<1>(current),std::get<2>(current),angleAfter);
+				szBef = lat.sinZ(std::get<0>(current),std::get<1>(current),std::get<2>(current),angleBefore);
+				szAft = lat.sinZ(std::get<0>(current),std::get<1>(current),std::get<2>(current),angleAfter);
+				updateVals(lat,
 						enBefore,enAfter,
 						angleBefore,angleAfter,
 						sxBef,sxAft,

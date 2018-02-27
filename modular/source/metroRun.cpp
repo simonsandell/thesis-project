@@ -5,8 +5,6 @@
 #include <unistd.h>
 #include <linux/random.h>
 
-#include "calcQuants.h"
-#include "latticeOps.h"
 #include "ioFuncs.h"
 #include "metropolis.h"
 #include "latticeStruct.h"
@@ -25,6 +23,8 @@ void metroRun(Lattice&lat, long double N_sample_sweeps,long double Temperature){
 	lat.Nsmsweeps = N_sample_sweeps;
 
 	lat.updateQuants();
+	lat.testConsistent();
+	std::cout << "this is after updateQuants();" << std::endl;
 
 	avgStruct avgs;
 	avgs.exp = 1.0L;
@@ -53,9 +53,9 @@ void metroRun(Lattice&lat, long double N_sample_sweeps,long double Temperature){
 		avgs.m4+= tM2*tM2; 
 		avgs.m2e+= tM2*tE;
 		avgs.m4e+= tM2*tM2*tE;
-		avgs.s2x+= tSx;
-		avgs.s2y+= tSy;
-		avgs.s2z+= tSz;
+		avgs.s2x+= tSx*tSx;
+		avgs.s2y+= tSy*tSy;
+		avgs.s2z+= tSz*tSz;
 	}
 
 	//define some reciprocals to reduce number of divions
@@ -88,7 +88,10 @@ void metroRun(Lattice&lat, long double N_sample_sweeps,long double Temperature){
 	xi = avgs.m2 - avgs.m*avgs.m;
 	xi /= Temperature;
 	xi *= lat.Nspins;
-	rs = -avgs.e - (Beta)*avgs.s2x -(Beta)*avgs.s2y-(Beta)*avgs.s2z;
+	rs = -avgs.e 
+		-lat.Nspins*(Beta)*avgs.s2x 
+		-lat.Nspins*(Beta)*avgs.s2y
+		-lat.Nspins*(Beta)*avgs.s2z;
 	rs /= 3.0L; 
 	rs *= lat.L;
 
