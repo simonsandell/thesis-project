@@ -12,8 +12,8 @@ def openFiles(FileList,L,fName):
     newBF = open("./foutput/bin/"+str(int(L))+"_"+fName+"new.dat","w")
     XF = open("./foutput/xi/"+str(int(L))+"_"+fName+".dat","w")
     newXF = open("./foutput/xi/"+str(int(L))+"_"+fName+"new.dat","w")
-    CF= open("./foutput/rs/"+str(int(L))+"_"+fName+".dat","w")
-    newCF = open("./foutput/rs/"+str(int(L))+"_"+fName+"new.dat","w")
+    CF= open("./foutput/c/"+str(int(L))+"_"+fName+".dat","w")
+    newCF = open("./foutput/c/"+str(int(L))+"_"+fName+"new.dat","w")
 
     FileList[:] = [];
     FileList.append(EF)
