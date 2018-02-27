@@ -39,9 +39,9 @@ def calcAvg(mat,i,istart,FileList):
 # E      E2     M      M2     M4     M2E    M4E
 #
 # 14     15     16     17     18     19     20     21                
-# SX     SY     SZ     bin    dBdT   xi     rs     expFac
+# bin    dBdT   xi     c      expFac
 # incoming values are per spin and not divided by avgExpFac
-    expFac = np.mean(mat[istart:iend,21]);
+    expFac = np.mean(mat[istart:iend,18]);
     E = np.mean(mat[istart:iend,7]);
     Elist = mat[istart:iend,7];
     Elist[:] = [x /expFac for x in Elist];
@@ -57,13 +57,10 @@ def calcAvg(mat,i,istart,FileList):
     M4list[:] = [x /expFac for x in M4list];
     M2E = np.mean(mat[istart:iend,12]);
     M4E = np.mean(mat[istart:iend,13]);
-    SX = np.mean(mat[istart:iend,14]);
-    SY = np.mean(mat[istart:iend,15]);
-    SZ = np.mean(mat[istart:iend,16]);
-    B = np.mean(mat[istart:iend,17]);
-    dBdT = np.mean(mat[istart:iend,18]);
-    xi = np.mean(mat[istart:iend,19]);
-    c = np.mean(mat[istart:iend,20]);
+    B = np.mean(mat[istart:iend,14]);
+    dBdT = np.mean(mat[istart:iend,15]);
+    xi = np.mean(mat[istart:iend,16]);
+    c = np.mean(mat[istart:iend,17]);
     
 
     calcB = expFac*M4/pow(M2,2);
@@ -80,20 +77,17 @@ def calcAvg(mat,i,istart,FileList):
     Ylist = [Eps,M2,M4,B,calcB,xi,calcxi,c,calcC];
 
 
-    deltaexpFac = np.std(mat[istart:iend,21])/pow(N,0.5);
+    deltaexpFac = np.std(mat[istart:iend,18])/pow(N,0.5);
     deltaE = np.std(Elist)/pow(N,0.5);
     deltaE2 = np.std(mat[istart:iend,8])/pow(N,0.5);
     deltaM2 = np.std(mat[istart:iend,10])/pow(N,0.5);
     deltaM4 = np.std(mat[istart:iend,11])/pow(N,0.5);
     deltaM2E = np.std(mat[istart:iend,12])/pow(N,0.5);
     deltaM4E = np.std(mat[istart:iend,13])/pow(N,0.5);
-    deltaSX = np.std(mat[istart:iend,14])/pow(N,0.5);
-    deltaSY = np.std(mat[istart:iend,15])/pow(N,0.5);
-    deltaSZ = np.std(mat[istart:iend,16])/pow(N,0.5);
-    deltaB = np.std(mat[istart:iend,17])/pow(N,0.5);
-    deltadBdT = np.std(mat[istart:iend,18])/pow(N,0.5);
-    deltaxi = np.std(mat[istart:iend,19])/pow(N,0.5);
-    deltaC = np.std(mat[istart:iend,20])/pow(N,0.5);
+    deltaB = np.std(mat[istart:iend,14])/pow(N,0.5);
+    deltadBdT = np.std(mat[istart:iend,15])/pow(N,0.5);
+    deltaxi = np.std(mat[istart:iend,16])/pow(N,0.5);
+    deltaC = np.std(mat[istart:iend,17])/pow(N,0.5);
     Deltalist = [deltaE,deltaM2,deltaM4,deltaB,0,deltaxi,0,deltaC,0];
     for i in range(len(Ylist)):
         FileList[i].write(repr(T)+"    "+repr(Ylist[i])+"    "+repr(Deltalist[i])+"    "+repr(N)+"\n")
@@ -109,8 +103,8 @@ def calcAvg(mat,i,istart,FileList):
 # 7      8      9      10     11     12     13                
 # E      E2     M      M2     M4     M2E    M4E
 #
-# 14     15     16     17     18     19     20     21                
-# SX     SY     SZ     bin    dBdT   xi     rs     expFac
+# 14     15     16     17     18    
+# bin    dBdT   xi     c      expFac
 arguments = sys.argv
 fName = arguments[1]
 data0 = open("./output/" + fName,"r")
@@ -124,7 +118,7 @@ for ln in data0:
 mat = np.array(vals)
 
 #Sort input data    
-ind = np.lexsort((mat[:,21],mat[:,20],mat[:,19],mat[:,18],mat[:,17],mat[:,16],mat[:,15],mat[:,14],mat[:,13],mat[:,12],mat[:,11],mat[:,10],mat[:,9],mat[:,8],mat[:,7],mat[:,5],mat[:,4],mat[:,3],mat[:,2],mat[:,6],mat[:,1],mat[:,0]));
+ind = np.lexsort((mat[:,18],mat[:,17],mat[:,16],mat[:,15],mat[:,14],mat[:,13],mat[:,12],mat[:,11],mat[:,10],mat[:,9],mat[:,8],mat[:,7],mat[:,5],mat[:,4],mat[:,3],mat[:,2],mat[:,6],mat[:,1],mat[:,0]));
 mat = mat[ind]
 
 #form averages and print to file
