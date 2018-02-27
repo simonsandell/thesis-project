@@ -65,9 +65,6 @@ void wolffHistRun(Lattice& lat, long double N_sample_sweeps,long double *Tempera
 					avgs[k].m4     *= expCorr;
 					avgs[k].m2e     *= expCorr;
 					avgs[k].m4e     *= expCorr;
-					avgs[k].s2x     *= expCorr;
-					avgs[k].s2y     *= expCorr;
-					avgs[k].s2z     *= expCorr;
 					avgs[k].exp     *= expCorr;
 				}
 			}
@@ -76,19 +73,13 @@ void wolffHistRun(Lattice& lat, long double N_sample_sweeps,long double *Tempera
 		//take sample data
 		long double tE;
 		long double tM2;
-		long double tSx;
-		long double tSy;
-		long double tSz;
 		for (int i = 0; i<N_temps; ++i){
 			expFac = exp(-(Betas[i] - Beta)*(lat.energy-maxTotE));
 			avgs[i].exp += expFac;
 
 			tE = lat.energy/lat.Nspins;
-			tM2 = lat.xmag*lat.xmag + lat.ymag*lat.ymag;
+			tM2 = lat.mag*lat.mag + lat.mag*lat.mag;
 			tM2 /= lat.Nspins*lat.Nspins;
-			tSx = lat.sinx/lat.Nspins;
-			tSy = lat.siny/lat.Nspins;
-			tSz = lat.sinz/lat.Nspins;
 
 			avgs[i].e += expFac*tE;
 			avgs[i].e2+=expFac*tE*tE;
@@ -97,9 +88,6 @@ void wolffHistRun(Lattice& lat, long double N_sample_sweeps,long double *Tempera
 			avgs[i].m4 += expFac*tM2*tM2;
 			avgs[i].m2e += expFac*tM2*tE; 
 			avgs[i].m4e += expFac*tM2*tM2*tE;
-			avgs[i].s2x += expFac*tSx*tSx;
-			avgs[i].s2y += expFac*tSy*tSy;
-			avgs[i].s2z += expFac*tSz*tSz;
 		}
 	}//end of samples
 	lat.Nsmclusts=intNsampClust; 
@@ -110,6 +98,7 @@ void wolffHistRun(Lattice& lat, long double N_sample_sweeps,long double *Tempera
 
 	//calculate quantities of interest
 
+	long double c[N_temps];//heat capacity
 	long double xi[N_temps];//susceptibility
 	long double b[N_temps]; //Binder parameter
 	long double dbdt[N_temps];//derivative wrt T of Binder parameter
@@ -161,6 +150,11 @@ void wolffHistRun(Lattice& lat, long double N_sample_sweeps,long double *Tempera
 			-lat.Nspins*avgs[i].s2z/Temperatures[i];
 		rs[i] *= lat.L;
 		rs[i] /= (3.0L*avgs[i].exp);
+
+
+		c[i] = (avgs[i].e2/avgs[i].exp)	- (avgs[i].e*avgs[i].e/(avgs[i].exp*avgs[i].exp));
+		c[i] /= Temperatures[i]*Temperatures[i];
+		c[i] *= lat.Nspins*lat.Nspins;
 		//print values
 		/*
 		   std::cout << "b = " << avgs[i].m4 << " * " << avgs[i].exp << std::endl;
