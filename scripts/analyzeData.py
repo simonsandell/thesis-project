@@ -38,16 +38,46 @@ def calcAvg(mat,i,istart,FileList):
 # 7      8      9      10     11     12     13                
 # E      E2     M      M2     M4     M2E    M4E
 #
-# 14     15     16     17     18     19     20     21                
+# 14     15     16     17     18     
 # bin    dBdT   xi     c      expFac
 # incoming values are per spin and not divided by avgExpFac
 # except for bin,dbdt,xi and c which should be ready to write to file    
+    B = np.mean(mat[istart:iend,14]);
+    xi = np.mean(mat[istart:iend,16]);
+    c = np.mean(mat[istart:iend,17]);
 
+    expFac = np.mean(mat[istart:iend,18]);
+    
+    Elist = mat[istart:iend,7];
+    Elist[:] = [x/expFac for x in Elist];
+    E = np.mean(Elist);
+    
+    E2list = mat[istart:iend,8];
+    E2list[:] = [x/expFac for x in E2list];
+    E2 = np.mean(E2list);
     calcB = expFac*M4/pow(M2,2);
-    calcdBdT =  expFac*M4E*M2 + M4*M2*E -2.0*expFac*M4*M2E;
-    calcdBdT = calcdBdT*L*L*L;
-    calcdBdT = calcdBdT/(T*T*M2*M2*M2);
-    calcxi = (M2/ expFac) - M*M/(expFac*expFac);
+
+    Mlist = mat[istart:iend,9];
+    Mlist[:] = [x/expFac for x in Mlist];
+    M = np.mean(Mlist);
+    
+    M2list = mat[istart:iend,10];
+    M2list[:] = [x/expFac for x in M2list];
+    M2 = np.mean(M2list);
+
+    M4list = mat[istart:iend,11];
+    M4list[:] = [x/expFac for x in M4list];
+    M4 = np.mean(M4list);
+
+    M2Elist = mat[istart:iend,12];
+    M2Elist[:] = [x/expFac for x in M2Elist];
+    M2E = np.mean(M2list);
+
+    M4Elist = mat[istart:iend,13];
+    M4Elist[:] = [x/expFac for x in M4Elist];
+    M4E = np.mean(M4Elist);
+
+    calcxi = (M2 ) - M*M/(expFac*expFac);
     calcxi = calcxi*(L*L*L)/T;
 
     calcC = (E2/expFac - Eps);
@@ -65,7 +95,6 @@ def calcAvg(mat,i,istart,FileList):
     deltaM2E = np.std(mat[istart:iend,12])/pow(N,0.5);
     deltaM4E = np.std(mat[istart:iend,13])/pow(N,0.5);
     deltaB = np.std(mat[istart:iend,14])/pow(N,0.5);
-    deltadBdT = np.std(mat[istart:iend,15])/pow(N,0.5);
     deltaxi = np.std(mat[istart:iend,16])/pow(N,0.5);
     deltaC = np.std(mat[istart:iend,17])/pow(N,0.5);
     Deltalist = [deltaE,deltaM2,deltaM4,deltaB,0,deltaxi,0,deltaC,0];
