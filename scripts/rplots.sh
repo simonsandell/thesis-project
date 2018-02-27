@@ -11,12 +11,12 @@ then
 	done
 	xmgrace $binstring -nosafe -noask -legend load -pexec 'xaxis label "Temp"' -pexec 'yaxis label "Binder Cumulant"' &
 	
-	#Superfluid density
+	#heatcap
 	rsstring="-param ../scripts/default.par"
-	for filename in ./foutput/rs/*$1*; do
+	for filename in ./foutput/c/*$1*; do
 		rsstring="$rsstring -settype xydy $filename"
 	done
-	xmgrace $rsstring -nosafe -noask -legend load -pexec 'xaxis label "Temp"' -pexec 'yaxis label "Superfluid density"' &
+	xmgrace $rsstring -nosafe -noask -legend load -pexec 'xaxis label "Temp"' -pexec 'yaxis label "Heat capacity"' &
 	
 	#Energy per spin
 	enstring="-param ../scripts/default.par"
@@ -25,20 +25,20 @@ then
 	done
 	xmgrace $enstring -nosafe -noask -legend load -pexec 'xaxis label "Temp"' -pexec 'yaxis label "Energy"' &
 
-	#Magnetization per spin
+	#Magsquare
 	magstring="-param ../scripts/default.par"
-	for filename in ./foutput/mag/*$1*; do
+	for filename in ./foutput/m2/*$1*; do
 		magstring="$magstring -settype xydy $filename"
 	done
-	xmgrace $magstring -nosafe -noask -legend load -pexec 'xaxis label "Temp"' -pexec 'yaxis label "Magnetization"' &
+	xmgrace $magstring -nosafe -noask -legend load -pexec 'xaxis label "Temp"' -pexec 'yaxis label "Magnetization^2"' &
 
 
-	#dB/dT
+	#Magquart
 	dbdtstring="-param ../scripts/default.par"
-	for filename in ./foutput/dbdt/*$1*; do
+	for filename in ./foutput/m4/*$1*; do
 		dbdtstring="$dbdtstring -settype xydy $filename"
 	done
-	xmgrace $dbdtstring -nosafe -noask -legend load -pexec 'xaxis label "Temp"' -pexec 'yaxis label "dB/dT"' &
+	xmgrace $dbdtstring -nosafe -noask -legend load -pexec 'xaxis label "Temp"' -pexec 'yaxis label "Magnetization^4"' &
 	#Susceptibility
 	xistring="-param ../scripts/default.par"
 	for filename in ./foutput/xi/*$1*; do

@@ -53,7 +53,7 @@ void wolffHistRun(Lattice& lat, long double N_sample_sweeps,long double *Tempera
 
 		//update maxE if necessary
 		
-		if (std::abs(lat.energy) > std::abs(maxTotE)){
+		if ((maxTotE - lat.energy) > 0){
 			expCorr = 1.0L;
 			if (intNsampClust > 1){
 				expCorr = exp(-maxTotE +lat.energy);	
