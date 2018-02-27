@@ -72,7 +72,7 @@ def calcAvg(mat,i,istart,FileList):
 
     calcC = E2 - Eps;
     calcC = calcC*(L*L*L*L*L*L);
-    calcC = calcrs/(T*T);
+    calcC = calcC/(T*T);
 
     Ylist = [Eps,M2,M4,B,calcB,xi,calcxi,c,calcC];
 
