@@ -42,17 +42,16 @@ def calcAvg(mat,i,istart,FileList):
 #
 # 14     15     16     17     18     19     20     21                
 # SX     SY     SZ     bin    dBdT   xi     rs     expFac
+# incoming values are per spin and not divided by avgExpFac
     expFac = np.mean(mat[istart:iend,21]);
     E = np.mean(mat[istart:iend,7]);
     Elist = mat[istart:iend,7];
     Elist[:] = [x /expFac for x in Elist];
-    #Elist[:] = [x /(L*L*L) for x in Elist];
     Eps = np.mean(Elist);
     E2 = np.mean(mat[istart:iend,8]);
     M = np.mean(mat[istart:iend,9]);
     Mlist = mat[istart:iend,9];
     Mlist[:] = [x /expFac for x in Mlist];
-    #Mlist[:] = [x /(L*L*L) for x in Mlist];
     Mps = np.mean(Mlist);
     M2 = np.mean(mat[istart:iend,10]);
     M4 = np.mean(mat[istart:iend,11]);

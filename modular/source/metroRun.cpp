@@ -29,32 +29,33 @@ void metroRun(Lattice&lat, long double N_sample_sweeps,long double Temperature){
 	avgStruct avgs;
 	avgs.exp = 1.0L;
 
-
-
-
-
-
-
-
-
-
-
-
-
+	long double tE;
+	long double tM2;
+	long double tSx;
+	long double tSy;
+	long double tSz;
 	for (int i = 0; i < N_sample_sweeps; ++i){
+		//do 2 sweeps
 		metrosweep(lat,Beta,rand);
 		metrosweep(lat,Beta,rand);
-		//take sample data
-		avgs.e += lat.energy;
-		avgs.e2+= lat.energy*lat.energy;
-		avgs.m += sqrt(lat.xmag*lat.xmag + lat.ymag*lat.ymag);
-		avgs.m2+= (lat.xmag*lat.xmag + lat.ymag*lat.ymag);
-		avgs.m4+= (lat.xmag*lat.xmag + lat.ymag*lat.ymag)*(lat.xmag*lat.xmag + lat.ymag*lat.ymag);
-		avgs.m2e+= lat.energy*(lat.xmag*lat.xmag + lat.ymag*lat.ymag); 
-		avgs.m4e+= lat.energy*(lat.xmag*lat.xmag + lat.ymag*lat.ymag)*(lat.xmag*lat.xmag + lat.ymag*lat.ymag);
-		avgs.s2x+= lat.sinx*lat.sinx;
-		avgs.s2y+= lat.siny*lat.siny;
-		avgs.s2z+= lat.sinz*lat.sinz;
+		//scale quantities by lattice sites
+		tE = lat.energy/lat.Nspins;
+		tM2 = lat.xmag*lat.xmag + lat.ymag*lat.ymag;
+		tM2 /= lat.Nspins*lat.Nspins;
+		tSx = lat.sinx/lat.Nspins;
+		tSy = lat.siny/lat.Nspins;
+		tSz = lat.sinz/lat.Nspins;
+		//take sample
+		avgs.e += tE;
+		avgs.e2+= tE*tE;
+		avgs.m += sqrt(tM2);
+		avgs.m2+= tM2;
+		avgs.m4+= tM2*tM2; 
+		avgs.m2e+= tM2*tE;
+		avgs.m4e+= tM2*tM2*tE;
+		avgs.s2x+= tSx;
+		avgs.s2y+= tSy;
+		avgs.s2z+= tSz;
 	}
 
 	//define some reciprocals to reduce number of divions
@@ -83,10 +84,13 @@ void metroRun(Lattice&lat, long double N_sample_sweeps,long double Temperature){
 	b /= (avgs.m2*avgs.m2);
 	dbdt = avgs.m4e*avgs.m2 + avgs.m4*avgs.m2*avgs.e - 2.0L*avgs.m4*avgs.m2e;
 	dbdt /= Temperature*Temperature*avgs.m2*avgs.m2*avgs.m2;
+	dbdt *= lat.Nspins;
 	xi = avgs.m2 - avgs.m*avgs.m;
-	xi /= Temperature*lat.Nspins;
+	xi /= Temperature;
+	xi *= lat.Nspins;
 	rs = -avgs.e - (Beta)*avgs.s2x -(Beta)*avgs.s2y-(Beta)*avgs.s2z;
-	rs /= 3.0L*lat.L*lat.L; 
+	rs /= 3.0L; 
+	rs *= lat.L;
 
 	printOutput(lat,Temperature,avgs,b,dbdt,xi,rs);
 }

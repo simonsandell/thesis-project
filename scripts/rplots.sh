@@ -1,23 +1,23 @@
 #!/bin/bash
 #Display a selection of plots from the output of analyzeData.py using xmgrace
 
-#Binder paramter
-binstring="-param ../scripts/default.par"
-for filename in ./foutput/bin/*; do
-	binstring="$binstring -settype xydy $filename"
-done
-xmgrace $binstring -nosafe -noask -legend load -pexec 'xaxis label "Temp"' -pexec 'yaxis label "Binder Cumulant"' &
-
-#Superfluid density
-rsstring="-param ../scripts/default.par"
-for filename in ./foutput/rs/*; do
-	rsstring="$rsstring -settype xydy $filename"
-done
-xmgrace $rsstring -nosafe -noask -legend load -pexec 'xaxis label "Temp"' -pexec 'yaxis label "Superfluid density"' &
-
 #Only plot rest if requested
 if [ ! $# -eq 0 ]
 then
+	#Binder paramter
+	binstring="-param ../scripts/default.par"
+	for filename in ./foutput/bin/*$1*; do
+		binstring="$binstring -settype xydy $filename"
+	done
+	xmgrace $binstring -nosafe -noask -legend load -pexec 'xaxis label "Temp"' -pexec 'yaxis label "Binder Cumulant"' &
+	
+	#Superfluid density
+	rsstring="-param ../scripts/default.par"
+	for filename in ./foutput/rs/*$1*; do
+		rsstring="$rsstring -settype xydy $filename"
+	done
+	xmgrace $rsstring -nosafe -noask -legend load -pexec 'xaxis label "Temp"' -pexec 'yaxis label "Superfluid density"' &
+	
 	#Energy per spin
 	enstring="-param ../scripts/default.par"
 	for filename in ./foutput/en/*$1*; do
