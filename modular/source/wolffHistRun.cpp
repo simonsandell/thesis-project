@@ -93,9 +93,6 @@ void wolffHistRun(Lattice& lat, long double N_sample_sweeps,long double *Tempera
 	lat.Nsmclusts=intNsampClust; 
 	lat.Nsmsweeps = ((long double)steps)/((long double)lat.Nspins);
 
-
-
-
 	//calculate quantities of interest
 
 	long double c[N_temps];//heat capacity

@@ -41,27 +41,7 @@ def calcAvg(mat,i,istart,FileList):
 # 14     15     16     17     18     19     20     21                
 # bin    dBdT   xi     c      expFac
 # incoming values are per spin and not divided by avgExpFac
-    expFac = np.mean(mat[istart:iend,18]);
-    E = np.mean(mat[istart:iend,7]);
-    Elist = mat[istart:iend,7];
-    Elist[:] = [x /expFac for x in Elist];
-    Eps = np.mean(Elist);
-    E2 = np.mean(mat[istart:iend,8]);
-    M = np.mean(mat[istart:iend,9]);
-    Mlist = mat[istart:iend,9];
-    M2 = np.mean(mat[istart:iend,10]);
-    M2list = mat[istart:iend,10];
-    M2list[:] = [x /expFac for x in M2list];
-    M4 = np.mean(mat[istart:iend,11]);
-    M4list = mat[istart:iend,11];
-    M4list[:] = [x /expFac for x in M4list];
-    M2E = np.mean(mat[istart:iend,12]);
-    M4E = np.mean(mat[istart:iend,13]);
-    B = np.mean(mat[istart:iend,14]);
-    dBdT = np.mean(mat[istart:iend,15]);
-    xi = np.mean(mat[istart:iend,16]);
-    c = np.mean(mat[istart:iend,17]);
-    
+# except for bin,dbdt,xi and c which should be ready to write to file    
 
     calcB = expFac*M4/pow(M2,2);
     calcdBdT =  expFac*M4E*M2 + M4*M2*E -2.0*expFac*M4*M2E;

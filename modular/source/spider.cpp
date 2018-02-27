@@ -74,13 +74,12 @@ void wolffHistJob(long double L){
 	bool 		cold=			true;
 	long double	Nsamp=			1000.0L;
 	int 		Nbetw=			100;
-	int 		Nruns=			1000;
+	int 		Nruns=			10000;
 	Lattice lat(L,cold);
 	Cluster clust(L);
 	RandStruct rand;
 	long double beta = 1.0L/runTemp;
 	warmup(lat,clust,beta,rand,(Neq-Nbetw));
-	cout << "after warmup" << endl;
 	for (int i=0; i< Nruns; ++i){	
 		warmup(lat,clust,beta,rand,Nbetw);
 		wolffHistRun(lat,Nsamp,Trange,Ntemps,runTemp);
@@ -110,7 +109,7 @@ void metroJob(long double L){
 //main
 //
 int main(){
-	ThreadPool pool(24);
+	ThreadPool pool(1);
 	std::vector< std::future<void> > results;
 
 	for(int i = 0; i < 8; ++i) {

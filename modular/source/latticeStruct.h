@@ -9,6 +9,9 @@ struct Lattice{
 
 	long double energy,mag;
 
+	long double calcEn();
+	long double calcMag();
+
 	Lattice(int L, bool cold);
 	Lattice();
 

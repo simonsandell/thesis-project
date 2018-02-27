@@ -9,9 +9,9 @@
 #include "randStruct.h"
 #include "clusterStruct.h"
 
-long double getProb(long double angleParent, long double angle,long double beta){
+long double getProb(long double spinParent, long double spin,long double beta){
 	long double prob;
-	if (std::abs(angleParent - angle) < 0.01L){
+	if (spinParent*spin < 0.0L){
 		prob= 1.0L - exp(-2*beta);
 	}
 	else{
@@ -22,11 +22,10 @@ long double getProb(long double angleParent, long double angle,long double beta)
 
 void updateVals(Lattice& lat,long double e0,long double e1,
 		long double a0,long double a1){
-
-	lat.energy+= e1;
-	lat.energy += -e0;
-	lat.mag+= a1;
-	lat.mag-= a0;
+	lat.energy  += e1;
+	lat.energy  -= e0;
+	lat.mag     += a1;
+	lat.mag     -= a0;
 }
 
 int growCluster(Lattice& lat,Cluster& cluster,long double beta,RandStruct& randgen){
@@ -36,18 +35,18 @@ int growCluster(Lattice& lat,Cluster& cluster,long double beta,RandStruct& randg
 	int s1 = lat.L*randgen.rnd();
 	int s2 = lat.L*randgen.rnd();
 	int s3 = lat.L*randgen.rnd();
-	// save angle and energy before flipping
-	long double angleBefore = lat.theLattice[s1][s2][s3];
+	// save spin and energy before flipping
+	long double spinBefore = lat.theLattice[s1][s2][s3];
 	long double enBefore = lat.siteEnergy(s1,s2,s3);
-	long double angleAfter = -angleBefore;
+	long double spinAfter = -spinBefore;
 	//reflect spin and mark as part of cluster
-	lat.theLattice[s1][s2][s3] = angleAfter;
+	lat.theLattice[s1][s2][s3] = spinAfter;
 	cluster.theCluster[s1][s2][s3] = true;
 	//update energy, mag etc..
 	long double enAfter = lat.siteEnergy(s1,s2,s3);
 	updateVals(lat,
 			enBefore,enAfter,
-			angleBefore,angleAfter);
+			spinBefore,spinAfter);
 	//find indices of nearest neighbours
 	int n1m = (s1 -1 + (int)lat.L )%(int)lat.L;
 	int n1p = (s1 +1 + (int)lat.L )%(int)lat.L;
@@ -55,12 +54,12 @@ int growCluster(Lattice& lat,Cluster& cluster,long double beta,RandStruct& randg
 	int n2p = (s2 +1 + (int)lat.L )%(int)lat.L;
 	int n3m = (s3 -1 + (int)lat.L )%(int)lat.L;
 	int n3p = (s3 +1 + (int)lat.L )%(int)lat.L;
-	std::tuple<int,int,int,long double> neig1 = std::make_tuple(n1m,s2,s3,angleAfter);
-	std::tuple<int,int,int,long double> neig2 = std::make_tuple(n1p,s2,s3,angleAfter);
-	std::tuple<int,int,int,long double> neig3 = std::make_tuple(s1,n2m,s3,angleAfter);
-	std::tuple<int,int,int,long double> neig4 = std::make_tuple(s1,n2p,s3,angleAfter);
-	std::tuple<int,int,int,long double> neig5 = std::make_tuple(s1,s2,n3m,angleAfter);
-	std::tuple<int,int,int,long double> neig6 = std::make_tuple(s1,s2,n3p,angleAfter);
+	std::tuple<int,int,int,long double> neig1 = std::make_tuple(n1m,s2,s3,spinAfter);
+	std::tuple<int,int,int,long double> neig2 = std::make_tuple(n1p,s2,s3,spinAfter);
+	std::tuple<int,int,int,long double> neig3 = std::make_tuple(s1,n2m,s3,spinAfter);
+	std::tuple<int,int,int,long double> neig4 = std::make_tuple(s1,n2p,s3,spinAfter);
+	std::tuple<int,int,int,long double> neig5 = std::make_tuple(s1,s2,n3m,spinAfter);
+	std::tuple<int,int,int,long double> neig6 = std::make_tuple(s1,s2,n3p,spinAfter);
 
 	//make a list for perimeter spins
 	std::vector<std::tuple<int,int,int,long double>> perimeter;
@@ -89,18 +88,20 @@ int growCluster(Lattice& lat,Cluster& cluster,long double beta,RandStruct& randg
 			//
 			++time;
 
-			//get its current angle;
+			//get its current spin;
 			//
-			angleBefore = lat.theLattice[std::get<0>(current)][std::get<1>(current)][std::get<2>(current)];
+			spinBefore = lat.theLattice[std::get<0>(current)][std::get<1>(current)][std::get<2>(current)];
 
 			//calculate prob of freezing, == 1 -exp(2*beta( parent_spin * U)( this_spin*U)) 
-			prob = getProb(std::get<3>(current) ,angleBefore,beta);
+			prob = getProb(std::get<3>(current) ,spinBefore,beta);
 			rand = randgen.rnd();
 			if ( rand < prob) {
 				flip = true;
 			} //if rand is so close to prob that floating point precision considers them equal, flip in 50 % of those cases
 			//
 			else if ( std::abs(rand-prob) < std::abs(std::min(rand,prob)*std::numeric_limits<long double>::epsilon())){
+				std::cout << "ITS HAPPENING!!" << std::endl;
+				exit(0);
 				rand = randgen.rnd();
 				if (rand < 0.50L){
 					flip = true;
@@ -117,49 +118,49 @@ int growCluster(Lattice& lat,Cluster& cluster,long double beta,RandStruct& randg
 				//
 				enBefore = lat.siteEnergy(std::get<0>(current),std::get<1>(current),std::get<2>(current));
 
-				//get new angle
-				angleAfter = -angleBefore;
+				//get new spin
+				spinAfter = -spinBefore;
 
 				//reflect and mark as added to cluster
-				lat.theLattice[std::get<0>(current)][std::get<1>(current)][std::get<2>(current)] = angleAfter;
+				lat.theLattice[std::get<0>(current)][std::get<1>(current)][std::get<2>(current)] = spinAfter;
 				cluster.theCluster[std::get<0>(current)][std::get<1>(current)][std::get<2>(current)] = true;
 
 				//update energy and magnetization
 				enAfter = lat.siteEnergy(std::get<0>(current),std::get<1>(current),std::get<2>(current));
 				updateVals(lat,
 						enBefore,enAfter,
-						angleBefore,angleAfter);
+						spinBefore,spinAfter);
 				//find indices of neighbours
 				neig1 = std::make_tuple(
 						(std::get<0>(current) + 1) % (int)lat.L, 
 						std::get<1>(current),
 						std::get<2>(current),
-						angleAfter);
+						spinAfter);
 				neig2 = std::make_tuple(
 						(std::get<0>(current) + (int)lat.L - 1) % (int)lat.L,
 						std::get<1>(current),
 						std::get<2>(current),
-						angleAfter);
+						spinAfter);
 				neig3 = std::make_tuple(
 						std::get<0>(current),
 						(std::get<1>(current) + 1) % (int)lat.L,
 						std::get<2>(current),
-						angleAfter);
+						spinAfter);
 				neig4 = std::make_tuple(
 						std::get<0>(current),
 						(std::get<1>(current) + (int)lat.L - 1) % (int)lat.L,
 						std::get<2>(current),
-						angleAfter);
+						spinAfter);
 				neig5 = std::make_tuple(
 						std::get<0>(current),
 						std::get<1>(current),
 						(std::get<2>(current) + 1) % (int)lat.L,
-						angleAfter);
+						spinAfter);
 				neig6 = std::make_tuple(
 						std::get<0>(current),
 						std::get<1>(current),
 						(std::get<2>(current) + (int)lat.L - 1)%(int)lat.L,
-						angleAfter);
+						spinAfter);
 				//if a neighbour is not already part of the cluster, add it to perimeter list
 				if (!cluster.theCluster[std::get<0>(neig1)][std::get<1>(neig1)][std::get<2>(neig1)] ){
 					perimeter.push_back(neig1);
