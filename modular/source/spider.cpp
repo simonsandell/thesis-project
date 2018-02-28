@@ -80,7 +80,6 @@ void wolffHistJob(long double L){
 	RandStruct rand;
 	long double beta = 1.0L/runTemp;
 	warmup(lat,clust,beta,rand,(Neq-Nbetw));
-	cout << "after warmup" << endl;
 	for (int i=0; i< Nruns; ++i){	
 		warmup(lat,clust,beta,rand,Nbetw);
 		wolffHistRun(lat,Nsamp,Trange,Ntemps,runTemp);
