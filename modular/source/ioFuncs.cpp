@@ -48,25 +48,25 @@ void printOutput(Lattice lat, long double T,avgStruct avgs, long double bin, lon
 	std::stringstream sstrm;
 	sstrm.precision(dbl::max_digits10 + 5);
 
-	sstrm << std::fixed << lat.L << " ";				
-	sstrm << std::fixed << T << " ";				
-	sstrm << std::fixed << lat.Neqsweeps << " ";			
-	sstrm << std::fixed << lat.Neqclusts << " ";			
-	sstrm << std::fixed << lat.Nsmsweeps << " ";			
-	sstrm << std::fixed << lat.Nsmclusts << " ";			
-	sstrm << std::fixed << lat.coldstart << " ";				
-	sstrm << std::fixed << avgs.e	<< " ";				
-	sstrm << std::fixed << avgs.e2	<< " ";				
-	sstrm << std::fixed << avgs.m	<< " ";				
-	sstrm << std::fixed << avgs.m2	<< " ";				
-	sstrm << std::fixed << avgs.m4	<< " ";				
-	sstrm << std::fixed << avgs.m2e	<< " ";				
-	sstrm << std::fixed << avgs.m4e	<< " ";				
-	sstrm << std::fixed << bin	<< " ";				
-	sstrm << std::fixed << dbdt	<< " ";				
-	sstrm << std::fixed << xi	<< " ";				
-	sstrm << std::fixed << c	<< " ";				
-	sstrm << std::fixed << avgs.exp << " ";			
+	sstrm << std::fixed << lat.L << " ";				// L	0
+	sstrm << std::fixed << T << " ";				// T	1
+	sstrm << std::fixed << lat.Neqsweeps << " ";			// n	2
+	sstrm << std::fixed << lat.Neqclusts << " ";			// n	3
+	sstrm << std::fixed << lat.Nsmsweeps << " ";			// n	4
+	sstrm << std::fixed << lat.Nsmclusts << " ";			// n	5
+	sstrm << std::fixed << lat.coldstart << " ";			// cold	6
+	sstrm << std::fixed << avgs.e	<< " ";				// e	7
+	sstrm << std::fixed << avgs.e2	<< " ";				// e2	8
+	sstrm << std::fixed << avgs.m	<< " ";				// m	9
+	sstrm << std::fixed << avgs.m2	<< " ";				// m2	10
+	sstrm << std::fixed << avgs.m4	<< " ";				// m4	11
+	sstrm << std::fixed << avgs.m2e	<< " ";				// m2e	12
+	sstrm << std::fixed << avgs.m4e	<< " ";				// m4e	13
+	sstrm << std::fixed << bin	<< " ";				// b	14
+	sstrm << std::fixed << dbdt	<< " ";				// dbdt	15
+	sstrm << std::fixed << xi	<< " ";				// xi	16
+	sstrm << std::fixed << c	<< " ";				// c	17
+	sstrm << std::fixed << avgs.exp << " ";				// exp 	18 
 	sstrm << std::endl;				
 	std::cout << sstrm.str();
 }
@@ -74,7 +74,7 @@ void printOutput(Lattice lat, long double T,avgStruct avgs, long double bin, lon
 long double getMaxE(long double L){
 	std::ostringstream mstream;
 	std::string exePath = get_selfpath();
-	mstream << exePath << "/maxE/" << L << "_maxE.txt";
+	mstream << exePath << "/maxE/XY/" << L << "_XYmaxE.txt";
 	std::string fname = mstream.str();
 	std::ifstream file(fname);
 	long double maxE;
@@ -90,7 +90,7 @@ void setMaxE(long double L,long double newE){
 	strftime (buffer,80,"%Y-%m-%d.%H:%M:%S",now);
 	std::ostringstream mstream;
 	std::string exePath = get_selfpath();
-	mstream << exePath<< "/maxE/" << L <<"_"<< buffer;
+	mstream << exePath<< "/maxE/XY/" << L <<"_XY"<< buffer;
 	std::string fname = mstream.str();
 	std::ofstream file;
 	file.open(fname);
