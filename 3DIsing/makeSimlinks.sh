@@ -1,1 +1,0 @@
-../scripts/makeSimlinks.sh
