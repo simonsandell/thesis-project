@@ -72,7 +72,7 @@ void wolffHistJob(long double L){
 	}
 	int 		Neq=			10000;
 	bool 		cold=			true;
-	long double	Nsamp=			1000.0L;
+	long double	Nsamp=			10000.0L;
 	int 		Nbetw=			100;
 	int 		Nruns=			1000;
 	Lattice lat(L,cold);
@@ -131,13 +131,6 @@ int main(){
 		results.emplace_back(
 				pool.enqueue([i] {
 					wolffHistJob(16.0L);
-					})
-				);
-	}
-	for(int i = 0; i < 20; ++i) {
-		results.emplace_back(
-				pool.enqueue([i] {
-					metroJob(8.0L);
 					})
 				);
 	}
