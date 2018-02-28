@@ -55,7 +55,6 @@ def calcAvg(mat,i,istart,FileList):
     E2list = mat[istart:iend,8];
     E2list[:] = [x/expFac for x in E2list];
     E2 = np.mean(E2list);
-    calcB = expFac*M4/pow(M2,2);
 
     Mlist = mat[istart:iend,9];
     Mlist[:] = [x/expFac for x in Mlist];
@@ -77,14 +76,15 @@ def calcAvg(mat,i,istart,FileList):
     M4Elist[:] = [x/expFac for x in M4Elist];
     M4E = np.mean(M4Elist);
 
-    calcxi = (M2 ) - M*M/(expFac*expFac);
+    calcB = M4/pow(M2,2);
+    calcxi = (M2 ) - M*M;
     calcxi = calcxi*(L*L*L)/T;
 
-    calcC = (E2/expFac - Eps);
+    calcC = (E2 - E);
     calcC = calcC*(L*L*L*L*L*L);
     calcC = calcC/(T*T);
 
-    Ylist = [Eps,M2,M4,B,calcB,xi,calcxi,c,calcC];
+    Ylist = [E,M2,M4,B,calcB,xi,calcxi,c,calcC];
 
 
     deltaexpFac = np.std(mat[istart:iend,18])/pow(N,0.5);
