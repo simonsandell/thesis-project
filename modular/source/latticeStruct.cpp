@@ -16,39 +16,40 @@ long double Lattice::siteEnergy( int &s1, int &s2, int &s3){
 	int n3m = (s3 -1 + (int)L )%(int)L;
 	int n3p = (s3 +1 + (int)L )%(int)L;
 	//sum 
-	sum -= theLattice[s1][s2][s3]-theLattice[n1m][s2][s3];
-	sum -= theLattice[s1][s2][s3]-theLattice[n1p][s2][s3];
-	sum -= theLattice[s1][s2][s3]-theLattice[s1][n2m][s3];
-	sum -= theLattice[s1][s2][s3]-theLattice[s1][n2p][s3];
-	sum -= theLattice[s1][s2][s3]-theLattice[s1][s2][n3m];
-	sum -= theLattice[s1][s2][s3]-theLattice[s1][s2][n3p];
+	sum -= theLattice[s1][s2][s3]*theLattice[n1m][s2][s3];
+	sum -= theLattice[s1][s2][s3]*theLattice[n1p][s2][s3];
+	sum -= theLattice[s1][s2][s3]*theLattice[s1][n2m][s3];
+	sum -= theLattice[s1][s2][s3]*theLattice[s1][n2p][s3];
+	sum -= theLattice[s1][s2][s3]*theLattice[s1][s2][n3m];
+	sum -= theLattice[s1][s2][s3]*theLattice[s1][s2][n3p];
 	return sum;
 }
 //calculate sin(theta - theta_x) upwards +, downward -
-long double calcMag(long double ***lattice,long double L){
+long double Lattice::calcMag(){
 	long double ret = 0.0L;
 	for (int i = 0; i<L; ++i){
 		for (int j = 0; j<L; ++j){
 			for (int k = 0; k<L; ++k){
-				ret += lattice[i][j][k];
+				ret += theLattice[i][j][k];
 			}
 		}
 	}
 	return ret;
 }
 
-long double calcEn(Lattice* lat){
+long double Lattice::calcEn(){
 	long double en = 0.0L;
-	for (int i = 0; i< lat->L; ++i){
-		for (int j = 0; j< lat->L; ++j){
-			for (int k = 0; k<lat->L; ++k){	
-				en += lat->siteEnergy(i,j,k);
+	for (int i = 0; i< L; ++i){
+		for (int j = 0; j< L; ++j){
+			for (int k = 0; k<L; ++k){	
+				en += siteEnergy(i,j,k);
 			}
 		}
 	}
-	en = 0.5L*en;
+	en *= 0.5L;
 	return en;
 }
+
 long double *** newLattice(long double L,bool cold){
 	//make new lattice
 	long double ***lattice;
@@ -93,8 +94,8 @@ long double *** newLattice(long double L,bool cold){
 }
 //update quantiites of the lattice
 void Lattice::updateQuants(){
-	energy = calcEn(this);
-	mag = calcMag(theLattice,L);
+	energy = calcEn();
+	mag = calcMag();
 };
 
 //initialize new lattice
@@ -113,8 +114,8 @@ Lattice::Lattice(int l, bool cold){
 		mag = Nspins;
 	}
 	else {
-		energy = calcEn(this);
-		mag = calcMag(theLattice,L);
+		energy = calcEn();
+		mag = calcMag();
 	}
 
 
@@ -127,10 +128,8 @@ void Lattice::testConsistent(){
 
 	typedef std::numeric_limits<long double> dbl;
 	std::cout.precision(dbl::max_digits10 + 5);
-	long double testEn = calcEn(this);
-	long double testMag = calcMag(theLattice,L);
-	long double TotEn = energy;
-	long double TotMag = mag;
-	std::cout <<std::fixed<< TotEn - testEn << "  E    "<< TotEn << " "<< testEn << std::endl;
-	std::cout <<std::fixed<< TotMag - testMag << "  M    "<< TotMag << " "<< testMag << std::endl;
+	long double testEn = calcEn();
+	long double testMag = calcMag();
+	std::cout <<std::fixed<< energy - testEn << "  E    "<< energy << " "<< testEn << std::endl;
+	std::cout <<std::fixed<< mag - testMag << "  M    "<< mag << " "<< testMag << std::endl;
 }

@@ -50,7 +50,6 @@ output/
 teqoutput/
 foutput/
 saved_output/
-test/
 warmLattice/
 # ocotpus cluster output files
 ##############################
