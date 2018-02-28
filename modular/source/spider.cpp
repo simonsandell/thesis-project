@@ -72,9 +72,9 @@ void wolffHistJob(long double L){
 	}
 	int 		Neq=			10000;
 	bool 		cold=			true;
-	long double	Nsamp=			1000.0L;
+	long double	Nsamp=			10000.0L;
 	int 		Nbetw=			100;
-	int 		Nruns=			10000;
+	int 		Nruns=			1000;
 	Lattice lat(L,cold);
 	Cluster clust(L);
 	RandStruct rand;
@@ -109,7 +109,7 @@ void metroJob(long double L){
 //main
 //
 int main(){
-	ThreadPool pool(1);
+	ThreadPool pool(24);
 	std::vector< std::future<void> > results;
 
 	for(int i = 0; i < 8; ++i) {
