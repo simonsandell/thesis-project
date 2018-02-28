@@ -48,6 +48,7 @@ void wolffHistRun(Lattice& lat, long double N_sample_sweeps,long double *Tempera
 		steps += growCluster(lat,cluster,Beta,rand);
 		if (steps < 0) {
 			std::cout << "OVERFLOW" << std::endl;
+			exit(0);
 		}
 		++intNsampClust;
 
