@@ -77,11 +77,11 @@ def calcAvg(mat,i,istart,FileList):
     M4E = np.mean(M4Elist);
 
     calcB = M4/pow(M2,2);
-    calcxi = (M2 ) - M*M;
-    calcxi = calcxi*(L*L*L)/T;
+
+    calcxi = M2 - pow(M,2);
+    calcxi = calcxi/T;
 
     calcC = (E2 - E*E);
-    calcC = calcC*(L*L*L*L*L*L);
     calcC = calcC/(T*T);
 
     Ylist = [E,M2,M4,B,calcB,xi,calcxi,c,calcC];
