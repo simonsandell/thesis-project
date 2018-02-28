@@ -53,6 +53,7 @@ long double * getTrange(long double start, long double end, int N){
 	}
 	return T;
 }
+
 void wolffHistJob(long double L){
 	long double runTemp = 2.20200000000000L;
 
@@ -110,21 +111,21 @@ int main(){
 	for(int i = 0; i < 8; ++i) {
 		results.emplace_back(
 				pool.enqueue([i] {
-					metroJob(4.0L);
+					wolffHistJob(4.0L);
 					})
 				);
 	}
 	for(int i = 0; i < 8; ++i) {
 		results.emplace_back(
 				pool.enqueue([i] {
-					metroJob(8.0L);
+					wolffHistJob(8.0L);
 					})
 				);
 	}
 	for(int i = 0; i < 8; ++i) {
 		results.emplace_back(
 				pool.enqueue([i] {
-					metroJob(16.0L);
+					wolffHistJob(16.0L);
 					})
 				);
 	}
