@@ -26,6 +26,19 @@ def openFiles(FileList,L,fName):
     FileList.append(newXF)
     FileList.append(RF)
     FileList.append(newRF)
+
+def jackknife(flist):
+    jacklen = float(len(flist)) -1.0;
+    listsum = sum(flist);
+    jacklist = [];
+    
+    for i in range(len(flist)):
+        jacklist.append(listsum);
+        jacklist[i] = jacklist[i] - flist[i];
+        jacklist[i] = jacklist[i]/(jacklen);
+    jackavg = np.mean(jacklist);
+    sigmaf = pow(jacklen,0.5)*(np.std(jacklist));
+    return sigmaf;
     
 
 def calcAvg(mat,i,istart,FileList):
@@ -41,7 +54,7 @@ def calcAvg(mat,i,istart,FileList):
 # E      E2     M      M2     M4     M2E    M4E
 #
 # 14     15     16     17     18     19     20     21                
-# SX     SY     SZ     bin    dBdT   xi     rs     expFac
+# S2X    S2Y    S2Z    bin    dBdT   xi     rs     expFac
 # incoming values are per spin and not divided by avgExpFac
     expFac = np.mean(mat[istart:iend,21]);
     E = np.mean(mat[istart:iend,7]);
@@ -57,9 +70,9 @@ def calcAvg(mat,i,istart,FileList):
     M4 = np.mean(mat[istart:iend,11]);
     M2E = np.mean(mat[istart:iend,12]);
     M4E = np.mean(mat[istart:iend,13]);
-    SX = np.mean(mat[istart:iend,14]);
-    SY = np.mean(mat[istart:iend,15]);
-    SZ = np.mean(mat[istart:iend,16]);
+    S2X = np.mean(mat[istart:iend,14]);
+    S2Y = np.mean(mat[istart:iend,15]);
+    S2Z = np.mean(mat[istart:iend,16]);
     B = np.mean(mat[istart:iend,17]);
     dBdT = np.mean(mat[istart:iend,18]);
     xi = np.mean(mat[istart:iend,19]);
@@ -72,31 +85,26 @@ def calcAvg(mat,i,istart,FileList):
     calcdBdT = calcdBdT/(T*T*M2*M2*M2);
     calcxi = (M2/ expFac) - M*M/(expFac*expFac);
     calcxi = calcxi*(L*L*L)/T;
-    calcrs = -E -SX/T - SY/T - SZ/T;
-    calcrs = calcrs*L/(3.0*expFac);
+    calcrs = -E -(S2X/T - S2Y/T - S2Z/T)*L*L*L;
+    calcrs = calcrs*L;
+    calcrs = calcrs/(3.0*expFac);
 
     Ylist = [Eps,Mps,B,calcB,dBdT,calcdBdT,xi,calcxi,rs,calcrs];
 
 
-    deltaexpFac = np.std(mat[istart:iend,21])/pow(N,0.5);
-    deltaE = np.std(Elist)/pow(N,0.5);
-    deltaE2 = np.std(mat[istart:iend,8])/pow(N,0.5);
-    deltaM = np.std(Mlist)/pow(N,0.5);
-    deltaM2 = np.std(mat[istart:iend,10])/pow(N,0.5);
-    deltaM4 = np.std(mat[istart:iend,11])/pow(N,0.5);
-    deltaM2E = np.std(mat[istart:iend,12])/pow(N,0.5);
-    deltaM4E = np.std(mat[istart:iend,13])/pow(N,0.5);
-    deltaSX = np.std(mat[istart:iend,14])/pow(N,0.5);
-    deltaSY = np.std(mat[istart:iend,15])/pow(N,0.5);
-    deltaSZ = np.std(mat[istart:iend,16])/pow(N,0.5);
-    deltaB = np.std(mat[istart:iend,17])/pow(N,0.5);
-    deltadBdT = np.std(mat[istart:iend,18])/pow(N,0.5);
-    deltaxi = np.std(mat[istart:iend,19])/pow(N,0.5);
-    deltars = np.std(mat[istart:iend,20])/pow(N,0.5);
-    Deltalist = [deltaE,deltaM,deltaB,0,deltadBdT,0,deltaxi,0,deltars,0];
+    deltaE = jackknife(Elist);
+    deltaM = jackknife(Mlist);
+    deltaB= np.std(mat[istart:iend,17])/pow(N,0.5);
+    deltaBjack = jackknife(mat[istart:iend,17]);
+    deltadBdT= np.std(mat[istart:iend,18])/pow(N,0.5);
+    deltadBdTjack = jackknife(mat[istart:iend,18]);
+    deltaxi= np.std(mat[istart:iend,19])/pow(N,0.5);
+    deltaxijack = jackknife(mat[istart:iend,19]);
+    deltars= np.std(mat[istart:iend,20])/pow(N,0.5);
+    deltarsjack = jackknife(mat[istart:iend,20]);
+    Deltalist = [deltaE,deltaM,deltaB,deltaBjack,deltadBdT,deltadBdTjack,deltaxi,deltaxijack,deltars,deltarsjack];
     for i in range(len(Ylist)):
         FileList[i].write(repr(T)+"    "+repr(Ylist[i])+"    "+repr(Deltalist[i])+"    "+repr(N)+"\n")
-        #FileList[i].write(repr(T)+"    "+repr(Ylist[i])+"    "+repr(0.0)+"    "+repr(N)+"\n")
 
 #
 #read raw data from file in ./output
