@@ -86,7 +86,7 @@ void wolffHistRun(Lattice& lat, long double N_sample_sweeps,long double *Tempera
 
 			avgs[i].e += expFac*tE;
 			avgs[i].e2+=expFac*tE*tE;
-			avgs[i].m += expFac*tM2;
+			avgs[i].m += expFac*tM;
 			avgs[i].m2 += expFac*tM2;
 			avgs[i].m4 += expFac*tM2*tM2;
 			avgs[i].m2e += expFac*tM2*tE; 
@@ -134,8 +134,8 @@ void wolffHistRun(Lattice& lat, long double N_sample_sweeps,long double *Tempera
 			- 2.0L*avgs[i].exp*avgs[i].m4*avgs[i].m2e;
 		dbdt[i] *= lat.Nspins;
 		dbdt[i] /= Temperatures[i]*Temperatures[i]*avgs[i].m2*avgs[i].m2*avgs[i].m2;
-		xi[i] = ((avgs[i].m2/avgs[i].exp) -
-				(avgs[i].m*avgs[i].m/(avgs[i].exp*avgs[i].exp)));
+		xi[i] = (avgs[i].m2/avgs[i].exp) -
+				((avgs[i].m*avgs[i].m)/(avgs[i].exp*avgs[i].exp));
 		xi[i] /= (Temperatures[i]);
 
 		c[i] = (avgs[i].e2/avgs[i].exp)	- (avgs[i].e*avgs[i].e/(avgs[i].exp*avgs[i].exp));

@@ -70,11 +70,11 @@ void wolffHistJob(long double L){
 	else {
 		Trange = getTrange(startT,endT,int(Ntemps));
 	}
-	int 		Neq=			10000;
+	int 		Neq=			100000;
 	bool 		cold=			true;
-	long double	Nsamp=			10000.0L;
+	long double	Nsamp=			100000.0L;
 	int 		Nbetw=			100;
-	int 		Nruns=			1000;
+	int 		Nruns=			100;
 	Lattice lat(L,cold);
 	Cluster clust(L);
 	RandStruct rand;
@@ -112,21 +112,21 @@ int main(){
 	ThreadPool pool(24);
 	std::vector< std::future<void> > results;
 
-	for(int i = 0; i < 8; ++i) {
+	for(int i = 0; i < 10; ++i) {
 		results.emplace_back(
 				pool.enqueue([i] {
 					wolffHistJob(4.0L);
 					})
 				);
 	}
-	for(int i = 0; i < 8; ++i) {
+	for(int i = 0; i < 10; ++i) {
 		results.emplace_back(
 				pool.enqueue([i] {
 					wolffHistJob(8.0L);
 					})
 				);
 	}
-	for(int i = 0; i < 8; ++i) {
+	for(int i = 0; i < 10; ++i) {
 		results.emplace_back(
 				pool.enqueue([i] {
 					wolffHistJob(16.0L);
