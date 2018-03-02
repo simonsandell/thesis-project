@@ -1,5 +1,0 @@
-#!/bin/bash
-for filename in /home/simsan/exjobb/modular/output/runner.o*; do
-	cat $filename >> /home/simsan/exjobb/modular/output/saveloaddata
-done
-#rm -r /home/simsan/exjobb/modular/output/parruns/
