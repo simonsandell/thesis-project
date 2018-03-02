@@ -28,9 +28,9 @@ subprocess.call(["mkdir",directory])
 for l in lists:
     maxV = 0;
     for v in lists[l]:
-        if (abs(v) > abs(maxV)):
+        if (v < maxV):
             maxV = v;
-    Wfile = open(directory + str(l) + "_maxE.txt","w")
+    Wfile = open(directory + str(l) + "_XYmaxE.txt","w")
     Wfile.write(repr(maxV))
     Wfile.close();
 

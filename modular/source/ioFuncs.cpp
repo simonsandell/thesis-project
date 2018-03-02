@@ -8,6 +8,23 @@
 #include <limits.h>
 
 #include "ioFuncs.h"
+#include "latticeStruct.h"
+#include "avgStruct.h"
+
+//print lattice
+void printLattice(long double ***lattice,long double  L){
+	typedef std::numeric_limits<long double> dbl;
+	std::cout.precision(dbl::max_digits10 + 5);
+	for(int i = 0; i < L; ++i){
+		for(int j = 0; j < L; ++j){
+			for(int k =0; k<L; ++k){
+				std::cout << lattice[i][j][k] << " ";
+			}
+			std::cout << std::endl;
+		}
+		std::cout << std::endl;
+	}
+}
 
 std::string get_selfpath(){
 	char buff[PATH_MAX];
@@ -24,32 +41,40 @@ std::string get_selfpath(){
 		exit(-1);
 	}
 }
-
-void printOutput(long double L,long double T, long double E, long double M, long double bin, long double dbdt,long double xi,long double rs, long double N_eq_sweeps, int N_eq_clusts,long double N_samp_sweeps, int N_samp_clusts,bool cold){
+void printOutput(Lattice lat, long double T,avgStruct avgs, long double bin, long double dbdt, long double xi, long double c){
 	typedef std::numeric_limits<long double> dbl;
 
 	std::cout.precision(dbl::max_digits10 + 5);
+	std::stringstream sstrm;
+	sstrm.precision(dbl::max_digits10 + 5);
 
-	std::cout << std::fixed << L << " ";				//0
-	std::cout << std::fixed << T << " ";				//1
-	std::cout << std::fixed << E << " ";				//2
-	std::cout << std::fixed << M << " ";				//3
-	std::cout << std::fixed << bin << " ";				//4
-	std::cout << std::fixed << dbdt << " ";				//5
-	std::cout << std::fixed << xi << " ";				//6
-	std::cout << std::fixed << rs << " ";				//7
-	std::cout << std::fixed << N_eq_sweeps << " ";			//8
-	std::cout << std::fixed << N_eq_clusts << " "; 			//9
-	std::cout << std::fixed << N_samp_sweeps << " ";		//10
-	std::cout << std::fixed << N_samp_clusts << " "; 		//11
-	std::cout << cold << " "; 					//12
-	std::cout << std::endl;				
+	sstrm << std::fixed << lat.L << " ";				// L	0
+	sstrm << std::fixed << T << " ";				// T	1
+	sstrm << std::fixed << lat.Neqsweeps << " ";			// n	2
+	sstrm << std::fixed << lat.Neqclusts << " ";			// n	3
+	sstrm << std::fixed << lat.Nsmsweeps << " ";			// n	4
+	sstrm << std::fixed << lat.Nsmclusts << " ";			// n	5
+	sstrm << std::fixed << lat.coldstart << " ";			// cold	6
+	sstrm << std::fixed << avgs.e	<< " ";				// e	7
+	sstrm << std::fixed << avgs.e2	<< " ";				// e2	8
+	sstrm << std::fixed << avgs.m	<< " ";				// m	9
+	sstrm << std::fixed << avgs.m2	<< " ";				// m2	10
+	sstrm << std::fixed << avgs.m4	<< " ";				// m4	11
+	sstrm << std::fixed << avgs.m2e	<< " ";				// m2e	12
+	sstrm << std::fixed << avgs.m4e	<< " ";				// m4e	13
+	sstrm << std::fixed << bin	<< " ";				// b	14
+	sstrm << std::fixed << dbdt	<< " ";				// dbdt	15
+	sstrm << std::fixed << xi	<< " ";				// xi	16
+	sstrm << std::fixed << c	<< " ";				// c	17
+	sstrm << std::fixed << avgs.exp << " ";				// exp 	18 
+	sstrm << std::endl;				
+	std::cout << sstrm.str();
 }
 
 long double getMaxE(long double L){
 	std::ostringstream mstream;
 	std::string exePath = get_selfpath();
-	mstream << exePath << "/maxE/" << L << "_maxE.txt";
+	mstream << exePath << "/maxE/XY/" << L << "_XYmaxE.txt";
 	std::string fname = mstream.str();
 	std::ifstream file(fname);
 	long double maxE;
@@ -65,7 +90,7 @@ void setMaxE(long double L,long double newE){
 	strftime (buffer,80,"%Y-%m-%d.%H:%M:%S",now);
 	std::ostringstream mstream;
 	std::string exePath = get_selfpath();
-	mstream << exePath<< "/maxE/" << L <<"_"<< buffer;
+	mstream << exePath<< "/maxE/XY/" << L <<"_XY"<< buffer;
 	std::string fname = mstream.str();
 	std::ofstream file;
 	file.open(fname);
@@ -75,52 +100,36 @@ void setMaxE(long double L,long double newE){
 	file << std::fixed << newE;
 }
 
-void saveLattice(long double L,long double Neqsw,long double Neqcl, long double***lattice){
+void saveLattice(Lattice lat){
 
+	int L = lat.L;
 	std::ostringstream mstream;
 	std::string exePath = get_selfpath();
 	mstream << exePath<< "/warmLattice/" << L <<"_warm.lat";
 	std::string fname = mstream.str();
-	std::ofstream file;
-	file.open(fname);
-	//first values saved is the number of equilibration sweeps and clusters
-	file << Neqsw;
-	file << " ";
-	file << Neqcl;
-	file << " ";
+	FILE* output;
+	output = std::fopen(fname.c_str(),"wb");
+	fwrite(&lat,sizeof(lat),1,output);
+	fclose(output);
 
-	typedef std::numeric_limits<long double> dbl;
-	file.precision(dbl::max_digits10 +2);
-	for (int p = 0; p<L; ++p){
-		for (int q = 0; q<L; ++q){
-			for (int r = 0; r<L; ++r){
-				file << std::fixed << lattice[p][q][r];
-				file << " ";
-			}
-		}
-	}
 }
-long double *** getLattice(long double L,long double & Neqsw,long double& Neqcl){
 
+Lattice getLattice(int l){
 	std::ostringstream mstream;
 	std::string exePath = get_selfpath();
-	mstream << exePath << "/warmLattice/" << L << "_warm.lat";
+	mstream << exePath << "/warmLattice/" << l << "_warm.lat";
 	std::string fname = mstream.str();
-	std::ifstream file(fname);
-	//first value saved is actually the # of equilibration sweeps.
-	file >> Neqsw;
-	file >> Neqcl;
-	long double ***lattice;
-	lattice = new long double **[(int)L];
-	for (int i = 0; i< L;++i){
-		lattice[i] = new long double *[(int)L];
-		for (int j =0;j<L;++j){
-			lattice[i][j] = new long double[(int)L];
-			for (int k =0; k<L; ++k){
-				file >> lattice[i][j][k];
-			}
-		}
-	}
-	return lattice;
+
+	Lattice lat;
+	FILE* input;
+
+	input = fopen(fname.c_str(),"rb");
+
+
+	fread(&lat,sizeof(lat),1,input);
+
+	fclose(input);
+
+	return lat;
 }
 

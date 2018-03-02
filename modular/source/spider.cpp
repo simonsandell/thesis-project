@@ -3,47 +3,49 @@
 #include <utility>
 #include <tuple>
 #include <limits>
+#include <vector>
+#include <chrono>
 
+#include "ThreadPool.h"
 #include "ioFuncs.h"
-#include "calcQuants.h"
-#include "latticeOps.h"
-#include "wolffRun.h"
+#include "latticeStruct.h"
+#include "clusterStruct.h"
+#include "randStruct.h"
+//#include "metroRun.h"
+//#include "metropolis.h"
 #include "wolffHistRun.h"
+#include "wolff.h"
 
 using namespace std;
-//warmup and save to file
-void warmupandsave(long double L,long double Neq,bool cold,long double runTemp){
-	long double ***lattice = newLattice(L,cold);
-	bool save = true;
-	long double Ncl;
-	warmup(L,lattice,Neq,Ncl,runTemp,save);
-}
-//runhist
-void runhist(long double L,long double***lattice,long double Neqsw,long double Neqcl,long double Nsamp,bool cold,long double*Trange,long double Ntemps,long double runTemp,long double Nreps,long double Nwarmup){
-	long double Ncl;
-	bool save = false;
-	for (int i = 0; i< Nreps; ++i){
-		warmup(L,lattice,Nwarmup,Ncl,runTemp,save);
-		wolffHistRun(L,lattice,Neqsw,Neqcl,Nsamp,cold,Trange,Ntemps,runTemp);
-	}
-}
-//runteq
-void runteq(long double L,bool cold,long double runTemp){
-	long double Nwarms= 4.0L;
-	long double Neqsw;
-	long double Neqcl;
-	long double Nsamples = 1;
-	bool save = false;
 
-	long double ***lattice = newLattice(L,cold);
-	for (int i =0; i<15; ++i){
-		Neqsw = Nwarms;
-		lattice= newLattice(L,cold);
-		warmup(L,lattice,Neqsw,Neqcl,runTemp,save);
-		wolffRun(L,lattice,Neqsw,Neqcl,Nsamples ,cold,runTemp);
-		Nwarms *= 2.0L;
+void warmup(Lattice& lat,Cluster&clust,long double beta,RandStruct&rand,int N){
+	int Nspins = lat.L*lat.L*lat.L;
+	int fliptries = 0;
+	int clusts = 0;
+	while ((fliptries/Nspins) < N){
+		clusts++;
+		fliptries += growCluster(lat,clust,beta,rand);
+
+	}
+	if( !lat.warmedUp){
+		lat.Neqclusts = clusts;
+		lat.Neqsweeps = ((long double)fliptries)/((long double)Nspins);
+		lat.warmedUp = true;
 	}
 }
+/*
+void warmupMetro(Lattice& lat,long double beta,RandStruct&rand,int N){
+	for (int i = 0; i < N; i++){
+		metrosweep(lat,beta,rand);
+	}
+	if( !lat.warmedUp){
+		lat.Neqclusts = 0;
+		lat.Neqsweeps =(long double)N;
+		lat.warmedUp = true;
+	}
+}
+*/
+
 //generate range of temperatures
 long double * getTrange(long double start, long double end, int N){
 	long double dt = (end-start)/((long double)N-1.0L);
@@ -54,98 +56,82 @@ long double * getTrange(long double start, long double end, int N){
 	return T;
 }
 
+void wolffHistJob(long double L){
+	long double runTemp = 4.50000000000000L;
 
-//main
-int main(int argc, char* argv[]){
-	//
-	//Set Run Parameters
-	//
-	//
-
-	string runNumber = argv[1];
-
-	long double 	L =			4.0L;
-	long double	startT=			2.20150L;
-	long double	endT=			2.20350L;
-	long double	Ntemps=			21.0L;
-	long double	Neq=			10000.0L;
-	long double	Nsamp=			1000.0L;
-	bool 		cold=			true;
-	//generate temperature range
+	long double	startT=			4.49150L;
+	long double	endT=			4.50350L;
+	int 		Ntemps=			21;
 	long double* Trange;
-	if (abs(Ntemps - 1) < 0.1) {
+	if (Ntemps < 2) {
 		Trange = new long double[1];
-		Trange[0] = startT;
+		Trange[0] = runTemp;
 	}
 	else {
 		Trange = getTrange(startT,endT,int(Ntemps));
 	}
-	long double runTemp = 2.20200000000000L;
+	int 		Neq=			10000;
+	bool 		cold=			true;
+	long double	Nsamp=			10000.0L;
+	int 		Nbetw=			100;
+	int 		Nruns=			1000;
+	Lattice lat(L,cold);
+	Cluster clust(L);
+	RandStruct rand;
+	long double beta = 1.0L/runTemp;
+	warmup(lat,clust,beta,rand,(Neq-Nbetw));
+	for (int i=0; i< Nruns; ++i){	
+		warmup(lat,clust,beta,rand,Nbetw);
+		wolffHistRun(lat,Nsamp,Trange,Ntemps,runTemp);
+	}
 
-	bool save;
-	long double ***lattice;
+}
+/*
+void metroJob(long double L){
 
-	//Initial warmups
-	if (runNumber == "saveWarmup"){
-		L = 4.0L;
-		warmupandsave(L,Neq,cold,runTemp);
-		L = 8.0L;
-		warmupandsave(L,Neq,cold,runTemp);
-		L = 16.0L;
-		warmupandsave(L,Neq,cold,runTemp);
-		exit(0);
+	long double 	runTemp = 		2.20200000000000L;
+	int 		Neq=			20000;
+	bool 		cold=			true;
+	long double	Nsamp=			1000.0L;
+	int 		Nbetw=			100;
+	int 		Nruns=			1000;
+	Lattice lat(L,cold);
+	RandStruct rand;
+	long double beta = 1.0L/runTemp;
+	warmupMetro(lat,beta,rand,(Neq-Nbetw));
+	for (int i=0; i< Nruns; ++i){	
+		warmupMetro(lat,beta,rand,Nbetw);
+		metroRun(lat,Nsamp,runTemp);
 	}
-	if (runNumber == "histRun"){
-		long double Neqsw;
-		long double Neqcl;
-		long double Nreps = 10000.0L;
-		long double Nwarmup = 100.0L;
-		save = false;
-		L = 4.0L;
-		lattice = getLattice(L,Neqsw,Neqcl);
-		runhist(L,lattice, Neqsw, Neqcl, Nsamp,cold,Trange, Ntemps, runTemp, Nreps, Nwarmup);
-		L = 8.0L;
-		lattice = getLattice(L,Neqsw,Neqcl);
-		runhist(L,lattice, Neqsw, Neqcl, Nsamp,cold,Trange, Ntemps, runTemp, Nreps, Nwarmup);
+}
+*/
+
+//main
+//
+int main(){
+	ThreadPool pool(24);
+	std::vector< std::future<void> > results;
+
+	for(int i = 0; i < 8; ++i) {
+		results.emplace_back(
+				pool.enqueue([i] {
+					wolffHistJob(4.0L);
+					})
+				);
 	}
-	if (runNumber == "teqRun"){
-		bool cold;
-		int N_teq = 100;
-		for (int i = 0; i< N_teq; ++i){
-			cold	= false;
-			runteq(4.0L,cold,runTemp);
-			runteq(8.0L,cold,runTemp);
-			runteq(16.0L,cold,runTemp);
-			cold = false;
-			runteq(4.0L,cold,runTemp);
-			runteq(8.0L,cold,runTemp);
-			runteq(16.0L,cold,runTemp);
-		}
+	for(int i = 0; i < 8; ++i) {
+		results.emplace_back(
+				pool.enqueue([i] {
+					wolffHistJob(8.0L);
+					})
+				);
 	}
-	if (runNumber == "normalRun"){
-		long double Neqsw;
-		long double Neqcl;
-		long double Ncl;
-		long double Nreps = 10000.0L;
-		long double Nwarmup = 100.0L;
-		L = 4.0L;
-		lattice = getLattice(L,Neqsw,Neqcl);	
-		for (int i = 0; i< Nreps; ++i){
-			warmup(L,lattice,Nwarmup,Ncl,runTemp,save);
-			wolffRun(L,lattice,Neqsw+Nwarmup,Neqcl+Ncl,Nsamp,cold,runTemp);
-		}
-		L = 8.0L;
-		lattice = getLattice(L,Neqsw,Neqcl);	
-		for (int i = 0; i< Nreps; ++i){
-			warmup(L,lattice,Nwarmup,Ncl,runTemp,save);
-			wolffRun(L,lattice,Neqsw+Nwarmup,Neqcl+Ncl,Nsamp,cold,runTemp);
-		}
-		L = 16.0L;
-		lattice = getLattice(L,Neqsw,Neqcl);	
-		for (int i = 0; i< Nreps; ++i){
-			warmup(L,lattice,Nwarmup,Ncl,runTemp,save);
-			wolffRun(L,lattice,Neqsw+Nwarmup,Neqcl+Ncl,Nsamp,cold,runTemp);
-		}
+	for(int i = 0; i < 8; ++i) {
+		results.emplace_back(
+				pool.enqueue([i] {
+					wolffHistJob(16.0L);
+					})
+				);
 	}
 }
 

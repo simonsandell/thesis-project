@@ -2,119 +2,155 @@ import sys
 import numpy as np
 import math
 
-#funcion for writing data
-def writeToFiles(En,Mag,Bin,Dbdt,Xi,Rs,EF,MF,BF,DF,XF,RF,N,T,Neq):
-        meanE = np.mean(En);
-        meanM = np.mean(Mag);
-        meanB = np.mean(Bin);
-        meanD = np.mean(Dbdt);
-        meanX = np.mean(Xi);
-        meanR = np.mean(Rs);
-        sqrtN = pow(N,0.5);
-        deltaE = np.std(En)/sqrtN;
-        deltaM = np.std(Mag)/sqrtN;
-        deltaB = np.std(Bin)/sqrtN;
-        deltaD = np.std(Dbdt)/sqrtN;
-        deltaX = np.std(Xi)/sqrtN;
-        deltaR = np.std(Rs)/sqrtN;
-        if math.isnan(deltaE):
-            deltaE = float('0');
-        if math.isnan(deltaM):
-            deltaM = float('0');
-        if math.isnan(deltaB):
-            deltaB = float('0');
-        if math.isnan(deltaD):
-            deltaD = float('0');
-        if math.isnan(deltaX):
-            deltaX = float('0');
-        if math.isnan(deltaR):
-            deltaR = float('0');
-        EF.write(repr(T)+"    "+repr(meanE)+"    "+repr(deltaE)+"    "+repr(N)+"\n")
-        MF.write(repr(T)+"    "+repr(meanM)+"    "+repr(deltaM)+"    "+repr(N)+"\n")
-        BF.write(repr(T)+"    "+repr(meanB)+"    "+repr(deltaB)+"    "+repr(N)+"\n")
-        DF.write(repr(T)+"    "+repr(meanD)+"    "+repr(deltaD)+"    "+repr(N)+"\n")
-        XF.write(repr(T)+"    "+repr(meanX)+"    "+repr(deltaX)+"    "+repr(N)+"\n")
-        RF.write(repr(T)+"    "+repr(meanR)+"    "+repr(deltaR)+"    "+repr(N)+"\n")
-        En[:]= []
-        Mag[:]= []
-        Bin [:]= []
-        Dbdt[:]= []
-        Xi[:]= []
-        Rs[:]= []
+def openFiles(FileList,L,fName):
+    #open files for writing
+    #separate files for different systemsizes
+    EF = open("./foutput/en/"+str(int(L))+"_"+fName+".dat","w")
+    M2F = open("./foutput/m2/"+str(int(L))+"_"+fName+".dat","w")
+    M4F = open("./foutput/m4/"+str(int(L))+"_"+fName+".dat","w")
+    BF = open("./foutput/bin/"+str(int(L))+"_"+fName+".dat","w")
+    newBF = open("./foutput/bin/"+str(int(L))+"_"+fName+"new.dat","w")
+    XF = open("./foutput/xi/"+str(int(L))+"_"+fName+".dat","w")
+    newXF = open("./foutput/xi/"+str(int(L))+"_"+fName+"new.dat","w")
+    CF= open("./foutput/c/"+str(int(L))+"_"+fName+".dat","w")
+    newCF = open("./foutput/c/"+str(int(L))+"_"+fName+"new.dat","w")
 
-#read raw data from file in ./output
-#################################
+    FileList[:] = [];
+    FileList.append(EF)
+    FileList.append(M2F)
+    FileList.append(M4F)
+    FileList.append(BF)
+    FileList.append(newBF)
+    FileList.append(XF)
+    FileList.append(newXF)
+    FileList.append(CF)
+    FileList.append(newCF)
+
+def calcAvg(mat,i,istart,FileList):
+    N = i - istart;
+    T = mat[istart,1];
+    L = mat[istart,0];
+    iend = i -1;
 # Format::
-# 0      1      2      3      4      5      6      7      8      9      10      11      12      
-# L      T      E      M      B      dBdT   xi     rs     eqsw   eqcl   smsw    smcl    cold
+# 0      1      2      3      4      5      6            
+# L      T      neqsw  neqcl  nsmsw  nsmcl  cold
+#
+# 7      8      9      10     11     12     13                
+# E      E2     M      M2     M4     M2E    M4E
+#
+# 14     15     16     17     18     
+# bin    dBdT   xi     c      expFac
+# incoming values are per spin and not divided by avgExpFac
+# except for bin,dbdt,xi and c which should be ready to write to file    
+    B = np.mean(mat[istart:iend,14]);
+    xi = np.mean(mat[istart:iend,16]);
+    c = np.mean(mat[istart:iend,17]);
 
+    expFac = np.mean(mat[istart:iend,18]);
+    
+    Elist = mat[istart:iend,7];
+    Elist[:] = [x/expFac for x in Elist];
+    E = np.mean(Elist);
+    
+    E2list = mat[istart:iend,8];
+    E2list[:] = [x/expFac for x in E2list];
+    E2 = np.mean(E2list);
+
+    Mlist = mat[istart:iend,9];
+    Mlist[:] = [x/expFac for x in Mlist];
+    M = np.mean(Mlist);
+    
+    M2list = mat[istart:iend,10];
+    M2list[:] = [x/expFac for x in M2list];
+    M2 = np.mean(M2list);
+
+    M4list = mat[istart:iend,11];
+    M4list[:] = [x/expFac for x in M4list];
+    M4 = np.mean(M4list);
+
+    M2Elist = mat[istart:iend,12];
+    M2Elist[:] = [x/expFac for x in M2Elist];
+    M2E = np.mean(M2list);
+
+    M4Elist = mat[istart:iend,13];
+    M4Elist[:] = [x/expFac for x in M4Elist];
+    M4E = np.mean(M4Elist);
+
+    calcB = M4/pow(M2,2);
+
+    calcxi = M2 - pow(M,2);
+    calcxi = calcxi/T;
+
+    calcC = (E2 - E*E);
+    calcC = calcC/(T*T);
+
+    Ylist = [E,M2,M4,B,calcB,xi,calcxi,c,calcC];
+
+
+    deltaexpFac = np.std(mat[istart:iend,18])/pow(N,0.5);
+    deltaE = np.std(Elist)/pow(N,0.5);
+    deltaE2 = np.std(mat[istart:iend,8])/pow(N,0.5);
+    deltaM2 = np.std(mat[istart:iend,10])/pow(N,0.5);
+    deltaM4 = np.std(mat[istart:iend,11])/pow(N,0.5);
+    deltaM2E = np.std(mat[istart:iend,12])/pow(N,0.5);
+    deltaM4E = np.std(mat[istart:iend,13])/pow(N,0.5);
+    deltaB = np.std(mat[istart:iend,14])/pow(N,0.5);
+    deltaxi = np.std(mat[istart:iend,16])/pow(N,0.5);
+    deltaC = np.std(mat[istart:iend,17])/pow(N,0.5);
+    Deltalist = [deltaE,deltaM2,deltaM4,deltaB,0,deltaxi,0,deltaC,0];
+    for i in range(len(Ylist)):
+        FileList[i].write(repr(T)+"    "+repr(Ylist[i])+"    "+repr(Deltalist[i])+"    "+repr(N)+"\n")
+        #FileList[i].write(repr(T)+"    "+repr(Ylist[i])+"    "+repr(0.0)+"    "+repr(N)+"\n")
+
+#
+#read raw data from file in ./output
+##########################################################
+# Format::
+# 0      1      2      3      4      5      6            
+# L      T      neqsw  neqcl  nsmsw  nsmcl  cold
+#
+# 7      8      9      10     11     12     13                
+# E      E2     M      M2     M4     M2E    M4E
+#
+# 14     15     16     17     18    
+# bin    dBdT   xi     c      expFac
 arguments = sys.argv
 fName = arguments[1]
 data0 = open("./output/" + fName,"r")
 vals = []
+#load data and form array
 for ln in data0:
     strlist = ln.rsplit(" ")
     strlist = [x for x in strlist if not (x=="\n")]
     fllist = [float(x) for x in strlist] 
     vals.append(fllist)
-
-#sort by L, T, N_equil in that order    
 mat = np.array(vals)
-ind = np.lexsort((mat[:,12],mat[:,11],mat[:,10],mat[:,9],mat[:,7],mat[:,6],mat[:,5],mat[:,4],mat[:,3],mat[:,2],mat[:,8],mat[:,1],mat[:,0]))
 
+#Sort input data    
+ind = np.lexsort((mat[:,18],mat[:,17],mat[:,16],mat[:,15],mat[:,14],mat[:,13],mat[:,12],mat[:,11],mat[:,10],mat[:,9],mat[:,8],mat[:,7],mat[:,5],mat[:,4],mat[:,3],mat[:,2],mat[:,6],mat[:,1],mat[:,0]));
 mat = mat[ind]
 
+#form averages and print to file
 L=mat[0,0];
 T=mat[0,1];
-Neq = mat[0,7];
-En=[];
-Mag=[];
-Bin=[];
-Dbdt=[];
-Xi=[];
-Rs=[];
-NeqSw=[];
-NeqCl=[];
-N = float('0.0');
 
-#open files for writing
-#separate files for different systemsizes
+FileList =[]
+openFiles(FileList,L,fName);
 
-EF = open("./foutput/en/"+str(int(L))+"_"+fName+".dat","w")
-MF = open("./foutput/mag/"+str(int(L))+"_"+fName+".dat","w")
-BF = open("./foutput/bin/"+str(int(L))+"_"+fName+".dat","w")
-DF = open("./foutput/dbdt/"+str(int(L))+"_"+fName+".dat","w")
-XF = open("./foutput/xi/"+str(int(L))+"_"+fName+".dat","w")
-RF = open("./foutput/rs/"+str(int(L))+"_"+fName+".dat","w")
-
-TOL = float('0.0000000000001');
+TOL = float('0.00000000001');
+ifirst = 0;
 for i in range(mat.shape[0]):
     #if new value of L, make new outputfile
     if(TOL < abs(mat[i,0] - L)):
-        writeToFiles(En,Mag,Bin,Dbdt,Xi,Rs,EF,MF,BF,DF,XF,RF,N,T,Neq)
-        N=0;
+        calcAvg(mat,i,ifirst,FileList);
+        ifirst = i;
         L = float(mat[i,0])
         T = float(mat[i,1])
-        Neq = float(mat[i,8])
-        EF = open("./foutput/en/"+str(int(L))+"_"+fName+".dat","w")
-        MF = open("./foutput/mag/"+str(int(L))+"_"+fName+".dat","w")
-        BF = open("./foutput/bin/"+str(int(L))+"_"+fName+".dat","w")
-        DF = open("./foutput/dbdt/"+str(int(L))+"_"+fName+".dat","w")
-        XF = open("./foutput/xi/"+str(int(L))+"_"+fName+".dat","w")
-        RF = open("./foutput/rs/"+str(int(L))+"_"+fName+".dat","w")
+        #open new files since L has changed
+        openFiles(FileList,L,fName);
     elif(TOL < abs(mat[i,1] - T)):
-        writeToFiles(En,Mag,Bin,Dbdt,Xi,Rs,EF,MF,BF,DF,XF,RF,N,T,Neq)
-        N=0;
+        calcAvg(mat,i,ifirst,FileList);
+        ifirst = i;
         T = float(mat[i,1])
-        Neq = float(mat[i,8])
-    #normally just append to lists
-    En.append(mat[i,2])
-    Mag.append(mat[i,3])
-    Bin.append(mat[i,4])
-    Dbdt.append(mat[i,5])
-    Xi.append(mat[i,6])
-    Rs.append(mat[i,7])
-    NeqSw.append(mat[i,8])
-    NeqCl.append(mat[i,9])
-    N = N + float('1.0')
-writeToFiles(En,Mag,Bin,Dbdt,Xi,Rs,EF,MF,BF,DF,XF,RF,N,T,Neq)
+#one final write
+calcAvg(mat,i+1,ifirst,FileList);
