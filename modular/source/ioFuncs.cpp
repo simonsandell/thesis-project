@@ -74,7 +74,7 @@ void printOutput(Lattice lat, long double T,avgStruct avgs, long double bin, lon
 long double getMaxE(long double L){
 	std::ostringstream mstream;
 	std::string exePath = get_selfpath();
-	mstream << exePath << "/maxE/XY/" << L << "_XYmaxE.txt";
+	mstream << exePath << "/maxE/Ising3D/" << L << "_maxE.txt";
 	std::string fname = mstream.str();
 	std::ifstream file(fname);
 	long double maxE;
@@ -90,7 +90,7 @@ void setMaxE(long double L,long double newE){
 	strftime (buffer,80,"%Y-%m-%d.%H:%M:%S",now);
 	std::ostringstream mstream;
 	std::string exePath = get_selfpath();
-	mstream << exePath<< "/maxE/XY/" << L <<"_XY"<< buffer;
+	mstream << exePath<< "/maxE/Ising3D/" << L <<"_"<< buffer;
 	std::string fname = mstream.str();
 	std::ofstream file;
 	file.open(fname);
