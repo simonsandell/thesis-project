@@ -9,28 +9,33 @@ def openFiles(FileList,L,fName):
     M2F = open("./foutput/m2/"+str(int(L))+"_"+fName+".dat","w")
     M4F = open("./foutput/m4/"+str(int(L))+"_"+fName+".dat","w")
     BF = open("./foutput/bin/"+str(int(L))+"_"+fName+".dat","w")
-    newBF = open("./foutput/bin/"+str(int(L))+"_"+fName+"new.dat","w")
     XF = open("./foutput/xi/"+str(int(L))+"_"+fName+".dat","w")
-    newXF = open("./foutput/xi/"+str(int(L))+"_"+fName+"new.dat","w")
     CF= open("./foutput/c/"+str(int(L))+"_"+fName+".dat","w")
-    newCF = open("./foutput/c/"+str(int(L))+"_"+fName+"new.dat","w")
 
     FileList[:] = [];
     FileList.append(EF)
     FileList.append(M2F)
     FileList.append(M4F)
     FileList.append(BF)
-    FileList.append(newBF)
     FileList.append(XF)
-    FileList.append(newXF)
     FileList.append(CF)
-    FileList.append(newCF)
+
+
+def jackknife(flist):
+    jacklen = float(len(flist))-1.0;
+    listsum = sum(flist);
+    jacklist = [];
+    
+    for i in range(len(flist)):
+        jacklist.append(listsum);
+        jacklist[i] = jacklist[i] - flist[i];
+        jacklist[i] = jacklist[i]/(jacklen);
+    jackavg = np.mean(jacklist);
+    sigmaf = pow(jacklen,0.5)*(np.std(jacklist));
+    return sigmaf;
+
 
 def calcAvg(mat,i,istart,FileList):
-    N = i - istart;
-    T = mat[istart,1];
-    L = mat[istart,0];
-    iend = i -1;
 # Format::
 # 0      1      2      3      4      5      6            
 # L      T      neqsw  neqcl  nsmsw  nsmcl  cold
@@ -41,66 +46,78 @@ def calcAvg(mat,i,istart,FileList):
 # 14     15     16     17     18     
 # bin    dBdT   xi     c      expFac
 # incoming values are per spin and not divided by avgExpFac
-# except for bin,dbdt,xi and c which should be ready to write to file    
-    B = np.mean(mat[istart:iend,14]);
-    xi = np.mean(mat[istart:iend,16]);
-    c = np.mean(mat[istart:iend,17]);
+# except for bin,dbdt,xi and c which are calculated from each set of averages and should be used in jackknife only
+    N = i - istart;
+    T = mat[istart,1];
+    L = mat[istart,0];
+    iend = i -1;
+    Nspins = L*L*L;
 
-    expFac = np.mean(mat[istart:iend,18]);
+    #MC averages not divided by exponential factor
+    rawE = mat[istart:iend,7];
+    rawE2 = mat[istart:iend,8];
+    rawM = mat[istart:iend,9];
+    rawM2 = mat[istart:iend,10];
+    rawM4 = mat[istart:iend,11];
+    rawM2E = mat[istart:iend,12];
+    rawM4E = mat[istart:iend,13];
+    #Quantities calculated for each of these averages
+    rawB = mat[istart:iend,14];
+    rawdBdT = mat[istart:iend,15];
+    rawXI = mat[istart:iend,16];
+    rawC = mat[istart:iend,17];
+    #exponential factor itself 
+    rawExp= mat[istart:iend,18];
     
-    Elist = mat[istart:iend,7];
-    Elist[:] = [x/expFac for x in Elist];
-    E = np.mean(Elist);
-    
-    E2list = mat[istart:iend,8];
-    E2list[:] = [x/expFac for x in E2list];
-    E2 = np.mean(E2list);
+    #form averages from these uncorrelated MC averages
+    avgrawE  = np.mean(rawE);
+    avgrawE2 = np.mean(rawE2);
+    avgrawM  = np.mean(rawM);
+    avgrawM2 = np.mean(rawM2);
+    avgrawM4 = np.mean(rawM4);
+    avgrawM2E= np.mean(rawM2E);
+    avgrawM4E= np.mean(rawM4E);
+    avgrawExp= np.mean(rawExp);
 
-    Mlist = mat[istart:iend,9];
-    Mlist[:] = [x/expFac for x in Mlist];
-    M = np.mean(Mlist);
-    
-    M2list = mat[istart:iend,10];
-    M2list[:] = [x/expFac for x in M2list];
-    M2 = np.mean(M2list);
+    avgE  = avgrawE/avgrawExp;
+    avgE2 = avgrawE2/avgrawExp;
+    avgM  = avgrawM/avgrawExp;
+    avgM2 = avgrawM2/avgrawExp;
+    avgM4 = avgrawM4/avgrawExp;
+    avgM2E= avgrawM2E/avgrawExp;
+    avgM4E= avgrawM4E/avgrawExp;
 
-    M4list = mat[istart:iend,11];
-    M4list[:] = [x/expFac for x in M4list];
-    M4 = np.mean(M4list);
-
-    M2Elist = mat[istart:iend,12];
-    M2Elist[:] = [x/expFac for x in M2Elist];
-    M2E = np.mean(M2list);
-
-    M4Elist = mat[istart:iend,13];
-    M4Elist[:] = [x/expFac for x in M4Elist];
-    M4E = np.mean(M4Elist);
-
-    calcB = M4/pow(M2,2);
-
-    calcxi = M2 - pow(M,2);
-    calcxi = calcxi/T;
-
-    calcC = (E2 - E*E);
+    #calculate quantities of these averages
+    calcB = avgM4/(avgM2*avgM2);
+    calcdBdT = avgM4E*avgM2 + avgM4*avgM2*avgE - 2.0*avgM4*avgM2E;
+    calcdBdT = (L*L*L*calcdBdT)/(T*T*avgM2*avgM2*avgM2);
+    calcXI =(avgM2 - avgM*avgM)/T
+    calcC = avgE2 - avgE*avgE;
     calcC = calcC/(T*T);
+    
+    #Find error bars of the quantities we want to plot using jackknife method
+    rawEdExp = [];
+    rawM2dExp = [];
+    rawM4dExp = [];
+    for i in range(len(rawE)):
+        rawEdExp.append(rawE[i]/rawExp[i]);
+        rawM2dExp.append(rawM2[i]/rawExp[i]);
+        rawM4dExp.append(rawM4[i]/rawExp[i]);
 
-    Ylist = [E,M2,M4,B,calcB,xi,calcxi,c,calcC];
+    deltaE = jackknife(rawEdExp);
+    deltaM2 = jackknife(rawM2dExp);
+    deltaM4 = jackknife(rawM4dExp);
+    deltaB = jackknife(rawB);
+    deltadBdT = jackknife(rawdBdT);
+    deltaXI= jackknife(rawXI);
+    deltaC= jackknife(rawC);
 
+    Ylist = [avgE,avgM2,avgM4,calcB,calcXI,calcC];
+    Deltalist = [deltaE,deltaM2,deltaM4,deltaB,deltaXI,deltaC];
 
-    deltaexpFac = np.std(mat[istart:iend,18])/pow(N,0.5);
-    deltaE = np.std(Elist)/pow(N,0.5);
-    deltaE2 = np.std(mat[istart:iend,8])/pow(N,0.5);
-    deltaM2 = np.std(mat[istart:iend,10])/pow(N,0.5);
-    deltaM4 = np.std(mat[istart:iend,11])/pow(N,0.5);
-    deltaM2E = np.std(mat[istart:iend,12])/pow(N,0.5);
-    deltaM4E = np.std(mat[istart:iend,13])/pow(N,0.5);
-    deltaB = np.std(mat[istart:iend,14])/pow(N,0.5);
-    deltaxi = np.std(mat[istart:iend,16])/pow(N,0.5);
-    deltaC = np.std(mat[istart:iend,17])/pow(N,0.5);
-    Deltalist = [deltaE,deltaM2,deltaM4,deltaB,0,deltaxi,0,deltaC,0];
     for i in range(len(Ylist)):
         FileList[i].write(repr(T)+"    "+repr(Ylist[i])+"    "+repr(Deltalist[i])+"    "+repr(N)+"\n")
-        #FileList[i].write(repr(T)+"    "+repr(Ylist[i])+"    "+repr(0.0)+"    "+repr(N)+"\n")
+
 
 #
 #read raw data from file in ./output
