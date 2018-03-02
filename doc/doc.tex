@@ -7,6 +7,16 @@
 \newcommand{\trm}[1]{\textrm{#1}}
 \begin{document}
 \section{Introduction}
+\section{Problem}
+The lambda phase transition in Helium-4 has been studied extensively both in theory, simulations and experiments. In 2003 a calculation of the critical exponent alpha describing the divergece of the heat capacity, was performed on the space-shuttle Something, and the exponent was calculated to the today highest standing precision. Theoretical calculations (pseudo-epsilon expansion etc) come up with a value in agreement with the experimental value. However, to date, the numerical estimates, while not extremelly far off, there still existst a discrepancy. In this thesis we have performed numerical studies to a higher degree of precision and our results show a better/the same/worse agreement with the experimental value. Agreement shows that numerical studies are a valid method of study of these systems, and discredits the idea that numberical simulations may be part of a different but closely related universality class.
+\section{Method}
+There are many different models in the same universality class as the normal-superfluid Helimu-4 transition, for example \dots.
+In this thesis we have chosen the simulate the 3DXY-model. This is convenient because of the relative simplicity of the model, and that it is well known and studied.
+The numerical method used to calculate thermodynamic averages is a Wolff algorithm.
+To achieve good statistics in a reasonable amount of time, it is necessary to utilize a global update algorithm, since the model experiences so called critical slowing down near the transition temperature. 
+Near the transition temperature, the correlation length diverges, so thermal fluctuations propagate very long distances, and so the system takes a very long time to equilibrate to the equilibrum value.
+\subsection{Wolff Algorithm}
+
 \section{Monte Carlo}
 In statistical physics averages are calculated from 
 \begin{equation}
