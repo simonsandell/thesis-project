@@ -91,9 +91,12 @@ def calcAvg(mat,i,istart,FileList):
     calcB = avgM4/(avgM2*avgM2);
     calcdBdT = avgM4E*avgM2 + avgM4*avgM2*avgE - 2.0*avgM4*avgM2E;
     calcdBdT = (L*L*L*calcdBdT)/(T*T*avgM2*avgM2*avgM2);
-    calcXI =(avgM2 - avgM*avgM)/T
+    calcXI = avgM2 - (avgM*avgM);
+    calcXI = calcXI/T;
+    calcXI = calcXI*Nspins;
     calcC = avgE2 - avgE*avgE;
     calcC = calcC/(T*T);
+    calcC = Nspins*Nspins*calcC;
     
     #Find error bars of the quantities we want to plot using jackknife method
     rawEdExp = [];
