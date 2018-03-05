@@ -59,8 +59,8 @@ long double * getTrange(long double start, long double end, int N){
 void wolffHistJob(long double L){
 	long double runTemp = 4.50000000000000L;
 
-	long double	startT=			4.49150L;
-	long double	endT=			4.50350L;
+	long double	startT=			4.40000L;
+	long double	endT=			4.60000L;
 	int 		Ntemps=			21;
 	long double* Trange;
 	if (Ntemps < 2) {
