@@ -57,8 +57,8 @@ long double * getTrange(long double start, long double end, int N){
 void wolffHistJob(long double L){
 	long double runTemp = 2.20200000000000L;
 
-	long double	startT=			2.20150L;
-	long double	endT=			2.20350L;
+	long double	startT=			2.20000L;
+	long double	endT=			2.20400L;
 	int 		Ntemps=			21;
 	long double* Trange;
 	if (Ntemps < 2) {
@@ -68,19 +68,19 @@ void wolffHistJob(long double L){
 	else {
 		Trange = getTrange(startT,endT,int(Ntemps));
 	}
-	int 		Neq=			20000;
+	int 		Neq=			100000;
 	bool 		cold=			true;
-	long double	Nsamp=			10000.0L;
+	long double	Nsamp=			100000.0L;
 	int 		Nbetw=			100;
-	int 		Nruns=			1000;
+	int 		Nruns=			100;
 	Lattice lat(L,cold);
 	Cluster clust(L);
 	RandStruct rand;
 	long double beta = 1.0L/runTemp;
-	warmup(lat,clust,beta,rand,(Neq-Nbetw));
+	warmup(lat,clust,beta,rand,(Neq));
 	for (int i=0; i< Nruns; ++i){	
-		warmup(lat,clust,beta,rand,Nbetw);
 		wolffHistRun(lat,Nsamp,Trange,Ntemps,runTemp);
+		warmup(lat,clust,beta,rand,Nbetw);
 	}
 
 }
@@ -108,21 +108,21 @@ int main(){
 	ThreadPool pool(24);
 	std::vector< std::future<void> > results;
 
-	for(int i = 0; i < 8; ++i) {
+	for(int i = 0; i < 20; ++i) {
 		results.emplace_back(
 				pool.enqueue([i] {
 					wolffHistJob(4.0L);
 					})
 				);
 	}
-	for(int i = 0; i < 8; ++i) {
+	for(int i = 0; i < 20; ++i) {
 		results.emplace_back(
 				pool.enqueue([i] {
 					wolffHistJob(8.0L);
 					})
 				);
 	}
-	for(int i = 0; i < 8; ++i) {
+	for(int i = 0; i < 20; ++i) {
 		results.emplace_back(
 				pool.enqueue([i] {
 					wolffHistJob(16.0L);
