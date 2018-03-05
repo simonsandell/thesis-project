@@ -93,7 +93,7 @@ void wolffHistRun(Lattice& lat, long double N_sample_sweeps,long double *Tempera
 			avgs[i].m4e += expFac*tM2*tM2*tE;
 		}
 	}//end of samples
-	lat.Nsmclusts=intNsampClust; 
+	lat.Nsmclusts=long double(intNsampClust);
 	lat.Nsmsweeps = ((long double)steps)/((long double)lat.Nspins);
 
 	//calculate quantities of interest
@@ -117,14 +117,14 @@ void wolffHistRun(Lattice& lat, long double N_sample_sweeps,long double *Tempera
 		   */
 
 		//normalize
-		avgs[i].e   /= intNsampClust;
-		avgs[i].e2  /= intNsampClust;
-		avgs[i].m   /= intNsampClust;
-		avgs[i].m2  /= intNsampClust;
-		avgs[i].m4  /= intNsampClust;
-		avgs[i].m2e /= intNsampClust;
-		avgs[i].m4e /= intNsampClust;
-		avgs[i].exp /= intNsampClust;
+		avgs[i].e   /= lat.Nsmclusts;
+		avgs[i].e2  /= lat.Nsmclusts;
+		avgs[i].m   /= lat.Nsmclusts;
+		avgs[i].m2  /= lat.Nsmclusts;
+		avgs[i].m4  /= lat.Nsmclusts;
+		avgs[i].m2e /= lat.Nsmclusts;
+		avgs[i].m4e /= lat.Nsmclusts;
+		avgs[i].exp /= lat.Nsmclusts;
 
 		//calculate
 		b[i] = avgs[i].m4*avgs[i].exp;
