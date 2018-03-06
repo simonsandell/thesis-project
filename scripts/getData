@@ -1,5 +1,3 @@
 #!/bin/bash
 #Retrieves raw data from the cluster
-currdir=${PWD##*/}
-rsync -u -v --progress simsan@octopus.theophys.kth.se:~/exjobb/$currdir/output/* ./output/
-rsync -u -v --progress simsan@octopus.theophys.kth.se:~/exjobb/$currdir/teqoutput/* ./teqoutput/
+rsync -u -v --progress simsan@octopus.theophys.kth.se:~/exjobb/modular/output/$1 ./output/
