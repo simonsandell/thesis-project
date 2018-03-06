@@ -14,7 +14,7 @@ lists = { 4:list4,
         64:list64
         }
 
-directory = "/home/simon/exjobb/modular/maxE/";
+directory = "/home/simsan/exjobb/modular/maxE/XY/";
 for filename in os.listdir(directory):
     strL = filename.rsplit("_")
     L = int(strL[0]);
@@ -33,4 +33,5 @@ for l in lists:
     Wfile = open(directory + str(l) + "_maxE.txt","w")
     Wfile.write(repr(maxV))
     Wfile.close();
+    print(maxV)
 
