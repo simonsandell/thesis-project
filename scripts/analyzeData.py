@@ -1,6 +1,7 @@
 import sys
 import numpy as np
 import math
+np.set_printoptions(threshold=np.nan)
 
 def openFiles(FileList,L,fName):
     #open files for writing
@@ -120,8 +121,9 @@ def calcAvg(mat,i,istart,FileList):
     Deltalist = [deltaE,deltaM,deltaB,deltadBdT,deltaXI,deltaRS];
 
 
+    fstr= "{:30.30f}";
     for i in range(len(Ylist)):
-        FileList[i].write(repr(T)+"    "+repr(Ylist[i])+"    "+repr(Deltalist[i])+"    "+repr(N)+"\n")
+        FileList[i].write(fstr.format(T)+"    "+fstr.format(Ylist[i])+"    "+fstr.format(Deltalist[i])+"    "+fstr.format(N)+"\n")
 
 #
 #read raw data from file in ./output
