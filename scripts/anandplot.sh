@@ -3,5 +3,6 @@
 for filename in ./output/*; do
 	echo "analyzing $filename"
 	python3 ../scripts/analyzeData.py $(basename $filename)
+	python3 ../scripts/toLplot.py $(basename $filename)
 done
 ../scripts/rplots.sh
