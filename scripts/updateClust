@@ -1,9 +1,0 @@
-#!/bin/bash
-# Compiles the simulation program and sends it to the correct folder on the cluster
-g++ *.cpp
-currdir=${PWD##*/}
-ssh simsan@octopus.theophys.kth.se mkdir -p $currdir
-ssh simsan@octopus.theophys.kth.se mkdir -p $currdir/output
-scp ./runsim simsan@octopus.theophys.kth.se:~/$currdir/runsim
-scp ./runsim.py simsan@octopus.theophys.kth.se:~/$currdir/runsim.py
-scp ./a.out simsan@octopus.theophys.kth.se:~/$currdir/a.out
