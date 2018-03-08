@@ -36,8 +36,8 @@ void wolffHistRun(Lattice& lat, long double N_sample_sweeps,long double *Tempera
 	long double maxTotE = getMaxE(lat.L); 
 	long double expCorr = 0.0L;
 
-	int steps = 0;
-	int intNsampClust = 0;
+	long double steps = 0.0L;
+	long double NsampClust = 0.0L;
 	long double leaststeps = N_sample_sweeps*lat.Nspins;
 
 	Cluster cluster(lat.L);
@@ -45,17 +45,17 @@ void wolffHistRun(Lattice& lat, long double N_sample_sweeps,long double *Tempera
 
 	while (steps < leaststeps){
 		//make a cluster
-		steps += growCluster(lat,cluster,Beta,rand);
+		steps += (long double)growCluster(lat,cluster,Beta,rand);
 		if (steps < 0) {
 			std::cout << "OVERFLOW" << std::endl;
 		}
-		++intNsampClust;
+		NsampClust += 1.0L;
 
 		//update maxE if necessary
 		
 		if (std::abs(lat.energy) > std::abs(maxTotE)){
 			expCorr = 1.0L;
-			if (intNsampClust > 1){
+			if (NsampClust > 1.0L){
 				expCorr = exp(-maxTotE +lat.energy);	
 				for (int k = 0; k<N_temps;++k){
 					avgs[k].e     *= expCorr;
@@ -102,7 +102,7 @@ void wolffHistRun(Lattice& lat, long double N_sample_sweeps,long double *Tempera
 			avgs[i].s2z += expFac*tSz*tSz;
 		}
 	}//end of samples
-	lat.Nsmclusts=intNsampClust; 
+	lat.Nsmclusts=NsampClust; 
 	lat.Nsmsweeps = ((long double)steps)/((long double)lat.Nspins);
 
 
@@ -132,17 +132,17 @@ void wolffHistRun(Lattice& lat, long double N_sample_sweeps,long double *Tempera
 		   */
 
 		//normalize
-		avgs[i].e   /= intNsampClust;
-		avgs[i].e2  /= intNsampClust;
-		avgs[i].m   /= intNsampClust;
-		avgs[i].m2  /= intNsampClust;
-		avgs[i].m4  /= intNsampClust;
-		avgs[i].m2e /= intNsampClust;
-		avgs[i].m4e /= intNsampClust;
-		avgs[i].s2x /= intNsampClust;
-		avgs[i].s2y /= intNsampClust;
-		avgs[i].s2z /= intNsampClust;
-		avgs[i].exp /= intNsampClust;
+		avgs[i].e   /= NsampClust;
+		avgs[i].e2  /= NsampClust;
+		avgs[i].m   /= NsampClust;
+		avgs[i].m2  /= NsampClust;
+		avgs[i].m4  /= NsampClust;
+		avgs[i].m2e /= NsampClust;
+		avgs[i].m4e /= NsampClust;
+		avgs[i].s2x /= NsampClust;
+		avgs[i].s2y /= NsampClust;
+		avgs[i].s2z /= NsampClust;
+		avgs[i].exp /= NsampClust;
 
 		//calculate
 		b[i] = avgs[i].m4*avgs[i].exp;
