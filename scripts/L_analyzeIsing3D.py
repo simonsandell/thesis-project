@@ -3,15 +3,16 @@ import numpy as np
 import math
 np.set_printoptions(threshold=np.nan)
 
-def openFiles(FileList,L,fName):
+def openFiles(FileList,T,fName):
     #open files for writing
     #separate files for different systemsizes
-    EF = open("./foutput/XY/en/"+str(int(L))+"_"+fName+".dat","w")
-    MF = open("./foutput/XY/mag/"+str(int(L))+"_"+fName+".dat","w")
-    BF = open("./foutput/XY/bin/"+str(int(L))+"_"+fName+".dat","w")
-    DF = open("./foutput/XY/dbdt/"+str(int(L))+"_"+fName+".dat","w")
-    XF = open("./foutput/XY/xi/"+str(int(L))+"_"+fName+".dat","w")
-    RF = open("./foutput/XY/rs/"+str(int(L))+"_"+fName+".dat","w")
+    fnfstr = "{:8.8f}"
+    EF = open("./foutput/L_en/"+fnfstr.format(T)+"_"+fName+".dat","w")
+    MF = open("./foutput/L_mag/"+fnfstr.format(T)+"_"+fName+".dat","w")
+    BF = open("./foutput/L_bin/"+fnfstr.format(T)+"_"+fName+".dat","w")
+    DF = open("./foutput/L_dbdt/"+fnfstr.format(T)+"_"+fName+".dat","w")
+    XF = open("./foutput/L_xi/"+fnfstr.format(T)+"_"+fName+".dat","w")
+    RF = open("./foutput/L_rs/"+fnfstr.format(T)+"_"+fName+".dat","w")
     FileList[:] = [];
     FileList.append(EF)
     FileList.append(MF)
@@ -123,7 +124,7 @@ def calcAvg(mat,i,istart,FileList):
 
     fstr= "{:30.30f}";
     for i in range(len(Ylist)):
-        FileList[i].write(fstr.format(T)+"    "+fstr.format(Ylist[i])+"    "+fstr.format(Deltalist[i])+"    "+fstr.format(N)+"\n")
+        FileList[i].write(fstr.format(L)+"    "+fstr.format(Ylist[i])+"    "+fstr.format(Deltalist[i])+"    "+fstr.format(N)+ "    "+fstr.format(T) + "\n")
 
 #
 #read raw data from file in ./output
@@ -149,31 +150,31 @@ for ln in data0:
     vals.append(fllist)
 mat = np.array(vals)
 
-#Sort input data    
-ind = np.lexsort((mat[:,21],mat[:,20],mat[:,19],mat[:,18],mat[:,17],mat[:,16],mat[:,15],mat[:,14],mat[:,13],mat[:,12],mat[:,11],mat[:,10],mat[:,9],mat[:,8],mat[:,7],mat[:,5],mat[:,4],mat[:,3],mat[:,2],mat[:,6],mat[:,1],mat[:,0]));
+#Sort input data, by temperature, then L
+ind = np.lexsort((mat[:,21],mat[:,20],mat[:,19],mat[:,18],mat[:,17],mat[:,16],mat[:,15],mat[:,14],mat[:,13],mat[:,12],mat[:,11],mat[:,10],mat[:,9],mat[:,8],mat[:,7],mat[:,5],mat[:,4],mat[:,3],mat[:,2],mat[:,6],mat[:,0],mat[:,1]));
 mat = mat[ind]
-
 #form averages and print to file
 L=mat[0,0];
 T=mat[0,1];
 
 FileList =[]
-openFiles(FileList,L,fName);
+openFiles(FileList,T,fName);
 
-TOL = float('0.00000000001');
+TOL = 0.000001;
 ifirst = 0;
 for i in range(mat.shape[0]):
-    #if new value of L, make new outputfile
-    if(TOL < abs(mat[i,0] - L)):
+    #if new value of T, make new outputfile
+    if(TOL < abs(mat[i,1] - T)):
         calcAvg(mat,i,ifirst,FileList);
         ifirst = i;
-        L = float(mat[i,0])
-        T = float(mat[i,1])
-        #open new files since L has changed
-        openFiles(FileList,L,fName);
-    elif(TOL < abs(mat[i,1] - T)):
+        L = mat[i,0]
+        T = mat[i,1]
+        #open new files since T has changed
+        openFiles(FileList,T,fName);
+    #if new L value, make new averages
+    elif(TOL < abs(mat[i,0] - L)):
         calcAvg(mat,i,ifirst,FileList);
         ifirst = i;
-        T = float(mat[i,1])
+        L = mat[i,0]
 #one final write
 calcAvg(mat,i+1,ifirst,FileList);

@@ -5,12 +5,12 @@ import math
 def openFiles(FileList,L,fName):
     #open files for writing
     #separate files for different systemsizes
-    EF = open("./foutput/en/"+str(int(L))+"_"+fName+".dat","w")
-    M2F = open("./foutput/m2/"+str(int(L))+"_"+fName+".dat","w")
-    M4F = open("./foutput/m4/"+str(int(L))+"_"+fName+".dat","w")
-    BF = open("./foutput/bin/"+str(int(L))+"_"+fName+".dat","w")
-    XF = open("./foutput/xi/"+str(int(L))+"_"+fName+".dat","w")
-    CF= open("./foutput/c/"+str(int(L))+"_"+fName+".dat","w")
+    EF = open("./foutput/Ising3D/en/"+str(int(L))+"_"+fName+".dat","w")
+    M2F = open("./foutput/Ising3D/m2/"+str(int(L))+"_"+fName+".dat","w")
+    M4F = open("./foutput/Ising3D/m4/"+str(int(L))+"_"+fName+".dat","w")
+    BF = open("./foutput/Ising3D/bin/"+str(int(L))+"_"+fName+".dat","w")
+    XF = open("./foutput/Ising3D/xi/"+str(int(L))+"_"+fName+".dat","w")
+    CF= open("./foutput/Ising3D/c/"+str(int(L))+"_"+fName+".dat","w")
 
     FileList[:] = [];
     FileList.append(EF)
