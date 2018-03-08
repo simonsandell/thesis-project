@@ -6,7 +6,7 @@
 #include "3DXYlattice.h"
 #include "3DXYio.h"
 
-long double Lattice::siteEnergy( int &s1, int &s2, int &s3){
+long double Lattice3DXY::siteEnergy( int &s1, int &s2, int &s3){
 	long double sum = 0.0L;
 	//find indices of neighbours
 	int n1m = (s1 -1 + (int)L )%(int)L;
@@ -24,21 +24,21 @@ long double Lattice::siteEnergy( int &s1, int &s2, int &s3){
 	return sum;
 }
 //calculate sin(theta - theta_x) upwards +, downward -
-long double Lattice::sinX(int &s1, int &s2, int &s3,long double &angle){
+long double Lattice3DXY::sinX(int &s1, int &s2, int &s3,long double &angle){
 	int np = (s1 + 1) %(int)L;
 	int nm = (s1 -1 + (int)L) % (int)L;	
 	long double ret = 0.0L;
 	ret = sin(theLattice[nm][s2][s3] - angle) + sin(angle - theLattice[np][s2][s3]);
 	return ret;
 }
-long double Lattice::sinY(int &s1, int &s2, int &s3,long double &angle){
+long double Lattice3DXY::sinY(int &s1, int &s2, int &s3,long double &angle){
 	int np = (s2 + 1) %(int)L;
 	int nm = (s2 -1 + (int)L) % (int)L;	
 	long double ret = 0.0L;
 	ret = sin(theLattice[s1][nm][s3] - angle) + sin(angle - theLattice[s1][np][s3]);
 	return ret;
 }
-long double Lattice::sinZ(int &s1, int &s2, int &s3,long double &angle){
+long double Lattice3DXY::sinZ(int &s1, int &s2, int &s3,long double &angle){
 	int np = (s3 + 1) %(int)L;
 	int nm = (s3 -1 + (int)L) % (int)L;	
 	long double ret = 0.0L;
@@ -108,7 +108,7 @@ long double calcMag(long double ***lattice,long double L){
 	return mag;
 }	
 
-long double calcEn(Lattice* lat){
+long double calcEn(Lattice3DXY* lat){
 	long double en = 0.0L;
 	for (int i = 0; i< lat->L; ++i){
 		for (int j = 0; j< lat->L; ++j){
@@ -158,7 +158,7 @@ long double*** newLattice(long double L,bool cold){
 	return lattice;
 }
 //update quantiites of the lattice
-void Lattice::updateQuants(){
+void Lattice3DXY::updateQuants(){
 	energy = calcEn(this);
 	xmag = calcXMag(theLattice,L);
 	ymag = calcYMag(theLattice,L);
@@ -168,7 +168,7 @@ void Lattice::updateQuants(){
 };
 
 //initialize new lattice
-Lattice::Lattice(int l, bool cold){
+Lattice3DXY::Lattice3DXY(int l, bool cold){
 	theLattice = newLattice((long double)l,cold);
 	L = (long double)l;
 	Nspins =L*L*L;
@@ -197,11 +197,11 @@ Lattice::Lattice(int l, bool cold){
 
 
 };
-Lattice::Lattice(){
+Lattice3DXY::Lattice3DXY(){
 
 }
 
-void Lattice::testConsistent(){
+void Lattice3DXY::testConsistent(){
 
 	typedef std::numeric_limits<long double> dbl;
 	std::cout.precision(dbl::max_digits10 + 5);

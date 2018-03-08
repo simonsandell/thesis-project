@@ -9,10 +9,10 @@
 
 #include "3DXYio.h"
 #include "3DXYlattice.h"
-#include "avgStruct.h"
+#include "../avgStruct.h"
 
 //print lattice
-void printLattice(long double ***lattice,long double  L){
+void printLattice3DXY(long double ***lattice,long double  L){
 	typedef std::numeric_limits<long double> dbl;
 	std::cout.precision(dbl::max_digits10 + 5);
 	for(int i = 0; i < L; ++i){
@@ -41,7 +41,7 @@ std::string get_selfpath(){
 		exit(-1);
 	}
 }
-void printOutput(Lattice lat, long double T,avgStruct avgs, long double bin, long double dbdt, long double xi, long double rs){
+void print3DXYOutput(Lattice3DXY lat, long double T,avgStruct avgs, long double bin, long double dbdt, long double xi, long double rs){
 	typedef std::numeric_limits<long double> dbl;
 
 	std::cout.precision(dbl::max_digits10 + 5);
@@ -74,17 +74,17 @@ void printOutput(Lattice lat, long double T,avgStruct avgs, long double bin, lon
 	std::cout << sstrm.str();
 }
 
-long double getMaxE(long double L){
+long double getMaxE3DXY(long double L){
 	std::ostringstream mstream;
 	std::string exePath = get_selfpath();
-	mstream << exePath << "/maxE/XY/" << L << "_maxE.txt";
+	mstream << exePath << "/maxE/3DXY/" << L << "_maxE.txt";
 	std::string fname = mstream.str();
 	std::ifstream file(fname);
 	long double maxE;
 	file >> std::fixed >> maxE;
 	return maxE;
 }
-void setMaxE(long double L,long double newE){
+void setMaxE3DXY(long double L,long double newE){
 
 	time_t  t = time(0);
 	struct tm * now = localtime(& t);
@@ -93,7 +93,7 @@ void setMaxE(long double L,long double newE){
 	strftime (buffer,80,"%Y-%m-%d.%H:%M:%S",now);
 	std::ostringstream mstream;
 	std::string exePath = get_selfpath();
-	mstream << exePath<< "/maxE/XY/" << L <<"_"<< buffer;
+	mstream << exePath<< "/maxE/3DXY/" << L <<"_"<< buffer;
 	std::string fname = mstream.str();
 	std::ofstream file;
 	file.open(fname);
@@ -103,7 +103,7 @@ void setMaxE(long double L,long double newE){
 	file << std::fixed << newE;
 }
 
-void saveLattice(Lattice lat){
+void saveLattice3DXY(Lattice3DXY lat){
 
 	int L = lat.L;
 	std::ostringstream mstream;
@@ -117,13 +117,13 @@ void saveLattice(Lattice lat){
 
 }
 
-Lattice getLattice(int l){
+Lattice3DXY getLattice3DXY(int l){
 	std::ostringstream mstream;
 	std::string exePath = get_selfpath();
 	mstream << exePath << "/warmLattice/" << l << "_warm.lat";
 	std::string fname = mstream.str();
 
-	Lattice lat;
+	Lattice3DXY lat;
 	FILE* input;
 
 	input = fopen(fname.c_str(),"rb");

@@ -1,8 +1,8 @@
-#ifndef 3DXYMETRO_H 
-#define 3DXYMETRO_H
+#ifndef _3DXYMETRO_H 
+#define _3DXYMETRO_H
 #include <random>
 
-#include "latticeStruct.h"
-#include "randStruct.h"
-void metrosweep(Lattice& lat,long double beta,RandStruct randgen);
+#include "3DXYlattice.h"
+#include "../randStruct.h"
+void metrosweep3DXY(Lattice3DXY& lat,long double beta,RandStruct randgen);
 #endif

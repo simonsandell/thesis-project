@@ -7,11 +7,11 @@
 
 #include "3DXYwolff.h"
 #include "3DXYio.h"
-#include "clusterStruct.h"
-#include "randStruct.h"
-#include "avgStruct.h"
+#include "../clusterStruct.h"
+#include "../randStruct.h"
+#include "../avgStruct.h"
 
-void wolffHistRun(Lattice& lat, long double N_sample_sweeps,long double *Temperatures,int N_temps,long double runTemp){
+void wolffHistRun3DXY(Lattice3DXY& lat, long double N_sample_sweeps,long double *Temperatures,int N_temps,long double runTemp){
 
 
 	//convert temp to betas
@@ -32,7 +32,7 @@ void wolffHistRun(Lattice& lat, long double N_sample_sweeps,long double *Tempera
 	}
 
 	long double expFac = 0.0L;
-	long double maxTotE = getMaxE(lat.L); 
+	long double maxTotE = getMaxE3DXY(lat.L); 
 	long double expCorr = 0.0L;
 
 	long double steps = 0.0L;
@@ -44,7 +44,7 @@ void wolffHistRun(Lattice& lat, long double N_sample_sweeps,long double *Tempera
 
 	while (steps < leaststeps){
 		//make a cluster
-		steps += (long double)growCluster(lat,cluster,Beta,rand);
+		steps += (long double)cluster3DXY(lat,cluster,Beta,rand);
 		if (steps < 0) {
 			std::cout << "OVERFLOW" << std::endl;
 		}
@@ -178,10 +178,10 @@ void wolffHistRun(Lattice& lat, long double N_sample_sweeps,long double *Tempera
 		   */
 	}
 	for (int i = 0;i< N_temps; ++i){
-		printOutput(lat,Temperatures[i],avgs[i],
+		print3DXYOutput(lat,Temperatures[i],avgs[i],
 				b[i],dbdt[i],xi[i],rs[i]);
 	}
 	if (expCorr != 0.0L){
-		setMaxE(lat.L,maxTotE);
+		setMaxE3DXY(lat.L,maxTotE);
 	}
 }

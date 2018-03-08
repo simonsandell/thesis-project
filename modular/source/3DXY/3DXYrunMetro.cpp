@@ -8,11 +8,11 @@
 #include "3DXYio.h"
 #include "3DXYmetro.h"
 #include "3DXYlattice.h"
-#include "randStruct.h"
-#include "avgStruct.h"
+#include "../randStruct.h"
+#include "../avgStruct.h"
 
 
-void metroRun(Lattice&lat, long double N_sample_sweeps,long double Temperature){
+void metroRun3DXY(Lattice3DXY&lat, long double N_sample_sweeps,long double Temperature){
 
 	//initialize rng
 	RandStruct rand;
@@ -34,8 +34,8 @@ void metroRun(Lattice&lat, long double N_sample_sweeps,long double Temperature){
 	long double tSz;
 	for (int i = 0; i < N_sample_sweeps; ++i){
 		//do 2 sweeps
-		metrosweep(lat,Beta,rand);
-		metrosweep(lat,Beta,rand);
+		metrosweep3DXY(lat,Beta,rand);
+		metrosweep3DXY(lat,Beta,rand);
 		//scale quantities by lattice sites
 		tE = lat.energy/lat.Nspins;
 		tM2 = lat.xmag*lat.xmag + lat.ymag*lat.ymag;
@@ -56,7 +56,7 @@ void metroRun(Lattice&lat, long double N_sample_sweeps,long double Temperature){
 		avgs.s2z+= tSz*tSz;
 	}
 
-	//define some reciprocals to reduce number of divions
+	//define _some reciprocals to reduce number of divions
 
 	//calculate quantities of interest
 
@@ -93,5 +93,5 @@ void metroRun(Lattice&lat, long double N_sample_sweeps,long double Temperature){
 	rs /= 3.0L; 
 	rs *= lat.L;
 
-	printOutput(lat,Temperature,avgs,b,dbdt,xi,rs);
+	print3DXYOutput(lat,Temperature,avgs,b,dbdt,xi,rs);
 }

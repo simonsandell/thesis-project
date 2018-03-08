@@ -1,7 +1,7 @@
-#ifndef 3DXYLATTICE_H 
-#define 3DXYLATTICE_H
+#ifndef _3DXYLATTICE_H 
+#define _3DXYLATTICE_H
 
-struct Lattice{
+struct Lattice3DXY{
 	long double *** theLattice;
 	long double L,Nspins,Neqsweeps,Nsmsweeps;
 	int Neqclusts,Nsmclusts;	
@@ -9,8 +9,8 @@ struct Lattice{
 
 	long double energy,xmag,ymag,sinx,siny,sinz;
 
-	Lattice(int L, bool cold);
-	Lattice();
+	Lattice3DXY(int L, bool cold);
+	Lattice3DXY();
 
 	void updateQuants();
 

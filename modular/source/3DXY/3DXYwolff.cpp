@@ -6,8 +6,8 @@
 #include <iostream>
 
 #include "3DXYlattice.h"
-#include "randStruct.h"
-#include "clusterStruct.h"
+#include "../randStruct.h"
+#include "../clusterStruct.h"
 
 long double getProb(long double u, long double angleParent, long double angle,long double beta){
 	long double prob = 1.0L - exp(2.0L*beta*cos(angleParent - u)*cos(angle -u));
@@ -20,7 +20,7 @@ long double getProb(long double u, long double angleParent, long double angle,lo
 	return prob;
 }
 
-void updateVals(Lattice& lat,long double e0,long double e1,
+void updateVals(Lattice3DXY& lat,long double e0,long double e1,
 		long double a0,long double a1,
 		long double sx0,long double sx1,
 		long double sy0,long double sy1,
@@ -40,7 +40,7 @@ void updateVals(Lattice& lat,long double e0,long double e1,
 	lat.sinz+= -sz0;
 }
 
-int growCluster(Lattice& lat,Cluster& cluster,long double beta,RandStruct& randgen){
+int cluster3DXY(Lattice3DXY& lat,Cluster& cluster,long double beta,RandStruct& randgen){
 
 	int time = 1;
 	//select random plane and random staring spin

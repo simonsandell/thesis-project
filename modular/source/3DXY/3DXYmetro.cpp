@@ -4,10 +4,10 @@
 #include <tuple>
 #include <vector>
 
-#include "randStruct.h"
+#include "../randStruct.h"
 #include "3DXYlattice.h"
 
-void updateValsM(Lattice& lat,long double e0,long double e1,
+void updateValsM(Lattice3DXY& lat,long double e0,long double e1,
 		long double a0,long double a1,
 		long double sx0,long double sx1,
 		long double sy0,long double sy1,
@@ -26,7 +26,7 @@ void updateValsM(Lattice& lat,long double e0,long double e1,
 	lat.sinz+= sz1;
 	lat.sinz+= -sz0;
 }
-void metrosweep(Lattice& lat,long double beta,RandStruct randgen){
+void metrosweep3DXY(Lattice3DXY& lat,long double beta,RandStruct randgen){
 	long double prob;
 	long double u;
 	int s1;

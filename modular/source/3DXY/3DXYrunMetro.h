@@ -1,7 +1,7 @@
-#ifndef 3DXYRUNMETRO_H
-#define 3DXYRUNMETRO_H
-#include "latticeStruct.h"
-void metroRun(Lattice&lat,long double N_sample_sweeps,long double Temperature);
+#ifndef _3DXYRUNMETRO_H
+#define _3DXYRUNMETRO_H
+#include "3DXYlattice.h"
+void metroRun3DXY(Lattice3DXY&lat,long double N_sample_sweeps,long double Temperature);
 
 
 #endif

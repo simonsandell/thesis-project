@@ -7,24 +7,24 @@
 #include <chrono>
 
 #include "ThreadPool.h"
-#include "ioFuncs.h"
-#include "latticeStruct.h"
+#include "3DXY/3DXYio.h"
+#include "3DXY/3DXYlattice.h"
 #include "clusterStruct.h"
 #include "randStruct.h"
-#include "metroRun.h"
-#include "metropolis.h"
-#include "wolffHistRun.h"
-#include "wolff.h"
+#include "3DXY/3DXYrunMetro.h"
+#include "3DXY/3DXYmetro.h"
+#include "3DXY/3DXYrunWolff.h"
+#include "3DXY/3DXYwolff.h"
 
 using namespace std;
 
-void warmup(Lattice& lat,Cluster&clust,long double beta,RandStruct&rand,int N){
+void warmup(Lattice3DXY& lat,Cluster&clust,long double beta,RandStruct& rand,int N){
 	long double Nspins = lat.L*lat.L*lat.L;
 	long double fliptries = 0;
 	long double clusts = 0;
 	while ((fliptries/Nspins) < N){
 		clusts += 1.0L;
-		fliptries +=(long double) growCluster(lat,clust,beta,rand);
+		fliptries +=(long double) cluster3DXY(lat,clust,beta,rand);
 	}
 	if( !lat.warmedUp){
 		lat.Neqclusts = clusts;
@@ -32,9 +32,9 @@ void warmup(Lattice& lat,Cluster&clust,long double beta,RandStruct&rand,int N){
 		lat.warmedUp = true;
 	}
 }
-void warmupMetro(Lattice& lat,long double beta,RandStruct&rand,int N){
+void warmupMetro(Lattice3DXY& lat,long double beta,RandStruct&rand,int N){
 	for (int i = 0; i < N; i++){
-		metrosweep(lat,beta,rand);
+		metrosweep3DXY(lat,beta,rand);
 	}
 	if( !lat.warmedUp){
 		lat.Neqclusts = 0;
@@ -72,13 +72,14 @@ void wolffHistJob(long double L){
 	long double	Nsamp=			100000.0L;
 	int 		Nbetw=			100;
 	int 		Nruns=			100;
-	Lattice lat(L,cold);
+	Lattice3DXY lat(L,cold);
 	Cluster clust(L);
 	RandStruct rand;
 	long double beta = 1.0L/runTemp;
 	warmup(lat,clust,beta,rand,(Neq));
+	cout << "warmup done" << endl;
 	for (int i=0; i< Nruns; ++i){	
-		wolffHistRun(lat,Nsamp,Trange,Ntemps,runTemp);
+		wolffHistRun3DXY(lat,Nsamp,Trange,Ntemps,runTemp);
 		warmup(lat,clust,beta,rand,Nbetw);
 	}
 
@@ -91,25 +92,25 @@ void metroJob(long double L){
 	long double	Nsamp=			1000.0L;
 	int 		Nbetw=			100;
 	int 		Nruns=			1000;
-	Lattice lat(L,cold);
+	Lattice3DXY lat(L,cold);
 	RandStruct rand;
 	long double beta = 1.0L/runTemp;
 	warmupMetro(lat,beta,rand,(Neq-Nbetw));
 	for (int i=0; i< Nruns; ++i){	
 		warmupMetro(lat,beta,rand,Nbetw);
-		metroRun(lat,Nsamp,runTemp);
+		metroRun3DXY(lat,Nsamp,runTemp);
 	}
 }
 
 //main
 //
 int main(){
-	ThreadPool pool(12);
+	ThreadPool pool(1);
 	std::vector< std::future<void> > results;
 	for(int i = 0; i < 100; ++i) {
 		results.emplace_back(
 				pool.enqueue([i] {
-					wolffHistJob(32.0L);
+					wolffHistJob(4.0L);
 					})
 				);
 	}
