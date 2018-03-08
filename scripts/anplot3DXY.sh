@@ -5,4 +5,3 @@ for filename in ./output/*; do
 	python3 ../scripts/analyze3DXY.py $(basename $filename)
 	python3 ../scripts/L_analyze3DXY.py $(basename $filename)
 done
-../scripts/rplots.sh
