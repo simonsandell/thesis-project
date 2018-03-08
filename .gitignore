@@ -49,7 +49,7 @@ Thumbs.db
 output/
 teqoutput/
 foutput/
-saved_output/
+old_output/
 test/
 warmLattice/
 lattices/
