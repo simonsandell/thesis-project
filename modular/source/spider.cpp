@@ -19,13 +19,12 @@
 using namespace std;
 
 void warmup(Lattice& lat,Cluster&clust,long double beta,RandStruct&rand,int N){
-	int Nspins = lat.L*lat.L*lat.L;
-	int fliptries = 0;
-	int clusts = 0;
+	long double Nspins = lat.L*lat.L*lat.L;
+	long double fliptries = 0;
+	long double clusts = 0;
 	while ((fliptries/Nspins) < N){
-		clusts++;
-		fliptries += growCluster(lat,clust,beta,rand);
-
+		clusts += 1.0L;
+		fliptries +=(long double) growCluster(lat,clust,beta,rand);
 	}
 	if( !lat.warmedUp){
 		lat.Neqclusts = clusts;
@@ -55,10 +54,10 @@ long double * getTrange(long double start, long double end, int N){
 }
 
 void wolffHistJob(long double L){
-	long double runTemp = 2.20200000000000L;
+	long double runTemp = 2.20260000000000L;
 
-	long double	startT=			2.20000L;
-	long double	endT=			2.20400L;
+	long double	startT=			2.20200L;
+	long double	endT=			2.20320L;
 	int 		Ntemps=			21;
 	long double* Trange;
 	if (Ntemps < 2) {
@@ -105,27 +104,12 @@ void metroJob(long double L){
 //main
 //
 int main(){
-	ThreadPool pool(24);
+	ThreadPool pool(12);
 	std::vector< std::future<void> > results;
-
-	for(int i = 0; i < 20; ++i) {
+	for(int i = 0; i < 100; ++i) {
 		results.emplace_back(
 				pool.enqueue([i] {
-					wolffHistJob(4.0L);
-					})
-				);
-	}
-	for(int i = 0; i < 20; ++i) {
-		results.emplace_back(
-				pool.enqueue([i] {
-					wolffHistJob(8.0L);
-					})
-				);
-	}
-	for(int i = 0; i < 20; ++i) {
-		results.emplace_back(
-				pool.enqueue([i] {
-					wolffHistJob(16.0L);
+					wolffHistJob(32.0L);
 					})
 				);
 	}
