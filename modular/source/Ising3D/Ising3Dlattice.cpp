@@ -3,10 +3,10 @@
 #include <random>
 #include <sys/syscall.h>
 
-#include "latticeStruct.h"
-#include "ioFuncs.h"
+#include "Ising3Dlattice.h"
+#include "Ising3Dio.h"
 
-long double Lattice::siteEnergy( int &s1, int &s2, int &s3){
+long double LatticeIsing3D::siteEnergy( int &s1, int &s2, int &s3){
 	long double sum = 0.0L;
 	//find indices of neighbours
 	int n1m = (s1 -1 + (int)L )%(int)L;
@@ -25,7 +25,7 @@ long double Lattice::siteEnergy( int &s1, int &s2, int &s3){
 	return sum;
 }
 //calculate sin(theta - theta_x) upwards +, downward -
-long double Lattice::calcMag(){
+long double LatticeIsing3D::calcMag(){
 	long double ret = 0.0L;
 	for (int i = 0; i<L; ++i){
 		for (int j = 0; j<L; ++j){
@@ -37,7 +37,7 @@ long double Lattice::calcMag(){
 	return ret;
 }
 
-long double Lattice::calcEn(){
+long double LatticeIsing3D::calcEn(){
 	long double en = 0.0L;
 	for (int i = 0; i< L; ++i){
 		for (int j = 0; j< L; ++j){
@@ -50,7 +50,7 @@ long double Lattice::calcEn(){
 	return en;
 }
 
-long double *** newLattice(long double L,bool cold){
+long double *** newLatticeI3D(long double L,bool cold){
 	//make new lattice
 	long double ***lattice;
 	lattice = new long double **[(int)L];
@@ -93,14 +93,14 @@ long double *** newLattice(long double L,bool cold){
 	return lattice;
 }
 //update quantiites of the lattice
-void Lattice::updateQuants(){
+void LatticeIsing3D::updateQuants(){
 	energy = calcEn();
 	mag = calcMag();
 };
 
 //initialize new lattice
-Lattice::Lattice(int l, bool cold){
-	theLattice = newLattice((long double)l,cold);
+LatticeIsing3D::LatticeIsing3D(int l, bool cold){
+	theLattice = newLatticeI3D((long double)l,cold);
 	L = (long double)l;
 	Nspins =L*L*L;
 	Neqsweeps = 0.0L;
@@ -120,11 +120,11 @@ Lattice::Lattice(int l, bool cold){
 
 
 };
-Lattice::Lattice(){
+LatticeIsing3D::LatticeIsing3D(){
 
 }
 
-void Lattice::testConsistent(){
+void LatticeIsing3D::testConsistent(){
 
 	typedef std::numeric_limits<long double> dbl;
 	std::cout.precision(dbl::max_digits10 + 5);

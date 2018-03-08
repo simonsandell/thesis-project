@@ -1,7 +1,7 @@
 #ifndef LATTICESTRUCT_H
 #define LATTICESTRUCT_H
 
-struct Lattice{
+struct LatticeIsing3D{
 	long double *** theLattice;
 	long double L,Nspins,Neqsweeps,Nsmsweeps;
 	int Neqclusts,Nsmclusts;	
@@ -12,8 +12,8 @@ struct Lattice{
 	long double calcEn();
 	long double calcMag();
 
-	Lattice(int L, bool cold);
-	Lattice();
+	LatticeIsing3D(int L, bool cold);
+	LatticeIsing3D();
 
 	void updateQuants();
 

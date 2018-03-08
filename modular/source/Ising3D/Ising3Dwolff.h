@@ -1,12 +1,11 @@
 #ifndef WOLFF_H
 #define WOLFF_H
 
-#include <random>
-#include "latticeStruct.h"
-#include "randStruct.h"
-#include "clusterStruct.h"
+#include "Ising3Dlattice.h"
+#include "../randStruct.h"
+#include "../clusterStruct.h"
 
-int growCluster(Lattice& lat,Cluster& cluster, long double beta,RandStruct& randgen);
+int clusterIsing3D(LatticeIsing3D& lat,Cluster& cluster, long double beta,RandStruct& randgen);
 
 
 

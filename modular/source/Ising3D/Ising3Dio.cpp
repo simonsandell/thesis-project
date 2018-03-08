@@ -7,12 +7,12 @@
 #include <unistd.h>
 #include <limits.h>
 
-#include "ioFuncs.h"
-#include "latticeStruct.h"
-#include "avgStruct.h"
+#include "Ising3Dio.h"
+#include "Ising3Dlattice.h"
+#include "../avgStruct.h"
 
 //print lattice
-void printLattice(long double ***lattice,long double  L){
+void printLatticeIsing3D(long double ***lattice,long double  L){
 	typedef std::numeric_limits<long double> dbl;
 	std::cout.precision(dbl::max_digits10 + 5);
 	for(int i = 0; i < L; ++i){
@@ -25,8 +25,7 @@ void printLattice(long double ***lattice,long double  L){
 		std::cout << std::endl;
 	}
 }
-
-std::string get_selfpath(){
+std::string get_selfpath2(){
 	char buff[PATH_MAX];
 	ssize_t len = ::readlink("/proc/self/exe",buff,sizeof(buff)-1);
 	if (len != -1) {
@@ -41,7 +40,7 @@ std::string get_selfpath(){
 		exit(-1);
 	}
 }
-void printOutput(Lattice lat, long double T,avgStruct avgs, long double bin, long double dbdt, long double xi, long double c){
+void printIsing3DOutput(LatticeIsing3D lat, long double T,avgStruct avgs, long double bin, long double dbdt, long double xi, long double c){
 	typedef std::numeric_limits<long double> dbl;
 
 	std::cout.precision(dbl::max_digits10 + 5);
@@ -71,9 +70,9 @@ void printOutput(Lattice lat, long double T,avgStruct avgs, long double bin, lon
 	std::cout << sstrm.str();
 }
 
-long double getMaxE(long double L){
+long double getMaxEIsing3D(long double L){
 	std::ostringstream mstream;
-	std::string exePath = get_selfpath();
+	std::string exePath = get_selfpath2();
 	mstream << exePath << "/maxE/Ising3D/" << L << "_maxE.txt";
 	std::string fname = mstream.str();
 	std::ifstream file(fname);
@@ -81,7 +80,7 @@ long double getMaxE(long double L){
 	file >> std::fixed >> maxE;
 	return maxE;
 }
-void setMaxE(long double L,long double newE){
+void setMaxEIsing3D(long double L,long double newE){
 
 	time_t  t = time(0);
 	struct tm * now = localtime(& t);
@@ -89,7 +88,7 @@ void setMaxE(long double L,long double newE){
 	char buffer [80];
 	strftime (buffer,80,"%Y-%m-%d.%H:%M:%S",now);
 	std::ostringstream mstream;
-	std::string exePath = get_selfpath();
+	std::string exePath = get_selfpath2();
 	mstream << exePath<< "/maxE/Ising3D/" << L <<"_"<< buffer;
 	std::string fname = mstream.str();
 	std::ofstream file;
@@ -100,11 +99,11 @@ void setMaxE(long double L,long double newE){
 	file << std::fixed << newE;
 }
 
-void saveLattice(Lattice lat){
+void saveLatticeIsing3D(LatticeIsing3D lat){
 
 	int L = lat.L;
 	std::ostringstream mstream;
-	std::string exePath = get_selfpath();
+	std::string exePath = get_selfpath2();
 	mstream << exePath<< "/warmLattice/" << L <<"_warm.lat";
 	std::string fname = mstream.str();
 	FILE* output;
@@ -114,13 +113,13 @@ void saveLattice(Lattice lat){
 
 }
 
-Lattice getLattice(int l){
+LatticeIsing3D getLattice(int l){
 	std::ostringstream mstream;
-	std::string exePath = get_selfpath();
+	std::string exePath = get_selfpath2();
 	mstream << exePath << "/warmLattice/" << l << "_warm.lat";
 	std::string fname = mstream.str();
 
-	Lattice lat;
+	LatticeIsing3D lat;
 	FILE* input;
 
 	input = fopen(fname.c_str(),"rb");

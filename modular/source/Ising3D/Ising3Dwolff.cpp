@@ -5,9 +5,9 @@
 #include <vector>
 #include <iostream>
 
-#include "latticeStruct.h"
-#include "randStruct.h"
-#include "clusterStruct.h"
+#include "Ising3Dlattice.h"
+#include "../randStruct.h"
+#include "../clusterStruct.h"
 
 long double getProb(long double spinParent, long double spin,long double beta){
 	long double prob;
@@ -20,7 +20,7 @@ long double getProb(long double spinParent, long double spin,long double beta){
 	return prob;
 }
 
-void updateVals(Lattice& lat,long double e0,long double e1,
+void updateVals(LatticeIsing3D& lat,long double e0,long double e1,
 		long double a0,long double a1){
 	lat.energy  += e1;
 	lat.energy  -= e0;
@@ -28,7 +28,7 @@ void updateVals(Lattice& lat,long double e0,long double e1,
 	lat.mag     -= a0;
 }
 
-int growCluster(Lattice& lat,Cluster& cluster,long double beta,RandStruct& randgen){
+int clusterIsing3D(LatticeIsing3D& lat,Cluster& cluster,long double beta,RandStruct& randgen){
 
 	int time = 1;
 	//select random staring spin

@@ -6,13 +6,13 @@
 #include <unistd.h>
 #include <linux/random.h>
 
-#include "wolff.h"
-#include "ioFuncs.h"
-#include "clusterStruct.h"
-#include "randStruct.h"
-#include "avgStruct.h"
+#include "Ising3Dwolff.h"
+#include "Ising3Dio.h"
+#include "../clusterStruct.h"
+#include "../randStruct.h"
+#include "../avgStruct.h"
 
-void wolffHistRun(Lattice& lat, long double N_sample_sweeps,long double *Temperatures,int N_temps,long double runTemp){
+void wolffHistRunIsing3D(LatticeIsing3D& lat, long double N_sample_sweeps,long double *Temperatures,int N_temps,long double runTemp){
 
 
 	//convert temp to betas
@@ -33,7 +33,7 @@ void wolffHistRun(Lattice& lat, long double N_sample_sweeps,long double *Tempera
 	}
 
 	long double expFac = 0.0L;
-	long double maxTotE = getMaxE(lat.L); 
+	long double maxTotE = getMaxEIsing3D(lat.L); 
 	long double expCorr = 0.0L;
 
 	int steps = 0;
@@ -45,7 +45,7 @@ void wolffHistRun(Lattice& lat, long double N_sample_sweeps,long double *Tempera
 
 	while (steps < leaststeps){
 		//make a cluster
-		steps += growCluster(lat,cluster,Beta,rand);
+		steps += clusterIsing3D(lat,cluster,Beta,rand);
 		if (steps < 0) {
 			std::cout << "OVERFLOW" << std::endl;
 			exit(0);
@@ -157,10 +157,10 @@ void wolffHistRun(Lattice& lat, long double N_sample_sweeps,long double *Tempera
 		   */
 	}
 	for (int i = 0;i< N_temps; ++i){
-		printOutput(lat,Temperatures[i],avgs[i],
+		printIsing3DOutput(lat,Temperatures[i],avgs[i],
 				b[i],dbdt[i],xi[i],c[i]);
 	}
 	if (expCorr != 0.0L){
-		setMaxE(lat.L,maxTotE);
+		setMaxEIsing3D(lat.L,maxTotE);
 	}
 }

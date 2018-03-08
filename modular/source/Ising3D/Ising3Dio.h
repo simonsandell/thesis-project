@@ -1,17 +1,17 @@
 #ifndef IOFUNCS_H
 #define IOFUNCS_H
 
-#include "latticeStruct.h"
-#include "avgStruct.h"
-void printOutput(Lattice lat,long double T, avgStruct avg, long double bin, long double dbdt, long double xi, long double rs);
+#include "Ising3Dlattice.h"
+#include "../avgStruct.h"
+void printIsing3DOutput(LatticeIsing3D lat,long double T, avgStruct avg, long double bin, long double dbdt, long double xi, long double rs);
 
-long double getMaxE(long double L);
+long double getMaxEIsing3D(long double L);
 
-void setMaxE(long double L,long double newE);
+void setMaxEIsing3D(long double L,long double newE);
 
-void saveLattice(Lattice lat);
+void saveLatticeIsing3D(LatticeIsing3D lat);
 
-Lattice getLattice(int l);
+LatticeIsing3D getLattice(int l);
 
 
 
