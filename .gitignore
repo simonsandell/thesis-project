@@ -52,6 +52,7 @@ foutput/
 saved_output/
 test/
 warmLattice/
+lattices/
 # ocotpus cluster output files
 ##############################
 run*.o*
