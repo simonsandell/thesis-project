@@ -3,8 +3,8 @@
 #include <random>
 #include <sys/syscall.h>
 
-#include "latticeStruct.h"
-#include "ioFuncs.h"
+#include "3DXYlattice.h"
+#include "3DXYio.h"
 
 long double Lattice::siteEnergy( int &s1, int &s2, int &s3){
 	long double sum = 0.0L;

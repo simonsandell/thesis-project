@@ -7,8 +7,8 @@
 #include <unistd.h>
 #include <limits.h>
 
-#include "ioFuncs.h"
-#include "latticeStruct.h"
+#include "3DXYio.h"
+#include "3DXYlattice.h"
 #include "avgStruct.h"
 
 //print lattice

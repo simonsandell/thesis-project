@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include <random>
 #include <functional>
@@ -6,8 +5,8 @@
 #include <unistd.h>
 #include <linux/random.h>
 
-#include "wolff.h"
-#include "ioFuncs.h"
+#include "3DXYwolff.h"
+#include "3DXYio.h"
 #include "clusterStruct.h"
 #include "randStruct.h"
 #include "avgStruct.h"

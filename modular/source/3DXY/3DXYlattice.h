@@ -1,5 +1,5 @@
-#ifndef LATTICESTRUCT_H
-#define LATTICESTRUCT_H
+#ifndef 3DXYLATTICE_H 
+#define 3DXYLATTICE_H
 
 struct Lattice{
 	long double *** theLattice;

@@ -1,8 +1,7 @@
-#ifndef WOLFF_H
-#define WOLFF_H
+#ifndef 3DXYWOLFF_H
+#define 3DXYWOLFF_H
 
-#include <random>
-#include "latticeStruct.h"
+#include "3DXYlattice.h"
 #include "randStruct.h"
 #include "clusterStruct.h"
 

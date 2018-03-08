@@ -1,5 +1,5 @@
-#ifndef METROPOLIS_H
-#define METROPOLIS_H
+#ifndef 3DXYMETRO_H 
+#define 3DXYMETRO_H
 #include <random>
 
 #include "latticeStruct.h"

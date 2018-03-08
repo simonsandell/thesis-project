@@ -1,7 +1,7 @@
-#ifndef IOFUNCS_H
-#define IOFUNCS_H
+#ifndef 3DXYIO_H
+#define 3DXYIO_H
 
-#include "latticeStruct.h"
+#include "3DXYlattice.h"
 #include "avgStruct.h"
 void printOutput(Lattice lat,long double T, avgStruct avg, long double bin, long double dbdt, long double xi, long double rs);
 

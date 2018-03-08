@@ -5,7 +5,7 @@
 #include <vector>
 
 #include "randStruct.h"
-#include "latticeStruct.h"
+#include "3DXYlattice.h"
 
 void updateValsM(Lattice& lat,long double e0,long double e1,
 		long double a0,long double a1,

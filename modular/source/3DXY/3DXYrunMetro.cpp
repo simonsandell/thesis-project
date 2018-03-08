@@ -5,9 +5,9 @@
 #include <unistd.h>
 #include <linux/random.h>
 
-#include "ioFuncs.h"
-#include "metropolis.h"
-#include "latticeStruct.h"
+#include "3DXYio.h"
+#include "3DXYmetro.h"
+#include "3DXYlattice.h"
 #include "randStruct.h"
 #include "avgStruct.h"
 

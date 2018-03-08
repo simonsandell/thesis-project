@@ -5,7 +5,7 @@
 #include <vector>
 #include <iostream>
 
-#include "latticeStruct.h"
+#include "3DXYlattice.h"
 #include "randStruct.h"
 #include "clusterStruct.h"
 
