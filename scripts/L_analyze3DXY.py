@@ -140,7 +140,7 @@ def calcAvg(mat,i,istart,FileList):
 # SX     SY     SZ     bin    dBdT   xi     rs     expFac
 arguments = sys.argv
 fName = arguments[1]
-data0 = open("./output/" + fName,"r")
+data0 = open("./output/3DXY/" + fName,"r")
 vals = []
 #load data and form array
 for ln in data0:
