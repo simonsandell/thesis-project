@@ -7,12 +7,12 @@ def openFiles(FileList,T,fName):
     #open files for writing
     #separate files for different systemsizes
     fnfstr = "{:8.8f}"
-    EF = open("./foutput/XY/L_en/"+fnfstr.format(T)+"_"+fName+".dat","w")
-    MF = open("./foutput/XY/L_mag/"+fnfstr.format(T)+"_"+fName+".dat","w")
-    BF = open("./foutput/XY/L_bin/"+fnfstr.format(T)+"_"+fName+".dat","w")
-    DF = open("./foutput/XY/L_dbdt/"+fnfstr.format(T)+"_"+fName+".dat","w")
-    XF = open("./foutput/XY/L_xi/"+fnfstr.format(T)+"_"+fName+".dat","w")
-    RF = open("./foutput/XY/L_rs/"+fnfstr.format(T)+"_"+fName+".dat","w")
+    EF = open("./foutput/3DXY/L_en/"+fnfstr.format(T)+"_"+fName+".dat","w")
+    MF = open("./foutput/3DXY/L_mag/"+fnfstr.format(T)+"_"+fName+".dat","w")
+    BF = open("./foutput/3DXY/L_bin/"+fnfstr.format(T)+"_"+fName+".dat","w")
+    DF = open("./foutput/3DXY/L_dbdt/"+fnfstr.format(T)+"_"+fName+".dat","w")
+    XF = open("./foutput/3DXY/L_xi/"+fnfstr.format(T)+"_"+fName+".dat","w")
+    RF = open("./foutput/3DXY/L_rs/"+fnfstr.format(T)+"_"+fName+".dat","w")
     FileList[:] = [];
     FileList.append(EF)
     FileList.append(MF)
