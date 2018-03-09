@@ -6,28 +6,28 @@ if [ ! $# -eq 0 ]
 then
 	#Binder paramter
 	binstring="-param ../scripts/default.par"
-	for filename in ./foutput/$1/bin/*$2*; do
+	for filename in ./foutput/3DXY/bin/*$1*; do
 		binstring="$binstring -settype xydy $filename"
 	done
 	xmgrace -free $binstring -nosafe -noask -legend load -pexec 'xaxis label "Temp"' -pexec 'yaxis label "Binder Cumulant"' &
 	
 	#Superfluid density
 	rsstring="-param ../scripts/default.par"
-	for filename in ./foutput/$1/rs/*$2*; do
+	for filename in ./foutput/3DXY/rs/*$1*; do
 		rsstring="$rsstring -settype xydy $filename"
 	done
 	xmgrace -free $rsstring -nosafe -noask -legend load -pexec 'xaxis label "Temp"' -pexec 'yaxis label "Superfluid density"' &
 	
 	#Energy per spin
 	enstring="-param ../scripts/default.par"
-	for filename in ./foutput/$1/en/*$2*; do
+	for filename in ./foutput/3DXY/en/*$1*; do
 		enstring="$enstring -settype xydy $filename"
 	done
 	xmgrace -free $enstring -nosafe -noask -legend load -pexec 'xaxis label "Temp"' -pexec 'yaxis label "Energy"' &
 
 	#Magnetization per spin
 	magstring="-param ../scripts/default.par"
-	for filename in ./foutput/$1/mag/*$2*; do
+	for filename in ./foutput/3DXY/mag/*$1*; do
 		magstring="$magstring -settype xydy $filename"
 	done
 	xmgrace -free $magstring -nosafe -noask -legend load -pexec 'xaxis label "Temp"' -pexec 'yaxis label "Magnetization"' &
@@ -35,13 +35,13 @@ then
 
 	#dB/dT
 	dbdtstring="-param ../scripts/default.par"
-	for filename in ./foutput/$1/dbdt/*$2*; do
+	for filename in ./foutput/3DXY/dbdt/*$1*; do
 		dbdtstring="$dbdtstring -settype xydy $filename"
 	done
 	xmgrace -free $dbdtstring -nosafe -noask -legend load -pexec 'xaxis label "Temp"' -pexec 'yaxis label "dB/dT"' &
 	#Susceptibility
 	xistring="-param ../scripts/default.par"
-	for filename in ./foutput/$1/xi/*$2*; do
+	for filename in ./foutput/3DXY/xi/*$1*; do
 		xistring="$xistring -settype xydy $filename"
 	done
 	xmgrace -free $xistring -nosafe -noask -legend load -pexec 'xaxis label "Temp"' -pexec 'yaxis label "Susceptibility"' &
