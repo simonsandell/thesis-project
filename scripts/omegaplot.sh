@@ -1,7 +1,13 @@
 #!/bin/bash
 
-teqstring="-param ../scripts/default.par"
+omegastring="-param ../scripts/default.par"
 for filename in ./foutput/3DXY/omega/*; do
-	teqstring="$teqstring -settype xydy $filename"
+	omegastring="$omegastring -settype xydy $filename"
 done
-xmgrace $teqstring -pexec 'xaxis label "Temperature"' -pexec 'yaxis label "scaling correction omega"' -nosafe -noask -legend load &
+xmgrace $omegastring -pexec 'xaxis label "Temperature"' -pexec 'yaxis label "omega"' -nosafe -noask -free -legend load &
+
+rsstring="-param ../scripts/default.par"
+for filename in ./foutput/3DXY/rs_corr/*; do
+	rsstring="$rsstring -settype xydy $filename"
+done
+xmgrace $rsstring -pexec 'xaxis label "Temperature"' -pexec 'yaxis label "rho_s corr"' -nosafe -noask -free -legend load &

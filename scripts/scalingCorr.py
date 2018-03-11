@@ -13,6 +13,10 @@ def openFiles():
     r3file = open("./foutput/3DXY/rs_corr/rscorr3.dat","w")
     r4file = open("./foutput/3DXY/rs_corr/rscorr4.dat","w")
     return [o1file,o2file,o3file,o4file,r1file,r2file,r3file,r4file];
+
+def removeRowN(mat,N):
+    return np.concatenate((qlist[:N],qlist[N+1:]));
+
 def calcCorrections(avgs):
     bdiff = avgs[1][2] - avgs[0][2];
     bdiff2 = avgs[2][2] - avgs[1][2];
@@ -22,8 +26,11 @@ def calcCorrections(avgs):
     rdiff = avgs[1][1] - avgs[0][1];
     rdiff2 = avgs[2][1] - avgs[1][1];
     rdiv = rdiff2/rdiff;
-    #rscorr = -math.log(rdiv)/math.log(2);
-    return [1.0,omega]
+    if (rdiv > 0.0):
+        rscorr = -math.log(rdiv)/math.log(2);
+    else:
+        rscorr = 0.0;
+    return [rscorr,omega]
 
 def calcAvgs(mat):
     L = mat[0,0];
@@ -40,6 +47,7 @@ def calcAvgs(mat):
     rs = rs/(3.0*Exp);
     return [L,rs,b]
 
+#in goes all data for a specific temperature
 def analyze(mat,i,istart,FileList):
 # Format::
 # 0      1      2      3      4      5      6            
@@ -50,6 +58,7 @@ def analyze(mat,i,istart,FileList):
 #
 # 14     15     16     17     18     19     20     21                
 # S2X    S2Y    S2Z    bin    dBdT   xi     rs     expFac
+    #start by splitting by system size L
     iend = i -1;
     submat = mat[istart:iend,:];
     T = submat[0,1];
@@ -74,15 +83,12 @@ def analyze(mat,i,istart,FileList):
         if (not foundend):
             lend = j;
         subL = submat[lstart:lend,:];
-        print(lstart);
-        print(lend);
-
+        #do jackkinfing here
         avgs.append(calcAvgs(subL));
 
     fstr= "{:30.30f}";
     for k in range(N_L-2):
         corrs = calcCorrections(avgs[k:k+3]);
-        print(corrs)
         #FileList[k].write(fstr.format(T) + "    " + fstr.format(corrs[1]) + "    " + 
                 #fstr.format(0.0) + " \n"); 
         #FileList[k+4].write(fstr.format(T) + "    " + fstr.format(corrs[0]) + "    " + 
