@@ -105,12 +105,12 @@ void metroJob(long double L){
 //main
 //
 int main(){
-	ThreadPool pool(1);
+	ThreadPool pool(12);
 	std::vector< std::future<void> > results;
 	for(int i = 0; i < 100; ++i) {
 		results.emplace_back(
 				pool.enqueue([i] {
-					wolffHistJob(4.0L);
+					wolffHistJob(32.0L);
 					})
 				);
 	}
