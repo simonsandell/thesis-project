@@ -45,7 +45,7 @@ void wolffHistRunIsing3D(LatticeIsing3D& lat, long double N_sample_sweeps,long d
 
 	while (steps < leaststeps){
 		//make a cluster
-		steps += clusterIsing3D(lat,cluster,Beta,rand);
+		steps += clusterIsing3D(lat,cluster,rand);
 		if (steps < 0) {
 			std::cout << "OVERFLOW" << std::endl;
 			exit(0);
