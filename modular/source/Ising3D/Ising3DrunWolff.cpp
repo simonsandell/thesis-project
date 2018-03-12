@@ -36,17 +36,18 @@ void wolffHistRunIsing3D(LatticeIsing3D& lat, long double N_sample_sweeps,long d
 	long double maxTotE = getMaxEIsing3D(lat.L); 
 	long double expCorr = 0.0L;
 
-	int steps = 0;
+	long double steps = 0;
 	int intNsampClust = 0;
-	long double leaststeps = N_sample_sweeps*lat.Nspins;
 
 	Cluster cluster(lat.L);
 	RandStruct rand;
 
-	while (steps < leaststeps){
+	long double doneSweeps = 0.0L;
+	while (doneSweeps < N_sample_sweeps){
 		//make a cluster
-		steps += clusterIsing3D(lat,cluster,rand);
-		if (steps < 0) {
+		steps =(long double) clusterIsing3D(lat,cluster,rand);
+		doneSweeps += steps/lat.Nspins;
+		if (steps < 0.0L || doneSweeps < 0.0L) {
 			std::cout << "OVERFLOW" << std::endl;
 			exit(0);
 		}
@@ -94,7 +95,7 @@ void wolffHistRunIsing3D(LatticeIsing3D& lat, long double N_sample_sweeps,long d
 		}
 	}//end of samples
 	lat.Nsmclusts=(long double)intNsampClust;
-	lat.Nsmsweeps = ((long double)steps)/((long double)lat.Nspins);
+	lat.Nsmsweeps = doneSweeps;
 
 	//calculate quantities of interest
 
