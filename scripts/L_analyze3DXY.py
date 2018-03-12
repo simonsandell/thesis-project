@@ -139,13 +139,10 @@ def calcAvg(mat,i,istart,FileList):
 # 14     15     16     17     18     19     20     21                
 # SX     SY     SZ     bin    dBdT   xi     rs     expFac
 def analyze(inData,fName):
-    print(inData.shape);
-    inData = np.squeeze(inData);
-    print(inData.shape);
     #Sort input data, by temperature, then L
     ind = np.lexsort((inData[:,21],inData[:,20],inData[:,19],inData[:,18],inData[:,17],inData[:,16],inData[:,15],inData[:,14],inData[:,13],inData[:,12],inData[:,11],inData[:,10],inData[:,9],inData[:,8],inData[:,7],inData[:,5],inData[:,4],inData[:,3],inData[:,2],inData[:,6],inData[:,0],inData[:,1]));
     sortedMat = inData[ind]
-    sortedMat = np.squeeze(sortedMat);
+
     #form averages and print to file
     L=sortedMat[0,0];
     T=sortedMat[0,1];

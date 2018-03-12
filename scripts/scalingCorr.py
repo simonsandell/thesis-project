@@ -1,6 +1,5 @@
 import numpy as np
 import math
-np.set_printoptions(threshold=np.nan)
 
 def openFiles():
     o1file = open("./foutput/3DXY/omega/omega1.dat","w")
@@ -13,8 +12,10 @@ def openFiles():
     r4file = open("./foutput/3DXY/rs_corr/rscorr4.dat","w")
     return [o1file,o2file,o3file,o4file,r1file,r2file,r3file,r4file];
 
-def removeRowN(mat,N):
-    return np.concatenate((qlist[:N],qlist[N+1:]));
+#def removeRowN(mat,N):
+    #print(mat.shape);
+    #return np.concatenate((mat[:N],mat[N+1:]));
+
 
 def calcCorrections(avgs):
     bdiff = avgs[1][2] - avgs[0][2];
@@ -62,6 +63,7 @@ def calculate(mat,i,istart,FileList):
     submat = mat[istart:iend,:];
     T = submat[0,1];
     submatL = submat[:,0];
+    submatL = submatL.squeeze();
     L_list = np.unique(submatL);
     N_L = L_list.shape[0];
     j = 0;
@@ -112,10 +114,8 @@ def calculate(mat,i,istart,FileList):
 # SX     SY     SZ     bin    dBdT   xi     rs     expFac
 def analyze(mat,fName):
     #Sort input data, by temperature, then L
-    mat = np.squeeze(mat);
     ind = np.lexsort((mat[:,21],mat[:,20],mat[:,19],mat[:,18],mat[:,17],mat[:,16],mat[:,15],mat[:,14],mat[:,13],mat[:,12],mat[:,11],mat[:,10],mat[:,9],mat[:,8],mat[:,7],mat[:,5],mat[:,4],mat[:,3],mat[:,2],mat[:,6],mat[:,0],mat[:,1]));
-    sortedMat = mat[ind]
-    sortedMat = np.squeeze(sortedMat);
+    sortedMat = mat[ind];
     #form averages and print to file
     T = sortedMat[0,1];
     
