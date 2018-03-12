@@ -37,7 +37,7 @@ void wolffHistRun3DXY(Lattice3DXY& lat, long double N_sample_sweeps,long double 
 
 	long double steps = 0.0L;
 	long double NsampClust = 0.0L;
-	long double leaststeps = N_sample_sweeps*lat.Nspins;
+	long double doneSweeps = 0.0L;
 
 	Cluster cluster(lat.L);
 	RandStruct rand;
@@ -46,7 +46,7 @@ void wolffHistRun3DXY(Lattice3DXY& lat, long double N_sample_sweeps,long double 
 		//make a cluster
 		steps = (long double)cluster3DXY(lat,cluster,Beta,rand);
 		doneSweeps += steps/lat.Nspins;
-		if (doneSweeps< 0.0L) or (steps < 0.0L) {
+		if (doneSweeps< 0.0L || steps < 0.0L) {
 			std::cout << "OVERFLOW" << std::endl;
 		}
 		NsampClust += 1.0L;

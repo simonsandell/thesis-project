@@ -99,7 +99,9 @@ void LatticeIsing3D::updateQuants(){
 };
 
 //initialize new lattice
-LatticeIsing3D::LatticeIsing3D(int l, bool cold){
+LatticeIsing3D::LatticeIsing3D(int l, bool cold,long double Beta){
+	beta = Beta;
+	PROB = 1.0L - exp(-2.0L*beta);
 	theLattice = newLatticeI3D((long double)l,cold);
 	L = (long double)l;
 	Nspins =L*L*L;

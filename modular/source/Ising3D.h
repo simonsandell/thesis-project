@@ -4,7 +4,7 @@
 #include "clusterStruct.h"
 #include "randStruct.h"
 namespace Ising3D{
-	void warmup(LatticeIsing3D& lat,Cluster&clust,long double beta,RandStruct& rand,int N);
+	void warmup(LatticeIsing3D& lat,Cluster&clust,RandStruct& rand,int N);
 	void wolffHistJob(long double L);
 };
 #endif

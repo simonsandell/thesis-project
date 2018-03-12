@@ -8,13 +8,13 @@
 #include "clusterStruct.h"
 #include "randStruct.h"
 
-void Ising3D::warmup(LatticeIsing3D& lat,Cluster&clust,long double beta,RandStruct& rand,int N){
+void Ising3D::warmup(LatticeIsing3D& lat,Cluster&clust,RandStruct& rand,int N){
 	long double Nspins = lat.L*lat.L*lat.L;
 	long double fliptries = 0;
 	long double clusts = 0;
 	while ((fliptries/Nspins) < N){
 		clusts += 1.0L;
-		fliptries +=(long double) clusterIsing3D(lat,clust,beta,rand);
+		fliptries +=(long double) clusterIsing3D(lat,clust,rand);
 	}
 	if( !lat.warmedUp){
 		lat.Neqclusts = clusts;
@@ -52,14 +52,15 @@ void Ising3D::wolffHistJob(long double L){
 	long double	Nsamp=			100000.0L;
 	int 		Nbetw=			100;
 	int 		Nruns=			100;
-	LatticeIsing3D lat(L,cold);
+	long double beta = 1.0L/runTemp;
+
+	LatticeIsing3D lat(L,cold,beta);
 	Cluster clust(L);
 	RandStruct rand;
-	long double beta = 1.0L/runTemp;
-	warmup(lat,clust,beta,rand,(Neq));
+	warmup(lat,clust,rand,(Neq));
 	for (int i=0; i< Nruns; ++i){	
 		wolffHistRunIsing3D(lat,Nsamp,Trange,Ntemps,runTemp);
-		warmup(lat,clust,beta,rand,Nbetw);
+		warmup(lat,clust,rand,Nbetw);
 	}
 
 }
