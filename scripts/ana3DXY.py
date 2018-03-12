@@ -2,7 +2,7 @@ import sys
 import os
 import analyze3DXY as anaT
 import L_analyze3DXY as anaL
-import scalingcorr
+import scalingCorr
 import numpy as np
 
 arguments = sys.argv;
@@ -16,8 +16,8 @@ for ln in datafile:
     data.append(fllist);
 dataMatrix = np.mat(data);
 
-anaT.analyze(dataMatrix);
+anaT.analyze(dataMatrix,fName);
 print("temp data done");
-anaL.analyze(dataMatrix);
+anaL.analyze(dataMatrix,fName);
 print("L data done");
-scalingcorr.analyze(dataMatrix);
+scalingCorr.analyze(dataMatrix,fName);

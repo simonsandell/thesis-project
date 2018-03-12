@@ -112,10 +112,11 @@ def calculate(mat,i,istart,FileList):
 #
 # 14     15     16     17     18     19     20     21                
 # SX     SY     SZ     bin    dBdT   xi     rs     expFac
-def analyze(mat):
+def analyze(mat,fName):
     #Sort input data, by temperature, then L
     ind = np.lexsort((mat[:,21],mat[:,20],mat[:,19],mat[:,18],mat[:,17],mat[:,16],mat[:,15],mat[:,14],mat[:,13],mat[:,12],mat[:,11],mat[:,10],mat[:,9],mat[:,8],mat[:,7],mat[:,5],mat[:,4],mat[:,3],mat[:,2],mat[:,6],mat[:,0],mat[:,1]));
     sortedMat = mat[ind]
+    sortedMat = np.squeeze(sortedMat);
     #form averages and print to file
     T = sortedMat[0,1];
     
