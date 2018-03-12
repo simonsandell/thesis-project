@@ -42,10 +42,11 @@ void wolffHistRun3DXY(Lattice3DXY& lat, long double N_sample_sweeps,long double 
 	Cluster cluster(lat.L);
 	RandStruct rand;
 
-	while (steps < leaststeps){
+	while (doneSweeps < N_sample_sweeps){
 		//make a cluster
-		steps += (long double)cluster3DXY(lat,cluster,Beta,rand);
-		if (steps < 0) {
+		steps = (long double)cluster3DXY(lat,cluster,Beta,rand);
+		doneSweeps += steps/lat.Nspins;
+		if (doneSweeps< 0.0L) or (steps < 0.0L) {
 			std::cout << "OVERFLOW" << std::endl;
 		}
 		NsampClust += 1.0L;
@@ -102,7 +103,7 @@ void wolffHistRun3DXY(Lattice3DXY& lat, long double N_sample_sweeps,long double 
 		}
 	}//end of samples
 	lat.Nsmclusts=NsampClust; 
-	lat.Nsmsweeps = ((long double)steps)/((long double)lat.Nspins);
+	lat.Nsmsweeps = doneSweeps;
 
 
 
