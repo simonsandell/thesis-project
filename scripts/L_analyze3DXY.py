@@ -138,43 +138,32 @@ def calcAvg(mat,i,istart,FileList):
 #
 # 14     15     16     17     18     19     20     21                
 # SX     SY     SZ     bin    dBdT   xi     rs     expFac
-arguments = sys.argv
-fName = arguments[1]
-data0 = open("./output/3DXY/" + fName,"r")
-vals = []
-#load data and form array
-for ln in data0:
-    strlist = ln.rsplit(" ")
-    strlist = [x for x in strlist if not (x=="\n")]
-    fllist = [float(x) for x in strlist] 
-    vals.append(fllist)
-mat = np.array(vals)
-
-#Sort input data, by temperature, then L
-ind = np.lexsort((mat[:,21],mat[:,20],mat[:,19],mat[:,18],mat[:,17],mat[:,16],mat[:,15],mat[:,14],mat[:,13],mat[:,12],mat[:,11],mat[:,10],mat[:,9],mat[:,8],mat[:,7],mat[:,5],mat[:,4],mat[:,3],mat[:,2],mat[:,6],mat[:,0],mat[:,1]));
-mat = mat[ind]
-#form averages and print to file
-L=mat[0,0];
-T=mat[0,1];
-
-FileList =[]
-openFiles(FileList,T,fName);
-
-TOL = 0.000001;
-ifirst = 0;
-for i in range(mat.shape[0]):
-    #if new value of T, make new outputfile
-    if(TOL < abs(mat[i,1] - T)):
-        calcAvg(mat,i,ifirst,FileList);
-        ifirst = i;
-        L = mat[i,0]
-        T = mat[i,1]
-        #open new files since T has changed
-        openFiles(FileList,T,fName);
-    #if new L value, make new averages
-    elif(TOL < abs(mat[i,0] - L)):
-        calcAvg(mat,i,ifirst,FileList);
-        ifirst = i;
-        L = mat[i,0]
-#one final write
-calcAvg(mat,i+1,ifirst,FileList);
+def analyze(inData):
+    #Sort input data, by temperature, then L
+    ind = np.lexsort((inData[:,21],inData[:,20],inData[:,19],inData[:,18],inData[:,17],inData[:,16],inData[:,15],inData[:,14],inData[:,13],inData[:,12],inData[:,11],inData[:,10],inData[:,9],inData[:,8],inData[:,7],inData[:,5],inData[:,4],inData[:,3],inData[:,2],inData[:,6],inData[:,0],inData[:,1]));
+    sortedMat = inData[ind]
+    #form averages and print to file
+    L=sortedMat[0,0];
+    T=sortedMat[0,1];
+    
+    FileList =[]
+    openFiles(FileList,T,fName);
+    
+    TOL = 0.000001;
+    ifirst = 0;
+    for i in range(sortedMat.shape[0]):
+        #if new value of T, make new outputfile
+        if(TOL < abs(sortedMat[i,1] - T)):
+            calcAvg(sortedMat,i,ifirst,FileList);
+            ifirst = i;
+            L = sortedMat[i,0]
+            T = sortedMat[i,1]
+            #open new files since T has changed
+            openFiles(FileList,T,fName);
+        #if new L value, make new averages
+        elif(TOL < abs(sortedMat[i,0] - L)):
+            calcAvg(sortedMat,i,ifirst,FileList);
+            ifirst = i;
+            L = sortedMat[i,0]
+    #one final write
+    calcAvg(sortedMat,i+1,ifirst,FileList);

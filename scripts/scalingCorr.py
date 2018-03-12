@@ -1,4 +1,3 @@
-import sys
 import numpy as np
 import math
 np.set_printoptions(threshold=np.nan)
@@ -48,7 +47,7 @@ def calcAvgs(mat):
     return [L,rs,b]
 
 #in goes all data for a specific temperature
-def analyze(mat,i,istart,FileList):
+def calculate(mat,i,istart,FileList):
 # Format::
 # 0      1      2      3      4      5      6            
 # L      T      neqsw  neqcl  nsmsw  nsmcl  cold
@@ -113,31 +112,21 @@ def analyze(mat,i,istart,FileList):
 #
 # 14     15     16     17     18     19     20     21                
 # SX     SY     SZ     bin    dBdT   xi     rs     expFac
-fName= sys.argv[1];
-data0 = open("./output/3DXY/" + fName,"r")
-vals = []
-#load data and form array
-for ln in data0:
-    strlist = ln.rsplit(" ")
-    strlist = [x for x in strlist if not (x=="\n")]
-    fllist = [float(x) for x in strlist] 
-    vals.append(fllist)
-mat = np.array(vals)
-
-#Sort input data, by temperature, then L
-ind = np.lexsort((mat[:,21],mat[:,20],mat[:,19],mat[:,18],mat[:,17],mat[:,16],mat[:,15],mat[:,14],mat[:,13],mat[:,12],mat[:,11],mat[:,10],mat[:,9],mat[:,8],mat[:,7],mat[:,5],mat[:,4],mat[:,3],mat[:,2],mat[:,6],mat[:,0],mat[:,1]));
-mat = mat[ind]
-#form averages and print to file
-T = mat[0,1];
-
-TOL = 0.000001;
-ifirst = 0;
-filelist = openFiles();
-for i in range(mat.shape[0]):
-    if (mat[i,1] != T):
-        analyze(mat,i,ifirst,filelist);
-        ifirst = i;
-        T = mat[i,1];
-        
-#one final write
-analyze(mat,i+1,ifirst,filelist);
+def analyze(mat):
+    #Sort input data, by temperature, then L
+    ind = np.lexsort((mat[:,21],mat[:,20],mat[:,19],mat[:,18],mat[:,17],mat[:,16],mat[:,15],mat[:,14],mat[:,13],mat[:,12],mat[:,11],mat[:,10],mat[:,9],mat[:,8],mat[:,7],mat[:,5],mat[:,4],mat[:,3],mat[:,2],mat[:,6],mat[:,0],mat[:,1]));
+    sortedMat = mat[ind]
+    #form averages and print to file
+    T = sortedMat[0,1];
+    
+    TOL = 0.000001;
+    ifirst = 0;
+    filelist = openFiles();
+    for i in range(sortedMat.shape[0]):
+        if (sortedMat[i,1] != T):
+            calculate(sortedMat,i,ifirst,filelist);
+            ifirst = i;
+            T = sortedMat[i,1];
+            
+    #one final write
+    calculate(sortedMat,i+1,ifirst,filelist);
