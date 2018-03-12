@@ -83,20 +83,17 @@ def calculate(mat,i,istart,FileList):
             lend = j;
         subL = submat[lstart:lend,:];
         #do jackkinfing here
-        for n in range(subL.shape[1]);
         avgs.append(calcAvgs(subL));
 
     fstr= "{:30.30f}";
     for k in range(N_L-2):
         corrs = calcCorrections(avgs[k:k+3]);
-        FileList[k].write(fstr.format(T) + "    " + fstr.format(corrs[1]) + "    " + 
-                repr(0.0) + " \n"); 
-        FileList[k+4].write(fstr.format(T) + "    " + fstr.format(corrs[0]) + "    " + 
-                repr(0.0) + " \n"); 
+        FileList[k].write(fstr.format(T) + "    " + fstr.format(corrs[1]) + "    " + repr(0.0) + " \n"); 
+        FileList[k+4].write(fstr.format(T) + "    " + fstr.format(corrs[0]) + "    " + repr(0.0) + " \n"); 
         #FileList[k].write(repr(T) + "    " + repr(corrs[1]) + "    " + 
-                repr(0.0) + " \n"); 
+                #repr(0.0) + " \n"); 
         #FileList[k+4].write(repr(T) + "    " + repr(corrs[0]) + "    " + 
-                repr(0.0) + " \n"); 
+                #repr(0.0) + " \n"); 
 
 
 
