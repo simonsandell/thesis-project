@@ -48,11 +48,11 @@ long double * getTrange(long double start, long double end, int N){
 }
 
 void _3DXY::wolffHistJob(long double L){
-	long double runTemp = 2.20260000000000L;
+	long double runTemp = 2.20200000000000L;
 
-	long double	startT=			2.20200L;
-	long double	endT=			2.20320L;
-	int 		Ntemps=			21;
+	long double	startT=			2.20150L;
+	long double	endT=			2.20300L;
+	int 		Ntemps=			31;
 	long double* Trange;
 	if (Ntemps < 2) {
 		Trange = new long double[1];
@@ -65,7 +65,7 @@ void _3DXY::wolffHistJob(long double L){
 	bool 		cold=			true;
 	long double	Nsamp=			100000.0L;
 	int 		Nbetw=			100;
-	int 		Nruns=			1;
+	int 		Nruns=			100;
 	Lattice3DXY lat(L,cold);
 	Cluster clust(L);
 	RandStruct rand;
