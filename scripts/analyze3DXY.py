@@ -1,5 +1,6 @@
 import numpy as np
 import math
+import jackknife
 np.set_printoptions(threshold=np.nan)
 
 def openFiles(FileList,L,fName):
@@ -34,13 +35,21 @@ def getRS(e,sx,sy,sz,exp,L,T):
     rs = rs/(3.0*exp);
     return rs;
 
-
-def jackAvg(qlist):
-    javg = [];
-    for i in range(qlist.shape[0]):
-        javg.append(np.mean(np.concatenate((qlist[:i],qlist[i+1:]))));
-    return javg;
-
+def calcFunctions(mat):
+    avgs = [];
+    L = mat[0,0];
+    T = mat[0,1];
+    Nspins = L*L*L;
+    for x in range(mat.shape[1]):
+        avgs.append(np.mean(mat[:,x]));
+    res = [];    
+    res.append(avgs[7]/avgs[21]);
+    res.append(avgs[9]/avgs[21]);
+    res.append(getBin(avgs[10],avgs[11],avgs[21]));
+    res.append(getdBdT(avgs[10],avgs[11],avgs[12],avgs[13],avgs[7],avgs[21],T,Nspins));
+    res.append(getXI(avgs[9],avgs[10],avgs[21],T,Nspins));
+    res.append(getRS(avgs[7],avgs[14],avgs[15],avgs[16],avgs[21],L,T));
+    return res;
 
 def calcAvg(mat,i,istart,FileList):
 # Format::
@@ -60,96 +69,13 @@ def calcAvg(mat,i,istart,FileList):
     T = mat[istart,1];
     Nspins = L*L*L;
     #MC averages not divided by exponential factor
-    rawE = mat[istart:iend,7];
-    rawE2 = mat[istart:iend,8];
-    rawM = mat[istart:iend,9];
-    rawM2 = mat[istart:iend,10];
-    rawM4 = mat[istart:iend,11];
-    rawM2E = mat[istart:iend,12];
-    rawM4E = mat[istart:iend,13];
-    rawS2X = mat[istart:iend,14];
-    rawS2Y = mat[istart:iend,15];
-    rawS2Z = mat[istart:iend,16];
-    #Quantities calculated for each of these averages
-    rawB = mat[istart:iend,17];
-    rawdBdT = mat[istart:iend,18];
-    rawXI = mat[istart:iend,19];
-    rawRS = mat[istart:iend,20];
-    #exponential factor itself 
-    rawExp= mat[istart:iend,21];
-    
-    #form averages from these uncorrelated MC averages
-    avgrawE  = np.mean(rawE);
-    avgrawE2 = np.mean(rawE2);
-    avgrawM  = np.mean(rawM);
-    avgrawM2 = np.mean(rawM2);
-    avgrawM4 = np.mean(rawM4);
-    avgrawM2E= np.mean(rawM2E);
-    avgrawM4E= np.mean(rawM4E);
-    avgrawS2X= np.mean(rawS2X);
-    avgrawS2Y= np.mean(rawS2Y);
-    avgrawS2Z= np.mean(rawS2Z);
-    avgrawExp= np.mean(rawExp);
-
-    avgE  = avgrawE/avgrawExp;
-    avgE2 = avgrawE2/avgrawExp;
-    avgM  = avgrawM/avgrawExp;
-    avgM2 = avgrawM2/avgrawExp;
-    avgM4 = avgrawM4/avgrawExp;
-    avgM2E= avgrawM2E/avgrawExp;
-    avgM4E= avgrawM4E/avgrawExp;
-    avgS2X= avgrawS2X/avgrawExp;
-    avgS2Y= avgrawS2Y/avgrawExp;
-    avgS2Z= avgrawS2Z/avgrawExp;
-
-    #calculate quantities of these averages
-    calcB = avgM4/(avgM2*avgM2);
-    calcdBdT = avgM4E*avgM2 + avgM4*avgM2*avgE - 2.0*avgM4*avgM2E;
-    calcdBdT = (Nspins*calcdBdT)/(T*T*avgM2*avgM2*avgM2);
-    calcXI =(Nspins)*(avgM2 - avgM*avgM)/T
-    calcRS = -L*avgE - L*Nspins*avgS2X/T -L*Nspins*avgS2Y/T -L*Nspins*avgS2Z/T;
-    calcRS = calcRS/3.0;
-    
-    #Find error bars of the quantities we want to plot using jackknife method
-    javgExp= jackAvg(rawExp);
-    javgE  = jackAvg(rawE); 
-    javgE2 = jackAvg(rawE2);
-    javgM  = jackAvg(rawM); 
-    javgM2 = jackAvg(rawM2);
-    javgM4 = jackAvg(rawM4);
-    javgM2E= jackAvg(rawM2E);
-    javgM4E= jackAvg(rawM4E);
-    javgS2X= jackAvg(rawS2X);
-    javgS2Y= jackAvg(rawS2Y);
-    javgS2Z= jackAvg(rawS2Z);
-    jE = [];
-    jM = [];
-    jB = [];
-    jD = [];
-    jX = [];
-    jR = [];
-    for i in range(len(javgE)):
-        jE.append(javgE[i]/javgExp[i]);
-        jM.append(javgM[i]/javgExp[i]);
-        jB.append(getBin(javgM2[i],javgM4[i],javgExp[i]));
-        jD.append(getdBdT(javgM2[i],javgM4[i],javgM2E[i],javgM4E[i],javgE[i],javgExp[i],T,Nspins));
-        jX.append(getXI(javgM[i],javgM2[i],javgExp[i],T,Nspins));
-        jR.append(getRS(javgE[i],javgS2X[i],javgS2Y[i],javgS2Z[i],javgExp[i],L,T));
-
-    jList = [jE,jM,jB,jD,jX,jR]
-    Deltalist = [];
-    Deltalist[:] = []
-    for l in jList:
-        Deltalist.append(pow(len(l),0.5)*np.std(l));
-
+    submat = mat[istart:iend,:];
+    functions = calcFunctions(submat);
+    deltas = jackknife.getJackDelta(submat,calcFunctions,100);
     #write T, avg, delta, N, to files
-    Ylist = [avgE,avgM,calcB,calcdBdT,calcXI,calcRS];
-
-
-    #fstr= "{:30.30f}";
-    for i in range(len(Ylist)):
-        #FileList[i].write(fstr.format(T)+"    "+fstr.format(Ylist[i])+"    "+fstr.format(Deltalist[i])+"    "+fstr.format(N)+"\n")
-        FileList[i].write(repr(T)+"    "+repr(Ylist[i])+"    "+repr(Deltalist[i])+"    "+repr(N)+"\n")
+    fstr= "{:30.30f}";
+    for i in range(len(functions)):
+        FileList[i].write(fstr.format(T)+"    "+fstr.format(functions[i])+"    "+fstr.format(deltas[i])+"    "+fstr.format(N)+"\n")
 
 #
 #read raw data from file in ./output
