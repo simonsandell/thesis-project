@@ -1,8 +1,8 @@
 import sys
 import os
-import analyze3DXY as anaT
-import L_analyze3DXY as anaL
-import scalingCorr as anaSC
+from _3DXY import analyze3DXY as anaT
+from _3DXY import L_analyze3DXY as anaL
+from _3DXY import scalCorr3DXY as anaSC
 import numpy as np
 
 arguments = sys.argv;
