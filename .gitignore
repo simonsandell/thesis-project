@@ -53,6 +53,7 @@ old_output/
 test/
 warmLattice/
 lattices/
+__pycache__/
 # ocotpus cluster output files
 ##############################
 run*.o*
