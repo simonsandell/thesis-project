@@ -4,7 +4,10 @@ import numpy as np
 
 def getJackDelta(mat,calcMeans,blocks):
     N = mat.shape[0];
-    blocksize =int(N/blocks);
+    if(N < blocks*10):
+        blocksize = 1;
+    else:
+        blocksize =int(N/blocks);
     i = 0;
     i2 = i + blocksize;
     cont = True;
