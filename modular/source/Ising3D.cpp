@@ -36,9 +36,9 @@ long double * getTrangeIsing3D(long double start, long double end, int N){
 void Ising3D::wolffHistJob(long double L){
 	long double runTemp = 4.50000000000000L;
 
-	long double	startT=			4.49000L;
-	long double	endT=			4.51000L;
-	int 		Ntemps=			21;
+	long double	startT=			4.48500L;
+	long double	endT=			4.51500L;
+	int 		Ntemps=			41;
 	long double* Trange;
 	if (Ntemps < 2) {
 		Trange = new long double[1];
