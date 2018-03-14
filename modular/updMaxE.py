@@ -1,4 +1,3 @@
-import subprocess
 import os
 
 list4 = [];
@@ -6,12 +5,14 @@ list8 = [];
 list16 = [];
 list32 = [];
 list64 = [];
+list128 = [];
 
 lists = { 4:list4,
         8:list8,
         16:list16,
         32:list32,
-        64:list64
+        64:list64,
+        128:list128
         }
 
 directory = "/home/simsan/exjobb/modular/maxE/3DXY/";
@@ -23,8 +24,6 @@ for filename in os.listdir(directory):
     val = float(Rfile.read())
     lists[L].append(val);
 
-subprocess.call(["rm","-r",directory])
-subprocess.call(["mkdir",directory])
 for l in lists:
     maxV = 0;
     for v in lists[l]:
