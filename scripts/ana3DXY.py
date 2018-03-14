@@ -3,6 +3,7 @@ import os
 from _3DXY import analyze3DXY as anaT
 from _3DXY import L_analyze3DXY as anaL
 from _3DXY import scalCorr3DXY as anaSC
+from _3DXY import rhos_omega as anaRS
 import numpy as np
 
 arguments = sys.argv;
@@ -15,12 +16,12 @@ for ln in datafile:
     fllist = [float(x) for x in strlist];
     data.append(fllist);
 dataMatrix = np.array(data);
-ind = np.lexsort((dataMatrix[:,21],dataMatrix[:,20],dataMatrix[:,19],dataMatrix[:,18],dataMatrix[:,17],dataMatrix[:,16],dataMatrix[:,15],dataMatrix[:,14],dataMatrix[:,13],dataMatrix[:,12],dataMatrix[:,11],dataMatrix[:,10],dataMatrix[:,9],dataMatrix[:,8],dataMatrix[:,7],dataMatrix[:,5],dataMatrix[:,4],dataMatrix[:,3],dataMatrix[:,2],dataMatrix[:,6],dataMatrix[:,1],dataMatrix[:,0]));
-dataMatrix = dataMatrix[ind];
-print("sorting done, starting t data");
-anaT.analyze(dataMatrix,fName);
+print("loading done, starting t data");
+#anaT.analyze(dataMatrix,fName);
 print("temp data done,starting l data");
-anaL.analyze(dataMatrix,fName);
+#anaL.analyze(dataMatrix,fName);
 print("L data done, staring scaling corrections");
-anaSC.analyze(dataMatrix,fName);
+#anaSC.analyze(dataMatrix,fName);
+print("scaling corr done, starting rho_s_omega");
+anaRS.analyze(dataMatrix,fName);
 print("analysis done");
