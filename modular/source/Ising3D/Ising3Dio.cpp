@@ -124,8 +124,11 @@ LatticeIsing3D getLattice(int l){
 
 	input = fopen(fname.c_str(),"rb");
 
-
-	fread(&lat,sizeof(lat),1,input);
+	size_t result= fread(&lat,sizeof(lat),1,input);
+	if (result != 1){
+		std::cout << "failed to load lattice" << std::endl;
+		exit(1);
+	}
 
 	fclose(input);
 
