@@ -31,20 +31,30 @@ dataMatrix = np.array(data);
 
 print("loading done, starting t data");
 anaT.analyze(dataMatrix,fName);
+for dirname in  os.listdir('./foutput/3DXY/vsT'):
+    plot(dirname,"Temperature");
 
 print("temp data done,starting l data");
 anaL.analyze(dataMatrix,fName);
+for dirname in  os.listdir('./foutput/3DXY/vsL'):
+    plot(dirname,"L");
 
+scalingDir = './foutput/3DXY/scalingCorr';
 print("L data done, staring scaling corrections");
-dirname = "./foutput/3DXY/2L_omega_rs"
+dirname = scalingDir + '/omegaRS2L';
 anaSC2L.analyze(dataMatrix,dirname,SCrhos2L.calcOmegaRS2L);
-subprocess.call(['../scripts/anirhos.sh',sc2Ldir])
 
 print("2L RS done");
-dirname = "./foutput/3DXY/3L_omega_rs"
+dirname = scalingDir + "/omegaRS3L"
 anaSC3L.analyze(dataMatrix,dirname,SCrhos3L.calcOmegaRS3L);
 
 print("3L RS done");
-dirname ="./foutput/3DXY/3L_omega_bin"
+dirname = scalingDir + "/omegaBin3L"
 anaSC3L.analyze(dataMatrix,dirname,SCbin3L.calcOmegaBin3L);
 print("3L Bin done");
+
+
+
+
+
+
