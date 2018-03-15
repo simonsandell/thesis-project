@@ -8,12 +8,12 @@ def openFiles(FileList,T,fName):
     #open files for writing
     #separate files for different systemsizes
     fnfstr = "{:8.8f}"
-    EF = open("./foutput/Ising3D/L_en/"+fnfstr.format(T)+"_"+fName+".dat","w")
-    M2F = open("./foutput/Ising3D/L_m2/"+fnfstr.format(T)+"_"+fName+".dat","w")
-    M4F = open("./foutput/Ising3D/L_m4/"+fnfstr.format(T)+"_"+fName+".dat","w")
-    BF = open("./foutput/Ising3D/L_bin/"+fnfstr.format(T)+"_"+fName+".dat","w")
-    XF = open("./foutput/Ising3D/L_xi/"+fnfstr.format(T)+"_"+fName+".dat","w")
-    CF = open("./foutput/Ising3D/L_c/"+fnfstr.format(T)+"_"+fName+".dat","w")
+    EF = open("./foutput/Ising3D/vsL/en/"+fnfstr.format(T)+"_"+fName+".dat","w")
+    M2F = open("./foutput/Ising3D/vsL/m2/"+fnfstr.format(T)+"_"+fName+".dat","w")
+    M4F = open("./foutput/Ising3D/vsL/m4/"+fnfstr.format(T)+"_"+fName+".dat","w")
+    BF = open("./foutput/Ising3D/vsL/bin/"+fnfstr.format(T)+"_"+fName+".dat","w")
+    XF = open("./foutput/Ising3D/vsL/xi/"+fnfstr.format(T)+"_"+fName+".dat","w")
+    CF = open("./foutput/Ising3D/vsL/c/"+fnfstr.format(T)+"_"+fName+".dat","w")
     FileList[:] = [];
     FileList.append(EF)
     FileList.append(M2F)
