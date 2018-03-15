@@ -6,12 +6,12 @@ np.set_printoptions(threshold=np.nan)
 def openFiles(FileList,L,fName):
     #open files for writing
     #separate files for different systemsizes
-    EF = open("./foutput/3DXY/en/"+str(int(L))+"_"+fName+".dat","w")
-    MF = open("./foutput/3DXY/mag/"+str(int(L))+"_"+fName+".dat","w")
-    BF = open("./foutput/3DXY/bin/"+str(int(L))+"_"+fName+".dat","w")
-    DF = open("./foutput/3DXY/dbdt/"+str(int(L))+"_"+fName+".dat","w")
-    XF = open("./foutput/3DXY/xi/"+str(int(L))+"_"+fName+".dat","w")
-    RF = open("./foutput/3DXY/rs/"+str(int(L))+"_"+fName+".dat","w")
+    EF = open("./foutput/3DXY/vsT/en/"+str(int(L))+"_"+fName+".dat","w")
+    MF = open("./foutput/3DXY/vsT/mag/"+str(int(L))+"_"+fName+".dat","w")
+    BF = open("./foutput/3DXY/vsT/bin/"+str(int(L))+"_"+fName+".dat","w")
+    DF = open("./foutput/3DXY/vsT/dbdt/"+str(int(L))+"_"+fName+".dat","w")
+    XF = open("./foutput/3DXY/vsT/xi/"+str(int(L))+"_"+fName+".dat","w")
+    RF = open("./foutput/3DXY/vsT/rs/"+str(int(L))+"_"+fName+".dat","w")
     FileList[:] = [];
     FileList.append(EF)
     FileList.append(MF)
