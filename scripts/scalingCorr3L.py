@@ -1,12 +1,13 @@
 import numpy as np
+import subprocess
 import math
 import jackknife
 
 def openFiles(directory):
-    o1file = open(directory+"omega1.dat","w")
-    o2file = open(directory+"omega2.dat","w")
-    o3file = open(directory+"omega3.dat","w")
-    o4file = open(directory+"omega4.dat","w")
+    o1file = open(directory+"/omega1.dat","w")
+    o2file = open(directory+"/omega2.dat","w")
+    o3file = open(directory+"/omega3.dat","w")
+    o4file = open(directory+"/omega4.dat","w")
     return [o1file,o2file,o3file,o4file];
 
     
@@ -32,7 +33,6 @@ def calculate(mat,i,istart,FileList,function):
 
         FileList[x].write(fstr.format(T) + "    " + fstr.format(scalingcorrs[x][0]) + "    " + fstr.format(deltas[x][0]) + " \n"); 
 
-        FileList[x+4].write(fstr.format(T) + "    " + fstr.format(scalingcorrs[x][1]) + "    " + fstr.format(deltas[x][1]) + " \n"); 
 
 
 
@@ -49,6 +49,7 @@ def calculate(mat,i,istart,FileList,function):
 # 14     15     16     17     18     19     20     21                
 # SX     SY     SZ     bin    dBdT   xi     rs     expFac
 def analyze(mat,dirname,function):
+    subprocess.call(['mkdir',dirname])
     #Sort input data, by temperature, then L
     ind = np.lexsort((mat[:,0],mat[:,1]));
     sortedMat = mat[ind];

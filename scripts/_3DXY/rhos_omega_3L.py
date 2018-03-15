@@ -23,7 +23,7 @@ def getScalingCorrections(mat):
         romega = -math.log(rdiv)/math.log(2);
     else:
         romega = 0;
-    return [omega,romega];
+    return [romega];
 
 def calcAvgs(mat):
     L = mat[0,0];

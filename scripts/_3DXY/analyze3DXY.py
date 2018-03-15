@@ -67,8 +67,6 @@ def calcAvg(mat,i,istart,FileList):
 
     L = mat[istart,0];
     T = mat[istart,1];
-    print(str(L) + "    " + str(T));
-    print(N);
     Nspins = L*L*L;
     #MC averages not divided by exponential factor
     submat = mat[istart:iend,:];

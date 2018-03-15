@@ -28,11 +28,11 @@ def openFiles(n,omega,dirname):
     directory = dirname + "/" + odir + "/"
     if not os.path.exists(directory):
         os.makedirs(directory);
-    ofile1 = open(directory+"a4_8"+str(omega)+".dat","w");
-    ofile2 = open(directory+"b8_16"+str(omega)+".dat","w");
-    ofile3 = open(directory+"c16_32"+str(omega)+".dat","w");
-    ofile4 = open(directory+"d32_64"+str(omega)+".dat","w");
-    ofile5 = open(directory+"e64_128"+str(omega)+".dat","w");
+    ofile1 = open(directory+"04_8"+str(omega)+".dat","w");
+    ofile2 = open(directory+"08_16"+str(omega)+".dat","w");
+    ofile3 = open(directory+"16_32"+str(omega)+".dat","w");
+    ofile4 = open(directory+"32_64"+str(omega)+".dat","w");
+    ofile5 = open(directory+"64_128"+str(omega)+".dat","w");
     olist = [ofile1,ofile2,ofile3,ofile4,ofile5];
     return olist;
 
@@ -83,7 +83,7 @@ def analyze(mat,dirname,function):
     
     #define range of omegas
     TOL = 0.000001;
-    orange = getOmegaRange(0.0,1.0,0.02);
+    orange = getOmegaRange(0.0,0.5,0.05);
     for n in range(len(orange)):
         omega = orange[n];
         omegavec = np.ones((sortedMat.shape[0],1));
