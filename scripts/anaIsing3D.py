@@ -9,6 +9,9 @@ import scalingCorr2L as anaSC2L
 import scalingCorr3L as anaSC3L
 #functions
 from Ising3D import bin_omega_3L as SCbin3L
+from Ising3D import bin_omega_2L as SCbin2L
+
+import anaFuncs
 
 
 def plot(directory,xaxis):
@@ -18,7 +21,7 @@ def logplot(directory,xaxis):
 
 
 outdir= "./foutput/Ising3D/"
-doAnalysis = True
+doAnalysis = False
 doPlot = True
 if (doAnalysis):
     arguments = sys.argv;
@@ -45,6 +48,10 @@ if (doAnalysis):
     anaSC3L.analyze(dataMatrix,dirname,SCbin3L.calcOmegaBin3L);
     print("3L Bin done");
 
+    dirname = scalingDir + "/omegaBin2L"
+    anaSC2L.analyze(dataMatrix,dirname,
+            SCbin2L.calcOmegaBin2L,anaFuncs.getOmegaRange(-1.0,1.0,0.1));
+
     
 if (doPlot):
     vstdir = outdir + "vsT/"
@@ -60,4 +67,4 @@ if (doPlot):
         if ("3L" in dirpath):
             plot(dirpath,"Temperature")
         if ("2L" in dirpath):
-            subprocess.call(["../scripts/omega_animation.sh",dirpath])
+            subprocess.call(["../scripts/omega_animation.sh",dirpath,"Ising3D_"+dirname])

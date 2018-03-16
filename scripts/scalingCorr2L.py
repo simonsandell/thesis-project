@@ -64,16 +64,8 @@ def calculate(mat,i,ifirst,ofiles,function):
 
 
 
-def getOmegaRange(ostart,oend,step):
-    omegarange = [];
-    omega = ostart;
-    omegarange.append(ostart);
-    while (omega < oend):
-        omega = omega + step;
-        omegarange.append(omega);
-    return omegarange;
     
-def analyze(mat,dirname,function):
+def analyze(mat,dirname,function,orange):
     #delete old data
     subprocess.call(['rm','-r',dirname]);
     subprocess.call(['mkdir',dirname]);
@@ -83,7 +75,6 @@ def analyze(mat,dirname,function):
     
     #define range of omegas
     TOL = 0.000001;
-    orange = getOmegaRange(0.0,0.5,0.05);
     for n in range(len(orange)):
         omega = orange[n];
         omegavec = np.ones((sortedMat.shape[0],1));

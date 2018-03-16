@@ -19,13 +19,13 @@ for subdir in $filedir/*/; do
 	echo "YAXIS TICK MINOR 0.025 " >> ../scripts/setup.batch
 	echo "TITLE \"\xw = $omega\" " >> ../scripts/setup.batch
 	echo "AUTOSCALE ONREAD NONE" >> ../scripts/setup.batch
-	echo "WORLD XMIN 4.4850 " >> ../scripts/setup.batch #read these from file?
-	echo "WORLD XMAX 4.515" >> ../scripts/setup.batch
-	echo "WORLD YMIN -0.525" >> ../scripts/setup.batch
-	echo "WORLD YMAX 1.15" >> ../scripts/setup.batch
+	echo "WORLD XMIN 2.2015 " >> ../scripts/setup.batch #read these from file?
+	echo "WORLD XMAX 2.203" >> ../scripts/setup.batch
+	echo "WORLD YMIN -0.2" >> ../scripts/setup.batch
+	echo "WORLD YMAX 0.2" >> ../scripts/setup.batch
 	echo "LEGEND ON " >> ../scripts/setup.batch
 	echo "LEGEND LOCTYPE WORLD" >> ../scripts/setup.batch
-	echo "LEGEND 4.485, 1.14 " >> ../scripts/setup.batch
+	echo "LEGEND 2.2015, 0.21 " >> ../scripts/setup.batch
 	gracebat -batch ../scripts/setup.batch $string  -nosafe -printfile $pngdir/$(basename $subdir).png -hdevice PNG -hardcopy  
 done
 convert -delay 50 $pngdir/*.png $outputfile

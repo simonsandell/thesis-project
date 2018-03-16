@@ -30,7 +30,8 @@ def calcAvgs(mat):
     Exp = np.mean(mat[:,21]);
     omega = mat[0,22]
     return [E,S2X,S2Y,S2Z,Exp,L,T,omega]
-    
+
+#takes matrix with 2 sizes of L    
 def calcOmegaRS2L(mat):
     llist,lind = np.unique(mat[:,0],return_index=True);
     if (llist.shape[0]<2):

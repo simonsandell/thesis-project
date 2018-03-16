@@ -13,7 +13,10 @@ def getScalingCorrections(mat):
     b2 = getBin(m2[1],m4[1],exp[1]);
     b3 = getBin(m2[2],m4[2],exp[2]);
     div = (b3 -b2)/(b2-b1);
-    omega = -math.log(div)/math.log(2);
+    if (div > 0):
+        omega = -math.log(div)/math.log(2);
+    else:
+        omega = 0.0;
     return [omega];
 
 def calcAvgs(mat):

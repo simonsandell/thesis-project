@@ -9,10 +9,11 @@ import scalingCorr2L as anaSC2L
 import scalingCorr3L as anaSC3L 
 #functions
 from _3DXY import bin_omega_3L as SCbin3L
+from _3DXY import bin_omega_2L as SCbin2L
 from _3DXY import rhos_omega_3L as SCrhos3L
 from _3DXY import rhos_omega_2L as SCrhos2L
 
-
+import anaFuncs
 
 def plot(directory,xaxis):
     subprocess.call(['../plot/reg_plot.sh',directory,xaxis]);
@@ -21,7 +22,7 @@ def logplot(directory,xaxis):
 
 
 outdir= "./foutput/3DXY/"
-doAnalysis = True
+doAnalysis = False
 doPlot = True
 if (doAnalysis):
     arguments = sys.argv;
@@ -52,9 +53,16 @@ if (doAnalysis):
     print("3L Bin done");
 
     dirname = scalingDir + '/omegaRS2L';
-    anaSC2L.analyze(dataMatrix,dirname,SCrhos2L.calcOmegaRS2L);
-    
+    anaSC2L.analyze(dataMatrix,dirname,
+            SCrhos2L.calcOmegaRS2L,anaFuncs.getOmegaRange(-1.0,1.0,0.1));
+
     print("2L RS done");
+
+    dirname = scalingDir + '/omegaBin2L';
+    anaSC2L.analyze(dataMatrix,dirname,
+            SCbin2L.calcOmegaBin2L,anaFuncs.getOmegaRange(-1.0,1.0,0.1));
+    print("2L Bin done")
+    
 if (doPlot):
     vstdir = outdir + "vsT/"
     for dirname in  os.listdir(vstdir):
@@ -69,4 +77,4 @@ if (doPlot):
         if ("3L" in dirpath):
             plot(dirpath,"Temperature")
         if ("2L" in dirpath):
-            subprocess.call(["../scripts/omega_animation.sh",dirpath])
+            subprocess.call(["../scripts/omega_animation_3DXY.sh",dirpath,"3DXY_"+dirname])
