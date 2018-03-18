@@ -7,4 +7,4 @@ string="-param ../scripts/default.par"
 for filename in $directory/*; do
 	string="$string -settype xydy $filename"
 done
-xmgrace $string -pexec "xaxis label \"$xaxis\"" -pexec "yaxis label \"$yaxis\"" -nosafe -noask -free -legend load &
+xmgrace $string -pexec "xaxis label \"$xaxis\"" -pexec "yaxis label \"$yaxis\"" -hdevice EPS -nosafe -noask -free -legend load &

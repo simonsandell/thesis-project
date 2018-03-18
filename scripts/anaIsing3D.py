@@ -15,9 +15,9 @@ import anaFuncs
 
 
 def plot(directory,xaxis):
-    subprocess.call(['../plot/reg_plot.sh',directory,xaxis]);
+    subprocess.call(['../scripts/reg_plot.sh',directory,xaxis]);
 def logplot(directory,xaxis):
-    subprocess.call(['../plot/log_plot.sh',directory,xaxis]);
+    subprocess.call(['../scripts/log_plot.sh',directory,xaxis]);
 
 
 outdir= "./foutput/Ising3D/"
