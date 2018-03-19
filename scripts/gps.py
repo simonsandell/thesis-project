@@ -26,11 +26,14 @@ def graceDirPlot(directory,title, xaxis ,yaxis,logPlot, doPrint):
     writeToBat("YAXIS LABEL \"" + yaxis +"\"");
     n = 0;
     for filename in os.listdir(directory):
-        print(os.path.join(directory,filename))
         if (os.stat(os.path.join(directory,filename)).st_size != 0):
-            print(os.stat(os.path.join(directory,filename)).st_size)
-            addFile(os.path.join(directory,filename),n)
-            n = n+1;
+            if (doPrint):
+                if (".dat" in filename):
+                    addFile(os.path.join(directory,filename),n)
+                    n = n+1;
+            else:
+                addFile(os.path.join(directory,filename),n);
+                n = n+1;
     if (logPlot):
         writeToBat("XAXES SCALE LOGARITHMIC");
         writeToBat("YAXES SCALE LOGARITHMIC");

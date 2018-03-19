@@ -44,7 +44,7 @@ def calcFunctions(mat):
     for x in range(mat.shape[1]):
         avgs.append(np.mean(mat[:,x]));
     res = [];    
-    res.append(avgs[7]/avgs[21]);
+    res.append(abs(avgs[7])/avgs[21]);
     res.append(avgs[9]/avgs[21]);
     res.append(getBin(avgs[10],avgs[11],avgs[21]));
     res.append(getdBdT(avgs[10],avgs[11],avgs[12],avgs[13],avgs[7],avgs[21],T,Nspins));

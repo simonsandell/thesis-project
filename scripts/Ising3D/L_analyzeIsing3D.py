@@ -43,7 +43,7 @@ def calcFunctions(mat):
     for x in range(mat.shape[1]):
         avgs.append(np.mean(mat[:,x]));
     res = [];
-    res.append(avgs[7]/avgs[18]);
+    res.append(abs(avgs[7])/avgs[18]);
     res.append(avgs[10]/avgs[18]);
     res.append(avgs[11]/avgs[18]);
     res.append(getBin(avgs[10],avgs[11],avgs[18]));
