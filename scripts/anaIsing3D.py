@@ -30,10 +30,10 @@ if (doAnalysis):
     dataMatrix = np.array(data);
     
     print("loading done, starting t data");
-#    anaT.analyze(dataMatrix,fName);
+    anaT.analyze(dataMatrix,fName);
     
     print("temp data done,starting l data");
- #   anaL.analyze(dataMatrix,fName);
+    anaL.analyze(dataMatrix,fName);
     
     scalingDir = './foutput/Ising3D/scalingCorr';
     print("L data done, staring scaling corrections");
@@ -71,5 +71,8 @@ if (doPlot):
             xaxis = "Temperature"
             title = "Ising3D_" + anaFuncs.dirToTitle(dirname) + "_vs_" + xaxis;
             gps.graceDirPlot(fullpath,title,xaxis,yaxis,False,doPrint);
-    #    if ("2L" in dirpath):
-    #        subprocess.call(["../scripts/omega_animation.sh",dirpath,"Ising3D_"+dirname])
+        if ("2L" in fullpath):
+            yaxis = anaFuncs.dirToYaxis(dirname);
+            xaxis = "Temperature"
+            title = "Ising3D_" + anaFuncs.dirToTitle(dirname) + "_vs_" + xaxis;
+            gps.graceAnimation(fullpath,title,xaxis,yaxis);

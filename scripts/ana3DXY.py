@@ -83,5 +83,8 @@ if (doPlot):
             xaxis = "Temperature"
             title = "3DXY_" + anaFuncs.dirToTitle(dirname) + "_vs_" + xaxis;
             gps.graceDirPlot(fullpath,title,xaxis,yaxis,False,doPrint);
-    #    if ("2L" in fullpath):
-    #        subprocess.call(["../scripts/omega_animation_3DXY.sh",dirpath,"3DXY_"+dirname])
+        if ("2L" in fullpath):
+            yaxis = anaFuncs.dirToYaxis(dirname);
+            xaxis = "Temperature"
+            title = "3DXY_" + anaFuncs.dirToTitle(dirname) + "_vs_" + xaxis;
+            gps.graceAnimation(fullpath,title,xaxis,yaxis);

@@ -2,6 +2,8 @@ import os
 import time
 import subprocess
 import sys
+def fileNotEmpty(fullpath):
+    return (os.stat(fullpath).st_size != 0);
 def initBat():
     subprocess.call(["rm","-f","/tmp/setup.batch"]);
     bf = open("/tmp/setup.batch","a")
@@ -20,12 +22,11 @@ def addFile(path,n):
     writeToBat("KILL BLOCK")
 
 def graceDirPlot(directory,title, xaxis ,yaxis,logPlot, doPrint):
-    graceExe = "xmgrace"
     initBat();
     writeToBat("XAXIS LABEL \"" + xaxis +"\"");
     writeToBat("YAXIS LABEL \"" + yaxis +"\"");
     n = 0;
-    for filename in os.listdir(directory):
+    for filename in sorted(os.listdir(directory)):
         if (os.stat(os.path.join(directory,filename)).st_size != 0):
             if (doPrint):
                 if (".dat" in filename):
@@ -41,7 +42,6 @@ def graceDirPlot(directory,title, xaxis ,yaxis,logPlot, doPrint):
     writeToBat("AUTOSCALE");
     writeToBat("AUTOTICKS");
     if (doPrint):
-        graceExe = "gracebat"
         if (logPlot):
             writeToBat("LEGEND off");
         writeToBat("PRINT TO \"" + title + ".eps\"");
@@ -54,9 +54,83 @@ def graceDirPlot(directory,title, xaxis ,yaxis,logPlot, doPrint):
         subprocess.Popen(["xmgrace","-batch","/tmp/setup.batch","-nosafe","-noask","-free"]);
         time.sleep(0.5);
 
+def initAnim():
+    subprocess.call(['rm','-r','/tmp/temppng'])
+    subprocess.call(['mkdir','/tmp/temppng'])
+def getOmega(filepath):
+    f = open(filepath,"r");
+    ln = f.read();
+    ln = ln.rsplit(" ");
+    return ln[-1].replace("\n","");
+
+def graceAnimation(directory,aniname,xaxis,yaxis):
+    initAnim();
+    hasOmega = False;
+    omega = 0;
+    for subdirs, dirs, files in os.walk(directory):
+        for d in sorted(dirs): 
+            initBat();
+            n = 0;
+            for f in sorted(os.listdir(os.path.join(directory,d))):
+                fullpath = os.path.join(directory,d,f);
+                if ( fileNotEmpty(fullpath)):
+                    if (not hasOmega):
+                        omega = getOmega(os.path.join(directory,d,f));
+                    addFile(os.path.join(directory,d,f),n)
+                    n = n+1;
+            writeToBat(r'TITLE "\xw\0 = ' + str(omega)+ "\"");
+            writeToBat("XAXIS LABEL \"" + xaxis + "\"");
+            writeToBat("YAXIS LABEL \"" + yaxis + "\"");
+            writeToBat("AUTOSCALE");
+            writeToBat("AUTOTICKS");
+            writeToBat("LEGEND ON ");
+            writeToBat("PRINT TO \"/tmp/temppng/" + d + ".png\"");
+            writeToBat("HARDCOPY DEVICE \"PNG\"");
+            writeToBat("PAGE SIZE 1920,1024");
+            writeToBat("DEVICE \"PNG\" FONT ANTIALIASING on");
+            writeToBat("PRINT");
+            subprocess.call(["gracebat","-batch","/tmp/setup.batch","-nosafe","-noask","-free"]);
+
+    subprocess.call(['convert -delay 100 /tmp/temppng/*.png gif:./foutput/animations/'+aniname+'.gif'],shell=True);
+    subprocess.Popen(['eog','./foutput/animations/'+aniname+'.gif']);
 
 
 
+
+
+#!/bin/bash
+#filedir=$1
+#outputfile="./foutput/animations/$2.gif"
+#pngdir=./tempdir
+#mkdir $pngdir 
+#for subdir in $filedir/*/; do
+#	string="-legend load";
+#	omega=""
+#	for file in $subdir*.dat; do
+#		if [ -z "$omega" ]; then
+#	      		omega=$(head -n 1 $file | awk -F' ' '{ print $4 }' )
+#		fi
+#		string="$string -settype xydy $file"
+#	done
+#	rm ../scripts/setup.batch
+#	echo "XAXIS LABEL \"Temperature\" " > ../scripts/setup.batch
+#	echo "YAXIS LABEL \"L\S\xw\0\N\c7\C[2L\c7\C\xr\0\ss\N(2L) - \L\c7\C\xr\0\ss\N(L)]\" " >> ../scripts/setup.batch
+#	echo "YAXIS TICK MAJOR 0.05 " >> ../scripts/setup.batch
+#	echo "YAXIS TICK MINOR 0.025 " >> ../scripts/setup.batch
+#	echo "TITLE \"\xw = $omega\" " >> ../scripts/setup.batch
+#	echo "AUTOSCALE ONREAD NONE" >> ../scripts/setup.batch
+#	echo "WORLD XMIN 4.4850 " >> ../scripts/setup.batch #read these from file?
+#	echo "WORLD XMAX 4.515" >> ../scripts/setup.batch
+#	echo "WORLD YMIN -0.525" >> ../scripts/setup.batch
+#	echo "WORLD YMAX 1.15" >> ../scripts/setup.batch
+#	echo "LEGEND ON " >> ../scripts/setup.batch
+#	echo "LEGEND LOCTYPE WORLD" >> ../scripts/setup.batch
+#	echo "LEGEND 4.485, 1.14 " >> ../scripts/setup.batch
+#	gracebat -batch ../scripts/setup.batch $string  -nosafe -printfile $pngdir/$(basename $subdir).png -hdevice PNG -hardcopy  
+#done
+#convert -delay 50 $pngdir/*.png $outputfile
+#eog $outputfile &
+#rm -r $pngdir
 
 #    writeToBat("XAXIS LABEL \"" + xaxis + "\" ");
 #    writeToBat("YAXIS LABEL \"" + yaxis + "\" ");
