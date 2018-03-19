@@ -127,7 +127,6 @@ Consider the Superfluid density, which scales as
 \subsection{Data Analysis}
 The simulation program outputs raw data ordered in lines. Data from one ``simulation'' is contained in $N_{temperatures} \cdot N_{averages per simulation} \cdot N_{simulations}$.
 To calculate quantities of interest from this raw data, a python3 script has been written, utilizing the numpy library. All available raw data is loaded into a numpy ndarray, and sorted by system size and temperature. Then for each block of data with one temperature and one system size, combined averages are calculated and from these, further functions of the averages are calculated, such as the Binder Parameter, it's derivative, Susceptibility, Superfluid density, etc. To estimate the statistical error in these estimations, we utilize a resampling method usually refered to as the jackknife method. For each block used in calculating the estimations, a jackknife function is called, which calculates the quantities again, but with a subblock of data omitted.
-The jackknife estimate is defined as $\bar{f(x_i)} = \frac{1}{n-1}\sum
 \subsection{3DXY-model}
 Simulations were performed using the Wolff-cluster algorithm at the temperature $T_{run} = 2.2020~K$. Histogram extrapolation was performed to extrapolate to the range of temperatures $T_{range} = 2.2015-2.2030 ~ K$.
 The simulations are structured so that a lattice is initialized in the zero temperature state, all spins pointing in one direction. Then clusterupdates are performed until over 100k sweeps have been performed.
@@ -152,6 +151,9 @@ The number of simulations currently used to calculate $U_4, \rho_s, \chi $ etc. 
 \end{center}
 \caption{Number of simulations performed on the 3DXY-model}
 \end{table}
+\subsection{Ising3D model}
+The same general formula is used when simulating the Ising3D model, however, the temperature range is shifted to capture the phasetransition, $T_{\trm{run}} = 4.50, ~ T_{\trm{range}} = 4.486-4.515$.
+
 
 \input{figures.tex}
 
