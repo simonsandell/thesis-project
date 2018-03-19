@@ -44,7 +44,7 @@ if (doAnalysis):
 
     dirname = scalingDir + "/omegaBin2L"
     anaSC2L.analyze(dataMatrix,dirname,
-            SCbin2L.calcOmegaBin2L,anaFuncs.getOmegaRange(-1.0,1.0,0.1));
+            SCbin2L.calcOmegaBin2L,anaFuncs.getOmegaRange(0.0,1.0,0.05));
 
     
 if (doPlot):
