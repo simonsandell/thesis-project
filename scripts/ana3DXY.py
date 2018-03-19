@@ -14,19 +14,15 @@ from _3DXY import rhos_omega_3L as SCrhos3L
 from _3DXY import rhos_omega_2L as SCrhos2L
 
 import anaFuncs
-
-def plot(directory,xaxis):
-    subprocess.call(['../scripts/reg_plot.sh',directory,xaxis]);
-def logplot(directory,xaxis):
-    subprocess.call(['../scripts/log_plot.sh',directory,xaxis]);
+import gps
 
 
+arguments = sys.argv
+doAnalysis = (arguments[1] == "1");
+doPlot = (arguments[2] != "0");
 outdir= "./foutput/3DXY/"
-doAnalysis = False
-doPlot = True
 if (doAnalysis):
-    arguments = sys.argv;
-    fName = arguments[1];
+    fName = arguments[3];
     datafile = open("./output/3DXY/"+fName,"r");
     data = [];
     for ln in datafile:
@@ -64,17 +60,28 @@ if (doAnalysis):
     print("2L Bin done")
     
 if (doPlot):
+    doPrint = (arguments[2] == "2");
     vstdir = outdir + "vsT/"
     for dirname in  os.listdir(vstdir):
-        print(os.path.join(vstdir,dirname))
-        plot(os.path.join(vstdir,dirname),"Temperature");
+        fullpath = os.path.join(vstdir,dirname);
+        yaxis= anaFuncs.dirToYaxis(dirname);
+        xaxis = "Temperature"
+        title = "3DXY_" + anaFuncs.dirToTitle(dirname)+ "_vs_" + xaxis;
+        gps.graceDirPlot(fullpath,title,xaxis,yaxis,False,doPrint);
     vsldir = outdir + "vsL/"
     for dirname in  os.listdir(vsldir):
-        logplot(os.path.join(vsldir,dirname),"L");
+        fullpath = os.path.join(vsldir,dirname);
+        yaxis= anaFuncs.dirToYaxis(dirname);
+        xaxis = "L"
+        title = "3DXY_" + anaFuncs.dirToTitle(dirname)+ "_vs_" + xaxis;
+        gps.graceDirPlot(fullpath,title,xaxis,yaxis,True,doPrint);
     scalingdir = outdir+"scalingCorr/"
     for dirname in os.listdir(scalingdir):
-        dirpath = os.path.join(scalingdir,dirname)
-        if ("3L" in dirpath):
-            plot(dirpath,"Temperature")
-        if ("2L" in dirpath):
-            subprocess.call(["../scripts/omega_animation_3DXY.sh",dirpath,"3DXY_"+dirname])
+        fullpath= os.path.join(scalingdir,dirname)
+        if ("3L" in fullpath):
+            yaxis = anaFuncs.dirToYaxis(dirname);
+            xaxis = "Temperature"
+            title = "3DXY_" + anaFuncs.dirToTitle(dirname) + "_vs_" + xaxis;
+            gps.graceDirPlot(fullpath,title,xaxis,yaxis,False,doPrint);
+    #    if ("2L" in fullpath):
+    #        subprocess.call(["../scripts/omega_animation_3DXY.sh",dirpath,"3DXY_"+dirname])

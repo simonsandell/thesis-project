@@ -1,4 +1,5 @@
 import os
+import time
 import subprocess
 import sys
 def initBat():
@@ -19,13 +20,17 @@ def addFile(path,n):
     writeToBat("KILL BLOCK")
 
 def graceDirPlot(directory,title, xaxis ,yaxis,logPlot, doPrint):
+    graceExe = "xmgrace"
     initBat();
     writeToBat("XAXIS LABEL \"" + xaxis +"\"");
     writeToBat("YAXIS LABEL \"" + yaxis +"\"");
     n = 0;
     for filename in os.listdir(directory):
-        addFile(os.path.join(directory,filename),n)
-        n = n+1;
+        print(os.path.join(directory,filename))
+        if (os.stat(os.path.join(directory,filename)).st_size != 0):
+            print(os.stat(os.path.join(directory,filename)).st_size)
+            addFile(os.path.join(directory,filename),n)
+            n = n+1;
     if (logPlot):
         writeToBat("XAXES SCALE LOGARITHMIC");
         writeToBat("YAXES SCALE LOGARITHMIC");
@@ -33,6 +38,7 @@ def graceDirPlot(directory,title, xaxis ,yaxis,logPlot, doPrint):
     writeToBat("AUTOSCALE");
     writeToBat("AUTOTICKS");
     if (doPrint):
+        graceExe = "gracebat"
         if (logPlot):
             writeToBat("LEGEND off");
         writeToBat("PRINT TO \"" + title + ".eps\"");
@@ -40,8 +46,12 @@ def graceDirPlot(directory,title, xaxis ,yaxis,logPlot, doPrint):
         writeToBat("PAGE RESIZE 1920,1024");
         writeToBat("DEVICE \"EPS\" FONT ANTIALIASING on");
         writeToBat("PRINT");
+        subprocess.call(["gracebat","-batch","/tmp/setup.batch","-nosafe","-noask","-free"]);
+    else:
+        subprocess.Popen(["xmgrace","-batch","/tmp/setup.batch","-nosafe","-noask","-free"]);
+        time.sleep(0.5);
 
-    subprocess.call(["xmgrace","-batch","/tmp/setup.batch","-nosafe","-noask","-free"]);
+
 
 
 
@@ -74,4 +84,5 @@ def graceDirPlot(directory,title, xaxis ,yaxis,logPlot, doPrint):
 #   DEVICE "PNG" FONT ANTIALIASING on
 #   DEVICE "PNG" OP "transparent:on"
 #   DEVICE "PNG" OP "compression:9"
-#   PRINT   PRINTKKKKKKKKKKKKKJJ
+#   PRINT   PRINT
+
