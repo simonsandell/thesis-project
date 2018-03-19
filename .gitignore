@@ -54,6 +54,8 @@ test/
 warmLattice/
 lattices/
 __pycache__/
-# ocotpus cluster output files
+# octpus cluster output files
 ##############################
 run*.o*
+# figure files
+*.eps
