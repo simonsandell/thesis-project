@@ -107,8 +107,8 @@ LatticeIsing3D::LatticeIsing3D(int l, bool cold,long double Beta){
 	Nspins =L*L*L;
 	Neqsweeps = 0.0L;
 	Neqclusts = 0;
-	Nsmclusts = 0;
-	Nsmsweeps = 0.0L;
+	NTotClusts = 0;
+	NTotSweeps= 0.0L;
 	coldstart = cold;
 	warmedUp = false;
 	if (cold) {

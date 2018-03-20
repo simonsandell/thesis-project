@@ -51,8 +51,8 @@ void printIsing3DOutput(LatticeIsing3D lat, long double T,avgStruct avgs, long d
 	sstrm << std::fixed << T << " ";				// T	1
 	sstrm << std::fixed << lat.Neqsweeps << " ";			// n	2
 	sstrm << std::fixed << lat.Neqclusts << " ";			// n	3
-	sstrm << std::fixed << lat.Nsmsweeps << " ";			// n	4
-	sstrm << std::fixed << lat.Nsmclusts << " ";			// n	5
+	sstrm << std::fixed << lat.NTotSweeps<< " ";			// n	4
+	sstrm << std::fixed << lat.NTotClusts<< " ";			// n	5
 	sstrm << std::fixed << lat.coldstart << " ";			// cold	6
 	sstrm << std::fixed << avgs.e	<< " ";				// e	7
 	sstrm << std::fixed << avgs.e2	<< " ";				// e2	8

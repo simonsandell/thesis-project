@@ -162,5 +162,7 @@ int clusterIsing3D(LatticeIsing3D& lat,Cluster& cluster,RandStruct& randgen){
 	//empty the cluster
 	cluster.emptyCluster();	
 	//return # of tested spins
+	lat.NTotClusts += 1;
+	lat.NTotSweeps += ((long double)time/lat.Nspins);
 	return time;
 }

@@ -43,10 +43,11 @@ void wolffHistRunIsing3D(LatticeIsing3D& lat, long double N_sample_sweeps,long d
 	RandStruct rand;
 
 	long double doneSweeps = 0.0L;
+	long double doneClusts = 0.0L;
 	while (doneSweeps < N_sample_sweeps){
 		//make a cluster
-		steps =(long double) clusterIsing3D(lat,cluster,rand);
-		doneSweeps += steps/lat.Nspins;
+		doneClusts += (long double)clusterIsing3D(lat,cluster,rand);
+		doneSweeps = doneClusts/lat.Nspins;
 		if (steps < 0.0L || doneSweeps < 0.0L) {
 			std::cout << "OVERFLOW" << std::endl;
 			exit(0);
@@ -94,8 +95,6 @@ void wolffHistRunIsing3D(LatticeIsing3D& lat, long double N_sample_sweeps,long d
 			avgs[i].m4e += expFac*tM2*tM2*tE;
 		}
 	}//end of samples
-	lat.Nsmclusts=(long double)intNsampClust;
-	lat.Nsmsweeps = doneSweeps;
 
 	//calculate quantities of interest
 
@@ -118,14 +117,14 @@ void wolffHistRunIsing3D(LatticeIsing3D& lat, long double N_sample_sweeps,long d
 		   */
 
 		//normalize
-		avgs[i].e   /= lat.Nsmclusts;
-		avgs[i].e2  /= lat.Nsmclusts;
-		avgs[i].m   /= lat.Nsmclusts;
-		avgs[i].m2  /= lat.Nsmclusts;
-		avgs[i].m4  /= lat.Nsmclusts;
-		avgs[i].m2e /= lat.Nsmclusts;
-		avgs[i].m4e /= lat.Nsmclusts;
-		avgs[i].exp /= lat.Nsmclusts;
+		avgs[i].e   /= doneClusts;
+		avgs[i].e2  /= doneClusts;
+		avgs[i].m   /= doneClusts;
+		avgs[i].m2  /= doneClusts;
+		avgs[i].m4  /= doneClusts;
+		avgs[i].m2e /= doneClusts;
+		avgs[i].m4e /= doneClusts;
+		avgs[i].exp /= doneClusts;
 
 		//calculate
 		b[i] = avgs[i].m4*avgs[i].exp;
