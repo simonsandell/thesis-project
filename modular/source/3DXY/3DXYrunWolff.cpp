@@ -102,8 +102,6 @@ void wolffHistRun3DXY(Lattice3DXY& lat, long double N_sample_sweeps,long double 
 			avgs[i].s2z += expFac*tSz*tSz;
 		}
 	}//end of samples
-	lat.NTotClusts +=NsampClust; 
-	lat.NTotSweeps += doneSweeps;
 
 
 

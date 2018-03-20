@@ -221,5 +221,7 @@ int cluster3DXY(Lattice3DXY& lat,Cluster& cluster,long double beta,RandStruct& r
 	//empty the cluster
 	cluster.emptyCluster();	
 	//return # of tested spins
+	lat.NTotSweeps += ((long double)time/lat.Nspins);
+	lat.NTotClusts += 1;
 	return time;
 }

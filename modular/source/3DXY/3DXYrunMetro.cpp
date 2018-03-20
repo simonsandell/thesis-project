@@ -54,8 +54,6 @@ void metroRun3DXY(Lattice3DXY&lat, long double N_sample_sweeps,long double Tempe
 		avgs.s2z+= tSz*tSz;
 	}
 
-	lat.NTotClusts = 0;
-	lat.NTotSweeps += N_sample_sweeps;
 	//define _some reciprocals to reduce number of divions
 
 	//calculate quantities of interest
