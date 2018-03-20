@@ -52,8 +52,8 @@ void print3DXYOutput(Lattice3DXY lat, long double T,avgStruct avgs, long double 
 	sstrm << std::fixed << T << " ";				
 	sstrm << std::fixed << lat.Neqsweeps << " ";			
 	sstrm << std::fixed << lat.Neqclusts << " ";			
-	sstrm << std::fixed << lat.Nsmsweeps << " ";			
-	sstrm << std::fixed << lat.Nsmclusts << " ";			
+	sstrm << std::fixed << lat.NTotSweeps << " ";			
+	sstrm << std::fixed << lat.NTotClusts << " ";			
 	sstrm << std::fixed << lat.coldstart << " ";				
 	sstrm << std::fixed << avgs.e	<< " ";				
 	sstrm << std::fixed << avgs.e2	<< " ";				

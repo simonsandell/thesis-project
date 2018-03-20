@@ -3,8 +3,8 @@
 
 struct Lattice3DXY{
 	long double *** theLattice;
-	long double L,Nspins,Neqsweeps,Nsmsweeps;
-	int Neqclusts,Nsmclusts;	
+	long double L,Nspins,Neqsweeps,NTotSweeps;
+	int Neqclusts,NTotClusts;	
 	bool coldstart,warmedUp;
 
 	long double energy,xmag,ymag,sinx,siny,sinz;

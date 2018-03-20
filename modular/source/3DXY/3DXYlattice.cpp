@@ -174,8 +174,8 @@ Lattice3DXY::Lattice3DXY(int l, bool cold){
 	Nspins =L*L*L;
 	Neqsweeps = 0.0L;
 	Neqclusts = 0;
-	Nsmclusts = 0;
-	Nsmsweeps = 0.0L;
+	NTotClusts= 0;
+	NTotSweeps= 0.0L;
 	coldstart = cold;
 	warmedUp = false;
 	if (cold) {
