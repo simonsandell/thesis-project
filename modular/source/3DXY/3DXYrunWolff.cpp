@@ -38,6 +38,7 @@ void wolffHistRun3DXY(Lattice3DXY& lat, long double N_sample_sweeps,long double 
 	long double steps = 0.0L;
 	long double NsampClust = 0.0L;
 	long double doneSweeps = 0.0L;
+	long double doneClusts = 0.0L;
 
 	Cluster cluster(lat.L);
 	RandStruct rand;
@@ -46,6 +47,7 @@ void wolffHistRun3DXY(Lattice3DXY& lat, long double N_sample_sweeps,long double 
 		//make a cluster
 		steps = (long double)cluster3DXY(lat,cluster,Beta,rand);
 		doneSweeps += steps/lat.Nspins;
+		doneClusts += 1.0L;
 		if (doneSweeps< 0.0L || steps < 0.0L) {
 			std::cout << "OVERFLOW" << std::endl;
 		}
@@ -130,17 +132,17 @@ void wolffHistRun3DXY(Lattice3DXY& lat, long double N_sample_sweeps,long double 
 		   */
 
 		//normalize
-		avgs[i].e   /= NsampClust;
-		avgs[i].e2  /= NsampClust;
-		avgs[i].m   /= NsampClust;
-		avgs[i].m2  /= NsampClust;
-		avgs[i].m4  /= NsampClust;
-		avgs[i].m2e /= NsampClust;
-		avgs[i].m4e /= NsampClust;
-		avgs[i].s2x /= NsampClust;
-		avgs[i].s2y /= NsampClust;
-		avgs[i].s2z /= NsampClust;
-		avgs[i].exp /= NsampClust;
+		avgs[i].e   /= doneClusts;
+		avgs[i].e2  /= doneClusts;
+		avgs[i].m   /= doneClusts;
+		avgs[i].m2  /= doneClusts;
+		avgs[i].m4  /= doneClusts;
+		avgs[i].m2e /= doneClusts;
+		avgs[i].m4e /= doneClusts;
+		avgs[i].s2x /= doneClusts;
+		avgs[i].s2y /= doneClusts;
+		avgs[i].s2z /= doneClusts;
+		avgs[i].exp /= doneClusts;
 
 		//calculate
 		b[i] = avgs[i].m4*avgs[i].exp;
