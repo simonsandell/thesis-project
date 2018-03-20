@@ -84,6 +84,8 @@ def graceAnimation(directory,aniname,xaxis,yaxis):
             writeToBat("AUTOSCALE");
             writeToBat("AUTOTICKS");
             writeToBat("LEGEND ON ");
+            writeToBat("LEGEND LOCTYPE VIEW");
+            writeToBat("LEGEND 0.5,0.5");
             writeToBat("PRINT TO \"/tmp/temppng/" + d + ".png\"");
             writeToBat("HARDCOPY DEVICE \"PNG\"");
             writeToBat("PAGE SIZE 1920,1024");
