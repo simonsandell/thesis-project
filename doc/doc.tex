@@ -4,8 +4,11 @@
 %
 \documentclass[a4paper]{article}
 \usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{bm}
 \usepackage{graphicx}
 \newcommand{\trm}[1]{\textrm{#1}}
+\newcommand{\oxx}{\omega_{XX'}}
 \begin{document}
 \section{Shorthand notations and definitions}
 \begin{table}[htpb]
@@ -23,13 +26,65 @@
 \section{Introduction}
 The lambda phase transition in Helium-4 has been studied extensively both in theory, simulations and experiments. In 2003 a calculation of the critical exponent alpha describing the divergece of the heat capacity, was performed on the space-shuttle Something, and the exponent was calculated to the today highest standing precision. Theoretical calculations (pseudo-epsilon expansion etc) come up with a value in agreement with the experimental value. However, to date, the numerical estimates, while not extremelly far off, there still existst a discrepancy. In this thesis we have performed numerical studies to a higher degree of precision and our results show a better/the same/worse agreement with the experimental value. Agreement shows that numerical studies are a valid method of study of these systems, and discredits the idea that numberical simulations may be part of a different but closely related universality class.
 \section{Method}
-There are many different models in the same universality class as the normal-superfluid Helimu-4 transition, for example \dots.
+There are many different models in the same universality class as the normal-superfluid Helimu-4 transition, for example the $\phi^4$-model, the ddXY model etc.
 In this thesis we have chosen the simulate the 3DXY-model. This is convenient because of the relative simplicity of the model, and that it is well known and studied.
 The numerical method used to calculate thermodynamic averages is a Wolff algorithm.
 To achieve good statistics in a reasonable amount of time, it is necessary to utilize a global update algorithm, since the model experiences so called critical slowing down near the transition temperature. 
 Near the transition temperature, the correlation length diverges, so thermal fluctuations propagate very long distances, and so the system takes a very long time to equilibrate to the equilibrum value.
 \subsection{Wolff Algorithm}
-
+The Wolff algorithm is a non-local update method, and is an improvement upon the Swendsen-Wang method in which spin bonds are scanned and either deleted or frozen. This will divide the lattice into clusters, which are then flipped/updated with certain probabilites. In the Wolff algorithm only a single cluster is generated, with the starting spin uniformly random. That way of initializing the cluster, one can expect to hit large clusters with higher probability, since probability of hitting a cluster should depend on its size.
+Thus one can avoid the many single spin clusters usually generated in the Swendsen-Wang method.
+For a markovian update method to give a chain of system configurations with distribution according to the Boltzmann-factor, it must satisfy two conditions, (i) for any given state of the simulated system, any other state must be reachable in a finite number of steps.
+(ii) Non-periodicity, it should not be possible to return to a preivous state immediatley, only after a number of steps, $t =nk,~ n = 1,2,3\dots$.
+This hold for the Wolff method, since a valid cluster consists of just shifting a single spin with a random angle, thus any configuration can be reached in $N \leq N_{\trm{spins}}$ steps. Also, since the first spin selected is always flipped, the condition of Non-periodicity is also fulfilled.
+The algorithm must also have a transition probability configured so that after a long time, the desired stationary distribution is reached, in our case the Boltzmann-distribution.
+Call the desired staionary distribution $\rho(X)$, the transition probability $T(X \rightarrow X')$ and the probability of state $X$ at markov timestep t $\rho(X,t)$.
+Then the master equaion is 
+\begin{equation}
+  \rho(X, t+1) - \rho(X,t) = -\sum_{X'} T(X\rightarrow X')\rho(X,t) +\sum_{X} T(X'\rightarrow X)\rho(X',t).
+\end{equation}
+Then solving for the stationary solution, we get
+\begin{equation}
+  \sum_{X'}T(X\rightarrow X') \rho(X) =  \sum_{X}T(X'\rightarrow X) \rho(X')
+  \label{}
+\end{equation}
+with one very conveniet solution $T(X\rightarrow X') = T(X'\rightarrow X)$.
+This solution can be decomposed as
+\begin{equation}
+  T(X\rightarrow X') = \omega_{XX'} A_{XX'}
+  \label{}
+\end{equation}
+where $\oxx$ represents a trial probability and $A_{XX'}$ represents an acceptance probability.
+We let $\omega_{XX'}$ satisfy
+\begin{align}
+  \oxx = \omega_{X'X}\\
+  0 \leq \oxx \leq 1\\
+  \sum_{X'} \oxx = 1.
+  \label{}
+\end{align}
+Inserting this form of $T$ into the detailed balance equation then gives
+\begin{equation}
+  \frac{A_{XX'}}{A_{X'X}} = \frac{\rho_{X'}}{\rho_{X}}.
+\end{equation}
+In the metropolis algorithm one chooses the acceptance probability as follows
+Step 1: From state $X$ propose a new trial state $X'$ with probability given by $\oxx$. Then accept that state with probability 
+\begin{equation}
+  A_{XX'} = 
+  \begin{cases}
+    	1 &\trm{ if } \frac{\rho(X')}{\rho(X)} \geq 1\\
+	\frac{\rho(X')}{\rho(X)}&\trm{ if } \frac{\rho(X')}{\rho(X)} < 1 .
+  \end{cases}
+\end{equation}
+The trial probability is usually just a uniform distribution.
+For the Wolff-algorithm, to show that it too satisfies detailed balance, condiser a 
+state $X$ and a state $X'$ differing by a flip $R(\bm{r})$ of the cluster $c$.
+The transition probabilities obey
+\begin{align}
+  \frac{T(X\rightarrow X')}{T(X'\rightarrow X)} = \prod_{\langle s_i s_j \rangle \in \bm{\partial} c} \frac{ 1- P(R(\bm{r})\bm{s}_i\bm{s}_j))}{1 - P(R(\bm{r})\bm{s'}_i\bm{s'}_j)} = \\
+  =\exp\left\{\beta \sum\limits_{\langle s_i s_j \rangle \in \bm{\partial}c }
+  \label{}
+\end{align}
+since all probabilities inside the cluster are the same and cancel.
 \section{Monte Carlo}
 In statistical physics averages are calculated from 
 \begin{equation}
@@ -102,6 +157,23 @@ The quantity $b =\frac{\langle M^4 \rangle}{\langle M^2\rangle^2}$ is useful in 
 \end{center}
 \caption{3DXY-model }
 \end{table}
+\begin{table}[htpb]
+\begin{center}
+\begin{tabular}{l l l}
+  Quantity  & Hasenbusch & Our\\
+  $T_c$	    & 4.511523(3)& N/A\\
+  $\alpha $ & N/A        & N/A\\
+  $\nu	  $ & 0.63002(10)& N/A\\
+  $\eta   $ & 0.03627(10)& N/A\\
+  $\gamma $ & N/A        & N/A\\
+  $\delta $ & N/A        & N/A\\
+  $\beta  $ & N/A        & N/A\\
+  $\omega $ & N/A        & N/A\\
+  $\omega_2$& N/A        & N/A\\
+\end{tabular}
+\end{center}
+\caption{Ising3D-model }
+\end{table}
 
 \section{Finite size scaling}
 
@@ -121,8 +193,15 @@ Consider the Superfluid density, which scales as
 \begin{align}
   r(L)&\equiv \rho_s(L,t=0) \cdot L = r_0 + r_1L^{-\omega_\rho}\\
   r(2L) - r(L) &= r_1(2^{-\omega_\rho} -1)L^{-\omega_\rho}
-  \label{<++>}
-\end{align}<++>
+  \label{}
+\end{align}
+One very convenient solution is the detailed balance solution,
+$T(X\rightarrow X') = T(X' \rightarrow X)$.
+This solution can be decomposed into $T(X\rightarrow X') = \omega_{XX'} A_{XX'}$ where we demand that $\omega{XX'}$ be symmetric.
+
+
+For the method using 2 systemsizes, one can check by visual inspeciton each different value of omega to see for which omega the graphs intersect mostly at one point. One can also make a numerical check, by finding the intersecitons of all curves, and calculating  and plotting the standard deviation of the intersections for each omega.
+
 \section{Results}
 \subsection{Data Analysis}
 The simulation program outputs raw data ordered in lines. Data from one ``simulation'' is contained in $N_{temperatures} \cdot N_{averages per simulation} \cdot N_{simulations}$.
@@ -139,20 +218,36 @@ The number of simulations currently used to calculate $U_4, \rho_s, \chi $ etc. 
 
 \begin{table}[htpb]
 \begin{center}
-\begin{tabular}{l l }
-  L & No. simulations\\
-  4 & 110 \\
-  8 & 28.4 \\
-  16 & 18.34 \\
-  32 & 4.49 \\
-  64 & 0.34 \\
-  128 & 0 \\
+\begin{tabular}{l l l}
+  L & No. simulations & No. uncorrelated averages\\
+  4 & 110 & 11000\\
+  8 & 110 & 11000\\
+  16 & 45.54 & 4554\\
+  32 & 12 & 1200\\
+  64 & 1.16 & 116 \\
+  128 & 0  & 0 \\
 \end{tabular}
 \end{center}
 \caption{Number of simulations performed on the 3DXY-model}
 \end{table}
+
+\begin{table}[htpb]
+\begin{center}
+\begin{tabular}{l l l}
+  L & No. simulations & No. uncorrelated averages\\
+  4 & 100 & 10000\\
+  8 & 100 & 10000\\
+  16 & 100 & 10000\\
+  32 & 97.52 & 9752 \\
+  64 & 5.8 & 580 \\
+  128 & 1.15  & $115^{*}$ \\
+\end{tabular}
+\end{center}
+\caption{Number of simulations performed on the Ising3D-model  \textsuperscript{*The simulation of 128 is not doing so well, as evident in the plots}}
+\end{table}
 \subsection{Ising3D model}
 The same general formula is used when simulating the Ising3D model, however, the temperature range is shifted to capture the phasetransition, $T_{\trm{run}} = 4.50, ~ T_{\trm{range}} = 4.486-4.515$.
+
 
 
 \input{figures.tex}
