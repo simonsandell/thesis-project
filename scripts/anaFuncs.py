@@ -9,19 +9,21 @@ def getOmegaRange(ostart,oend,step):
     return omegarange;
 
 def dirToYaxis(dirname):
-    dirLex = { 'en':r'<e> Energy per spin',
-            'mag':r'<m> Magnetization per spin',
-            'bin':r'B = <M\S4\N>/<M\S2\N>\S2\N',
+    dirLex = { 'en':r'e Energy per spin',
+            'mag':r'm Magnetization per spin',
+            'bin':r'B = M\S4\N/M\S2\N\S2\N',
             'dbdt':r'dB/dT',
             'xi':r'\xc\0 Susceptibility',
             'rs':r'L\xr\0\ss\N Superfluid density',
-            'm2':r'<m\S2\N>',
-            'm4':r'<m\S4\N>',
+            'm2':r'm\S2\N',
+            'm4':r'm\S4\N',
             'c':'C - Heat Capacity',
             'omegaBin3L':r'\xw\0 B scaling correction',
-            'omegaRS3L':r'\xw\0 \xr\0\ss\N scaling correctoin',
+            'omegaRS3L':r'\xw\0 \xr\0\ss\N scaling correction',
             'omegaBin2L':r'L\S\xw\0\N\c7\C[B(2L) - B(L)]',
-            'omegaRS2L':r'L\S\xw\0\N\c7\C[2L\c7\C\xr\0\ss\N(2L) - \L\c7\C\xr\0\ss\N(L)]'};
+            'omegaRS2L':r'L\S\xw\0\N\c7\C[2L\xr\)(2L) - L\xr\0(L)]',
+            'std_omegaBin2L':r'\xs\0\sBin2L\N',
+            'std_omegaRS2L':r'\xs\0\sRS2L\N'};
     return dirLex[dirname];
             
 def dirToTitle(dirname):
@@ -37,5 +39,7 @@ def dirToTitle(dirname):
             'omegaBin3L':'omega_from_B',
             'omegaRS3L':'omega_from_rs',
             'omegaBin2L':'Ltoomega_from_B',
-            'omegaRS2L':'Ltoomega_from_RS'};
+            'std_omegaBin2L':'std_intersect_Bin_vs_omega',
+            'omegaRS2L':'Ltoomega_from_RS',
+            'std_omegaRS2L':'std_intersect_RS_vs_omega'};
     return dirLex[dirname];

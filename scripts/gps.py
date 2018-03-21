@@ -27,6 +27,7 @@ def graceDirPlot(directory,title, xaxis ,yaxis,logPlot, doPrint):
     writeToBat("YAXIS LABEL \"" + yaxis +"\"");
     n = 0;
     for filename in sorted(os.listdir(directory)):
+        print(filename)
         if (os.stat(os.path.join(directory,filename)).st_size != 0):
             if (doPrint):
                 if (".dat" in filename):
@@ -62,8 +63,34 @@ def getOmega(filepath):
     ln = f.read();
     ln = ln.rsplit(" ");
     return ln[-1].replace("\n","");
+def setWorldView(model,quant):
+    if (model == "Ising3D"):
+        writeToBat("WORLD XMIN 4.4850 ");
+        writeToBat("WORLD XMAX 4.515" );
+        writeToBat("WORLD YMIN -0.525" );
+        writeToBat("WORLD YMAX 1.15" );
+    else:
+        writeToBat("WORLD XMIN 2.2015" );
+        writeToBat("WORLD XMAX 2.203" );
+        if (quant == "RS"):
+            writeToBat("WORLD YMIN -0.5" );
+            writeToBat("WORLD YMAX 1.00" );
+        else:
+            writeToBat("WORLD YMIN -0.5" );
+            writeToBat("WORLD YMAX 0.20" );
+
 
 def graceAnimation(directory,aniname,xaxis,yaxis):
+    print(directory)
+    if ("3DXY" in directory):
+        model = "3DXY";
+        if ("RS" in directory):
+            quant = "RS";
+        else:
+            quant = "B";
+    else:
+        quant = "B";
+        model = "Ising3D";
     initAnim();
     hasOmega = False;
     omega = 0;
@@ -81,11 +108,12 @@ def graceAnimation(directory,aniname,xaxis,yaxis):
             writeToBat(r'TITLE "\xw\0 = ' + str(omega)+ "\"");
             writeToBat("XAXIS LABEL \"" + xaxis + "\"");
             writeToBat("YAXIS LABEL \"" + yaxis + "\"");
-            writeToBat("AUTOSCALE");
+            writeToBat("AUTOSCALE ONREAD NONE");
+            setWorldView(model,quant);
             writeToBat("AUTOTICKS");
             writeToBat("LEGEND ON ");
             writeToBat("LEGEND LOCTYPE VIEW");
-            writeToBat("LEGEND 0.5,0.5");
+            writeToBat("LEGEND 0.1,0.1");
             writeToBat("PRINT TO \"/tmp/temppng/" + d + ".png\"");
             writeToBat("HARDCOPY DEVICE \"PNG\"");
             writeToBat("PAGE SIZE 1920,1024");

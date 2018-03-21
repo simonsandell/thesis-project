@@ -3,10 +3,13 @@
 % Last Change: tor feb 08 01:00  2018 C
 %
 \documentclass[a4paper]{article}
+
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{bm}
 \usepackage{graphicx}
+\usepackage{enumerate}
+
 \newcommand{\trm}[1]{\textrm{#1}}
 \newcommand{\oxx}{\omega_{XX'}}
 \begin{document}
@@ -14,8 +17,8 @@
 \begin{table}[htpb]
   \begin{center}
     \begin{tabular}{l l}
-      MC & Monte Carlo\\
       Notation & Definition\\
+      MC & Monte Carlo\\
       FSS & Finite Size Scaling\\
       $L$ & Linear system size measured in units of lattice spacing\\
       $\beta \equiv \frac{1}{k_B T}$ & Inverse temperature\\
@@ -31,10 +34,54 @@ In this thesis we have chosen the simulate the 3DXY-model. This is convenient be
 The numerical method used to calculate thermodynamic averages is a Wolff algorithm.
 To achieve good statistics in a reasonable amount of time, it is necessary to utilize a global update algorithm, since the model experiences so called critical slowing down near the transition temperature. 
 Near the transition temperature, the correlation length diverges, so thermal fluctuations propagate very long distances, and so the system takes a very long time to equilibrate to the equilibrum value.
+\subsection{Monte Carlo}
+In statistical physics averages are calculated from 
+\begin{equation}
+  \langle A\rangle = \frac{1}{Z}\trm{Tr} e^{-H/T} = \sum_x A(x) P(x)
+  \label{}
+\end{equation}
+where  $P(x) = (1/Z)exp(-H(x))$ is the Boltzmann distribution.
+The practical and convievable way to evaluate these averages using Monte Carlo is to use importance sampling, i.e. do not form averages from uniformly random system configurations, but instead generate configurations that are Boltzmann distributed.   
+Thus thermal Monte Carlo averages have the form 
+\begin{equation}
+  \langle A \rangle = \frac{1}{N} \sum_x A(x) \pm \frac{\sigma	}{\sqrt N}
+  \label{}
+\end{equation}
+where the states $x$ are Boltzmann distributed.
+However, the Boltzmann distribution may be unsuitable for some systems/configurations we want to study, so we can use any other distribution as 
+\begin{equation}
+  \langle A \rangle = \frac{\frac{1}{N}\sum_y \frac{A(y) e^{-H(x)/T}}{P'(y)}}{\frac{1}{N}\sum_y \frac{e^{-H(y)/T}}{P'(y)}}  
+  \label{}
+\end{equation}
+ where the states $y$ are distributed according to $P'(y)$.
+
+ Importance sampling is a way of reducing the error in the Monte Carlo estimate. Instead of choosing sample points distributed uniformly, one can try to choose the most probable states. Since thermal systems are Boltzmann-distributed, we want a way to randomly generate states distributed according to the Boltzmann distribution.
+\subsection{Markov process}
+A Markovian process is one for which the probility of getting to any state in the system is determined solely by the current state. I.e. the probability of going from state $x_i$ to $x_{j}$ is given by a transition probability $w(x_i \rightarrow x_j)$. The master equation describing the evolution of the probability distribution can then be written $P(x_i )$
+ 
+
+
+\subsection{Histrogram extrapolation}
+Histogram extrapolation is a method to extract more data from a run. 
+Averages are calculated as
+\begin{equation}
+  \langle A \rangle_{\beta_0} =  \frac{\sum_{x}A_x e^{-\beta_0 H_x}}{\sum_{x}e^{-\beta_0 H_x}}
+  \label{}
+\end{equation}
+To get the average of A at some different temperature, say $\beta_1$, we can do
+\begin{align}
+  \langle A\rangle_{\beta_1} =  \frac{\sum_{x}A_x e^{-\beta_1 H_x}}{\sum_{x}e^{-\beta_1 H_x}} = \\
+  = \frac{\sum_x A_x e^{-(\beta_1 - \beta_0)H_x} e^{-\beta_0 H_x}}{\sum_x e^{-(\beta_1 - \beta_0)H_x}e^{-\beta_0 H_x}} = \\
+  = \frac{\langle A e^{-(\beta_1 - \beta_0)H}\rangle_{\beta_0}}{\langle e^{-(\beta_1 - \beta_0)H}\rangle_{\beta_0}}
+\end{align}
+Since the value of $abs(\beta_1 -\beta_0)$ will be small in practice, and the value of the energy will increase with the systemsize, precision will be lost in the calculation of $\exp\left( \beta_1 - \beta_0 \right)H_x$. To mitigate this, one can subtract a constant from the energy of the system, $H_max$, since a constant shift in energy will not change expectation values, since it just factors out of both sums and cancels.
 \subsection{Wolff Algorithm}
 The Wolff algorithm is a non-local update method, and is an improvement upon the Swendsen-Wang method in which spin bonds are scanned and either deleted or frozen. This will divide the lattice into clusters, which are then flipped/updated with certain probabilites. In the Wolff algorithm only a single cluster is generated, with the starting spin uniformly random. That way of initializing the cluster, one can expect to hit large clusters with higher probability, since probability of hitting a cluster should depend on its size.
 Thus one can avoid the many single spin clusters usually generated in the Swendsen-Wang method.
-For a markovian update method to give a chain of system configurations with distribution according to the Boltzmann-factor, it must satisfy two conditions, (i) for any given state of the simulated system, any other state must be reachable in a finite number of steps.
+For a markovian update method to give a chain of system configurations with distribution according to the Boltzmann-factor, it must satisfy two conditions, 
+
+(i) for any given state of the simulated system, any other state must be reachable in a finite number of steps.
+
 (ii) Non-periodicity, it should not be possible to return to a preivous state immediatley, only after a number of steps, $t =nk,~ n = 1,2,3\dots$.
 This hold for the Wolff method, since a valid cluster consists of just shifting a single spin with a random angle, thus any configuration can be reached in $N \leq N_{\trm{spins}}$ steps. Also, since the first spin selected is always flipped, the condition of Non-periodicity is also fulfilled.
 The algorithm must also have a transition probability configured so that after a long time, the desired stationary distribution is reached, in our case the Boltzmann-distribution.
@@ -48,7 +95,13 @@ Then solving for the stationary solution, we get
   \sum_{X'}T(X\rightarrow X') \rho(X) =  \sum_{X}T(X'\rightarrow X) \rho(X')
   \label{}
 \end{equation}
-with one very conveniet solution $T(X\rightarrow X') = T(X'\rightarrow X)$.
+which is hard to solve in general, but with a very famous paritcular solution called the detailed balace solution can be found,
+\begin{align}
+  \frac{T(X\rightarrow X')}{T(X'\rightarrow X)} = \frac{\rho(X')}{\rho(X)} 
+  \label{eq:detbal}
+\end{align}
+for all states $X,~X'$.
+
 This solution can be decomposed as
 \begin{equation}
   T(X\rightarrow X') = \omega_{XX'} A_{XX'}
@@ -76,61 +129,68 @@ Step 1: From state $X$ propose a new trial state $X'$ with probability given by 
   \end{cases}
 \end{equation}
 The trial probability is usually just a uniform distribution.
-For the Wolff-algorithm, to show that it too satisfies detailed balance, condiser a 
-state $X$ and a state $X'$ differing by a flip $R(\bm{r})$ of the cluster $c$.
+\subsubsection{Wolff on the 3DXY-model}
+In the 3DXY-model, each spin is characterized by a single value, their angle $\alpha$.
+We define the hamiltonian of the 3DXY-model as 
+\begin{equation}
+  H = \beta\sum_{<s_i,s_j>} \cos(\alpha_i - \alpha_j)
+  \label{}
+\end{equation}
+where $<s_i,s_>$ denote that only sites $s_i$ and $s_j$ which are nearest neighours should be included.
+The probability of adding spin to the cluster is
+\begin{equation}
+ P(\alpha_i,\alpha_j,\alpha_u) = 1 - \exp(2\beta \cos(\alpha_j - \alpha_u)\cos(\alpha_i - \alpha_u))
+  \label{pflip}
+\end{equation}
+where $\bm{u}$ is the normal to the plane through which the spins are reflected when added.
+When a spin is added to the cluster, it is reflected through a plane.
+The Wolff-algorithm is defined as follows for the 3DXY-model:
+\begin{enumerate}[(i)]
+\item Select a starting spin with uniform probability. Select a random plane with normal $\bm{u}$, with the angle $\alpha_u$  to reflect spins through. Reflect the starting spin through the plane, taking it to 
+$$\alpha \rightarrow R(\alpha,\alpha_u) = \pi + 2\alpha_u - \alpha$$
+
+and mark it as part of cluster.
+
+\item Add it's neighbours to a list of perimeter spins, to be tried for inclusion in the cluster.
+
+\item Pick out any element in the list. Try to add it to the cluster with probability as defined above. If it is accepted, add it to the cluster. Add nearest neighbours that are not part of the cluster already to the perimeter list.
+
+\item Repeat (iii) until the perimeter list is empty.
+\end{enumerate}
+For the Wolff-algorithm, to show that it satisfies detailed balance, condiser a 
+state $X$ and a state $X'$ differing by a flip of the cluster $c$. 
 The transition probabilities obey
 \begin{align}
-  \frac{T(X\rightarrow X')}{T(X'\rightarrow X)} = \prod_{\langle s_i s_j \rangle \in \bm{\partial} c} \frac{ 1- P(R(\bm{r})\bm{s}_i\bm{s}_j))}{1 - P(R(\bm{r})\bm{s'}_i\bm{s'}_j)} = \\
-  =\exp\left\{\beta \sum\limits_{\langle s_i s_j \rangle \in \bm{\partial}c }
-  \label{}
+  \frac{T(X\rightarrow X')}{T(X'\rightarrow X)} &= \prod_{\langle s_i s_j \rangle \in \bm{\partial} c} \frac{ 1- P(R(\alpha_i,\alpha_u),\alpha_j,\alpha_u)}{1- P(R(\alpha'_i,\alpha_u),\alpha'_j,\alpha_u)}
 \end{align}
-since all probabilities inside the cluster are the same and cancel.
-\section{Monte Carlo}
-In statistical physics averages are calculated from 
-\begin{equation}
-  \langle A\rangle = \frac{1}{Z}\trm{Tr} e^{-H/T} = \sum_x A(x) P(x)
-  \label{}
-\end{equation}
-where  $P(x) = (1/Z)exp(-H(x))$ is the Boltzmann distribution.
-The practical and convievable way to evaluate these averages using Monte Carlo is to use importance sampling, i.e. do not form averages from uniformly random system configurations, but instead generate configurations that are Boltzmann distributed.   
-Thus thermal Monte Carlo averages have the form 
-\begin{equation}
-  \langle A \rangle = \frac{1}{N} \sum_x A(x) \pm \frac{\sigma	}{\sqrt N}
-  \label{}
-\end{equation}
-where the states $x$ are Boltzmann distributed.
-However, the Boltzmann distribution may be unsuitable for some systems/configurations we want to study, so we can use any other distribution as 
-\begin{equation}
-  \langle A \rangle = \frac{\frac{1}{N}\sum_y \frac{A(y) e^{-H(x)/T}}{P'(y)}}{\frac{1}{N}\sum_y \frac{e^{-H(y)/T}}{P'(y)}}  
-  \label{}
-\end{equation}
- where the states $y$ are distributed according to $P'(y)$.
-
- Importance sampling is a way of reducing the error in the Monte Carlo estimate. Instead of choosing sample points distributed uniformly, one can try to choose the most probable states. Since thermal systems are Boltzmann-distributed, we want a way to randomly generate states distributed according to the Boltzmann distribution.
- \section{Markov process}
- A Markovian process is one for which the probility of getting to any state in the system is determined solely by the current state. I.e. the probability of going from state $x_i$ to $x_{j}$ is given by a transition probability $w(x_i \rightarrow x_j)$. The master equation describing the evolution of the probability distribution can then be written $P(x_i )$
- 
-\section{Detailed Balance}
-\section{Wolff Algorithm}
-
-
-\section{Histrogram extrapolation}
-Histogram extrapolation is a method to extract more data from a run. 
-Averages are calculated as
-\begin{equation}
-  \langle A \rangle_{\beta_0} =  \frac{\sum_{x}A_x e^{-\beta_0 H_x}}{\sum_{x}e^{-\beta_0 H_x}}
-  \label{}
-\end{equation}
-To get the average of A at some different temperature, say $\beta_1$, we can do
+where the product is over nearest neighbour bonds where $s_i \in x, s_j \notin c$.
+Thus we have that $ R(\alpha_i,\alpha_u) = \alpha'_i $, $R(\alpha'_i) = \alpha_i$ and $\alpha_j = \alpha'_j$.
+We get
 \begin{align}
-  \langle A\rangle_{\beta_1} =  \frac{\sum_{x}A_x e^{-\beta_1 H_x}}{\sum_{x}e^{-\beta_1 H_x}} = \\
-  = \frac{\sum_x A_x e^{-(\beta_1 - \beta_0)H_x} e^{-\beta_0 H_x}}{\sum_x e^{-(\beta_1 - \beta_0)H_x}e^{-\beta_0 H_x}} = \\
-  = \frac{\langle A e^{-(\beta_1 - \beta_0)H}\rangle_{\beta_0}}{\langle e^{-(\beta_1 - \beta_0)H}\rangle_{\beta_0}}
+  \frac{T(X\rightarrow X')}{T(X'\rightarrow X)}&= \prod_{\langle s_i s_j \rangle \in \bm{\partial} c} \frac{ \exp\left\{2\beta\cos(R(\alpha_i,\alpha_u) - \alpha_u)\cos(\alpha_j - \alpha_u)\right\}}{ \exp\left\{2\beta\cos(R(\alpha'_i,\alpha_u) - \alpha_u)\cos(\alpha'_j -\alpha_u)\right\}} = \\
+  &= \prod_{\langle s_i s_j \rangle \in \bm{\partial} c} \frac{ \exp\left\{2\beta\cos(\alpha'_i - \alpha_u)\cos(\alpha'_j - \alpha_u)\right\}}{ \exp\left\{2\beta\cos(\alpha_i,\alpha_u) - \alpha_u)\cos(\alpha_j -\alpha_u)\right\}} = \\
+  &= \frac{\rho(X')}{\rho(X)}.
 \end{align}
-Since the value of $abs(\beta_1 -\beta_0)$ will be small in practice, and the value of the energy will increase with the systemsize, precision will be lost in the calculation of $\exp\left( \beta_1 - \beta_0 \right)H_x$. To mitigate this, one can subtract a constant from the energy of the system, $H_max$, since a constant shift in energy will not change expectation values, since it just factors out of both sums and cancels.
+
+
+
 \section{Binder cumulant}
-The quantity $b =\frac{\langle M^4 \rangle}{\langle M^2\rangle^2}$ is useful in determining the critical temperature, as it in the thermodynamic limit $L\rightarrow \infty $ essentially becomes a heaviside function, discontinous at the critical temperature. 
-\section{Definitions of scaling variables}
+The quantity $b =\frac{\langle M^4 \rangle}{\langle M^2\rangle^2}$ is useful as it approaches a constant as $t\rightarrow 0 $. It is also  
+\section{Scaling hypothesis}
+The scaling hypothesis is often stated as
+\begin{equation}
+  f_{singular}(t,h) = t^{2- \alpha} g_f\left(\frac{h}{t^\Delta}\right)
+  \label{}
+\end{equation}
+from which the scaling of many other quantites can be derived, as derivatives, second derivatives and combinations of such.
+\subsection{Scaling laws}
+\begin{align}
+	\alpha + 2\beta + \gamma = 2\\
+	\gamma = \beta(\delta -1)\\
+	d\nu = 2 - \alpha
+  \label{<++>}
+\end{align}<++>
+\subsection{Definitions of critical exponents}
 \begin{align}
   \beta &= \frac{1}{k_B T} \\
   F &= -\beta \log Z\\
@@ -176,8 +236,7 @@ The quantity $b =\frac{\langle M^4 \rangle}{\langle M^2\rangle^2}$ is useful in 
 \end{table}
 
 \section{Finite size scaling}
-
-Assuming higher order corrections are irrelevant, the FSS(finite size scaling) of the  4th order Binder cumulant at the critical temperature is
+The assumption we use in this paper for the finite size scaling is as follows
 \begin{equation}
   B(L,t=0) = b_0 + b_1L^{-\omega}.
 \end{equation}
@@ -195,12 +254,12 @@ Consider the Superfluid density, which scales as
   r(2L) - r(L) &= r_1(2^{-\omega_\rho} -1)L^{-\omega_\rho}
   \label{}
 \end{align}
-One very convenient solution is the detailed balance solution,
-$T(X\rightarrow X') = T(X' \rightarrow X)$.
-This solution can be decomposed into $T(X\rightarrow X') = \omega_{XX'} A_{XX'}$ where we demand that $\omega{XX'}$ be symmetric.
 
 
 For the method using 2 systemsizes, one can check by visual inspeciton each different value of omega to see for which omega the graphs intersect mostly at one point. One can also make a numerical check, by finding the intersecitons of all curves, and calculating  and plotting the standard deviation of the intersections for each omega.
+The files containing the $L^{\omega}*(2L\rho_x(2L) - L\rho_x(L))$ vs $T$ is separately loaded for each calculated value of $\omega$, then intersections of these 3-5 lines are found. 
+The intersection finder finds all intersections, 3 in the case of 3 lines, 6 for 4 lines 10 for 5 lines etc, and then calulates the average position of these intersections. The mean of the euclidean distances are then used as a measure of how close the intersections are. This value is then printed together with the value of omega, and finally plotted vs omega.
+Hopefully the graph will have a clear minimum where the intersections are closest, thus determining the scaling correction omega. For low systemsizes higher order corections can distort the found value, thus we visually inspect the graphs to judge how small system sizes should be included. 
 
 \section{Results}
 \subsection{Data Analysis}

@@ -48,7 +48,6 @@ Thumbs.db
 #################################################
 output/
 teqoutput/
-foutput/
 old_output/
 test/
 warmLattice/
@@ -59,3 +58,4 @@ __pycache__/
 run*.o*
 # figure files
 *.eps
+*.dat
