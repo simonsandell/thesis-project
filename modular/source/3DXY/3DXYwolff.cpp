@@ -97,7 +97,6 @@ int cluster3DXY(Lattice3DXY& lat,Cluster& cluster,long double beta,RandStruct& r
 	std::tuple<int,int,int,long double> current;
 	long double prob = 0.0L;
 	long double rand = 0.0L;
-	bool flip = false;
 	while (n > 0){
 		//pick out the last element 
 		current = perimeter.back();
@@ -118,22 +117,6 @@ int cluster3DXY(Lattice3DXY& lat,Cluster& cluster,long double beta,RandStruct& r
 			prob = getProb(u,std::get<3>(current) ,angleBefore,beta);
 			rand = randgen.rnd();
 			if ( rand < prob) {
-				flip = true;
-			} //if rand is so close to prob that floating point precision considers them equal, flip in 50 % of those cases
-			//
-			else if ( std::abs(rand-prob) < std::abs(std::min(rand,prob)*std::numeric_limits<long double>::epsilon())){
-				rand = randgen.rnd();
-				if (rand < 0.50L){
-					flip = true;
-				}
-				else{ flip = false;
-				}
-			} 
-			else 
-			{
-				flip = false;
-			}
-			if (flip) {
 				//get energy before reflecting
 				//
 				enBefore = lat.siteEnergy(std::get<0>(current),std::get<1>(current),std::get<2>(current));
