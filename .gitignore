@@ -59,3 +59,4 @@ run*.o*
 # figure files
 *.eps
 *.dat
+*.gif
