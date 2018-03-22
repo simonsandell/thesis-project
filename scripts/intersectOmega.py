@@ -9,7 +9,7 @@ def getDirName(directory):
     a = os.path.join(os.path.dirname(directory),a);
     return a;
 def writeToFile(data,fullpath):
-    outfile = open(os.path.abspath(fullpath),"w");
+    outfile = open(fullpath,"w");
     fstr = "{:30.30f}";
     for ls in data:
         outfile.write(fstr.format(ls[0]) + "    " + fstr.format(ls[1]) +"    " + "0.0"+ "\n");

@@ -17,15 +17,15 @@ import intersectOmega
 import anaFuncs
 import gps
 #### settings ####
-doTemp = False;
-doL = False;
-doSC2 = True;
-doSC3 = False;
+doTemp =     True;
+doL =        True;
+doSC2 =      True;
+doSC3 =      True;
 doScaling = doSC2 or doSC3;
 
-doAnalyze = False;
-doPlot = True;
-doPrint = True;
+doAnalyze =  True;
+doPlot =     True;
+doPrint =    True;
 
 #################
 outdir= "./foutput/3DXY/"
@@ -33,6 +33,7 @@ indir = "./output/3DXY/"
 scalingDir = outdir + 'scalingCorr';
 
 if (doAnalyze):
+    fName = sys.argv[1];
     datafile = open(indir+fName,"r");
     data = [];
     for ln in datafile:
