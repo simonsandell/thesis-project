@@ -21,17 +21,19 @@ doTemp = False;
 doL = False;
 doSC2 = True;
 doSC3 = False;
+doScaling = doSC2 or doSC3;
+
+doAnalyze = False;
 doPlot = True;
-doPrint = False;
+doPrint = True;
 
 #################
 outdir= "./foutput/3DXY/"
+indir = "./output/3DXY/"
 scalingDir = outdir + 'scalingCorr';
 
-loadData = doTemp or doL or doSC3 or doSC2;
-if (loadData):
-    fName = sys.argv[1];
-    datafile = open("./output/3DXY/"+fName,"r");
+if (doAnalyze):
+    datafile = open(indir+fName,"r");
     data = [];
     for ln in datafile:
         strlist = ln.rsplit(" ");
@@ -40,31 +42,30 @@ if (loadData):
         data.append(fllist);
     dataMatrix = np.array(data);
     print("loading done");
-if (doTemp):
-    anaT.analyze(dataMatrix,fName);
-    print("temp done");
-if (doL):
-    anaL.analyze(dataMatrix,fName);
-    print("L done");
-doScaling = doSC2 or doSC3;
-if (doSC3):
-    dirname = scalingDir + "/omegaRS3L"
-    anaSC3L.analyze(dataMatrix,dirname,SCrhos3L.calcOmegaRS3L);
-    print("3L RS done");
-    dirname = scalingDir + "/omegaBin3L"
-    anaSC3L.analyze(dataMatrix,dirname,SCbin3L.calcOmegaBin3L);
-    print("3L Bin done");
-if (doSC2):
-    dirname = scalingDir + '/omegaRS2L';
-    anaSC2L.analyze(dataMatrix,dirname,
-        SCrhos2L.calcOmegaRS2L,anaFuncs.getOmegaRange(0.2,0.4,0.005));
-    intersectOmega.sigmaIntersect(dirname);
-    print("2L RS done");
-    dirname = scalingDir + '/omegaBin2L';
-    anaSC2L.analyze(dataMatrix,dirname,
-        SCbin2L.calcOmegaBin2L,anaFuncs.getOmegaRange(0.7,1.2,0.005));
-    intersectOmega.sigmaIntersect(dirname);
-    print("2L Bin done")
+    if (doTemp):
+        anaT.analyze(dataMatrix,fName);
+        print("temp done");
+    if (doL):
+        anaL.analyze(dataMatrix,fName);
+        print("L done");
+    if (doSC3):
+        dirname = scalingDir + "/omegaRS3L"
+        anaSC3L.analyze(dataMatrix,dirname,SCrhos3L.calcOmegaRS3L);
+        print("3L RS done");
+        dirname = scalingDir + "/omegaBin3L"
+        anaSC3L.analyze(dataMatrix,dirname,SCbin3L.calcOmegaBin3L);
+        print("3L Bin done");
+    if (doSC2):
+        dirname = scalingDir + '/omegaRS2L';
+        anaSC2L.analyze(dataMatrix,dirname,
+            SCrhos2L.calcOmegaRS2L,anaFuncs.getOmegaRange(0.2,0.4,0.005));
+        intersectOmega.sigmaIntersect(dirname);
+        print("2L RS done");
+        dirname = scalingDir + '/omegaBin2L';
+        anaSC2L.analyze(dataMatrix,dirname,
+            SCbin2L.calcOmegaBin2L,anaFuncs.getOmegaRange(0.7,1.2,0.005));
+        intersectOmega.sigmaIntersect(dirname);
+        print("2L Bin done")
 if (doPlot):
     if (doTemp):
         vstdir = outdir + "vsT/"

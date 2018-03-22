@@ -53,7 +53,7 @@ def graceDirPlot(directory,title, xaxis ,yaxis,logPlot, doPrint):
         subprocess.call(["gracebat","-batch","/tmp/setup.batch","-nosafe","-noask","-free"]);
     else:
         subprocess.Popen(["xmgrace","-batch","/tmp/setup.batch","-nosafe","-noask","-free"]);
-        time.sleep(0.5);
+        time.sleep(2.5);
 
 def initAnim():
     subprocess.call(['rm','-r','/tmp/temppng'])
