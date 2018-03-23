@@ -12,6 +12,7 @@
 
 \newcommand{\trm}[1]{\textrm{#1}}
 \newcommand{\oxx}{\omega_{XX'}}
+\newcommand{\hamxy}{\sum\limits_{\langle i,j\rangle}\bm{s_i}\cdot\bm{s_j}}
 \begin{document}
 \section{Shorthand notations and definitions}
 \begin{table}[htpb]
@@ -38,20 +39,17 @@ Near the transition temperature, the correlation length diverges, so thermal flu
 In statistical physics averages are calculated from 
 \begin{equation}
   \langle A\rangle = \frac{1}{Z}\trm{Tr} e^{-H/T} = \sum_x A(x) P(x)
-  \label{}
 \end{equation}
 where  $P(x) = (1/Z)exp(-H(x))$ is the Boltzmann distribution.
 The practical and convievable way to evaluate these averages using Monte Carlo is to use importance sampling, i.e. do not form averages from uniformly random system configurations, but instead generate configurations that are Boltzmann distributed.   
 Thus thermal Monte Carlo averages have the form 
 \begin{equation}
   \langle A \rangle = \frac{1}{N} \sum_x A(x) \pm \frac{\sigma	}{\sqrt N}
-  \label{}
 \end{equation}
 where the states $x$ are Boltzmann distributed.
 However, the Boltzmann distribution may be unsuitable for some systems/configurations we want to study, so we can use any other distribution as 
 \begin{equation}
   \langle A \rangle = \frac{\frac{1}{N}\sum_y \frac{A(y) e^{-H(x)/T}}{P'(y)}}{\frac{1}{N}\sum_y \frac{e^{-H(y)/T}}{P'(y)}}  
-  \label{}
 \end{equation}
  where the states $y$ are distributed according to $P'(y)$.
 
@@ -66,7 +64,6 @@ Histogram extrapolation is a method to extract more data from a run.
 Averages are calculated as
 \begin{equation}
   \langle A \rangle_{\beta_0} =  \frac{\sum_{x}A_x e^{-\beta_0 H_x}}{\sum_{x}e^{-\beta_0 H_x}}
-  \label{}
 \end{equation}
 To get the average of A at some different temperature, say $\beta_1$, we can do
 \begin{align}
@@ -93,7 +90,6 @@ Then the master equaion is
 Then solving for the stationary solution, we get
 \begin{equation}
   \sum_{X'}T(X\rightarrow X') \rho(X) =  \sum_{X}T(X'\rightarrow X) \rho(X')
-  \label{}
 \end{equation}
 which is hard to solve in general, but with a very famous paritcular solution called the detailed balace solution can be found,
 \begin{align}
@@ -105,7 +101,6 @@ for all states $X,~X'$.
 This solution can be decomposed as
 \begin{equation}
   T(X\rightarrow X') = \omega_{XX'} A_{XX'}
-  \label{}
 \end{equation}
 where $\oxx$ represents a trial probability and $A_{XX'}$ represents an acceptance probability.
 We let $\omega_{XX'}$ satisfy
@@ -113,7 +108,6 @@ We let $\omega_{XX'}$ satisfy
   \oxx = \omega_{X'X}\\
   0 \leq \oxx \leq 1\\
   \sum_{X'} \oxx = 1.
-  \label{}
 \end{align}
 Inserting this form of $T$ into the detailed balance equation then gives
 \begin{equation}
@@ -134,7 +128,6 @@ In the 3DXY-model, each spin is characterized by a single value, their angle $\a
 We define the hamiltonian of the 3DXY-model as 
 \begin{equation}
   H = \beta\sum_{<s_i,s_j>} \cos(\alpha_i - \alpha_j)
-  \label{}
 \end{equation}
 where $<s_i,s_>$ denote that only sites $s_i$ and $s_j$ which are nearest neighours should be included.
 The probability of adding spin to the cluster is
@@ -172,15 +165,27 @@ We get
   &= \frac{\rho(X')}{\rho(X)}.
 \end{align}
 
-
+\section{Thermodynamics}
+\begin{equation}
+  H_{\trm{3DXY}} = -K\sum\limits_{\langle i,j\rangle} \bm{s_i}\cdot\bm{s_j} = -K\sum\limits_{\lange i,j\rangle} \cos(\alpha_i - \alpha_j)
+\end{equation}
+We set $K=1$.
+\begin{equation}
+  Z = \trm{Tr} \exp\left[-\beta \left( H_\Omega - \int d^d \bm{r} H(\bm{r})\eta(\bm{r})\right)\right]
+\end{equation}
+\begin{equation}
+  \label{<++>}
+\end{equation}<++>
 
 \section{Binder cumulant}
-The quantity $b =\frac{\langle M^4 \rangle}{\langle M^2\rangle^2}$ is useful as it approaches a constant as $t\rightarrow 0 $. It is also  
+The quantity $b =\frac{\langle M^4 \rangle}{\langle M^2\rangle^2}$ is useful as it approaches a constant as $t\rightarrow 0 $, as obviously, disregarding scaling corrections,
+\begin{equation}
+  \langle M^4 \rangle \sim t^{}
+\end{equation}
 \section{Scaling hypothesis}
 The scaling hypothesis is often stated as
 \begin{equation}
   f_{singular}(t,h) = t^{2- \alpha} g_f\left(\frac{h}{t^\Delta}\right)
-  \label{}
 \end{equation}
 from which the scaling of many other quantites can be derived, as derivatives, second derivatives and combinations of such.
 \subsection{Scaling laws}
@@ -188,8 +193,7 @@ from which the scaling of many other quantites can be derived, as derivatives, s
 	\alpha + 2\beta + \gamma = 2\\
 	\gamma = \beta(\delta -1)\\
 	d\nu = 2 - \alpha
-  \label{<++>}
-\end{align}<++>
+\end{align}
 \subsection{Definitions of critical exponents}
 \begin{align}
   \beta &= \frac{1}{k_B T} \\
@@ -252,7 +256,6 @@ Consider the Superfluid density, which scales as
 \begin{align}
   r(L)&\equiv \rho_s(L,t=0) \cdot L = r_0 + r_1L^{-\omega_\rho}\\
   r(2L) - r(L) &= r_1(2^{-\omega_\rho} -1)L^{-\omega_\rho}
-  \label{}
 \end{align}
 
 
