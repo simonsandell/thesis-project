@@ -23,7 +23,7 @@ int main(){
 	for(int i = 0; i < 1; ++i) {
 		results.emplace_back(
 				pool.enqueue([i] {
-					_3DXY::wolffHistJob(5.0L);
+					_3DXY::wolffHistJob(4.0L);
 					})
 				);
 	}

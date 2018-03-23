@@ -13,7 +13,7 @@
 
 
 void _3DXY::warmup(Lattice3DXY& lat,Cluster&clust,long double beta,RandStruct& rand,int N){
-	for (int i = 0; i < 5; i++){
+	for (int i = 0; i < 10; i++){
 		cluster3DXY(lat,clust,beta,rand);
 		std::cout << "newclust"<< std::endl;
 	}
