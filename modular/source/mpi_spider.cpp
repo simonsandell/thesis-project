@@ -18,7 +18,7 @@ int main(int argc, char** argv){
 	MPI_Comm_rank(MPI_COMM_WORLD,&world_rank);
 
 
-	_3DXY::wolffHistJob(4.0L);
+	Ising3D::wolffHistJob(128.0L);
 
 
 
