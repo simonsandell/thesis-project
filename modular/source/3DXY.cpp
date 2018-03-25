@@ -78,6 +78,19 @@ void _3DXY::wolffHistJob(long double L){
 	}
 
 }
+void _3DXY::teqRun(long double L,bool cold){
+	long double	Nsamp=			200000.0L;
+	int 		Nruns=			100;
+	Cluster clust(L);
+	RandStruct rand;
+	long double beta = 1.0L/runTemp;
+	for (int i=0; i< Nruns; ++i){	
+		Lattice3DXY lat(L,cold);
+		wolffHistRun3DXY(lat,Nsamp,Trange,Ntemps,runTemp);
+	}
+
+
+}
 void _3DXY::metroJob(long double L){
 
 	long double 	runTemp = 		2.20200000000000L;

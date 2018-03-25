@@ -10,6 +10,7 @@ void warmup(Lattice3DXY& lat,Cluster&clust,long double beta,RandStruct& rand,int
 void warmupMetro(Lattice3DXY& lat,long double beta,RandStruct&rand,int N);
 void wolffHistJob(long double L);
 void metroJob(long double L);
+void teqRun(long double L,bool cold);
 
 };
 
