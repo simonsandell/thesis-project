@@ -13,7 +13,7 @@
 
 
 void _3DXY::warmup(Lattice3DXY& lat,Cluster&clust,long double beta,RandStruct& rand,long double N){
-	long double stes;
+	long double steps;
 	long double NClusts = 0;
 	long double NSweeps = 0;
 	while (NSweeps < N){
@@ -79,11 +79,23 @@ void _3DXY::wolffHistJob(long double L){
 
 }
 void _3DXY::teqRun(long double L,bool cold){
+	long double runTemp = 2.20200000000000L;
+
+	long double	startT=			2.20150L;
+	long double	endT=			2.20300L;
+	int 		Ntemps=			31;
+	long double* Trange;
+	if (Ntemps < 2) {
+		Trange = new long double[1];
+		Trange[0] = runTemp;
+	}
+	else {
+		Trange = getTrange(startT,endT,int(Ntemps));
+	}
 	long double	Nsamp=			200000.0L;
 	int 		Nruns=			100;
 	Cluster clust(L);
 	RandStruct rand;
-	long double beta = 1.0L/runTemp;
 	for (int i=0; i< Nruns; ++i){	
 		Lattice3DXY lat(L,cold);
 		wolffHistRun3DXY(lat,Nsamp,Trange,Ntemps,runTemp);

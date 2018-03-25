@@ -7,7 +7,7 @@
 #include "Ising3D.h"
 #include "3DXY.h"
 using namespace std;
-int main(int argc, char** argv){
+int main(){
 
 	MPI_Init(NULL,NULL);
 
