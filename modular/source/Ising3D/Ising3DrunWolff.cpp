@@ -34,16 +34,19 @@ void wolffHistRunIsing3D(LatticeIsing3D& lat, long double N_sample_sweeps,long d
 
 	long double expFac = 0.0L;
 	long double maxTotE = getMaxEIsing3D(lat.L); 
+	//correction value for when current lattice energy becomes greater than saved maxE. If not zero by the end, write new value to files.
 	long double expCorr = 0.0L;
 
-	long double steps = 0;
-	int intNsampClust = 0;
+	long double tE;
+	long double tM;
+	long double tM2;
 
+	long double steps = 0;//steps done in current cluster
 	Cluster cluster(lat.L);
 	RandStruct rand;
 
-	long double doneSweeps = 0.0L;
-	long double doneClusts = 0.0L;
+	long double doneSweeps = 0.0L;//total done sweeps
+	long double doneClusts = 0.0L;//total number of done clusters
 	while (doneSweeps < N_sample_sweeps){
 		//make a cluster
 		steps = (long double)clusterIsing3D(lat,cluster,rand);
@@ -53,13 +56,12 @@ void wolffHistRunIsing3D(LatticeIsing3D& lat, long double N_sample_sweeps,long d
 			std::cout << "OVERFLOW" << std::endl;
 			exit(0);
 		}
-		++intNsampClust;
 
 		//update maxE if necessary
 		
 		if ((maxTotE - lat.energy) > 0){
 			expCorr = 1.0L;
-			if (intNsampClust > 1){
+			if (doneClusts > 1.5L){
 				expCorr = exp(-maxTotE +lat.energy);	
 				for (int k = 0; k<N_temps;++k){
 					avgs[k].e     *= expCorr;
@@ -75,17 +77,13 @@ void wolffHistRunIsing3D(LatticeIsing3D& lat, long double N_sample_sweeps,long d
 			maxTotE = lat.energy;
 		}
 		//take sample data
-		long double tE;
-		long double tM;
-		long double tM2;
+		tE = lat.energy/lat.Nspins;
+		tM = std::abs(lat.mag/lat.Nspins);
+		tM2 = lat.mag*lat.mag; 
+		tM2 /= lat.Nspins*lat.Nspins;
 		for (int i = 0; i<N_temps; ++i){
 			expFac = exp(-(Betas[i] - Beta)*(lat.energy-maxTotE));
 			avgs[i].exp += expFac;
-
-			tE = lat.energy/lat.Nspins;
-			tM = std::abs(lat.mag/lat.Nspins);
-			tM2 = lat.mag*lat.mag; 
-			tM2 /= lat.Nspins*lat.Nspins;
 
 			avgs[i].e += expFac*tE;
 			avgs[i].e2+=expFac*tE*tE;

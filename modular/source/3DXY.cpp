@@ -12,17 +12,18 @@
 
 
 
-void _3DXY::warmup(Lattice3DXY& lat,Cluster&clust,long double beta,RandStruct& rand,int N){
-	long double Nspins = lat.L*lat.L*lat.L;
-	long double fliptries = 0;
-	long double clusts = 0;
-	while ((fliptries/Nspins) < N){
-		clusts += 1.0L;
-		fliptries +=(long double) cluster3DXY(lat,clust,beta,rand);
+void _3DXY::warmup(Lattice3DXY& lat,Cluster&clust,long double beta,RandStruct& rand,long double N){
+	long double stes;
+	long double NClusts = 0;
+	long double NSweeps = 0;
+	while (NSweeps < N){
+		steps =(long double) cluster3DXY(lat,clust,beta,rand);
+		NClusts += 1.0L;
+		NSweeps += (steps/lat.Nspins);
 	}
 	if( !lat.warmedUp){
-		lat.Neqclusts = clusts;
-		lat.Neqsweeps = ((long double)fliptries)/((long double)Nspins);
+		lat.Neqclusts = NClusts;
+		lat.Neqsweeps = NSweeps;
 		lat.warmedUp = true;
 	}
 }
@@ -61,10 +62,10 @@ void _3DXY::wolffHistJob(long double L){
 	else {
 		Trange = getTrange(startT,endT,int(Ntemps));
 	}
-	int 		Neq=			100000;
+	long double 	Neq=			100000.0L;
 	bool 		cold=			true;
 	long double	Nsamp=			100000.0L;
-	int 		Nbetw=			100;
+	long double 	Nbetw=			100.0L;
 	int 		Nruns=			100;
 	Lattice3DXY lat(L,cold);
 	Cluster clust(L);
