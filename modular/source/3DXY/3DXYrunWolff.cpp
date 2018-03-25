@@ -34,9 +34,13 @@ void wolffHistRun3DXY(Lattice3DXY& lat, long double N_sample_sweeps,long double 
 	long double expFac = 0.0L;
 	long double maxTotE = getMaxE3DXY(lat.L); 
 	long double expCorr = 0.0L;
+	long double tE;
+	long double tM2;
+	long double tSx;
+	long double tSy;
+	long double tSz;
 
 	long double steps = 0.0L;
-	long double NsampClust = 0.0L;
 	long double doneSweeps = 0.0L;
 	long double doneClusts = 0.0L;
 
@@ -51,13 +55,12 @@ void wolffHistRun3DXY(Lattice3DXY& lat, long double N_sample_sweeps,long double 
 		if (doneSweeps< 0.0L || steps < 0.0L) {
 			std::cout << "OVERFLOW" << std::endl;
 		}
-		NsampClust += 1.0L;
 
 		//update maxE if necessary
 		
 		if (std::abs(lat.energy) > std::abs(maxTotE)){
 			expCorr = 1.0L;
-			if (NsampClust > 1.0L){
+			if (doneClusts> 1.0L){
 				expCorr = exp(-maxTotE +lat.energy);	
 				for (int k = 0; k<N_temps;++k){
 					avgs[k].e     *= expCorr;
@@ -76,21 +79,16 @@ void wolffHistRun3DXY(Lattice3DXY& lat, long double N_sample_sweeps,long double 
 			maxTotE = lat.energy;
 		}
 		//take sample data
-		long double tE;
-		long double tM2;
-		long double tSx;
-		long double tSy;
-		long double tSz;
+		tE = lat.energy/lat.Nspins;
+		tM2 = lat.xmag*lat.xmag + lat.ymag*lat.ymag;
+		tM2 /= lat.Nspins*lat.Nspins;
+		tSx = lat.sinx/lat.Nspins;
+		tSy = lat.siny/lat.Nspins;
+		tSz = lat.sinz/lat.Nspins;
 		for (int i = 0; i<N_temps; ++i){
 			expFac = exp(-(Betas[i] - Beta)*(lat.energy-maxTotE));
 			avgs[i].exp += expFac;
 
-			tE = lat.energy/lat.Nspins;
-			tM2 = lat.xmag*lat.xmag + lat.ymag*lat.ymag;
-			tM2 /= lat.Nspins*lat.Nspins;
-			tSx = lat.sinx/lat.Nspins;
-			tSy = lat.siny/lat.Nspins;
-			tSz = lat.sinz/lat.Nspins;
 
 			avgs[i].e += expFac*tE;
 			avgs[i].e2+=expFac*tE*tE;
