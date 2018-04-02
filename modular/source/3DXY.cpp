@@ -92,13 +92,13 @@ void _3DXY::teqRun(long double L,bool cold){
 	else {
 		Trange = getTrange(startT,endT,int(Ntemps));
 	}
-	long double	Nsamp=			200000.0L;
-	int 		Nruns=			100;
-	Cluster clust(L);
-	RandStruct rand;
-	for (int i=0; i< Nruns; ++i){	
-		Lattice3DXY lat(L,cold);
+	long double	Nsamp=			2.0L;
+	int 		Ndoubles=		18;
+	Lattice3DXY lat(L,cold);
+	wolffHistRun3DXY(lat,Nsamp,Trange,Ntemps,runTemp);
+	for (int i=0; i< Ndoubles; ++i){	
 		wolffHistRun3DXY(lat,Nsamp,Trange,Ntemps,runTemp);
+		Nsamp = Nsamp*2;
 	}
 
 

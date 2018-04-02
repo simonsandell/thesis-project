@@ -65,7 +65,6 @@ void Ising3D::wolffHistJob(long double L){
 	}
 }
 void Ising3D::teqRun(long double L, bool cold){
-
 	long double runTemp = 4.50000000000000L;
 
 	long double	startT=			4.48500L;
@@ -79,17 +78,29 @@ void Ising3D::teqRun(long double L, bool cold){
 	else {
 		Trange = getTrangeIsing3D(startT,endT,int(Ntemps));
 	}
-	long double	Nsamp=			200000.0L;
-	int 		Nruns=			100;
+	long double	Nsamp=			2.0L;
+	int 		Ndoubles=		18;
 	long double beta = 1.0L/runTemp;
-
-	Cluster clust(L);
-	RandStruct rand;
-	for (int i=0; i< Nruns; ++i){	
-		LatticeIsing3D lat(L,cold,beta);
+	LatticeIsing3D lat(L,cold,beta);
+	wolffHistRunIsing3D(lat,Nsamp,Trange,Ntemps,runTemp);
+	for (int i=0; i< Ndoubles; ++i){	
 		wolffHistRunIsing3D(lat,Nsamp,Trange,Ntemps,runTemp);
+		Nsamp = Nsamp*2;
 	}
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

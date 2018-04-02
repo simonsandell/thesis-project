@@ -17,12 +17,13 @@ int main(){
 	int world_rank;
 	MPI_Comm_rank(MPI_COMM_WORLD,&world_rank);
 
-	bool cold = true;
+	bool cold = false;
 
 	_3DXY::teqRun(4.0L,cold);
 	_3DXY::teqRun(8.0L,cold);
 	_3DXY::teqRun(16.0L,cold);
 	_3DXY::teqRun(32.0L,cold);
+	_3DXY::teqRun(64.0L,cold);
 
 
 
