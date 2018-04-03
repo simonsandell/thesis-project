@@ -48,28 +48,28 @@ void print3DXYOutput(Lattice3DXY lat, long double T,avgStruct avgs, long double 
 	std::stringstream sstrm;
 	sstrm.precision(dbl::max_digits10 + 5);
 
-	sstrm << std::fixed << lat.L << " ";				
-	sstrm << std::fixed << T << " ";				
-	sstrm << std::fixed << lat.Neqsweeps << " ";			
-	sstrm << std::fixed << lat.Neqclusts << " ";			
-	sstrm << std::fixed << lat.NTotSweeps << " ";			
-	sstrm << std::fixed << lat.NTotClusts << " ";			
-	sstrm << std::fixed << lat.coldstart << " ";				
-	sstrm << std::fixed << avgs.e	<< " ";				
-	sstrm << std::fixed << avgs.e2	<< " ";				
-	sstrm << std::fixed << avgs.m	<< " ";				
-	sstrm << std::fixed << avgs.m2	<< " ";				
-	sstrm << std::fixed << avgs.m4	<< " ";				
-	sstrm << std::fixed << avgs.m2e	<< " ";				
-	sstrm << std::fixed << avgs.m4e	<< " ";				
-	sstrm << std::fixed << avgs.s2x	<< " ";				
-	sstrm << std::fixed << avgs.s2y	<< " ";				
-	sstrm << std::fixed << avgs.s2z << " ";				
-	sstrm << std::fixed << bin	<< " ";				
-	sstrm << std::fixed << dbdt	<< " ";				
-	sstrm << std::fixed << xi	<< " ";				
-	sstrm << std::fixed << rs	<< " ";				
-	sstrm << std::fixed << avgs.exp << " ";			
+	sstrm << std::fixed << lat.L << " ";				//0
+	sstrm << std::fixed << T << " ";				//1
+	sstrm << std::fixed << lat.Neqsweeps << " ";			//2
+	sstrm << std::fixed << lat.Neqclusts << " ";			//3
+	sstrm << std::fixed << lat.NTotSweeps << " ";			//4
+	sstrm << std::fixed << lat.NTotClusts << " ";			//5
+	sstrm << std::fixed << lat.coldstart << " ";			//6
+	sstrm << std::fixed << avgs.e	<< " ";				//7
+	sstrm << std::fixed << avgs.e2	<< " ";				//8
+	sstrm << std::fixed << avgs.m	<< " ";				//9
+	sstrm << std::fixed << avgs.m2	<< " ";				//10
+	sstrm << std::fixed << avgs.m4	<< " ";				//11
+	sstrm << std::fixed << avgs.m2e	<< " ";				//12
+	sstrm << std::fixed << avgs.m4e	<< " ";				//13
+	sstrm << std::fixed << avgs.s2x	<< " ";				//14
+	sstrm << std::fixed << avgs.s2y	<< " ";				//15
+	sstrm << std::fixed << avgs.s2z << " ";				//16
+	sstrm << std::fixed << bin	<< " ";				//17
+	sstrm << std::fixed << dbdt	<< " ";				//18
+	sstrm << std::fixed << xi	<< " ";				//19
+	sstrm << std::fixed << rs	<< " ";				//20
+	sstrm << std::fixed << avgs.exp << " ";				//21
 	sstrm << std::endl;				
 	std::cout << sstrm.str();
 }

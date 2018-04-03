@@ -18,12 +18,16 @@ using namespace std;
 //main
 //
 int main(){
-	ThreadPool pool(1);
+	ThreadPool pool(12);
 	std::vector< std::future<void> > results;
 	for(int i = 0; i < 1; ++i) {
 		results.emplace_back(
 				pool.enqueue([i] {
-					_3DXY::wolffHistJob(128.0L);
+					_3DXY::teqRun(4.0L,true);
+					_3DXY::teqRun(8.0L,true);
+					_3DXY::teqRun(16.0L,true);
+					_3DXY::teqRun(32.0L,true);
+					_3DXY::teqRun(64.0L,true);
 					})
 				);
 	}
