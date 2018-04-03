@@ -7,6 +7,7 @@ from _3DXY import analyze3DXY as anaT
 from _3DXY import L_analyze3DXY as anaL
 import scalingCorr2L as anaSC2L
 import scalingCorr3L as anaSC3L 
+import teqPlot as tp
 #functions
 from _3DXY import bin_omega_3L as SCbin3L
 from _3DXY import bin_omega_2L as SCbin2L
@@ -17,15 +18,17 @@ import intersectOmega
 import anaFuncs
 import gps
 #### settings ####
-doTemp =     True;
-doL =        True;
-doSC2 =      True;
-doSC3 =      True;
+doTemp =     False;
+doL =        False;
+doSC2 =      False;
+doSC3 =      False;
 doScaling = doSC2 or doSC3;
+
+doTeq = True;
 
 doAnalyze =  True;
 doPlot =     True;
-doPrint =    True;
+doPrint =    False;
 
 #################
 outdir= "./foutput/3DXY/"
@@ -67,6 +70,9 @@ if (doAnalyze):
             SCbin2L.calcOmegaBin2L,anaFuncs.getOmegaRange(0.7,1.2,0.005));
         intersectOmega.sigmaIntersect(dirname);
         print("2L Bin done")
+    if (doTeq):
+        tp.analyze(dataMatrix,"./foutput/3DXY/vsN/"+fName,2.20200000);
+        print("Teq done");
 if (doPlot):
     if (doTemp):
         vstdir = outdir + "vsT/"
@@ -102,3 +108,11 @@ if (doPlot):
                 xaxis = r"\xw\0";
                 title = anaFuncs.dirToTitle(dirname);
                 gps.graceDirPlot(fullpath,title,xaxis,yaxis,False,doPrint);
+    if (doTeq):
+        vsNdir = outdir+"vsN/";
+        xaxis = "N\ssweeps\S"
+        yaxis = "Magnetization"
+        title = "Equilibration time study"
+        gps.graceDirPlot(vsNdir,title,xaxis,yaxis,True,doPrint);
+
+    

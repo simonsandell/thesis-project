@@ -7,6 +7,7 @@ from Ising3D import analyzeIsing3D as anaT
 from Ising3D import L_analyzeIsing3D as anaL
 import scalingCorr2L as anaSC2L
 import scalingCorr3L as anaSC3L
+import teqPlot as tp
 #functions
 from Ising3D import bin_omega_3L as SCbin3L
 from Ising3D import bin_omega_2L as SCbin2L
@@ -21,6 +22,8 @@ doL =        True;
 doSC2 =      True;
 doSC3 =      True;
 doScaling = doSC2 or doSC3;
+
+doTeq = True;
 
 doAnalyze =  True;
 doPlot =     True;
@@ -57,6 +60,8 @@ if (doAnalyze):
             SCbin2L.calcOmegaBin2L,anaFuncs.getOmegaRange(0.7,1.2,0.005));
         intersectOmega.sigmaIntersect(dirname);
         print("2L Bin done")
+    if (doTeq):
+        tp.analyze(dataMatrix,"./foutput/Ising3D/vsN/"+fName,2.20200000);
 if (doPlot):
     if (doTemp):
         vstdir = outdir + "vsT/"
@@ -92,3 +97,9 @@ if (doPlot):
                 xaxis = r"\xw\0";
                 title = anaFuncs.dirToTitle(dirname);
                 gps.graceDirPlot(fullpath,title,xaxis,yaxis,False,doPrint);
+    if (doTeq):
+        vsNdir = outdir+"vsN/";
+        xaxis = "N\ssweeps\S"
+        yaxis = "Magnetization"
+        title = "Equilibration time study"
+        gps.graceDirPlot(vsNdir,title,xaxis,yaxis,True,doPrint);
