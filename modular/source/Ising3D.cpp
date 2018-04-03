@@ -67,17 +67,10 @@ void Ising3D::wolffHistJob(long double L){
 void Ising3D::teqRun(long double L, bool cold){
 	long double runTemp = 4.50000000000000L;
 
-	long double	startT=			4.48500L;
-	long double	endT=			4.51500L;
-	int 		Ntemps=			41;
+	int 		Ntemps=			1;
 	long double* Trange;
-	if (Ntemps < 2) {
-		Trange = new long double[1];
-		Trange[0] = runTemp;
-	}
-	else {
-		Trange = getTrangeIsing3D(startT,endT,int(Ntemps));
-	}
+	Trange = new long double[1];
+	Trange[0] = runTemp;
 	long double	Nsamp=			2.0L;
 	int 		Ndoubles=		18;
 	long double beta = 1.0L/runTemp;

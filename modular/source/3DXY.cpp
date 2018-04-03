@@ -80,18 +80,10 @@ void _3DXY::wolffHistJob(long double L){
 }
 void _3DXY::teqRun(long double L,bool cold){
 	long double runTemp = 2.20200000000000L;
-
-	long double	startT=			2.20150L;
-	long double	endT=			2.20300L;
-	int 		Ntemps=			31;
+	int 		Ntemps=			1;
 	long double* Trange;
-	if (Ntemps < 2) {
-		Trange = new long double[1];
-		Trange[0] = runTemp;
-	}
-	else {
-		Trange = getTrange(startT,endT,int(Ntemps));
-	}
+	Trange = new long double[1];
+	Trange[0] = runTemp;
 	long double	Nsamp=			2.0L;
 	int 		Ndoubles=		18;
 	Lattice3DXY lat(L,cold);
