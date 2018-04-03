@@ -20,7 +20,7 @@ using namespace std;
 int main(){
 	ThreadPool pool(12);
 	std::vector< std::future<void> > results;
-	for(int i = 0; i < 1; ++i) {
+	for(int i = 0; i < 12; ++i) {
 		results.emplace_back(
 				pool.enqueue([i] {
 					_3DXY::teqRun(4.0L,true);
