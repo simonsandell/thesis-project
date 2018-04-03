@@ -17,17 +17,17 @@ import anaFuncs
 import gps
 
 #### settings ####
-doTemp =     True;
-doL =        True;
-doSC2 =      True;
-doSC3 =      True;
+doTemp =     False;
+doL =        False;
+doSC2 =      False;
+doSC3 =      False;
 doScaling = doSC2 or doSC3;
 
 doTeq = True;
 
 doAnalyze =  True;
 doPlot =     True;
-doPrint =    True;
+doPrint =    False;
 
 #################
 outdir= "./foutput/Ising3D/"
@@ -61,7 +61,7 @@ if (doAnalyze):
         intersectOmega.sigmaIntersect(dirname);
         print("2L Bin done")
     if (doTeq):
-        tp.analyze(dataMatrix,"./foutput/Ising3D/vsN/"+fName,2.20200000);
+        tp.analyze(dataMatrix,"./foutput/Ising3D/vsN/"+fName,4.50000000);
 if (doPlot):
     if (doTemp):
         vstdir = outdir + "vsT/"

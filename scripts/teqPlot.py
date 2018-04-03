@@ -32,7 +32,7 @@ def printAll(mat,openfile):
 
 #we have block data for one L, pick out interesting temp.
 def oneSize(mat,temp,openfile):
-    TOL = 0.0000000000005;
+    TOL = 0.000000005;
     for i in range(mat.shape[0]):
         if (abs(mat[i,1] - temp) < TOL):
             startI = i;
@@ -41,6 +41,8 @@ def oneSize(mat,temp,openfile):
                 if (abs(mat[endI,1] - temp)< TOL):
                     endI = endI +1;
                 else:
+                    break;
+                if (endI == mat.shape[0]):
                     break;
             break;
     #oneTemp(mat[startI:endI,:],openfile);
