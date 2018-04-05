@@ -1,6 +1,7 @@
 #ifndef _3DXYLATTICE_H 
 #define _3DXYLATTICE_H
 
+#include "../ioHandle.h"
 struct Lattice3DXY{
 	long double *** theLattice;
 	long double L,Nspins,Neqsweeps,NTotSweeps;
@@ -20,6 +21,9 @@ struct Lattice3DXY{
 	long double sinZ( int &s1, int &s2, int &s3,long double &angle);
 
 	void testConsistent();
+
+	
+	outPutter oPer;
 
 	};
 #endif

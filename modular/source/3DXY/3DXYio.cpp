@@ -10,6 +10,7 @@
 #include "3DXYio.h"
 #include "3DXYlattice.h"
 #include "../avgStruct.h"
+#include "../ioHandle.h"
 
 //print lattice
 void printLattice3DXY(long double ***lattice,long double  L){
@@ -41,7 +42,7 @@ std::string get_selfpath(){
 		exit(-1);
 	}
 }
-void print3DXYOutput(Lattice3DXY lat, long double T,avgStruct avgs, long double bin, long double dbdt, long double xi, long double rs){
+void print3DXYOutput(Lattice3DXY &lat, long double T,avgStruct avgs, long double bin, long double dbdt, long double xi, long double rs){
 	typedef std::numeric_limits<long double> dbl;
 
 	std::cout.precision(dbl::max_digits10 + 5);
@@ -71,7 +72,7 @@ void print3DXYOutput(Lattice3DXY lat, long double T,avgStruct avgs, long double 
 	sstrm << std::fixed << rs	<< " ";				//20
 	sstrm << std::fixed << avgs.exp << " ";				//21
 	sstrm << std::endl;				
-	std::cout << sstrm.str();
+	lat.oPer.addLine(sstrm.str());
 }
 
 long double getMaxE3DXY(long double L){
@@ -103,7 +104,7 @@ void setMaxE3DXY(long double L,long double newE){
 	file << std::fixed << newE;
 }
 
-void saveLattice3DXY(Lattice3DXY lat){
+void saveLattice3DXY(Lattice3DXY &lat){
 
 	int L = lat.L;
 	std::ostringstream mstream;

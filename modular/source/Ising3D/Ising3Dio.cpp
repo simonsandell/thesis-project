@@ -40,7 +40,7 @@ std::string get_selfpath2(){
 		exit(-1);
 	}
 }
-void printIsing3DOutput(LatticeIsing3D lat, long double T,avgStruct avgs, long double bin, long double dbdt, long double xi, long double c){
+void printIsing3DOutput(LatticeIsing3D& lat, long double T,avgStruct avgs, long double bin, long double dbdt, long double xi, long double c){
 	typedef std::numeric_limits<long double> dbl;
 
 	std::cout.precision(dbl::max_digits10 + 5);
@@ -67,7 +67,7 @@ void printIsing3DOutput(LatticeIsing3D lat, long double T,avgStruct avgs, long d
 	sstrm << std::fixed << c	<< " ";				// c	17
 	sstrm << std::fixed << avgs.exp << " ";				// exp 	18 
 	sstrm << std::endl;				
-	std::cout << sstrm.str();
+	lat.oPer.addLine(sstrm.str());
 }
 
 long double getMaxEIsing3D(long double L){
@@ -99,7 +99,7 @@ void setMaxEIsing3D(long double L,long double newE){
 	file << std::fixed << newE;
 }
 
-void saveLatticeIsing3D(LatticeIsing3D lat){
+void saveLatticeIsing3D(LatticeIsing3D& lat){
 
 	int L = lat.L;
 	std::ostringstream mstream;

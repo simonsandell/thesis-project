@@ -1,5 +1,6 @@
 #ifndef LATTICESTRUCT_H
 #define LATTICESTRUCT_H
+#include "../ioHandle.h"
 
 struct LatticeIsing3D{
 	long double *** theLattice;
@@ -22,6 +23,8 @@ struct LatticeIsing3D{
 	void testConsistent();
 
 	long double PROB; 
+
+	outPutter oPer;
 
 	};
 #endif
