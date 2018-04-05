@@ -62,9 +62,9 @@ void _3DXY::wolffHistJob(long double L){
 	else {
 		Trange = getTrange(startT,endT,int(Ntemps));
 	}
-	long double 	Neq=			100000.0L;
+	long double 	Neq=			100.0L;
 	bool 		cold=			true;
-	long double	Nsamp=			100000.0L;
+	long double	Nsamp=			100.0L;
 	long double 	Nbetw=			100.0L;
 	int 		Nruns=			100;
 	Lattice3DXY lat(L,cold);
@@ -75,6 +75,9 @@ void _3DXY::wolffHistJob(long double L){
 	for (int i=0; i< Nruns; ++i){	
 		wolffHistRun3DXY(lat,Nsamp,Trange,Ntemps,runTemp);
 		warmup(lat,clust,beta,rand,Nbetw);
+	}
+	if (lat.oPer.outputLines.size() > 0){
+		lat.oPer.printData(1);
 	}
 
 }

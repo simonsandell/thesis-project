@@ -6,7 +6,7 @@
 struct outPutter {
 	std::vector<std::string> outputLines;
 	void addLine(std::string ln);
-	void printData();
+	void printData(int tag);
 };
 #endif
 
