@@ -17,9 +17,9 @@ void updateVals(LatticeIsing3D& lat,long double e0,long double e1,
 	lat.mag     -= a0;
 }
 
-int clusterIsing3D(LatticeIsing3D& lat,Cluster& cluster,RandStruct& randgen){
+long int clusterIsing3D(LatticeIsing3D& lat,Cluster& cluster,RandStruct& randgen){
 
-	int time = 1;
+	long int time = 1;
 	//select random staring spin
 	int s1 = lat.L*randgen.rnd();
 	int s2 = lat.L*randgen.rnd();
@@ -59,7 +59,7 @@ int clusterIsing3D(LatticeIsing3D& lat,Cluster& cluster,RandStruct& randgen){
 	perimeter.push_back(neig4);
 	perimeter.push_back(neig5);
 	perimeter.push_back(neig6);
-	int n = 6;
+	long int n = 6;
 
 	std::tuple<int,int,int,long double> current;
 	long double rand = 0.0L;

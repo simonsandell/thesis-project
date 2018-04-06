@@ -5,7 +5,7 @@
 struct LatticeIsing3D{
 	long double *** theLattice;
 	long double L,Nspins,Neqsweeps,NTotSweeps;
-	int Neqclusts,NTotClusts;	
+	long int Neqclusts,NTotClusts;	
 	bool coldstart,warmedUp;
 	long double beta;
 

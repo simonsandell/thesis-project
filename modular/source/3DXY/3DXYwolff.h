@@ -5,7 +5,7 @@
 #include "../randStruct.h"
 #include "../clusterStruct.h"
 
-int cluster3DXY(Lattice3DXY& lat,Cluster& cluster, long double beta,RandStruct& randgen);
+long int cluster3DXY(Lattice3DXY& lat,Cluster& cluster, long double beta,RandStruct& randgen);
 
 
 

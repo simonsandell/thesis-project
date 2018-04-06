@@ -40,9 +40,9 @@ void updateVals(Lattice3DXY& lat,long double e0,long double e1,
 	lat.sinz+= -sz0;
 }
 
-int cluster3DXY(Lattice3DXY& lat,Cluster& cluster,long double beta,RandStruct& randgen){
+long int cluster3DXY(Lattice3DXY& lat,Cluster& cluster,long double beta,RandStruct& randgen){
 
-	int time = 1;
+	long int time = 1;
 	//select random plane and random staring spin
 	long double u = -(long double)M_PI + 2.0L*((long double)M_PI)*randgen.rnd();
 	int s1 = lat.L*randgen.rnd();
