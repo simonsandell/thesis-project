@@ -109,7 +109,7 @@ void saveLattice3DXY(Lattice3DXY &lat){
 	int L = lat.L;
 	std::ostringstream mstream;
 	std::string exePath = get_selfpath();
-	mstream << exePath<< "/warmLattice/" << L <<"_warm.lat";
+	mstream << exePath<< "/warmLattice/" << L <<"_3DXY.lat";
 	std::string fname = mstream.str();
 	FILE* output;
 	output = std::fopen(fname.c_str(),"wb");
@@ -121,7 +121,7 @@ void saveLattice3DXY(Lattice3DXY &lat){
 Lattice3DXY getLattice3DXY(int l){
 	std::ostringstream mstream;
 	std::string exePath = get_selfpath();
-	mstream << exePath << "/warmLattice/" << l << "_warm.lat";
+	mstream << exePath << "/warmLattice/" << l << "_3DXY.lat";
 	std::string fname = mstream.str();
 
 	Lattice3DXY lat;

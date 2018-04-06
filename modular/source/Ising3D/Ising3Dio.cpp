@@ -104,7 +104,7 @@ void saveLatticeIsing3D(LatticeIsing3D& lat){
 	int L = lat.L;
 	std::ostringstream mstream;
 	std::string exePath = get_selfpath2();
-	mstream << exePath<< "/warmLattice/" << L <<"_warm.lat";
+	mstream << exePath<< "/warmLattice/" << L <<"_Ising3D.lat";
 	std::string fname = mstream.str();
 	FILE* output;
 	output = std::fopen(fname.c_str(),"wb");
@@ -116,7 +116,7 @@ void saveLatticeIsing3D(LatticeIsing3D& lat){
 LatticeIsing3D getLattice(int l){
 	std::ostringstream mstream;
 	std::string exePath = get_selfpath2();
-	mstream << exePath << "/warmLattice/" << l << "_warm.lat";
+	mstream << exePath << "/warmLattice/" << l << "_Ising3D.lat";
 	std::string fname = mstream.str();
 
 	LatticeIsing3D lat;
