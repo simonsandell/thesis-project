@@ -2,6 +2,7 @@
 #include <sys/syscall.h>
 #include <functional>
 #include <unistd.h>
+#include <cstdlib>
 
 #include "randStruct.h"
 RandStruct::RandStruct(){
