@@ -40,21 +40,21 @@ void updateVals(Lattice3DXY& lat,long double e0,long double e1,
 	lat.sinz+= -sz0;
 }
 
-long int cluster3DXY(Lattice3DXY& lat,Cluster& cluster,long double beta,RandStruct& randgen){
+long int cluster3DXY(Lattice3DXY& lat){
 
 	long int time = 1;
 	//select random plane and random staring spin
-	long double u = -(long double)M_PI + 2.0L*((long double)M_PI)*randgen.rnd();
-	int s1 = lat.L*randgen.rnd();
-	int s2 = lat.L*randgen.rnd();
-	int s3 = lat.L*randgen.rnd();
+	long double u = -(long double)M_PI + 2.0L*((long double)M_PI)*lat.rand.rnd();
+	int s1 = lat.L*lat.rand.rnd();
+	int s2 = lat.L*lat.rand.rnd();
+	int s3 = lat.L*lat.rand.rnd();
 	// save angle and energy before flipping
 	long double angleBefore = lat.theLattice[s1][s2][s3];
 	long double enBefore = lat.siteEnergy(s1,s2,s3);
 	long double angleAfter = (long double)M_PI + 2.0L*u - angleBefore;
 	//reflect spin and mark as part of cluster
 	lat.theLattice[s1][s2][s3] = angleAfter;
-	cluster.theCluster[s1][s2][s3] = true;
+	lat.clust.theCluster[s1][s2][s3] = true;
 	//update energy, mag etc..
 	long double enAfter = lat.siteEnergy(s1,s2,s3);
 	long double sxBef = lat.sinX(s1,s2,s3,angleBefore);
@@ -103,7 +103,7 @@ long int cluster3DXY(Lattice3DXY& lat,Cluster& cluster,long double beta,RandStru
 		perimeter.pop_back();
 		n -= 1;
 		//test that it is not already part of cluster
-		if (!cluster.theCluster[std::get<0>(current)][std::get<1>(current)][std::get<2>(current)]){
+		if (!lat.clust.theCluster[std::get<0>(current)][std::get<1>(current)][std::get<2>(current)]){
 
 			//increase time for every tested spin
 			//
@@ -114,8 +114,8 @@ long int cluster3DXY(Lattice3DXY& lat,Cluster& cluster,long double beta,RandStru
 			angleBefore = lat.theLattice[std::get<0>(current)][std::get<1>(current)][std::get<2>(current)];
 
 			//calculate prob of freezing, == 1 -exp(2*beta( parent_spin * U)( this_spin*U)) 
-			prob = getProb(u,std::get<3>(current) ,angleBefore,beta);
-			rand = randgen.rnd();
+			prob = getProb(u,std::get<3>(current) ,angleBefore,lat.beta);
+			rand = lat.rand.rnd();
 			if ( rand < prob) {
 				//get energy before reflecting
 				//
@@ -126,7 +126,7 @@ long int cluster3DXY(Lattice3DXY& lat,Cluster& cluster,long double beta,RandStru
 
 				//reflect and mark as added to cluster
 				lat.theLattice[std::get<0>(current)][std::get<1>(current)][std::get<2>(current)] = angleAfter;
-				cluster.theCluster[std::get<0>(current)][std::get<1>(current)][std::get<2>(current)] = true;
+				lat.clust.theCluster[std::get<0>(current)][std::get<1>(current)][std::get<2>(current)] = true;
 
 				//update energy and magnetization
 				enAfter = lat.siteEnergy(std::get<0>(current),std::get<1>(current),std::get<2>(current));
@@ -174,27 +174,27 @@ long int cluster3DXY(Lattice3DXY& lat,Cluster& cluster,long double beta,RandStru
 						(std::get<2>(current) + (int)lat.L - 1)%(int)lat.L,
 						angleAfter);
 				//if a neighbour is not already part of the cluster, add it to perimeter list
-				if (!cluster.theCluster[std::get<0>(neig1)][std::get<1>(neig1)][std::get<2>(neig1)] ){
+				if (!lat.clust.theCluster[std::get<0>(neig1)][std::get<1>(neig1)][std::get<2>(neig1)] ){
 					perimeter.push_back(neig1);
 					n = n + 1;
 				}
-				if (!cluster.theCluster[std::get<0>(neig2)][std::get<1>(neig2)][std::get<2>(neig2)] ){
+				if (!lat.clust.theCluster[std::get<0>(neig2)][std::get<1>(neig2)][std::get<2>(neig2)] ){
 					perimeter.push_back(neig2);
 					n = n + 1;
 				}
-				if (!cluster.theCluster[std::get<0>(neig3)][std::get<1>(neig3)][std::get<2>(neig3)] ){
+				if (!lat.clust.theCluster[std::get<0>(neig3)][std::get<1>(neig3)][std::get<2>(neig3)] ){
 					perimeter.push_back(neig3);
 					n = n + 1;
 				}
-				if (!cluster.theCluster[std::get<0>(neig4)][std::get<1>(neig4)][std::get<2>(neig4)] ){
+				if (!lat.clust.theCluster[std::get<0>(neig4)][std::get<1>(neig4)][std::get<2>(neig4)] ){
 					perimeter.push_back(neig4);
 					n = n + 1;
 				}
-				if (!cluster.theCluster[std::get<0>(neig5)][std::get<1>(neig5)][std::get<2>(neig5)] ){
+				if (!lat.clust.theCluster[std::get<0>(neig5)][std::get<1>(neig5)][std::get<2>(neig5)] ){
 					perimeter.push_back(neig5);
 					n = n + 1;
 				}
-				if (!cluster.theCluster[std::get<0>(neig6)][std::get<1>(neig6)][std::get<2>(neig6)] ){
+				if (!lat.clust.theCluster[std::get<0>(neig6)][std::get<1>(neig6)][std::get<2>(neig6)] ){
 					perimeter.push_back(neig6);
 					n = n + 1;
 				}
@@ -202,7 +202,7 @@ long int cluster3DXY(Lattice3DXY& lat,Cluster& cluster,long double beta,RandStru
 		}
 	}
 	//empty the cluster
-	cluster.emptyCluster();	
+	lat.clust.emptyCluster();	
 	//return # of tested spins
 	lat.NTotSweeps += ((long double)time/lat.Nspins);
 	lat.NTotClusts += 1;

@@ -12,28 +12,18 @@
 
 
 
-void _3DXY::warmup(Lattice3DXY& lat,Cluster&clust,long double beta,RandStruct& rand,long double N){
+void _3DXY::warmup(Lattice3DXY& lat,long double N){
 	long double steps;
 	long double NClusts = 0;
 	long double NSweeps = 0;
 	while (NSweeps < N){
-		steps =(long double) cluster3DXY(lat,clust,beta,rand);
+		steps =(long double) cluster3DXY(lat);
 		NClusts += 1.0L;
 		NSweeps += (steps/lat.Nspins);
 	}
 	if( !lat.warmedUp){
 		lat.Neqclusts = NClusts;
 		lat.Neqsweeps = NSweeps;
-		lat.warmedUp = true;
-	}
-}
-void _3DXY::warmupMetro(Lattice3DXY& lat,long double beta,RandStruct&rand,int N){
-	for (int i = 0; i < N; i++){
-		metrosweep3DXY(lat,beta,rand);
-	}
-	if( !lat.warmedUp){
-		lat.Neqclusts = 0;
-		lat.Neqsweeps =(long double)N;
 		lat.warmedUp = true;
 	}
 }
@@ -67,14 +57,13 @@ void _3DXY::wolffHistJob(long double L){
 	long double	Nsamp=			100.0L;
 	long double 	Nbetw=			100.0L;
 	int 		Nruns=			100;
-	Lattice3DXY lat(L,cold);
-	Cluster clust(L);
-	RandStruct rand;
-	long double beta = 1.0L/runTemp;
-	warmup(lat,clust,beta,rand,(Neq));
+	Cluster c(L);
+	RandStruct r;
+	Lattice3DXY lat(L,runTemp,cold,r,c);
+	warmup(lat,Neq);
 	for (int i=0; i< Nruns; ++i){	
 		wolffHistRun3DXY(lat,Nsamp,Trange,Ntemps,runTemp);
-		warmup(lat,clust,beta,rand,Nbetw);
+		warmup(lat,Nbetw);
 	}
 	if (lat.oPer.outputLines.size() > 0){
 		lat.oPer.printData(1);
@@ -89,7 +78,9 @@ void _3DXY::teqRun(long double L,bool cold){
 	Trange[0] = runTemp;
 	long double	Nsamp=			2.0L;
 	int 		Ndoubles=		18;
-	Lattice3DXY lat(L,cold);
+	Cluster c(L);
+	RandStruct r;
+	Lattice3DXY lat(L,runTemp,cold,r,c);
 	wolffHistRun3DXY(lat,Nsamp,Trange,Ntemps,runTemp);
 	for (int i=0; i< Ndoubles; ++i){	
 		wolffHistRun3DXY(lat,Nsamp,Trange,Ntemps,runTemp);
@@ -97,21 +88,4 @@ void _3DXY::teqRun(long double L,bool cold){
 	}
 
 
-}
-void _3DXY::metroJob(long double L){
-
-	long double 	runTemp = 		2.20200000000000L;
-	int 		Neq=			20000;
-	bool 		cold=			true;
-	long double	Nsamp=			1000.0L;
-	int 		Nbetw=			100;
-	int 		Nruns=			1000;
-	Lattice3DXY lat(L,cold);
-	RandStruct rand;
-	long double beta = 1.0L/runTemp;
-	warmupMetro(lat,beta,rand,(Neq-Nbetw));
-	for (int i=0; i< Nruns; ++i){	
-		warmupMetro(lat,beta,rand,Nbetw);
-		metroRun3DXY(lat,Nsamp,runTemp);
-	}
 }

@@ -7,6 +7,7 @@ struct Cluster{
 	int L;
 	
 	Cluster(int L);
+	Cluster();
 
 	void emptyCluster();
 

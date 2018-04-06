@@ -168,14 +168,19 @@ void Lattice3DXY::updateQuants(){
 };
 
 //initialize new lattice
-Lattice3DXY::Lattice3DXY(int l, bool cold){
+Lattice3DXY::Lattice3DXY(int l,long double rT, bool cold,RandStruct r,Cluster c) 
+	:  rand(r),clust(c) 
+
+{
 	theLattice = newLattice((long double)l,cold);
+	runTemp = rT;
+	beta = 1.0L/rT;
 	L = (long double)l;
 	Nspins =L*L*L;
 	Neqsweeps = 0.0L;
+	NTotSweeps= 0.0L;
 	Neqclusts = 0;
 	NTotClusts= 0;
-	NTotSweeps= 0.0L;
 	coldstart = cold;
 	warmedUp = false;
 	if (cold) {

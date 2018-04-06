@@ -2,15 +2,21 @@
 #define _3DXYLATTICE_H
 
 #include "../ioHandle.h"
+#include "../randStruct.h"
+#include "../clusterStruct.h"
+
 struct Lattice3DXY{
+	RandStruct rand;
+	Cluster clust;
 	long double *** theLattice;
+	long double runTemp,beta;
 	long double L,Nspins,Neqsweeps,NTotSweeps;
 	long int Neqclusts,NTotClusts;	
 	bool coldstart,warmedUp;
 
 	long double energy,xmag,ymag,sinx,siny,sinz;
 
-	Lattice3DXY(int L, bool cold);
+	Lattice3DXY(int L,long double rT, bool cold,RandStruct r, Cluster c);
 	Lattice3DXY();
 
 	void updateQuants();

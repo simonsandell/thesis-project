@@ -44,12 +44,9 @@ void wolffHistRun3DXY(Lattice3DXY& lat, long double N_sample_sweeps,long double 
 	long double doneSweeps = 0.0L;
 	long double doneClusts = 0.0L;
 
-	Cluster cluster(lat.L);
-	RandStruct rand;
-
 	while (doneSweeps < N_sample_sweeps){
 		//make a cluster
-		steps = (long double)cluster3DXY(lat,cluster,Beta,rand);
+		steps = (long double)cluster3DXY(lat);
 		doneSweeps += steps/lat.Nspins;
 		doneClusts += 1.0L;
 		if (doneSweeps< 0.0L || steps < 0.0L) {

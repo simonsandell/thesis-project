@@ -1,4 +1,5 @@
 #include <mpi.h>
+#include <iostream>
 
 #include "clusterStruct.h"
 #include "randStruct.h"
@@ -14,6 +15,10 @@ int main(){
 
 	int world_rank;
 	MPI_Comm_rank(MPI_COMM_WORLD,&world_rank);
+
+	std::cout << "WORLD_SIZE " << world_size << std::endl;
+	std::cout << "WORLD_rank" << world_rank<< std::endl;
+
 
 	if (world_rank != 0){
 		_3DXY::wolffHistJob(4.0L);

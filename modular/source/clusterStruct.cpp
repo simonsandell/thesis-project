@@ -16,6 +16,8 @@ Cluster::Cluster(int l){
 		}
 	}
 };
+Cluster::Cluster(){
+};
 
 void Cluster::emptyCluster(){
 	for (int i = 0; i< L; ++i){
