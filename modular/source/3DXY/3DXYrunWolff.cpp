@@ -19,6 +19,7 @@ void wolffHistRun3DXY(Lattice3DXY& lat, long double N_sample_sweeps,long double 
 	long double Betas[N_temps];	
 	for (int i = 0; i< N_temps; ++i){
 		Betas[i] = 1.0L/Temperatures[i];
+		std::cout << Betas[i] << std::endl;
 	}
 	long double Beta = 1.0L/runTemp;		
 
@@ -35,18 +36,18 @@ void wolffHistRun3DXY(Lattice3DXY& lat, long double N_sample_sweeps,long double 
 	long double expFac = 0.0L;
 	long double maxTotE = lat.maxE;
 	long double expCorr = 0.0L;
-	long double tE;
-	long double tM2;
-	long double tSx;
-	long double tSy;
-	long double tSz;
+	long double tE = 0.0L;
+	long double tM2 = 0.0L;
+	long double tSx = 0.0L;
+	long double tSy = 0.0L;
+	long double tSz = 0.0L;
 
 	long double steps = 0.0L;
 	long double doneSweeps = 0.0L;
 	long double doneClusts = 0.0L;
 
 	while (doneSweeps < N_sample_sweeps){
-		//make a cluster
+		//perform a cluster update
 		steps = cluster3DXY(lat);
 		doneSweeps += steps/lat.Nspins;
 		doneClusts += 1.0L;
@@ -61,11 +62,11 @@ void wolffHistRun3DXY(Lattice3DXY& lat, long double N_sample_sweeps,long double 
 			if (doneClusts> 1.0L){
 				expCorr = exp(-maxTotE +lat.energy);	
 				for (int k = 0; k<N_temps;++k){
-					avgs[k].e     *= expCorr;
-					avgs[k].e2     *= expCorr;
-					avgs[k].m     *= expCorr;
-					avgs[k].m2     *= expCorr;
-					avgs[k].m4     *= expCorr;
+					avgs[k].e	*= expCorr;
+					avgs[k].e2 	*= expCorr;
+					avgs[k].m 	*= expCorr;
+					avgs[k].m2	*= expCorr;
+					avgs[k].m4 	*= expCorr;
 					avgs[k].m2e     *= expCorr;
 					avgs[k].m4e     *= expCorr;
 					avgs[k].s2x     *= expCorr;
@@ -75,6 +76,7 @@ void wolffHistRun3DXY(Lattice3DXY& lat, long double N_sample_sweeps,long double 
 				}
 			}
 			maxTotE = lat.energy;
+			lat.maxE = lat.energy;
 		}
 		//take sample data
 		tE = lat.energy/lat.Nspins;
@@ -83,6 +85,7 @@ void wolffHistRun3DXY(Lattice3DXY& lat, long double N_sample_sweeps,long double 
 		tSx = lat.sinx/lat.Nspins;
 		tSy = lat.siny/lat.Nspins;
 		tSz = lat.sinz/lat.Nspins;
+
 		for (int i = 0; i<N_temps; ++i){
 			expFac = exp(-(Betas[i] - Beta)*(lat.energy-maxTotE));
 			avgs[i].exp += expFac;

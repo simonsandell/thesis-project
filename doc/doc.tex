@@ -174,9 +174,29 @@ We set $K=1$.
   Z = \trm{Tr} \exp\left[-\beta \left( H_\Omega - \int d^d \bm{r} H(\bm{r})\eta(\bm{r})\right)\right]
 \end{equation}
 \begin{equation}
-  \label{<++>}
-\end{equation}<++>
+  \label{}
+\end{equation}
+\section{Scaling}
+Often in physics relations between different physical quantities are described by power-laws, $f = f(\chi)\cdot g^{x}$. So also in statistical physics, where such laws are fundamental to understanding phase transitions.
+In statistical physics, when studying a specific system, the fundamental quantity is some thermodynamic potential,  Gibbs, Helmholtz. From this potential, several other physical quantites are derived, such as the energy, magnetization, and other that may depend on the specifics. 
+If the system has a phasetransition, often, but not always, since what constitutes a phase transition is not trivial, physical quantites will diverege, and follow certain scaling laws as they do. 
+Using mean field theory to calculate these laws gives always a fractional exponent in the laws, but experiments had shown evidence of non-fractional exponents. 
+Kadanoff realized that a diverging correlation length implied that there was a relation between the lenght scale at which the order parameter was defined and the coupling constants of an effective Hamiltonian. Altough his block-spin approach does not enable one to compute the critical expoents, it was an important step.
+The full theory of Renormalization Group was put forth by Wilson.
+The core concept is the renormalization group transformations which takes a Hamiltonian and by some method/rule of coarse-graining clumps together short wave-length degrees of freedom, and defines a new effective hamiltonian describing the long-wavelength degrees of freedom with new coupling parameters for the new lenghtscale.
+The name renormalization group is not entirely appropriate, since these transformations are in general complicated and non-linear, thus not always having inverses. But the transformations do have the associative property of groups. Rescaling the system by some length $l_1$ and then rescaling again by some other length $l_2$ should be equivalent to performing the rescaling in the other order.
+But so far all we did was remove a finite number of degrees of freedom from out system, how can that explain the sigular behaviour at phase transitions? By repeating the transformations an infinite number of times, singular behaviour can be introduced.
+The partition function is what we really want to compute to know everything about a physical system, but that task is most often simply unachievable. The renormalization transformation are also not easy to compute, but the transformation of the coupling constants can be approximated.
+\subsection{fixed points}
+The 
 
+\subsection{Universality}
+The theromodynamics of any model; the phase diagram, correlation functions, other quantites etc, may depend on the specific values of coupling parameters in the hamiltonian, symmetries, dimensionality, type of lattice, etc. 
+But it turns out that the critical phenomena (phase transitions) only depend on three things, the symmetries of the hamiltonian, the dimensionality and the range of interations ( type of critical point ).
+
+\section{But anyways, that stuff is hard so lets just use RNG's}
+Since we now know all that stuff, we can use it to our advantage. We can study the critical behaviour of say Helium-4, which we know is in the $O(2)$ universality class, by calculation themodynamical averages directly by using Monte-Carlo method on the simulated 3DXY-model, which should have the exact same critical exponents. 
+The crux is that one cannot simulate the infinite size 3DXY-model due to computer memory finite-ness, thus one simulates instead finite-size versions of the 3DXY-model. The theory of how finite size systems relate to the infinite size models is called finite size scaling. The normal power-laws aquire correction terms, which needs to be accounted for.
 \section{Binder cumulant}
 The quantity $b =\frac{\langle M^4 \rangle}{\langle M^2\rangle^2}$ is useful as it approaches a constant as $t\rightarrow 0 $, as,  disregarding scaling corrections,
 \begin{equation}

@@ -1,4 +1,5 @@
 #include <string>
+#include <iostream>
 #include "3DXY/3DXYio.h"
 #include "3DXY/3DXYlattice.h"
 #include "3DXY/3DXYrunMetro.h"
@@ -17,9 +18,11 @@ void _3DXY::warmup(Lattice3DXY& lat,long double N){
 	long double NClusts = 0;
 	long double NSweeps = 0;
 	while (NSweeps < N){
-		steps =(long double) cluster3DXY(lat);
+		steps = cluster3DXY(lat);
 		NClusts += 1.0L;
 		NSweeps += (steps/lat.Nspins);
+		std::cout <<"warmup Nsweeps " <<  NSweeps << std::endl;
+		std::cout <<"lat tot sweeps " << lat.NTotSweeps << std::endl;
 	}
 	if( !lat.warmedUp){
 		lat.Neqclusts = NClusts;
@@ -53,10 +56,10 @@ void _3DXY::wolffHistJob(long double L,std::string maxepath,std::string warmlatp
 	else {
 		Trange = getTrange(startT,endT,int(Ntemps));
 	}
-	long double 	Neq=			10.0L;
+	long double 	Neq=			1.0L;
 	bool 		cold=			true;
-	long double	Nsamp=			10.0L;
-	long double 	Nbetw=			10.0L;
+	long double	Nsamp=			1.0L;
+	long double 	Nbetw=			1.0L;
 	int 		Nruns=			100;
 	Cluster c(L);
 	RandStruct r;
