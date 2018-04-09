@@ -1,10 +1,12 @@
 #include <iostream>
 #include <unistd.h>
 #include <random>
+#include <string>
 #include <sys/syscall.h>
 
 #include "Ising3Dlattice.h"
 #include "Ising3Dio.h"
+#include "../maxEHandle.h"
 
 long double LatticeIsing3D::siteEnergy( int &s1, int &s2, int &s3){
 	long double sum = 0.0L;
@@ -93,7 +95,7 @@ void LatticeIsing3D::updateQuants(){
 };
 
 //initialize new lattice
-LatticeIsing3D::LatticeIsing3D(int l, bool cold,long double Beta,RandStruct r, Cluster c) 
+LatticeIsing3D::LatticeIsing3D(int l, bool cold,long double Beta,RandStruct r, Cluster c,std::string pathMaxE)
 	: rand(r), clust(c)
 {
 	beta = Beta;
@@ -107,6 +109,12 @@ LatticeIsing3D::LatticeIsing3D(int l, bool cold,long double Beta,RandStruct r, C
 	NTotSweeps= 0.0L;
 	coldstart = cold;
 	warmedUp = false;
+
+	maxEPath = pathMaxE;
+	maxE = getMaxE(pathMaxE,l);
+
+
+	
 	if (cold) {
 		energy = -3.0L*Nspins;
 		mag = Nspins;

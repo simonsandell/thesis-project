@@ -1,10 +1,12 @@
 #include <iostream>
+#include <string>
 #include <unistd.h>
 #include <random>
 #include <sys/syscall.h>
 
 #include "3DXYlattice.h"
 #include "3DXYio.h"
+#include "../maxEHandle.h"
 
 long double Lattice3DXY::siteEnergy( int &s1, int &s2, int &s3){
 	long double sum = 0.0L;
@@ -162,7 +164,7 @@ void Lattice3DXY::updateQuants(){
 };
 
 //initialize new lattice
-Lattice3DXY::Lattice3DXY(int l,long double rT, bool cold,RandStruct r,Cluster c) 
+Lattice3DXY::Lattice3DXY(int l,long double rT, bool cold,RandStruct r,Cluster c,std::string pathMaxE) 
 	:  rand(r),clust(c) 
 
 {
@@ -177,6 +179,16 @@ Lattice3DXY::Lattice3DXY(int l,long double rT, bool cold,RandStruct r,Cluster c)
 	NTotClusts= 0;
 	coldstart = cold;
 	warmedUp = false;
+
+	maxEPath = pathMaxE;
+	maxE = getMaxE(pathMaxE,l);
+	
+
+
+
+
+
+
 	if (cold) {
 		energy = -3.0L*Nspins;
 		xmag = Nspins;

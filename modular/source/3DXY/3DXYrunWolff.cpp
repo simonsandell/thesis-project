@@ -10,6 +10,7 @@
 #include "../clusterStruct.h"
 #include "../randStruct.h"
 #include "../avgStruct.h"
+#include "../maxEHandle.h"
 
 void wolffHistRun3DXY(Lattice3DXY& lat, long double N_sample_sweeps,long double *Temperatures,int N_temps,long double runTemp){
 
@@ -32,7 +33,7 @@ void wolffHistRun3DXY(Lattice3DXY& lat, long double N_sample_sweeps,long double 
 	}
 
 	long double expFac = 0.0L;
-	long double maxTotE = getMaxE3DXY(lat.L); 
+	long double maxTotE = lat.maxE;
 	long double expCorr = 0.0L;
 	long double tE;
 	long double tM2;
@@ -178,6 +179,6 @@ void wolffHistRun3DXY(Lattice3DXY& lat, long double N_sample_sweeps,long double 
 				b[i],dbdt[i],xi[i],rs[i]);
 	}
 	if (expCorr != 0.0L){
-		setMaxE3DXY(lat.L,maxTotE);
+		setMaxE(lat.maxEPath,lat.L,maxTotE);
 	}
 }

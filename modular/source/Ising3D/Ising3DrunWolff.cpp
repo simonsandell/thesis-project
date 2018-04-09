@@ -11,6 +11,7 @@
 #include "../clusterStruct.h"
 #include "../randStruct.h"
 #include "../avgStruct.h"
+#include "../maxEHandle.h"
 
 void wolffHistRunIsing3D(LatticeIsing3D& lat, long double N_sample_sweeps,long double *Temperatures,int N_temps,long double runTemp){
 
@@ -33,7 +34,7 @@ void wolffHistRunIsing3D(LatticeIsing3D& lat, long double N_sample_sweeps,long d
 	}
 
 	long double expFac = 0.0L;
-	long double maxTotE = getMaxEIsing3D(lat.L); 
+	long double maxTotE = lat.maxE; 
 	//correction value for when current lattice energy becomes greater than saved maxE. If not zero by the end, write new value to files.
 	long double expCorr = 0.0L;
 
@@ -158,6 +159,6 @@ void wolffHistRunIsing3D(LatticeIsing3D& lat, long double N_sample_sweeps,long d
 				b[i],dbdt[i],xi[i],c[i]);
 	}
 	if (expCorr != 0.0L){
-		setMaxEIsing3D(lat.L,maxTotE);
+		setMaxE(lat.maxEPath,lat.L,maxTotE);
 	}
 }

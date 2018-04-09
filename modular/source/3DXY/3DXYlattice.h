@@ -1,6 +1,8 @@
 #ifndef _3DXYLATTICE_H 
 #define _3DXYLATTICE_H
 
+#include <string>
+
 #include "../ioHandle.h"
 #include "../randStruct.h"
 #include "../clusterStruct.h"
@@ -13,11 +15,13 @@ struct Lattice3DXY{
 	long double L,Nspins,Neqsweeps,NTotSweeps;
 	long int Neqclusts,NTotClusts;	
 	bool coldstart,warmedUp;
+	std::string maxEPath;
+	long double maxE;
 
 	long double energy,xmag,ymag,sinx,siny,sinz;
 
 	long double*** newLattice(long double L,bool cold);
-	Lattice3DXY(int L,long double rT, bool cold,RandStruct r, Cluster c);
+	Lattice3DXY(int L,long double rT, bool cold,RandStruct r, Cluster c,std::string pathMaxE);
 	Lattice3DXY();
 
 	void updateQuants();

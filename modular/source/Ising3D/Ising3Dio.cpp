@@ -70,36 +70,6 @@ void printIsing3DOutput(LatticeIsing3D& lat, long double T,avgStruct avgs, long 
 	lat.oPer.addLine(sstrm.str());
 }
 
-long double getMaxEIsing3D(long double L){
-	std::ostringstream mstream;
-	std::string exePath = get_selfpath2();
-	mstream << exePath << "/maxE/Ising3D/" << L << "_maxE.txt";
-	std::cout << "maxE PATH " << mstream.str() << std::endl;
-	std::string fname = mstream.str();
-	std::ifstream file(fname);
-	long double maxE;
-	file >> std::fixed >> maxE;
-	std::cout << "maxE VALUE " << maxE << std::endl;
-	return maxE;
-}
-void setMaxEIsing3D(long double L,long double newE){
-
-	time_t  t = time(0);
-	struct tm * now = localtime(& t);
-
-	char buffer [80];
-	strftime (buffer,80,"%Y-%m-%d.%H:%M:%S",now);
-	std::ostringstream mstream;
-	std::string exePath = get_selfpath2();
-	mstream << exePath<< "/maxE/Ising3D/" << L <<"_"<< buffer;
-	std::string fname = mstream.str();
-	std::ofstream file;
-	file.open(fname);
-
-	typedef std::numeric_limits<long double> dbl;
-	file.precision(dbl::max_digits10 +2);
-	file << std::fixed << newE;
-}
 
 void saveLatticeIsing3D(LatticeIsing3D& lat){
 
