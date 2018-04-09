@@ -53,10 +53,10 @@ void _3DXY::wolffHistJob(long double L){
 	else {
 		Trange = getTrange(startT,endT,int(Ntemps));
 	}
-	long double 	Neq=			100.0L;
+	long double 	Neq=			10.0L;
 	bool 		cold=			true;
-	long double	Nsamp=			100.0L;
-	long double 	Nbetw=			100.0L;
+	long double	Nsamp=			10.0L;
+	long double 	Nbetw=			10.0L;
 	int 		Nruns=			100;
 	Cluster c(L);
 	RandStruct r;
