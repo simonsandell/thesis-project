@@ -79,10 +79,12 @@ long double getMaxE3DXY(long double L){
 	std::ostringstream mstream;
 	std::string exePath = get_selfpath();
 	mstream << exePath << "/maxE/3DXY/" << L << "_maxE.txt";
+	std::cout << "maxE PATH " << mstream.str() << std::endl;
 	std::string fname = mstream.str();
 	std::ifstream file(fname);
 	long double maxE;
 	file >> std::fixed >> maxE;
+	std::cout << "maxE VALUE " << maxE << std::endl;
 	return maxE;
 }
 void setMaxE3DXY(long double L,long double newE){
