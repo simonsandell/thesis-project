@@ -21,7 +21,7 @@ int main(){
 
 
 	if (world_rank != 0){
-		_3DXY::wolffHistJob(64.0L);
+		_3DXY::wolffHistJob(64.0L,"./maxE/3DXY/");
 	}
 	else{
 		int N_finished =0;

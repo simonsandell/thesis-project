@@ -1,4 +1,4 @@
-
+#include <string>
 #include "3DXY/3DXYio.h"
 #include "3DXY/3DXYlattice.h"
 #include "3DXY/3DXYrunMetro.h"
@@ -38,7 +38,7 @@ long double * getTrange(long double start, long double end, int N){
 	return T;
 }
 
-void _3DXY::wolffHistJob(long double L){
+void _3DXY::wolffHistJob(long double L,std::string maxepath){
 
 	long double runTemp = 2.20200000000000L;
 
@@ -60,7 +60,7 @@ void _3DXY::wolffHistJob(long double L){
 	int 		Nruns=			100;
 	Cluster c(L);
 	RandStruct r;
-	Lattice3DXY lat(L,runTemp,cold,r,c,"/cfs/klemming/scratch/s/simsan/maxE/3DXY/");
+	Lattice3DXY lat(L,runTemp,cold,r,c,maxepath);
 	warmup(lat,Neq);
 	for (int i=0; i< Nruns; ++i){	
 		wolffHistRun3DXY(lat,Nsamp,Trange,Ntemps,runTemp);
