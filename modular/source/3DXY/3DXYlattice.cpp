@@ -120,7 +120,7 @@ long double calcEn(Lattice3DXY* lat){
 	en = 0.5L*en;
 	return en;
 }
-long double*** newLattice(long double L,bool cold){
+long double*** Lattice3DXY::newLattice(long double L,bool cold){
 	//make new lattice
 	long double ***lattice;
 	lattice = new long double **[(int)L];
@@ -141,16 +141,10 @@ long double*** newLattice(long double L,bool cold){
 		}
 	}
 	else {
-		//initialize rng
-		unsigned long int s;
-		syscall(SYS_getrandom,&s,sizeof(unsigned long int),0);	
-		std::uniform_real_distribution<long double> dist(0.0L,1.0L);
-		std::mt19937_64 eng; 
-		eng.seed(s);
 		for (int i = 0; i<L;++i){
 			for (int j=0; j<L;++j){
 				for (int k = 0; k<L; ++k){
-					lattice[i][j][k] = dist(eng)*2.0L*M_PI;
+					lattice[i][j][k] = rand.rnd()*2.0L*M_PI;
 				}
 			}
 		}

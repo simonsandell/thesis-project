@@ -16,6 +16,7 @@ struct Lattice3DXY{
 
 	long double energy,xmag,ymag,sinx,siny,sinz;
 
+	long double*** newLattice(long double L,bool cold);
 	Lattice3DXY(int L,long double rT, bool cold,RandStruct r, Cluster c);
 	Lattice3DXY();
 

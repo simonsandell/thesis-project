@@ -1,8 +1,13 @@
 #ifndef LATTICESTRUCT_H
 #define LATTICESTRUCT_H
 #include "../ioHandle.h"
+#include "../randStruct.h"
+#include "../clusterStruct.h"
+
 
 struct LatticeIsing3D{
+	RandStruct rand;
+	Cluster clust;
 	long double *** theLattice;
 	long double L,Nspins,Neqsweeps,NTotSweeps;
 	long int Neqclusts,NTotClusts;	
@@ -14,7 +19,7 @@ struct LatticeIsing3D{
 	long double calcEn();
 	long double calcMag();
 
-	LatticeIsing3D(int L, bool cold,long double Beta);
+	LatticeIsing3D(int L, bool cold,long double Beta,RandStruct r, Cluster c);
 	LatticeIsing3D();
 
 	void updateQuants();

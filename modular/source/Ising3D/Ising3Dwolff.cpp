@@ -17,20 +17,20 @@ void updateVals(LatticeIsing3D& lat,long double e0,long double e1,
 	lat.mag     -= a0;
 }
 
-long int clusterIsing3D(LatticeIsing3D& lat,Cluster& cluster,RandStruct& randgen){
+long int clusterIsing3D(LatticeIsing3D& lat){
 
 	long int time = 1;
 	//select random staring spin
-	int s1 = lat.L*randgen.rnd();
-	int s2 = lat.L*randgen.rnd();
-	int s3 = lat.L*randgen.rnd();
+	int s1 = lat.L*lat.rand.rnd();
+	int s2 = lat.L*lat.rand.rnd();
+	int s3 = lat.L*lat.rand.rnd();
 	// save spin and energy before flipping
 	long double spinBefore = lat.theLattice[s1][s2][s3];
 	long double enBefore = lat.siteEnergy(s1,s2,s3);
 	long double spinAfter = -spinBefore;
 	//reflect spin and mark as part of cluster
 	lat.theLattice[s1][s2][s3] = spinAfter;
-	cluster.theCluster[s1][s2][s3] = true;
+	lat.clust.theCluster[s1][s2][s3] = true;
 	//update energy, mag etc..
 	long double enAfter = lat.siteEnergy(s1,s2,s3);
 	updateVals(lat,
@@ -69,7 +69,7 @@ long int clusterIsing3D(LatticeIsing3D& lat,Cluster& cluster,RandStruct& randgen
 		perimeter.pop_back();
 		n -= 1;
 		//test that it is not already part of cluster
-		if (!cluster.theCluster[std::get<0>(current)][std::get<1>(current)][std::get<2>(current)]){
+		if (!lat.clust.theCluster[std::get<0>(current)][std::get<1>(current)][std::get<2>(current)]){
 
 			//increase time for every tested spin
 			//
@@ -81,7 +81,7 @@ long int clusterIsing3D(LatticeIsing3D& lat,Cluster& cluster,RandStruct& randgen
 
 			// if this spin will be same as parent spin after flipping, try to add it to cluster
 			if (std::get<3>(current) != spinBefore){
-				rand = randgen.rnd();
+				rand = lat.rand.rnd();
 				if ( rand < lat.PROB) {
 					//get energy before reflecting
 					//
@@ -92,7 +92,7 @@ long int clusterIsing3D(LatticeIsing3D& lat,Cluster& cluster,RandStruct& randgen
 
 					//reflect and mark as added to cluster
 					lat.theLattice[std::get<0>(current)][std::get<1>(current)][std::get<2>(current)] = spinAfter;
-					cluster.theCluster[std::get<0>(current)][std::get<1>(current)][std::get<2>(current)] = true;
+					lat.clust.theCluster[std::get<0>(current)][std::get<1>(current)][std::get<2>(current)] = true;
 
 					//update energy and magnetization
 					enAfter = lat.siteEnergy(std::get<0>(current),std::get<1>(current),std::get<2>(current));
@@ -131,27 +131,27 @@ long int clusterIsing3D(LatticeIsing3D& lat,Cluster& cluster,RandStruct& randgen
 							(std::get<2>(current) + (int)lat.L - 1)%(int)lat.L,
 							spinAfter);
 					//if a neighbour is not already part of the cluster, add it to perimeter list
-					if (!cluster.theCluster[std::get<0>(neig1)][std::get<1>(neig1)][std::get<2>(neig1)] ){
+					if (!lat.clust.theCluster[std::get<0>(neig1)][std::get<1>(neig1)][std::get<2>(neig1)] ){
 						perimeter.push_back(neig1);
 						n = n + 1;
 					}
-					if (!cluster.theCluster[std::get<0>(neig2)][std::get<1>(neig2)][std::get<2>(neig2)] ){
+					if (!lat.clust.theCluster[std::get<0>(neig2)][std::get<1>(neig2)][std::get<2>(neig2)] ){
 						perimeter.push_back(neig2);
 						n = n + 1;
 					}
-					if (!cluster.theCluster[std::get<0>(neig3)][std::get<1>(neig3)][std::get<2>(neig3)] ){
+					if (!lat.clust.theCluster[std::get<0>(neig3)][std::get<1>(neig3)][std::get<2>(neig3)] ){
 						perimeter.push_back(neig3);
 						n = n + 1;
 					}
-					if (!cluster.theCluster[std::get<0>(neig4)][std::get<1>(neig4)][std::get<2>(neig4)] ){
+					if (!lat.clust.theCluster[std::get<0>(neig4)][std::get<1>(neig4)][std::get<2>(neig4)] ){
 						perimeter.push_back(neig4);
 						n = n + 1;
 					}
-					if (!cluster.theCluster[std::get<0>(neig5)][std::get<1>(neig5)][std::get<2>(neig5)] ){
+					if (!lat.clust.theCluster[std::get<0>(neig5)][std::get<1>(neig5)][std::get<2>(neig5)] ){
 						perimeter.push_back(neig5);
 						n = n + 1;
 					}
-					if (!cluster.theCluster[std::get<0>(neig6)][std::get<1>(neig6)][std::get<2>(neig6)] ){
+					if (!lat.clust.theCluster[std::get<0>(neig6)][std::get<1>(neig6)][std::get<2>(neig6)] ){
 						perimeter.push_back(neig6);
 						n = n + 1;
 					}
@@ -160,7 +160,7 @@ long int clusterIsing3D(LatticeIsing3D& lat,Cluster& cluster,RandStruct& randgen
 		}
 	}
 	//empty the cluster
-	cluster.emptyCluster();	
+	lat.clust.emptyCluster();	
 	//return # of tested spins
 	lat.NTotClusts += 1;
 	lat.NTotSweeps += ((long double)time/lat.Nspins);

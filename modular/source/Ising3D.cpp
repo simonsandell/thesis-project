@@ -8,12 +8,12 @@
 #include "clusterStruct.h"
 #include "randStruct.h"
 
-void Ising3D::warmup(LatticeIsing3D& lat,Cluster&clust,RandStruct& rand,long double N){
+void Ising3D::warmup(LatticeIsing3D& lat,long double N){
 	long double steps = 0.0L;
 	long double NClusts = 0.0L;
 	long double NSweeps = 0.0L;
 	while (NSweeps < N){
-		steps =(long double) clusterIsing3D(lat,clust,rand);
+		steps =(long double) clusterIsing3D(lat);
 		NClusts+= 1.0L;
 		NSweeps += (steps/lat.Nspins);
 	}
@@ -55,13 +55,14 @@ void Ising3D::wolffHistJob(long double L){
 	int 		Nruns=			100;
 	long double beta = 1.0L/runTemp;
 
-	LatticeIsing3D lat(L,cold,beta);
 	Cluster clust(L);
 	RandStruct rand;
-	warmup(lat,clust,rand,(Neq));
+
+	LatticeIsing3D lat(L,cold,beta,rand,clust);
+	warmup(lat,(Neq));
 	for (int i=0; i< Nruns; ++i){	
 		wolffHistRunIsing3D(lat,Nsamp,Trange,Ntemps,runTemp);
-		warmup(lat,clust,rand,Nbetw);
+		warmup(lat,Nbetw);
 	}
 }
 void Ising3D::teqRun(long double L, bool cold){
@@ -74,7 +75,9 @@ void Ising3D::teqRun(long double L, bool cold){
 	long double	Nsamp=			2.0L;
 	int 		Ndoubles=		18;
 	long double beta = 1.0L/runTemp;
-	LatticeIsing3D lat(L,cold,beta);
+	Cluster clust(L);
+	RandStruct rand;
+	LatticeIsing3D lat(L,cold,beta,rand,clust);
 	wolffHistRunIsing3D(lat,Nsamp,Trange,Ntemps,runTemp);
 	for (int i=0; i< Ndoubles; ++i){	
 		wolffHistRunIsing3D(lat,Nsamp,Trange,Ntemps,runTemp);

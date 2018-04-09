@@ -42,14 +42,12 @@ void wolffHistRunIsing3D(LatticeIsing3D& lat, long double N_sample_sweeps,long d
 	long double tM2;
 
 	long double steps = 0;//steps done in current cluster
-	Cluster cluster(lat.L);
-	RandStruct rand;
 
 	long double doneSweeps = 0.0L;//total done sweeps
 	long double doneClusts = 0.0L;//total number of done clusters
 	while (doneSweeps < N_sample_sweeps){
 		//make a cluster
-		steps = (long double)clusterIsing3D(lat,cluster,rand);
+		steps = (long double)clusterIsing3D(lat);
 		doneSweeps += steps/lat.Nspins;
 		doneClusts += 1.0L;
 		if (steps < 0.0L || doneSweeps < 0.0L) {
