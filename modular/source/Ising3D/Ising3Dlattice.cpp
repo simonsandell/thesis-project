@@ -95,7 +95,7 @@ void LatticeIsing3D::updateQuants(){
 };
 
 //initialize new lattice
-LatticeIsing3D::LatticeIsing3D(int l, bool cold,long double Beta,RandStruct r, Cluster c,std::string pathMaxE)
+LatticeIsing3D::LatticeIsing3D(int l, bool cold,long double Beta,RandStruct r, Cluster c,std::string pathMaxE,std::string pathWarmLat)
 	: rand(r), clust(c)
 {
 	beta = Beta;
@@ -110,6 +110,7 @@ LatticeIsing3D::LatticeIsing3D(int l, bool cold,long double Beta,RandStruct r, C
 	coldstart = cold;
 	warmedUp = false;
 
+	warmLatPath = pathWarmLat;
 	maxEPath = pathMaxE;
 	maxE = getMaxE(pathMaxE,l);
 

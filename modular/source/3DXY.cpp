@@ -38,7 +38,7 @@ long double * getTrange(long double start, long double end, int N){
 	return T;
 }
 
-void _3DXY::wolffHistJob(long double L,std::string maxepath){
+void _3DXY::wolffHistJob(long double L,std::string maxepath,std::string warmlatpath){
 
 	long double runTemp = 2.20200000000000L;
 
@@ -60,7 +60,7 @@ void _3DXY::wolffHistJob(long double L,std::string maxepath){
 	int 		Nruns=			100;
 	Cluster c(L);
 	RandStruct r;
-	Lattice3DXY lat(L,runTemp,cold,r,c,maxepath);
+	Lattice3DXY lat(L,runTemp,cold,r,c,maxepath,warmlatpath);
 	warmup(lat,Neq);
 	for (int i=0; i< Nruns; ++i){	
 		wolffHistRun3DXY(lat,Nsamp,Trange,Ntemps,runTemp);
@@ -81,7 +81,7 @@ void _3DXY::teqRun(long double L,bool cold){
 	int 		Ndoubles=		18;
 	Cluster c(L);
 	RandStruct r;
-	Lattice3DXY lat(L,runTemp,cold,r,c,"/cfs/klemming/scratch/s/simsan/maxE/3DXY/");
+	Lattice3DXY lat(L,runTemp,cold,r,c,"/cfs/klemming/scratch/s/simsan/maxE/3DXY/","");
 	wolffHistRun3DXY(lat,Nsamp,Trange,Ntemps,runTemp);
 	for (int i=0; i< Ndoubles; ++i){	
 		wolffHistRun3DXY(lat,Nsamp,Trange,Ntemps,runTemp);

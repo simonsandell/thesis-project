@@ -1,4 +1,4 @@
-
+#include <string>
 #include "Ising3D.h"
 #include "Ising3D/Ising3Dio.h"
 #include "Ising3D/Ising3Dlattice.h"
@@ -34,7 +34,7 @@ long double * getTrangeIsing3D(long double start, long double end, int N){
 	return T;
 }
 
-void Ising3D::wolffHistJob(long double L){
+void Ising3D::wolffHistJob(long double L,std::string maxepath,std::string warmlatpath){
 	long double runTemp = 4.50000000000000L;
 
 	long double	startT=			4.48500L;
@@ -58,7 +58,7 @@ void Ising3D::wolffHistJob(long double L){
 	Cluster clust(L);
 	RandStruct rand;
 
-	LatticeIsing3D lat(L,cold,beta,rand,clust,"/cfs/klemming/scratch/s/simsan/maxE/Ising3D/");
+	LatticeIsing3D lat(L,cold,beta,rand,clust,maxepath,warmlatpath);
 	warmup(lat,(Neq));
 	for (int i=0; i< Nruns; ++i){	
 		wolffHistRunIsing3D(lat,Nsamp,Trange,Ntemps,runTemp);
@@ -77,7 +77,7 @@ void Ising3D::teqRun(long double L, bool cold){
 	long double beta = 1.0L/runTemp;
 	Cluster clust(L);
 	RandStruct rand;
-	LatticeIsing3D lat(L,cold,beta,rand,clust,"/cfs/klemming/scratch/s/simsan/maxE/Ising3D/");
+	LatticeIsing3D lat(L,cold,beta,rand,clust,"/cfs/klemming/scratch/s/simsan/maxE/Ising3D/","");
 	wolffHistRunIsing3D(lat,Nsamp,Trange,Ntemps,runTemp);
 	for (int i=0; i< Ndoubles; ++i){	
 		wolffHistRunIsing3D(lat,Nsamp,Trange,Ntemps,runTemp);

@@ -19,9 +19,11 @@ int main(){
 	std::cout << "WORLD_SIZE " << world_size << std::endl;
 	std::cout << "WORLD_rank" << world_rank<< std::endl;
 
+	std::string warmlatpath = "./warmLatttice/3DXY/";
+	std::string maxepath = "./maxE/3DXY/";
 
 	if (world_rank != 0){
-		_3DXY::wolffHistJob(64.0L,"./maxE/3DXY/");
+		_3DXY::wolffHistJob(128.0L,maxepath,warmlatpath);
 	}
 	else{
 		int N_finished =0;

@@ -40,9 +40,9 @@ void updateVals(Lattice3DXY& lat,long double e0,long double e1,
 	lat.sinz+= -sz0;
 }
 
-long int cluster3DXY(Lattice3DXY& lat){
+long double cluster3DXY(Lattice3DXY& lat){
 
-	long int time = 1;
+	long double time = 1.0L;
 	//select random plane and random staring spin
 	long double u = -(long double)M_PI + 2.0L*((long double)M_PI)*lat.rand.rnd();
 	int s1 = lat.L*lat.rand.rnd();
@@ -107,7 +107,7 @@ long int cluster3DXY(Lattice3DXY& lat){
 
 			//increase time for every tested spin
 			//
-			++time;
+			time = time +1.0L;
 
 			//get its current angle;
 			//
@@ -204,7 +204,7 @@ long int cluster3DXY(Lattice3DXY& lat){
 	//empty the cluster
 	lat.clust.emptyCluster();	
 	//return # of tested spins
-	lat.NTotSweeps += ((long double)time/lat.Nspins);
+	lat.NTotSweeps += time/lat.Nspins;
 	lat.NTotClusts += 1;
 	return time;
 }

@@ -47,7 +47,7 @@ void wolffHistRun3DXY(Lattice3DXY& lat, long double N_sample_sweeps,long double 
 
 	while (doneSweeps < N_sample_sweeps){
 		//make a cluster
-		steps = (long double)cluster3DXY(lat);
+		steps = cluster3DXY(lat);
 		doneSweeps += steps/lat.Nspins;
 		doneClusts += 1.0L;
 		if (doneSweeps< 0.0L || steps < 0.0L) {
@@ -88,16 +88,16 @@ void wolffHistRun3DXY(Lattice3DXY& lat, long double N_sample_sweeps,long double 
 			avgs[i].exp += expFac;
 
 
-			avgs[i].e += expFac*tE;
-			avgs[i].e2+=expFac*tE*tE;
-			avgs[i].m += expFac*sqrt(tM2);
-			avgs[i].m2 += expFac*tM2;
-			avgs[i].m4 += expFac*tM2*tM2;
-			avgs[i].m2e += expFac*tM2*tE; 
-			avgs[i].m4e += expFac*tM2*tM2*tE;
-			avgs[i].s2x += expFac*tSx*tSx;
-			avgs[i].s2y += expFac*tSy*tSy;
-			avgs[i].s2z += expFac*tSz*tSz;
+			avgs[i].e += 	expFac*tE;
+			avgs[i].e2+=	expFac*tE*tE;
+			avgs[i].m += 	expFac*sqrt(tM2);
+			avgs[i].m2 += 	expFac*tM2;
+			avgs[i].m4 += 	expFac*tM2*tM2;
+			avgs[i].m2e += 	expFac*tM2*tE; 
+			avgs[i].m4e += 	expFac*tM2*tM2*tE;
+			avgs[i].s2x += 	expFac*tSx*tSx;
+			avgs[i].s2y += 	expFac*tSy*tSy;
+			avgs[i].s2z += 	expFac*tSz*tSz;
 		}
 	}//end of samples
 
@@ -111,21 +111,6 @@ void wolffHistRun3DXY(Lattice3DXY& lat, long double N_sample_sweeps,long double 
 	long double dbdt[N_temps];//derivative wrt T of Binder parameter
 	long double rs[N_temps];//superfluid density
 	for (int i =0; i< N_temps; ++i){
-
-		//print values
-		/*
-		   std::cout <<"avgExpFac[i]"<<	avgExpFac[i]<<std::endl;
-		   std::cout <<"avgE[i]     "<<        avgE[i] <<std::endl;
-		   std::cout <<"avgE2[i]    "<<        avgE2[i]  <<std::endl;
-		   std::cout <<"avgM[i]     "<<        avgM[i] <<std::endl;
-		   std::cout <<"avgM2[i]    "<<        avgM2[i]<<std::endl;
-		   std::cout <<"avgM4[i]    "<<        avgM4[i] <<std::endl;
-		   std::cout <<"avgM2E[i]   "<<        avgM2E[i]<<std::endl;
-		   std::cout <<"avgM4E[i]   "<<        avgM4E[i]<<std::endl;
-		   std::cout <<"avgs[i].s2x "<<        avgs[i].s2x <<std::endl;
-		   std::cout <<"avgSinY2[i] "<<        avgSinY2[i] <<std::endl;
-		   std::cout <<"avgs[i].s2z "<<        avgs[i].s2z <<std::endl;
-		   */
 
 		//normalize
 		avgs[i].e   /= doneClusts;
@@ -157,23 +142,8 @@ void wolffHistRun3DXY(Lattice3DXY& lat, long double N_sample_sweeps,long double 
 			-lat.Nspins*avgs[i].s2z/Temperatures[i];
 		rs[i] *= lat.L;
 		rs[i] /= (3.0L*avgs[i].exp);
-		//print values
-		/*
-		   std::cout << "b = " << avgs[i].m4 << " * " << avgs[i].exp << std::endl;
-		   std::cout << "b /= " << avgs[i].m2 << " * " << avgs[i].m2 << std::endl;
-		   std::cout << "dbdt[i] = " << avgs[i].exp << " * " << avgs[i].m4e << 
-		   " * " << avgs[i].m2<<" + "<< avgs[i].m4<< " * " <<avgs[i].m2<< 
-		   " * " << avgs[i].e << " - 2.0L* " << avgs[i].exp<< " * " <<
-		   avgs[i].m4 << " * " << avgs[i].m2e << std::endl;
-		   std::cout << "dbdt[i] /= " << Temperatures[i] << "^2 * " << avgM2 << "^3" << std::endl;
-		   std::cout << "xi[i] = " << " ( " << avgs[i].m2<<" / "<<avgs[i].exp <<") - "<<"("<<avgs[i].m<<"*"<<avgs[i].m<<" / "<<"("<<avgs[i].exp<<"*"<<avgs[i].exp<<"))"<< std::endl;
-		   std::cout << "xi[i] /= " << Temperatures[i] << "*" << lat.Nspins << std::endl;
-		   std::cout <<"rs[i] = -"<<avgs[i].e <<" - "<< avgs[i].s2x<<" / "<<Temperatures[i] 
-		   <<" - "<<avgs[i].s2y<<" / "<<Temperatures[i] 
-		   <<" - "<<avgs[i].s2z<<" / "<<Temperatures[i] << std::endl;
-		   std::cout <<"rs[i] /= (3.0L*" <<lat.L<<" * "<<lat.L<<" * "<<avgs[i].exp<<")" << std::endl;
-		   */
 	}
+
 	for (int i = 0;i< N_temps; ++i){
 		print3DXYOutput(lat,Temperatures[i],avgs[i],
 				b[i],dbdt[i],xi[i],rs[i]);

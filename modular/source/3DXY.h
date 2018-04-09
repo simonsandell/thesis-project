@@ -8,7 +8,7 @@ namespace _3DXY {
 
 void warmup(Lattice3DXY& lat,long double N);
 
-void wolffHistJob(long double L,std::string maxepath);
+void wolffHistJob(long double L,std::string maxepath,std::string warmlatpath);
 void teqRun(long double L,bool cold);
 
 };

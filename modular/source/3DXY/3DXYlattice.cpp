@@ -164,7 +164,7 @@ void Lattice3DXY::updateQuants(){
 };
 
 //initialize new lattice
-Lattice3DXY::Lattice3DXY(int l,long double rT, bool cold,RandStruct r,Cluster c,std::string pathMaxE) 
+Lattice3DXY::Lattice3DXY(int l,long double rT, bool cold,RandStruct r,Cluster c,std::string pathMaxE,std::string pathWarmLat) 
 	:  rand(r),clust(c) 
 
 {
@@ -180,6 +180,7 @@ Lattice3DXY::Lattice3DXY(int l,long double rT, bool cold,RandStruct r,Cluster c,
 	coldstart = cold;
 	warmedUp = false;
 
+	warmLatPath = pathWarmLat;
 	maxEPath = pathMaxE;
 	maxE = getMaxE(pathMaxE,l);
 	

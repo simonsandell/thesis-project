@@ -15,13 +15,14 @@ struct Lattice3DXY{
 	long double L,Nspins,Neqsweeps,NTotSweeps;
 	long int Neqclusts,NTotClusts;	
 	bool coldstart,warmedUp;
+	std::string warmLatPath;
 	std::string maxEPath;
 	long double maxE;
 
 	long double energy,xmag,ymag,sinx,siny,sinz;
 
 	long double*** newLattice(long double L,bool cold);
-	Lattice3DXY(int L,long double rT, bool cold,RandStruct r, Cluster c,std::string pathMaxE);
+	Lattice3DXY(int L,long double rT, bool cold,RandStruct r, Cluster c,std::string pathMaxE,std::string warmLatPath);
 	Lattice3DXY();
 
 	void updateQuants();

@@ -3,7 +3,7 @@
 
 #include "3DXYlattice.h"
 
-long int cluster3DXY(Lattice3DXY& lat);
+long double cluster3DXY(Lattice3DXY& lat);
 
 
 

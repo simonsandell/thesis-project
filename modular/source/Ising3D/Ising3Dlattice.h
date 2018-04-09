@@ -14,6 +14,7 @@ struct LatticeIsing3D{
 	long double L,Nspins,Neqsweeps,NTotSweeps;
 	long int Neqclusts,NTotClusts;	
 	bool coldstart,warmedUp;
+	std::string warmLatPath;
 	std::string maxEPath;
 	long double maxE;
 
@@ -27,7 +28,7 @@ struct LatticeIsing3D{
 	long double calcMag();
 
 	long double *** newLatticeI3D(long double L,bool cold);
-	LatticeIsing3D(int L, bool cold,long double Beta,RandStruct r, Cluster c,std::string pathMaxE);
+	LatticeIsing3D(int L, bool cold,long double Beta,RandStruct r, Cluster c,std::string pathMaxE,std::string pathWarmLat);
 	LatticeIsing3D();
 
 	void updateQuants();
