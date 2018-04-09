@@ -19,6 +19,7 @@ struct LatticeIsing3D{
 	long double calcEn();
 	long double calcMag();
 
+	long double *** newLatticeI3D(long double L,bool cold);
 	LatticeIsing3D(int L, bool cold,long double Beta,RandStruct r, Cluster c);
 	LatticeIsing3D();
 

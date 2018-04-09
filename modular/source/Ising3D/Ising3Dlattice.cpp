@@ -50,7 +50,7 @@ long double LatticeIsing3D::calcEn(){
 	return en;
 }
 
-long double *** newLatticeI3D(long double L,bool cold){
+long double *** LatticeIsing3D::newLatticeI3D(long double L,bool cold){
 	//make new lattice
 	long double ***lattice;
 	lattice = new long double **[(int)L];
@@ -71,16 +71,10 @@ long double *** newLatticeI3D(long double L,bool cold){
 		}
 	}
 	else {
-		//initialize rng
-		unsigned long int s;
-		syscall(SYS_getrandom,&s,sizeof(unsigned long int),0);	
-		std::uniform_real_distribution<long double> dist(0.0L,1.0L);
-		std::mt19937_64 eng; 
-		eng.seed(s);
 		for (int i = 0; i<L;++i){
 			for (int j=0; j<L;++j){
 				for (int k = 0; k<L; ++k){
-					if ( dist(eng) >0.5L){
+					if ( rand.rnd() >0.5L){
 						lattice[i][j][k] =1.0L;
 					}
 					else {
