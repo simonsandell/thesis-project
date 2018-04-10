@@ -64,9 +64,14 @@ void _3DXY::wolffHistJob(long double L,std::string maxepath,std::string warmlatp
 	Cluster c(L);
 	RandStruct r;
 	Lattice3DXY lat(L,runTemp,cold,r,c,maxepath,warmlatpath);
+	lat.saveLattice();
+	std::cout << "aft save" << std::endl;
+	//lat.loadLattice();
+	std::cout << "aft load save" << std::endl;
 	warmup(lat,Neq);
 	for (int i=0; i< Nruns; ++i){	
 		wolffHistRun3DXY(lat,Nsamp,Trange,Ntemps,runTemp);
+		std::cout << " after whr" << std::endl;
 		warmup(lat,Nbetw);
 	}
 	if (lat.oPer.outputLines.size() > 0){
@@ -84,7 +89,7 @@ void _3DXY::teqRun(long double L,bool cold){
 	int 		Ndoubles=		18;
 	Cluster c(L);
 	RandStruct r;
-	Lattice3DXY lat(L,runTemp,cold,r,c,"/cfs/klemming/scratch/s/simsan/maxE/3DXY/","");
+	Lattice3DXY lat(L,runTemp,cold,r,c,"/cfs/klemming/scratch/s/simsan/maxE/3DXY/","/cfs/klemming/scratch/s/simsan/warmLattice/3DXY/");
 	wolffHistRun3DXY(lat,Nsamp,Trange,Ntemps,runTemp);
 	for (int i=0; i< Ndoubles; ++i){	
 		wolffHistRun3DXY(lat,Nsamp,Trange,Ntemps,runTemp);

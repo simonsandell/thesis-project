@@ -36,6 +36,8 @@ struct Lattice3DXY{
 
 	
 	outPutter oPer;
+	void saveLattice();
+	void loadLattice();
 
 	};
 #endif

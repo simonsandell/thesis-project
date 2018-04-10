@@ -10,6 +10,8 @@
 #include "3DXYio.h"
 #include "3DXYlattice.h"
 #include "../avgStruct.h"
+#include "../randStruct.h"
+#include "../clusterStruct.h"
 #include "../ioHandle.h"
 
 //print lattice
@@ -76,40 +78,4 @@ void print3DXYOutput(Lattice3DXY &lat, long double T,avgStruct avgs, long double
 }
 
 
-void saveLattice3DXY(Lattice3DXY &lat){
-
-	int L = lat.L;
-	std::ostringstream mstream;
-	std::string exePath = get_selfpath();
-	mstream << exePath<< "/warmLattice/" << L <<"_3DXY.lat";
-	std::string fname = mstream.str();
-	FILE* output;
-	output = std::fopen(fname.c_str(),"wb");
-	fwrite(&lat,sizeof(lat),1,output);
-	fclose(output);
-
-}
-
-Lattice3DXY getLattice3DXY(int l){
-	std::ostringstream mstream;
-	std::string exePath = get_selfpath();
-	mstream << exePath << "/warmLattice/" << l << "_3DXY.lat";
-	std::string fname = mstream.str();
-
-	Lattice3DXY lat;
-	FILE* input;
-
-	input = fopen(fname.c_str(),"rb");
-
-
-	size_t result = fread(&lat,sizeof(lat),1,input);
-	if (result != 1){
-		std::cout << "failed to load lattice" << std::endl;
-		exit(1);
-	}
-
-	fclose(input);
-
-	return lat;
-}
 

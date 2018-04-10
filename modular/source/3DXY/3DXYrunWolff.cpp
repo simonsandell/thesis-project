@@ -12,16 +12,14 @@
 #include "../avgStruct.h"
 #include "../maxEHandle.h"
 
-void wolffHistRun3DXY(Lattice3DXY& lat, long double N_sample_sweeps,long double *Temperatures,int N_temps,long double runTemp){
+void wolffHistRun3DXY(Lattice3DXY& lat, long double N_sample_sweeps,long double *Temperatures,int N_temps){
 
 
 	//convert temp to betas
 	long double Betas[N_temps];	
 	for (int i = 0; i< N_temps; ++i){
 		Betas[i] = 1.0L/Temperatures[i];
-		std::cout << Betas[i] << std::endl;
 	}
-	long double Beta = 1.0L/runTemp;		
 
 
 	//update lattice quantities
@@ -87,7 +85,7 @@ void wolffHistRun3DXY(Lattice3DXY& lat, long double N_sample_sweeps,long double 
 		tSz = lat.sinz/lat.Nspins;
 
 		for (int i = 0; i<N_temps; ++i){
-			expFac = exp(-(Betas[i] - Beta)*(lat.energy-maxTotE));
+			expFac = exp(-(Betas[i] - lat.beta)*(lat.energy-maxTotE));
 			avgs[i].exp += expFac;
 
 
