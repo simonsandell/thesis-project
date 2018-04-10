@@ -29,21 +29,6 @@ void printLattice3DXY(long double ***lattice,long double  L){
 	}
 }
 
-std::string get_selfpath(){
-	char buff[PATH_MAX];
-	ssize_t len = ::readlink("/proc/self/exe",buff,sizeof(buff)-1);
-	if (len != -1) {
-		buff[len] = '\0';
-		std::string strbuff = std::string(buff);
-		const size_t lastslash = strbuff.rfind('/');
-		strbuff = strbuff.substr(0,lastslash);
-		return strbuff;
-	}
-	else {
-		std::cout << "selfpath fail" << std::endl;
-		exit(-1);
-	}
-}
 void print3DXYOutput(Lattice3DXY &lat, long double T,avgStruct avgs, long double bin, long double dbdt, long double xi, long double rs){
 	typedef std::numeric_limits<long double> dbl;
 

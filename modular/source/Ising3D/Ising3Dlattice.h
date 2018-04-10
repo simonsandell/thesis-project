@@ -12,7 +12,7 @@ struct LatticeIsing3D{
 	Cluster clust;
 	long double *** theLattice;
 	long double L,Nspins,Neqsweeps,NTotSweeps;
-	long int Neqclusts,NTotClusts;	
+	long int Neqclusts,NTotClusts,int_L;
 	bool coldstart,warmedUp;
 	std::string warmLatPath;
 	std::string maxEPath;

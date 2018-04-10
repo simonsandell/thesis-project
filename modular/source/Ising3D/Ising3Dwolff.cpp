@@ -9,17 +9,14 @@
 #include "../randStruct.h"
 #include "../clusterStruct.h"
 
-void updateVals(LatticeIsing3D& lat,long double e0,long double e1,
-		long double a0,long double a1){
-	lat.energy  += e1;
-	lat.energy  -= e0;
-	lat.mag     += a1;
-	lat.mag     -= a0;
+void updateVals(LatticeIsing3D& lat,long double addE,long double addM){
+	lat.energy  += addE;
+	lat.mag     += addM;
 }
 
-long int clusterIsing3D(LatticeIsing3D& lat){
+long double clusterIsing3D(LatticeIsing3D& lat){
 
-	long int time = 1;
+	long double time = 1.0L;
 	//select random staring spin
 	int s1 = lat.L*lat.rand.rnd();
 	int s2 = lat.L*lat.rand.rnd();
@@ -34,15 +31,15 @@ long int clusterIsing3D(LatticeIsing3D& lat){
 	//update energy, mag etc..
 	long double enAfter = lat.siteEnergy(s1,s2,s3);
 	updateVals(lat,
-			enBefore,enAfter,
-			spinBefore,spinAfter);
+			enBefore-enAfter,
+			spinBefore-spinAfter);
 	//find indices of nearest neighbours
-	int n1m = (s1 -1 + (int)lat.L )%(int)lat.L;
-	int n1p = (s1 +1 + (int)lat.L )%(int)lat.L;
-	int n2m = (s2 -1 + (int)lat.L )%(int)lat.L;
-	int n2p = (s2 +1 + (int)lat.L )%(int)lat.L;
-	int n3m = (s3 -1 + (int)lat.L )%(int)lat.L;
-	int n3p = (s3 +1 + (int)lat.L )%(int)lat.L;
+	int n1m = (s1 -1 + lat.int_L )%lat.int_L;
+	int n1p = (s1 +1 + lat.int_L )%lat.int_L;
+	int n2m = (s2 -1 + lat.int_L )%lat.int_L;
+	int n2p = (s2 +1 + lat.int_L )%lat.int_L;
+	int n3m = (s3 -1 + lat.int_L )%lat.int_L;
+	int n3p = (s3 +1 + lat.int_L )%lat.int_L;
 	std::tuple<int,int,int,long double> neig1 = std::make_tuple(n1m,s2,s3,spinAfter);
 	std::tuple<int,int,int,long double> neig2 = std::make_tuple(n1p,s2,s3,spinAfter);
 	std::tuple<int,int,int,long double> neig3 = std::make_tuple(s1,n2m,s3,spinAfter);
@@ -59,7 +56,7 @@ long int clusterIsing3D(LatticeIsing3D& lat){
 	perimeter.push_back(neig4);
 	perimeter.push_back(neig5);
 	perimeter.push_back(neig6);
-	long int n = 6;
+	unsigned long int n = 6;
 
 	std::tuple<int,int,int,long double> current;
 	long double rand = 0.0L;
@@ -73,7 +70,7 @@ long int clusterIsing3D(LatticeIsing3D& lat){
 
 			//increase time for every tested spin
 			//
-			++time;
+			time += 1.0L;
 
 			//get its current spin;
 			//
@@ -97,38 +94,38 @@ long int clusterIsing3D(LatticeIsing3D& lat){
 					//update energy and magnetization
 					enAfter = lat.siteEnergy(std::get<0>(current),std::get<1>(current),std::get<2>(current));
 					updateVals(lat,
-							enBefore,enAfter,
-							spinBefore,spinAfter);
+							enBefore-enAfter,
+							spinBefore-spinAfter);
 					//find indices of neighbours
 					neig1 = std::make_tuple(
-							(std::get<0>(current) + 1) % (int)lat.L, 
+							(std::get<0>(current) + 1) % lat.int_L, 
 							std::get<1>(current),
 							std::get<2>(current),
 							spinAfter);
 					neig2 = std::make_tuple(
-							(std::get<0>(current) + (int)lat.L - 1) % (int)lat.L,
+							(std::get<0>(current) + lat.int_L - 1) % lat.int_L,
 							std::get<1>(current),
 							std::get<2>(current),
 							spinAfter);
 					neig3 = std::make_tuple(
 							std::get<0>(current),
-							(std::get<1>(current) + 1) % (int)lat.L,
+							(std::get<1>(current) + 1) % lat.int_L,
 							std::get<2>(current),
 							spinAfter);
 					neig4 = std::make_tuple(
 							std::get<0>(current),
-							(std::get<1>(current) + (int)lat.L - 1) % (int)lat.L,
+							(std::get<1>(current) + lat.int_L - 1) % lat.int_L,
 							std::get<2>(current),
 							spinAfter);
 					neig5 = std::make_tuple(
 							std::get<0>(current),
 							std::get<1>(current),
-							(std::get<2>(current) + 1) % (int)lat.L,
+							(std::get<2>(current) + 1) % lat.int_L,
 							spinAfter);
 					neig6 = std::make_tuple(
 							std::get<0>(current),
 							std::get<1>(current),
-							(std::get<2>(current) + (int)lat.L - 1)%(int)lat.L,
+							(std::get<2>(current) + lat.int_L - 1)%lat.int_L,
 							spinAfter);
 					//if a neighbour is not already part of the cluster, add it to perimeter list
 					if (!lat.clust.theCluster[std::get<0>(neig1)][std::get<1>(neig1)][std::get<2>(neig1)] ){
@@ -160,9 +157,9 @@ long int clusterIsing3D(LatticeIsing3D& lat){
 		}
 	}
 	//empty the cluster
-	lat.clust.emptyCluster();	
+	lat.clust.emptyCluster();
 	//return # of tested spins
 	lat.NTotClusts += 1;
-	lat.NTotSweeps += ((long double)time/lat.Nspins);
+	lat.NTotSweeps += time/lat.Nspins;
 	return time;
 }

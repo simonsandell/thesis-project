@@ -13,7 +13,7 @@ void Ising3D::warmup(LatticeIsing3D& lat,long double N){
 	long double NClusts = 0.0L;
 	long double NSweeps = 0.0L;
 	while (NSweeps < N){
-		steps =(long double) clusterIsing3D(lat);
+		steps = clusterIsing3D(lat);
 		NClusts+= 1.0L;
 		NSweeps += (steps/lat.Nspins);
 	}
@@ -61,7 +61,7 @@ void Ising3D::wolffHistJob(long double L,std::string maxepath,std::string warmla
 	LatticeIsing3D lat(L,cold,beta,rand,clust,maxepath,warmlatpath);
 	warmup(lat,(Neq));
 	for (int i=0; i< Nruns; ++i){	
-		wolffHistRunIsing3D(lat,Nsamp,Trange,Ntemps,runTemp);
+		wolffHistRunIsing3D(lat,Nsamp,Trange,Ntemps);
 		warmup(lat,Nbetw);
 	}
 }
@@ -78,9 +78,9 @@ void Ising3D::teqRun(long double L, bool cold){
 	Cluster clust(L);
 	RandStruct rand;
 	LatticeIsing3D lat(L,cold,beta,rand,clust,"/cfs/klemming/scratch/s/simsan/maxE/Ising3D/","");
-	wolffHistRunIsing3D(lat,Nsamp,Trange,Ntemps,runTemp);
+	wolffHistRunIsing3D(lat,Nsamp,Trange,Ntemps);
 	for (int i=0; i< Ndoubles; ++i){	
-		wolffHistRunIsing3D(lat,Nsamp,Trange,Ntemps,runTemp);
+		wolffHistRunIsing3D(lat,Nsamp,Trange,Ntemps);
 		Nsamp = Nsamp*2;
 	}
 

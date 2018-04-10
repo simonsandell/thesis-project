@@ -71,39 +71,3 @@ void printIsing3DOutput(LatticeIsing3D& lat, long double T,avgStruct avgs, long 
 }
 
 
-void saveLatticeIsing3D(LatticeIsing3D& lat){
-
-	int L = lat.L;
-	std::ostringstream mstream;
-	std::string exePath = get_selfpath2();
-	mstream << exePath<< "/warmLattice/" << L <<"_Ising3D.lat";
-	std::string fname = mstream.str();
-	FILE* output;
-	output = std::fopen(fname.c_str(),"wb");
-	fwrite(&lat,sizeof(lat),1,output);
-	fclose(output);
-
-}
-
-LatticeIsing3D getLattice(int l){
-	std::ostringstream mstream;
-	std::string exePath = get_selfpath2();
-	mstream << exePath << "/warmLattice/" << l << "_Ising3D.lat";
-	std::string fname = mstream.str();
-
-	LatticeIsing3D lat;
-	FILE* input;
-
-	input = fopen(fname.c_str(),"rb");
-
-	size_t result= fread(&lat,sizeof(lat),1,input);
-	if (result != 1){
-		std::cout << "failed to load lattice" << std::endl;
-		exit(1);
-	}
-
-	fclose(input);
-
-	return lat;
-}
-

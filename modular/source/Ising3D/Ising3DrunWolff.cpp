@@ -13,7 +13,7 @@
 #include "../avgStruct.h"
 #include "../maxEHandle.h"
 
-void wolffHistRunIsing3D(LatticeIsing3D& lat, long double N_sample_sweeps,long double *Temperatures,int N_temps,long double runTemp){
+void wolffHistRunIsing3D(LatticeIsing3D& lat, long double N_sample_sweeps,long double *Temperatures,int N_temps){
 
 
 	//convert temp to betas
@@ -21,7 +21,6 @@ void wolffHistRunIsing3D(LatticeIsing3D& lat, long double N_sample_sweeps,long d
 	for (int i = 0; i< N_temps; ++i){
 		Betas[i] = 1.0L/Temperatures[i];
 	}
-	long double Beta = 1.0L/runTemp;		
 
 
 	//update lattice quantities
@@ -38,9 +37,9 @@ void wolffHistRunIsing3D(LatticeIsing3D& lat, long double N_sample_sweeps,long d
 	//correction value for when current lattice energy becomes greater than saved maxE. If not zero by the end, write new value to files.
 	long double expCorr = 0.0L;
 
-	long double tE;
-	long double tM;
-	long double tM2;
+	long double tE = 0.0L;
+	long double tM = 0.0L;
+	long double tM2 = 0.0L;
 
 	long double steps = 0;//steps done in current cluster
 
@@ -48,19 +47,18 @@ void wolffHistRunIsing3D(LatticeIsing3D& lat, long double N_sample_sweeps,long d
 	long double doneClusts = 0.0L;//total number of done clusters
 	while (doneSweeps < N_sample_sweeps){
 		//make a cluster
-		steps = (long double)clusterIsing3D(lat);
+		steps = clusterIsing3D(lat);
 		doneSweeps += steps/lat.Nspins;
 		doneClusts += 1.0L;
 		if (steps < 0.0L || doneSweeps < 0.0L) {
 			std::cout << "OVERFLOW" << std::endl;
-			exit(0);
 		}
 
 		//update maxE if necessary
 		
-		if ((maxTotE - lat.energy) > 0){
+		if (abs(lat.energy)> abs(maxTotE)) {
 			expCorr = 1.0L;
-			if (doneClusts > 1.5L){
+			if (doneClusts > 1.0L){
 				expCorr = exp(-maxTotE +lat.energy);	
 				for (int k = 0; k<N_temps;++k){
 					avgs[k].e     *= expCorr;
@@ -81,7 +79,7 @@ void wolffHistRunIsing3D(LatticeIsing3D& lat, long double N_sample_sweeps,long d
 		tM2 = lat.mag*lat.mag; 
 		tM2 /= lat.Nspins*lat.Nspins;
 		for (int i = 0; i<N_temps; ++i){
-			expFac = exp(-(Betas[i] - Beta)*(lat.energy-maxTotE));
+			expFac = exp(-(Betas[i] - lat.beta)*(lat.energy-maxTotE));
 			avgs[i].exp += expFac;
 
 			avgs[i].e += expFac*tE;
@@ -102,17 +100,6 @@ void wolffHistRunIsing3D(LatticeIsing3D& lat, long double N_sample_sweeps,long d
 	long double dbdt[N_temps];//derivative wrt T of Binder parameter
 	for (int i =0; i< N_temps; ++i){
 
-		//print values
-		/*
-		   std::cout <<"avgExpFac[i]"<<	       avgs[i].exp <<std::endl;
-		   std::cout <<"avgE[i]     "<<        avgs[i].e <<std::endl;
-		   std::cout <<"avgE2[i]     "<<        avgs[i].e2 <<std::endl;
-		   std::cout <<"avgM[i]    "<<        avgs[i].m  <<std::endl;
-		   std::cout <<"avgM2[i]     "<<        avgs[i].m2 <<std::endl;
-		   std::cout <<"avgM4[i]    "<<        avgs[i].m4 <<std::endl;
-		   std::cout <<"avgM2E[i]    "<<        avgs[i].m2e <<std::endl;
-		   std::cout <<"avgM4E[i]   "<<        avgs[i].m4e<<std::endl;
-		   */
 
 		//normalize
 		avgs[i].e   /= doneClusts;
@@ -140,19 +127,6 @@ void wolffHistRunIsing3D(LatticeIsing3D& lat, long double N_sample_sweeps,long d
 		c[i] = (avgs[i].e2/avgs[i].exp)	- (avgs[i].e*avgs[i].e/(avgs[i].exp*avgs[i].exp));
 		c[i] /= Temperatures[i]*Temperatures[i];
 		c[i] *= lat.Nspins*lat.Nspins;
-		//print values
-		/*
-		   std::cout << "b = " << avgs[i].m4 << " * " << avgs[i].exp << std::endl;
-		   std::cout << "b /= " << avgs[i].m2 << " * " << avgs[i].m2 << std::endl;
-		   std::cout << "dbdt[i] = " << avgs[i].exp << " * " << avgs[i].m4e << 
-		   " * " << avgs[i].m2<<" + "<< avgs[i].m4<< " * " <<avgs[i].m2<< 
-		   " * " << avgs[i].e << " - 2.0L* " << avgs[i].exp<< " * " <<
-		   avgs[i].m4 << " * " << avgs[i].m2e << std::endl;
-		   std::cout << "dbdt[i] /= " << Temperatures[i] << "^2 * " << avgs[i].m2<< "^3" << std::endl;
-		   std::cout << "xi[i] = " << " ( " << avgs[i].m2<<" / "<<avgs[i].exp <<") - "<<"("<<avgs[i].m<<"*"<<avgs[i].m<<" / "<<"("<<avgs[i].exp<<"*"<<avgs[i].exp<<"))"<< std::endl;
-		   std::cout << "xi[i] /= " << Temperatures[i] << "*" << lat.Nspins << std::endl;
-		   std::cout <<"rs[i] /= (3.0L*" <<lat.L<<" * "<<lat.L<<" * "<<avgs[i].exp<<")" << std::endl;
-		   */
 	}
 	for (int i = 0;i< N_temps; ++i){
 		printIsing3DOutput(lat,Temperatures[i],avgs[i],

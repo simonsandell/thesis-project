@@ -11,12 +11,12 @@
 long double LatticeIsing3D::siteEnergy( int &s1, int &s2, int &s3){
 	long double sum = 0.0L;
 	//find indices of neighbours
-	int n1m = (s1 -1 + (int)L )%(int)L;
-	int n1p = (s1 +1 + (int)L )%(int)L;
-	int n2m = (s2 -1 + (int)L )%(int)L;
-	int n2p = (s2 +1 + (int)L )%(int)L;
-	int n3m = (s3 -1 + (int)L )%(int)L;
-	int n3p = (s3 +1 + (int)L )%(int)L;
+	int n1m = (s1 -1 + int_L )%int_L;
+	int n1p = (s1 +1 + int_L )%int_L;
+	int n2m = (s2 -1 + int_L )%int_L;
+	int n2p = (s2 +1 + int_L )%int_L;
+	int n3m = (s3 -1 + int_L )%int_L;
+	int n3p = (s3 +1 + int_L )%int_L;
 	//sum 
 	sum -= theLattice[s1][s2][s3]*theLattice[n1m][s2][s3];
 	sum -= theLattice[s1][s2][s3]*theLattice[n1p][s2][s3];
@@ -55,11 +55,12 @@ long double LatticeIsing3D::calcEn(){
 long double *** LatticeIsing3D::newLatticeI3D(long double L,bool cold){
 	//make new lattice
 	long double ***lattice;
-	lattice = new long double **[(int)L];
+	int intel = (int)( L + 0.5L);
+	lattice = new long double **[intel];
 	for (int i = 0; i< L;++i){
-		lattice[i] = new long double *[(int)L];
+		lattice[i] = new long double *[intel];
 		for (int j =0;j<L;++j){
-			lattice[i][j] = new long double[(int)L];
+			lattice[i][j] = new long double[intel];
 		}
 	}
 
@@ -106,6 +107,7 @@ LatticeIsing3D::LatticeIsing3D(int l, bool cold,long double Beta,RandStruct r, C
 	Neqsweeps = 0.0L;
 	Neqclusts = 0;
 	NTotClusts = 0;
+	int_L = (int)(L + 0.5L);
 	NTotSweeps= 0.0L;
 	coldstart = cold;
 	warmedUp = false;
@@ -127,6 +129,7 @@ LatticeIsing3D::LatticeIsing3D(int l, bool cold,long double Beta,RandStruct r, C
 
 
 };
+
 LatticeIsing3D::LatticeIsing3D(){
 
 }
