@@ -5,6 +5,8 @@
 #include <random>
 #include <sys/syscall.h>
 #include <fstream>
+#include <cstring>
+#include <cerrno>
 
 #include "3DXYlattice.h"
 #include "3DXYio.h"
@@ -288,7 +290,6 @@ void Lattice3DXY::saveLattice(){
 		exit(1);
 	}
 	std::string fpath = wlpath(warmLatPath,L);
-	std::cout << fpath.c_str() << std::endl;
 
 	std::ofstream ofs(fpath.c_str(),std::ios::binary);
 	if( ofs){
@@ -325,12 +326,16 @@ void Lattice3DXY::saveLattice(){
 
 		ofs.close();
 	}
+	else{
+		std::cout << "file open failed" << std::endl;
+		std::cout << std::strerror(errno) << std::endl;
 
 	}
+
+}
 void Lattice3DXY::loadLattice(){
 	int l = (int) (L+0.5L);
 	std::string fpath = warmLatPath + std::to_string(l) + "_.lat";
-	std::cout << " in file path " << fpath << std::endl;
 	std::ifstream ifs(fpath.c_str(),std::ios::binary);
 	long double ld_read;
 	long int li_read;

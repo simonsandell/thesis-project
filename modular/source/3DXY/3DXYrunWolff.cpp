@@ -58,7 +58,7 @@ void wolffHistRun3DXY(Lattice3DXY& lat, long double N_sample_sweeps,long double 
 		if (std::abs(lat.energy) > std::abs(maxTotE)){
 			expCorr = 1.0L;
 			if (doneClusts> 1.0L){
-				expCorr = exp(-maxTotE +lat.energy);	
+				expCorr = exp(-maxTotE +lat.energy - 1.0L);	
 				for (int k = 0; k<N_temps;++k){
 					avgs[k].e	*= expCorr;
 					avgs[k].e2 	*= expCorr;
@@ -73,8 +73,8 @@ void wolffHistRun3DXY(Lattice3DXY& lat, long double N_sample_sweeps,long double 
 					avgs[k].exp     *= expCorr;
 				}
 			}
-			maxTotE = lat.energy;
-			lat.maxE = lat.energy;
+			maxTotE = lat.energy -1.0L;
+			lat.maxE = lat.energy -1.0L;
 		}
 		//take sample data
 		tE = lat.energy/lat.Nspins;

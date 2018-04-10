@@ -3,7 +3,6 @@
 #include "3DXY/3DXYio.h"
 #include "3DXY/3DXYlattice.h"
 #include "3DXY/3DXYrunMetro.h"
-#include "3DXY/3DXYmetro.h"
 #include "3DXY/3DXYrunWolff.h"
 #include "3DXY/3DXYwolff.h"
 #include "3DXY.h"
@@ -21,8 +20,6 @@ void _3DXY::warmup(Lattice3DXY& lat,long double N){
 		steps = cluster3DXY(lat);
 		NClusts += 1.0L;
 		NSweeps += (steps/lat.Nspins);
-		std::cout <<"warmup Nsweeps " <<  NSweeps << std::endl;
-		std::cout <<"lat tot sweeps " << lat.NTotSweeps << std::endl;
 	}
 	if( !lat.warmedUp){
 		lat.Neqclusts = NClusts;
@@ -64,14 +61,9 @@ void _3DXY::wolffHistJob(long double L,std::string maxepath,std::string warmlatp
 	Cluster c(L);
 	RandStruct r;
 	Lattice3DXY lat(L,runTemp,cold,r,c,maxepath,warmlatpath);
-	lat.saveLattice();
-	std::cout << "aft save" << std::endl;
-	//lat.loadLattice();
-	std::cout << "aft load save" << std::endl;
 	warmup(lat,Neq);
 	for (int i=0; i< Nruns; ++i){	
-		wolffHistRun3DXY(lat,Nsamp,Trange,Ntemps,runTemp);
-		std::cout << " after whr" << std::endl;
+		wolffHistRun3DXY(lat,Nsamp,Trange,Ntemps);
 		warmup(lat,Nbetw);
 	}
 	if (lat.oPer.outputLines.size() > 0){
@@ -79,22 +71,21 @@ void _3DXY::wolffHistJob(long double L,std::string maxepath,std::string warmlatp
 	}
 
 }
-void _3DXY::teqRun(long double L,bool cold){
-	long double runTemp = 2.20200000000000L;
-	int 		Ntemps=			1;
-	long double* Trange;
-	Trange = new long double[1];
-	Trange[0] = runTemp;
-	long double	Nsamp=			2.0L;
-	int 		Ndoubles=		18;
+void _3DXY::warmupJob(long double L, std::string maxepath,std::string warmlatpath){
+	long double runTemp = 2.202000000000000L;
+	bool cold = true;
 	Cluster c(L);
 	RandStruct r;
-	Lattice3DXY lat(L,runTemp,cold,r,c,"/cfs/klemming/scratch/s/simsan/maxE/3DXY/","/cfs/klemming/scratch/s/simsan/warmLattice/3DXY/");
-	wolffHistRun3DXY(lat,Nsamp,Trange,Ntemps,runTemp);
-	for (int i=0; i< Ndoubles; ++i){	
-		wolffHistRun3DXY(lat,Nsamp,Trange,Ntemps,runTemp);
-		Nsamp = Nsamp*2;
+	Lattice3DXY lat(L,runTemp,cold,r,c,maxepath,warmlatpath);
+	lat.loadLattice();
+	long double Neq = 1000.0L;
+	while (true){
+		warmup(lat,Neq);
+		lat.saveLattice();
 	}
+}
+	
+void _3DXY::teqRun(long double L,bool cold){
 
 
 }
