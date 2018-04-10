@@ -45,8 +45,8 @@ def oneSize(mat,temp,openfile):
                 if (endI == mat.shape[0]):
                     break;
             break;
-    #oneTemp(mat[startI:endI,:],openfile);
-    printAll(mat[startI:endI,:],openfile);
+    oneTemp(mat[startI:endI,:],openfile);
+    #printAll(mat[startI:endI,:],openfile);
 
 #sort by L, then NTotSweeps
 def analyze(mat,folderpath,temp):
