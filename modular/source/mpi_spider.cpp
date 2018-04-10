@@ -28,16 +28,17 @@ int main(){
 	std::string maxepath = b_pwd + "maxE/3DXY/"; 
 
 	if (world_rank != 0){
-		_3DXY::teqJob(4.0L,maxepath,warmlatpath);
-		_3DXY::teqJob(4.0L,maxepath,warmlatpath);
-		_3DXY::teqJob(4.0L,maxepath,warmlatpath);
-		_3DXY::teqJob(8.0L,maxepath,warmlatpath);
-		_3DXY::teqJob(8.0L,maxepath,warmlatpath);
-		_3DXY::teqJob(8.0L,maxepath,warmlatpath);
-		_3DXY::teqJob(16.0L,maxepath,warmlatpath);
-		_3DXY::teqJob(16.0L,maxepath,warmlatpath);
-		_3DXY::teqJob(32.0L,maxepath,warmlatpath);
-		_3DXY::teqJob(64.0L,maxepath,warmlatpath);
+		bool cold = true;
+		_3DXY::teqJob(4.0L,cold,maxepath,warmlatpath);
+		_3DXY::teqJob(4.0L,cold,maxepath,warmlatpath);
+		_3DXY::teqJob(4.0L,cold,maxepath,warmlatpath);
+		_3DXY::teqJob(8.0L,cold,maxepath,warmlatpath);
+		_3DXY::teqJob(8.0L,cold,maxepath,warmlatpath);
+		_3DXY::teqJob(8.0L,cold,maxepath,warmlatpath);
+		_3DXY::teqJob(16.0L,cold,maxepath,warmlatpath);
+		_3DXY::teqJob(16.0L,cold,maxepath,warmlatpath);
+		_3DXY::teqJob(32.0L,cold,maxepath,warmlatpath);
+		_3DXY::teqJob(64.0L,cold,maxepath,warmlatpath);
 	}
 	else{
 		int N_finished =0;
