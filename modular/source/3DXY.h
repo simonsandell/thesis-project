@@ -10,7 +10,7 @@ void warmup(Lattice3DXY& lat,long double N);
 
 void wolffHistJob(long double L,std::string maxepath,std::string warmlatpath);
 void warmupJob(long double L,std::string maxepath,std::string warmlatpath);
-void teqRun(long double L,bool cold);
+void teqJob(long double L,bool cold,std::string maxepath,std::string warmlatpath);
 
 };
 

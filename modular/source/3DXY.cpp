@@ -85,7 +85,19 @@ void _3DXY::warmupJob(long double L, std::string maxepath,std::string warmlatpat
 	}
 }
 	
-void _3DXY::teqRun(long double L,bool cold){
-
-
+void _3DXY::teqJob(long double L,bool cold,std::string maxepath,std::string warmlatpath){
+	long double runTemp = 2.202000000000000L;
+	Cluster c(L);
+	RandStruct r;
+	Lattice3DXY lat(L,runTemp,cold,r,c,maxepath,warmlatpath);
+	
+	int Ntemps = 1;
+	long double Trange[1] = {runTemp};
+	long double Nsamp = 2;
+	wolffHistRun3DXY(lat,Nsamp,Trange,Ntemps);
+	wolffHistRun3DXY(lat,Nsamp,Trange,Ntemps);
+	for (int i = 0; i< 12; ++i){
+		Nsamp *= 2.0L;
+		wolffHistRun3DXY(lat,Nsamp,Trange,Ntemps);
+	}
 }

@@ -6,6 +6,7 @@
 
 #include "Ising3D.h"
 #include "3DXY.h"
+
 int main(){
 
 	MPI_Init(NULL,NULL);
@@ -19,11 +20,24 @@ int main(){
 	std::cout << "WORLD_SIZE " << world_size << std::endl;
 	std::cout << "WORLD_rank" << world_rank<< std::endl;
 
-	std::string warmlatpath = "/home/simon/exjobb/modular/warmLattice/3DXY/";
-	std::string maxepath = "/home/simon/exjobb/modular/maxE/3DXY/";
+ 	std::string b_pwd = "/cfs/klemming/scratch/s/simsan/"; 
+        std::string h_pwd = "/home/simon/exjobb/modular/"; 
+	std::string o_pwd = "/home/simsan/exjobb/modular/"; 
+		  
+	std::string warmlatpath = b_pwd + "warmLattice/3DXY/"; 
+	std::string maxepath = b_pwd + "maxE/3DXY/"; 
 
 	if (world_rank != 0){
-		_3DXY::warmupJob(128.0L,maxepath,warmlatpath);
+		_3DXY::teqJob(4.0L,maxepath,warmlatpath);
+		_3DXY::teqJob(4.0L,maxepath,warmlatpath);
+		_3DXY::teqJob(4.0L,maxepath,warmlatpath);
+		_3DXY::teqJob(8.0L,maxepath,warmlatpath);
+		_3DXY::teqJob(8.0L,maxepath,warmlatpath);
+		_3DXY::teqJob(8.0L,maxepath,warmlatpath);
+		_3DXY::teqJob(16.0L,maxepath,warmlatpath);
+		_3DXY::teqJob(16.0L,maxepath,warmlatpath);
+		_3DXY::teqJob(32.0L,maxepath,warmlatpath);
+		_3DXY::teqJob(64.0L,maxepath,warmlatpath);
 	}
 	else{
 		int N_finished =0;
@@ -41,7 +55,6 @@ int main(){
 					break;
 				}
 			}
-
 		}
 	}
 	MPI_Finalize();
