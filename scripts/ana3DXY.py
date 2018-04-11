@@ -7,6 +7,7 @@ from _3DXY import L_analyze3DXY as anaL
 import scalingCorr2L as anaSC2L
 import scalingCorr3L as anaSC3L 
 import teqPlot as tp
+import find_teq as fteq
 #functions
 from _3DXY import bin_omega_3L as SCbin3L
 from _3DXY import bin_omega_2L as SCbin2L
@@ -63,6 +64,8 @@ def ana3DXY(fName,doT,doL,doSC2,doSC3,doTeq,doAnalyze,doPlot,doPrint):
         if (doTeq):
             tp.analyze(dataMatrix,"./foutput/3DXY/vsN/"+fName,2.20200000);
             print("Teq done");
+            fteq.findteq(dataMatrix,2.202000000,0.51891688,outdir + "teq/sigma_vs_z.dat");
+            print("find_teq done")
     if (doPlot):
         if (doT):
             vstdir = outdir + "vsT/"
@@ -100,9 +103,15 @@ def ana3DXY(fName,doT,doL,doSC2,doSC3,doTeq,doAnalyze,doPlot,doPrint):
                     gps.graceDirPlot(fullpath,title,xaxis,yaxis,False,False,doPrint);
         if (doTeq):
             vsNdir = outdir+"vsN/";
-            xaxis = "N\ssweeps\S"
+            xaxis = r"N\ssweeps\S"
             yaxis = "Magnetization"
             title = "Equilibration time study"
             gps.graceDirPlot(vsNdir,title,xaxis,yaxis,True,False,doPrint);
+
+            fteqdir = outdir + "teq/";
+            xaxis = "z";
+            yaxis = r"\xS\0";
+            title = r"Find \xt\0\seq\N by trying many z"
+            gps.graceDirPlot(fteqdir,title,xaxis,yaxis,False,False,doPrint);
     
         

@@ -1,8 +1,7 @@
-
-import jackknife
+import matplotlib
 
 import numpy as np
-import scipy as sp
+import scipy.optimize as spo
 
 #returns avg mag
 def jfunc(mat):
@@ -10,8 +9,7 @@ def jfunc(mat):
 
 def writeLine(mat,avgN):
     avgM = jfunc(mat)[0];
-    delM = jackknife.getJackDelta(mat,jfunc,100)[0];
-    return [avgN,avgM,delM];
+    return [avgN,avgM];
 
 #now we have data for only interesting temp, separete N_sweeps and print
 def oneTemp(mat,nfac):
@@ -29,6 +27,7 @@ def oneTemp(mat,nfac):
             startI = i;
     avgCurr = np.mean(mat[startI:,4]);
     result.append(writeLine(mat[startI:,:],0.5*(avgCurr + avgPrev)));
+    result = np.array(result);
     return result;
 
 
@@ -69,23 +68,45 @@ def analyze(mat,temp,betanu,z):
             ret.append(oneSize(smat[startI:i,:],temp,betanu,z));
             startI = i;
             curr_L = smat[i,0];
-    ret.apend(oneSize(smat[startI:,:],temp,betanu,z));
-            
+    ret.append(oneSize(smat[startI:,:],temp,betanu,z));
+    return ret;
 
-def findteq(mat,temp,betanu):
-    betanu = given
-    z = 0.0;
+def getDist(res):
+    return np.std(res[:,0]) + np.std(res[:,1]) + np.std(res[:,2]);
+    
+def writeToFile(f,x,y):
+    fstr= "{:30.30f}";
+    f.write(fstr.format(x) + "    " + fstr.format(y) + "    0.0\n");
+    
+def matmax(mat):
+    i,j = np.unravel_index(mat.argmax(),mat.shape);
+    return mat[i,j];
+def findteq(mat,temp,betanu,path):
+    f = open(path,"w");
+    z = 0.1;
     dz = 0.1;
     for i in range(30):
         rescaled = analyze(mat,temp,betanu,z);
-        for j in len(rescaled):
-            #fit to exp func
-            sp.optimize.curve_fit(lambda t,a,b,c: a*numpy.exp(b*t) + c,x,y,p0 = :wq
-
-
+        res = [];
+        res[:] = [];
+        for j in range(len(rescaled)):
+            x = rescaled[j][:,0];
+            y = rescaled[j][:,1];
+            #fit to exp funk
+            #print(rescaled[0])
+            params,covars = spo.curve_fit(lambda t,a,b,c: a*np.exp(b*t) + c,x,y,p0 = (0.2,-1.0,0.2));
+            TOL = 10.0;
+            print(params)
+            print(covars)
+            if (matmax(covars) > TOL):
+                print("bad fit")
+            else:
+                res.append(params);
+        res = np.array(res);
+        print(res[0,:]);
+        goodness = getDist(np.array(res));
+        writeToFile(f,z,goodness);
         z = z+ dz;
-
-
-        }
+        
 
 
