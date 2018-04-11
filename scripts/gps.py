@@ -21,13 +21,13 @@ def addFile(path,n):
     writeToBat("s" + str(n) + " legend \"" + os.path.basename(path) + "\"");
     writeToBat("KILL BLOCK")
 
-def graceDirPlot(directory,title, xaxis ,yaxis,logPlot, doPrint):
+def graceDirPlot(directory,title, xaxis ,yaxis,xlog,ylog, doPrint):
+    syscall = [];
     initBat();
     writeToBat("XAXIS LABEL \"" + xaxis +"\"");
     writeToBat("YAXIS LABEL \"" + yaxis +"\"");
     n = 0;
     for filename in sorted(os.listdir(directory)):
-        print(filename)
         if (os.stat(os.path.join(directory,filename)).st_size != 0):
             if (doPrint):
                 if (".dat" in filename):
@@ -36,24 +36,35 @@ def graceDirPlot(directory,title, xaxis ,yaxis,logPlot, doPrint):
             else:
                 addFile(os.path.join(directory,filename),n);
                 n = n+1;
-    if (logPlot):
+    if (xlog):
         writeToBat("XAXES SCALE LOGARITHMIC");
+        syscall.append( "-param");
+        syscall.append("../scripts/logparams.par");
+    if (ylog):
         writeToBat("YAXES SCALE LOGARITHMIC");
     writeToBat("LEGEND LENGTH 0");
     writeToBat("AUTOSCALE");
     writeToBat("AUTOTICKS");
+    syscall.append("-batch");
+    syscall.append("/tmp/setup.batch");
+    syscall.append("-nosafe");
+    syscall.append("-noask");
+    syscall.append("-free");
     if (doPrint):
-        if (logPlot):
+        if (xlog and ylog):
             writeToBat("LEGEND off");
         writeToBat("PRINT TO \"" + title + ".eps\"");
         writeToBat("HARDCOPY DEVICE \"EPS\"");
         writeToBat("PAGE RESIZE 1920,1024");
         writeToBat("DEVICE \"EPS\" FONT ANTIALIASING on");
         writeToBat("PRINT");
-        subprocess.call(["gracebat","-batch","/tmp/setup.batch","-nosafe","-noask","-free"]);
-    else:
-        subprocess.Popen(["xmgrace","-batch","/tmp/setup.batch","-nosafe","-noask","-free"]);
-        time.sleep(2.5);
+        syscall = ["gracebat"] + syscall;
+        subprocess.call(syscall);
+        del syscall[0];
+        time.sleep(1.5);
+    syscall = ["xmgrace"] + syscall;
+    subprocess.Popen(syscall);
+    time.sleep(1.5);
 
 def initAnim():
     subprocess.call(['rm','-r','/tmp/temppng'])
@@ -81,7 +92,6 @@ def setWorldView(model,quant):
 
 
 def graceAnimation(directory,aniname,xaxis,yaxis):
-    print(directory)
     if ("3DXY" in directory):
         model = "3DXY";
         if ("RS" in directory):

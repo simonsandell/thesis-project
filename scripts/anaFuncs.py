@@ -11,7 +11,7 @@ def getOmegaRange(ostart,oend,step):
 def dirToYaxis(dirname):
     dirLex = { 'en':r'e Energy per spin',
             'mag':r'm Magnetization per spin',
-            'bin':r'B = M\S4\N/M\S2\N\S2\N',
+            'bin':r'B = M\S4\N/M\S2\N',
             'dbdt':r'dB/dT',
             'xi':r'\xc\0 Susceptibility',
             'rs':r'L\xr\0\ss\N Superfluid density',
