@@ -40,5 +40,8 @@ struct LatticeIsing3D{
 
 	outPutter oPer;
 
+	void saveLattice();
+	void loadLattice();
+
 	};
 #endif

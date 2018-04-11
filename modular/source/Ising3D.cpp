@@ -65,27 +65,24 @@ void Ising3D::wolffHistJob(long double L,std::string maxepath,std::string warmla
 		warmup(lat,Nbetw);
 	}
 }
-void Ising3D::teqRun(long double L, bool cold){
-	long double runTemp = 4.50000000000000L;
 
-	int 		Ntemps=			1;
-	long double* Trange;
-	Trange = new long double[1];
-	Trange[0] = runTemp;
-	long double	Nsamp=			2.0L;
-	int 		Ndoubles=		18;
+void Ising3D::teqJob(long double L,bool cold,std::string maxepath,std::string warmlatpath){
+	long double runTemp = 4.500000000000000L;
 	long double beta = 1.0L/runTemp;
-	Cluster clust(L);
-	RandStruct rand;
-	LatticeIsing3D lat(L,cold,beta,rand,clust,"/cfs/klemming/scratch/s/simsan/maxE/Ising3D/","");
+	Cluster c(L);
+	RandStruct r;
+	LatticeIsing3D lat(L,cold,beta,r,c,maxepath,warmlatpath);
+	
+	int Ntemps = 1;
+	long double Trange[1] = {runTemp};
+	long double Nsamp = 2;
 	wolffHistRunIsing3D(lat,Nsamp,Trange,Ntemps);
-	for (int i=0; i< Ndoubles; ++i){	
+	wolffHistRunIsing3D(lat,Nsamp,Trange,Ntemps);
+	for (int i = 0; i< 18; ++i){
+		Nsamp *= 2.0L;
 		wolffHistRunIsing3D(lat,Nsamp,Trange,Ntemps);
-		Nsamp = Nsamp*2;
 	}
-
 }
-
 
 
 

@@ -29,16 +29,16 @@ int main(){
 
 	if (world_rank != 0){
 		bool cold = true;
-		_3DXY::teqJob(4.0L,cold,maxepath,warmlatpath);
-		_3DXY::teqJob(4.0L,cold,maxepath,warmlatpath);
-		_3DXY::teqJob(4.0L,cold,maxepath,warmlatpath);
-		_3DXY::teqJob(8.0L,cold,maxepath,warmlatpath);
-		_3DXY::teqJob(8.0L,cold,maxepath,warmlatpath);
-		_3DXY::teqJob(8.0L,cold,maxepath,warmlatpath);
-		_3DXY::teqJob(16.0L,cold,maxepath,warmlatpath);
-		_3DXY::teqJob(16.0L,cold,maxepath,warmlatpath);
-		_3DXY::teqJob(32.0L,cold,maxepath,warmlatpath);
-		_3DXY::teqJob(64.0L,cold,maxepath,warmlatpath);
+		Ising3D::teqJob(4.0L,cold,maxepath,warmlatpath);
+		Ising3D::teqJob(4.0L,cold,maxepath,warmlatpath);
+		Ising3D::teqJob(4.0L,cold,maxepath,warmlatpath);
+		Ising3D::teqJob(8.0L,cold,maxepath,warmlatpath);
+		Ising3D::teqJob(8.0L,cold,maxepath,warmlatpath);
+		Ising3D::teqJob(8.0L,cold,maxepath,warmlatpath);
+		Ising3D::teqJob(16.0L,cold,maxepath,warmlatpath);
+		Ising3D::teqJob(16.0L,cold,maxepath,warmlatpath);
+		Ising3D::teqJob(32.0L,cold,maxepath,warmlatpath);
+		Ising3D::teqJob(64.0L,cold,maxepath,warmlatpath);
 	}
 	else{
 		int N_finished =0;
