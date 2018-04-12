@@ -41,5 +41,7 @@ def dirToTitle(dirname):
             'omegaBin2L':'Ltoomega_from_B',
             'std_omegaBin2L':'std_intersect_Bin_vs_omega',
             'omegaRS2L':'Ltoomega_from_RS',
-            'std_omegaRS2L':'std_intersect_RS_vs_omega'};
+            'std_omegaRS2L':'std_intersect_RS_vs_omega',
+            'teq':'find_teq_scaling',
+            'vsN':'Equilibration_study'};
     return dirLex[dirname];

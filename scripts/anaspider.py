@@ -21,6 +21,9 @@ doAna = False;
 doPlot= True;
 doPrint=True;
 
+
+if (preset == "ana"):
+    doAna=True;
 if (preset ==  "plot"):
     doAna=False;
     doPrint=False;

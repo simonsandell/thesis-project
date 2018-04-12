@@ -34,6 +34,7 @@ def ana3DXY(fName,doT,doL,doSC2,doSC3,doTeq,doAnalyze,doPlot,doPrint):
             strlist = ln.rsplit(" ");
             strlist = [x for x in strlist if not (x== "\n")];
             fllist = [float(x) for x in strlist];
+            print(len(data));
             data.append(fllist);
         dataMatrix = np.array(data);
         print("loading done");
@@ -64,8 +65,9 @@ def ana3DXY(fName,doT,doL,doSC2,doSC3,doTeq,doAnalyze,doPlot,doPrint):
         if (doTeq):
             tp.analyze(dataMatrix,"./foutput/3DXY/vsN/"+fName,2.20200000);
             print("Teq done");
-            fteq.findteq(dataMatrix,2.202000000,0.51891688,outdir + "teq/sigma_vs_z.dat",False);
-            fteq.findteq(dataMatrix,2.202000000,0.51891688,outdir + "teq/sigma_vs_z_drop4.dat",True);
+            paramguess = [-1.0,-0.2,1.10]
+            fteq.findteq(dataMatrix,2.202000000,0.51891688,outdir + "teq/sigma_vs_z.dat",False,paramguess);
+            fteq.findteq(dataMatrix,2.202000000,0.51891688,outdir + "teq/sigma_vs_z_drop4.dat",True,paramguess);
             print("find_teq done")
     if (doPlot):
         if (doT):
@@ -100,19 +102,19 @@ def ana3DXY(fName,doT,doL,doSC2,doSC3,doTeq,doAnalyze,doPlot,doPrint):
                 if (("std" in fullpath) and doSC2):
                     yaxis = anaFuncs.dirToYaxis(dirname);
                     xaxis = r"\xw\0";
-                    title = anaFuncs.dirToTitle(dirname);
+                    title = "3DXY_" + anaFuncs.dirToTitle(dirname);
                     gps.graceDirPlot(fullpath,title,xaxis,yaxis,False,False,doPrint);
         if (doTeq):
             vsNdir = outdir+"vsN/";
             xaxis = r"N\ssweeps\S"
             yaxis = "Magnetization"
-            title = "Equilibration time study"
+            title = "3DXY_" + anaFuncs.dirToTitle("vsN");
             gps.graceDirPlot(vsNdir,title,xaxis,yaxis,True,False,doPrint);
 
             fteqdir = outdir + "teq/";
             xaxis = "z";
             yaxis = r"\xS\0";
-            title = r"Find \xt\0\seq\N by trying many z"
+            title = "3DXY_" + anaFuncs.dirToTitle("teq");
             gps.graceDirPlot(fteqdir,title,xaxis,yaxis,False,False,doPrint);
     
         

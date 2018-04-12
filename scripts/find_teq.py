@@ -94,15 +94,15 @@ def plot_comp(params,x,y):
     plt.plot(X,Y,linewidth=2.0);
 
     
-def findteq(mat,temp,betanu,path,drop_smallest):
+def findteq(mat,temp,betanu,path,drop_smallest,p):
     #plt.figure();
     f = open(path,"w");
     z = 0.0;
     dz = 0.1;
-    for i in range(30):
-        if (i > 6):
+    while (z < 1.3): 
+        if (z > 0.7):
             dz = 0.01;
-        if (i > 23):
+        if (z > 1.15):
             dz = 0.1;
         rescaled = analyze(mat,temp,betanu,z);
         if (drop_smallest):
@@ -115,8 +115,8 @@ def findteq(mat,temp,betanu,path,drop_smallest):
             x = rescaled[j][:,0];
             y = rescaled[j][:,1];
             #fit to exp funk
-            #print(rescaled[0])
-            params,covars = spo.curve_fit(lambda t,a,b,c: a*np.exp(b*t) + c,x,y,p0=(-1.0,-0.2,1.10));
+            print(rescaled[0])
+            params,covars = spo.curve_fit(lambda t,a,b,c: a*np.exp(b*t) + c,x,y,p0=(p[0],p[1],p[2]),maxfev=2000);
             TOL = 10.0;
             if (matmax(covars) > TOL):
                 print("bad fit")

@@ -7,6 +7,7 @@ from Ising3D import L_analyzeIsing3D as anaL
 import scalingCorr2L as anaSC2L
 import scalingCorr3L as anaSC3L
 import teqPlot as tp
+import find_teq as fteq
 #functions
 from Ising3D import bin_omega_3L as SCbin3L
 from Ising3D import bin_omega_2L as SCbin2L
@@ -31,6 +32,7 @@ def anaIsing3D(fName,doT,doL,doSC2,doSC3,doTeq,doAnalyze,doPlot,doPrint):
             strlist = ln.rsplit(" ");
             strlist = [x for x in strlist if not (x== "\n")];
             fllist = [float(x) for x in strlist];
+            print(len(data))
             data.append(fllist);
         dataMatrix = np.array(data);
         print("loading done");
@@ -51,7 +53,12 @@ def anaIsing3D(fName,doT,doL,doSC2,doSC3,doTeq,doAnalyze,doPlot,doPrint):
             intersectOmega.sigmaIntersect(dirname);
             print("2L Bin done")
         if (doTeq):
-            tp.analyze(dataMatrix,"./foutput/Ising3D/vsN/"+fName,4.50000000);
+            tp.analyze(dataMatrix,outdir + "vsN/"+fName,4.50000000);
+            print("teq done");
+            paramguess = [-.8,-0.1, +1.1];
+            fteq.findteq(dataMatrix,4.500000000,0.51814925,outdir + "teq/sigma_vs_z.dat",False,paramguess);
+            fteq.findteq(dataMatrix,4.500000000,0.51814925,outdir + "teq/sigma_vs_z_drop4.dat",True,paramguess);
+            print("find_teq done")
     if (doPlot):
         if (doT):
             vstdir = outdir + "vsT/"
@@ -91,5 +98,12 @@ def anaIsing3D(fName,doT,doL,doSC2,doSC3,doTeq,doAnalyze,doPlot,doPrint):
             vsNdir = outdir+"vsN/";
             xaxis = "N\ssweeps\S"
             yaxis = "Magnetization"
-            title = "Equilibration time study"
+            title = "Ising3D_" + anaFuncs.dirToTitle("vsN");
             gps.graceDirPlot(vsNdir,title,xaxis,yaxis,True,False,doPrint);
+
+            fteqdir = outdir + "teq/";
+            xaxis = "z";
+            yaxis = r"\xS\0";
+            title = "Ising3D_" + anaFuncs.dirToTitle("teq");
+            gps.graceDirPlot(fteqdir,title,xaxis,yaxis,False,False,doPrint);
+
