@@ -9,9 +9,6 @@
 #include "clusterStruct.h"
 #include "randStruct.h"
 
-
-
-
 void _3DXY::warmup(Lattice3DXY& lat,long double N){
 	long double steps;
 	long double NClusts = 0;

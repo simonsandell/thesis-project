@@ -24,21 +24,20 @@ int main(){
         std::string h_pwd = "/home/simon/exjobb/modular/"; 
 	std::string o_pwd = "/home/simsan/exjobb/modular/"; 
 		  
-	std::string warmlatpath = b_pwd + "warmLattice/3DXY/"; 
-	std::string maxepath = b_pwd + "maxE/3DXY/"; 
+	std::string warmlatpath = h_pwd + "warmLattice/3DXY/"; 
+	std::string maxepath = h_pwd + "maxE/3DXY/"; 
 
 	if (world_rank != 0){
-		bool cold = true;
-		Ising3D::teqJob(4.0L,cold,maxepath,warmlatpath);
-		Ising3D::teqJob(4.0L,cold,maxepath,warmlatpath);
-		Ising3D::teqJob(4.0L,cold,maxepath,warmlatpath);
-		Ising3D::teqJob(8.0L,cold,maxepath,warmlatpath);
-		Ising3D::teqJob(8.0L,cold,maxepath,warmlatpath);
-		Ising3D::teqJob(8.0L,cold,maxepath,warmlatpath);
-		Ising3D::teqJob(16.0L,cold,maxepath,warmlatpath);
-		Ising3D::teqJob(16.0L,cold,maxepath,warmlatpath);
-		Ising3D::teqJob(32.0L,cold,maxepath,warmlatpath);
-		Ising3D::teqJob(64.0L,cold,maxepath,warmlatpath);
+		if (world_rank == 1){
+			Ising3D::warmupJob(128.0L,maxepath,warmlatpath);
+		}
+		if (world_rank == 2){
+			Ising3D::warmupJob(64.0L,maxepath,warmlatpath);
+		}
+		if (world_rank == 3){
+			Ising3D::warmupJob(32.0L,maxepath,warmlatpath);
+		}
+
 	}
 	else{
 		int N_finished =0;

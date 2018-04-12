@@ -28,7 +28,7 @@ struct LatticeIsing3D{
 	long double calcMag();
 
 	long double *** newLatticeI3D(long double L,bool cold);
-	LatticeIsing3D(int L, bool cold,long double Beta,RandStruct r, Cluster c,std::string pathMaxE,std::string pathWarmLat);
+	LatticeIsing3D(long double L, bool cold,long double Beta,RandStruct r, Cluster c,std::string pathMaxE,std::string pathWarmLat);
 	LatticeIsing3D();
 
 	void updateQuants();
@@ -39,8 +39,8 @@ struct LatticeIsing3D{
 	long double PROB; 
 
 	outPutter oPer;
-
 	void saveLattice();
+	void saveLatticeAs(std::string name);
 	void loadLattice();
 
 	};

@@ -100,14 +100,14 @@ void LatticeIsing3D::updateQuants(){
 };
 
 //initialize new lattice
-LatticeIsing3D::LatticeIsing3D(int l, bool cold,long double Beta,RandStruct r, Cluster c,std::string pathMaxE,std::string pathWarmLat)
+LatticeIsing3D::LatticeIsing3D(long double l, bool cold,long double Beta,RandStruct r, Cluster c,std::string pathMaxE,std::string pathWarmLat)
 	: rand(r), clust(c)
 {
 	beta = Beta;
 	PROB = 1.0L - exp(-2.0L*beta);
 	theLattice = newLatticeI3D((long double)l,cold);
-	L = (long double)l;
-	Nspins =L*L*L;
+	L = l;
+	Nspins = L*L*L;
 	Neqsweeps = 0.0L;
 	Neqclusts = 0;
 	NTotClusts = 0;
@@ -147,17 +147,22 @@ void LatticeIsing3D::testConsistent(){
 	std::cout <<std::fixed<< energy - testEn << "  E    "<< energy << " "<< testEn << std::endl;
 	std::cout <<std::fixed<< mag - testMag << "  M    "<< mag << " "<< testMag << std::endl;
 }
-std::string wlpathI3D(std::string wlp,long double l){
+std::string timetag(){
 	time_t  t = time(0);
 	struct tm * now = localtime(& t);
 
 	char buffer [80];
 	strftime (buffer,80,"%Y-%m-%d.%H:%M:%S",now);
 	std::ostringstream mstream;
-	mstream << wlp << l<<"_" << buffer  <<"_.lat";
+	mstream << buffer;  
 	return mstream.str();
 }
 void LatticeIsing3D::saveLattice(){
+	std::string tt = timetag();
+	saveLatticeAs(tt);
+}
+
+void LatticeIsing3D::saveLatticeAs(std::string name){
 
 	//save
 	//	theLattice
@@ -170,9 +175,9 @@ void LatticeIsing3D::saveLattice(){
 		std::cout << "loading failed, outPutter has lines" << std::endl;
 		exit(1);
 	}
-	std::string fpath = wlpathI3D(warmLatPath,L);
-
-	std::ofstream ofs(fpath.c_str(),std::ios::binary);
+	std::ostringstream fpath;
+	fpath << warmLatPath << L << "_" << name << "_.lat";
+	std::ofstream ofs(fpath.str().c_str(),std::ios::binary);
 	if( ofs){
 		//save theLattice
 		for (int i = 0; i< L;++i){

@@ -1,10 +1,10 @@
 #include <string>
-#include "Ising3D.h"
+#include <iostream>
 #include "Ising3D/Ising3Dio.h"
 #include "Ising3D/Ising3Dlattice.h"
 #include "Ising3D/Ising3DrunWolff.h"
 #include "Ising3D/Ising3Dwolff.h"
-
+#include "Ising3D.h"
 #include "clusterStruct.h"
 #include "randStruct.h"
 
@@ -84,6 +84,21 @@ void Ising3D::teqJob(long double L,bool cold,std::string maxepath,std::string wa
 	}
 }
 
+void Ising3D::warmupJob(long double L, std::string maxepath,std::string warmlatpath){
+	long double runTemp = 4.5000000000000000L;
+	long double beta = 1.0L/runTemp;
+	bool cold = true;
+	Cluster c(L);
+	RandStruct r;
+	LatticeIsing3D lat(L,cold,beta,r,c,maxepath,warmlatpath);
+	//lat.loadLattice();
+	long double Neq = 1000.0L;
+	while (lat.NTotSweeps < 100000.0L){
+		warmup(lat,Neq);
+		lat.saveLatticeAs("latest");
+		std::cout << lat.L << " energy " << lat.energy << std::endl;
+	}
+}
 
 
 
