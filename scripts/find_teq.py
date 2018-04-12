@@ -1,4 +1,4 @@
-import matplotlib
+import matplotlib.pyplot as plt
 
 import numpy as np
 import scipy.optimize as spo
@@ -36,7 +36,7 @@ def oneSize(mat,temp,betanu,z):
     #first, rescale mag and N
     for i in range(mat.shape[0]):
         mat[i,4] = mat[i,4]*pow(mat[i,0],-z);
-        mat[i,9] = mat[i,9]*pow(mat[i,0],-betanu);
+        mat[i,9] = mat[i,9]*pow(mat[i,0],betanu);
 
     TOL = 0.000000005;
     for i in range(mat.shape[0]):
@@ -81,29 +81,48 @@ def writeToFile(f,x,y):
 def matmax(mat):
     i,j = np.unravel_index(mat.argmax(),mat.shape);
     return mat[i,j];
-def findteq(mat,temp,betanu,path):
+def fit(params,X):
+    a = params[0]
+    b = params[1]
+    c = params[2]
+    return a*np.exp(b*X) + c;
+
+def plot_comp(params,x,y):
+    plt.scatter(x,y);
+    X = np.geomspace(x[0],x[-1],20.0);
+    Y = fit(params,X);
+    plt.plot(X,Y,linewidth=2.0);
+
+    
+def findteq(mat,temp,betanu,path,drop_smallest):
+    #plt.figure();
     f = open(path,"w");
-    z = 0.1;
+    z = 0.0;
     dz = 0.1;
     for i in range(30):
+        if (i > 6):
+            dz = 0.01;
+        if (i > 23):
+            dz = 0.1;
         rescaled = analyze(mat,temp,betanu,z);
+        if (drop_smallest):
+            del rescaled[0];
         res = [];
         res[:] = [];
+        
+
         for j in range(len(rescaled)):
             x = rescaled[j][:,0];
             y = rescaled[j][:,1];
             #fit to exp funk
             #print(rescaled[0])
-            params,covars = spo.curve_fit(lambda t,a,b,c: a*np.exp(b*t) + c,x,y,p0 = (0.2,-1.0,0.2));
+            params,covars = spo.curve_fit(lambda t,a,b,c: a*np.exp(b*t) + c,x,y,p0=(-1.0,-0.2,1.10));
             TOL = 10.0;
-            print(params)
-            print(covars)
             if (matmax(covars) > TOL):
                 print("bad fit")
             else:
                 res.append(params);
         res = np.array(res);
-        print(res[0,:]);
         goodness = getDist(np.array(res));
         writeToFile(f,z,goodness);
         z = z+ dz;

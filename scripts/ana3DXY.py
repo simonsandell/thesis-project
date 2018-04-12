@@ -64,7 +64,8 @@ def ana3DXY(fName,doT,doL,doSC2,doSC3,doTeq,doAnalyze,doPlot,doPrint):
         if (doTeq):
             tp.analyze(dataMatrix,"./foutput/3DXY/vsN/"+fName,2.20200000);
             print("Teq done");
-            fteq.findteq(dataMatrix,2.202000000,0.51891688,outdir + "teq/sigma_vs_z.dat");
+            fteq.findteq(dataMatrix,2.202000000,0.51891688,outdir + "teq/sigma_vs_z.dat",False);
+            fteq.findteq(dataMatrix,2.202000000,0.51891688,outdir + "teq/sigma_vs_z_drop4.dat",True);
             print("find_teq done")
     if (doPlot):
         if (doT):
