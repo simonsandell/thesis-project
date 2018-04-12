@@ -18,7 +18,7 @@ int main(){
 	MPI_Comm_rank(MPI_COMM_WORLD,&world_rank);
 
 	std::cout << "WORLD_SIZE " << world_size << std::endl;
-	std::cout << "WORLD_rank" << world_rank<< std::endl;
+	std::cout << "WORLD_rank " << world_rank<< std::endl;
 
  	std::string b_pwd = "/cfs/klemming/scratch/s/simsan/"; 
         std::string h_pwd = "/home/simon/exjobb/modular/"; 
