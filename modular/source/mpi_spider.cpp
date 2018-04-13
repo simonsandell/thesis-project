@@ -23,19 +23,15 @@ int main(){
  	std::string b_pwd = "/cfs/klemming/scratch/s/simsan/"; 
         std::string h_pwd = "/home/simon/exjobb/modular/"; 
 	std::string o_pwd = "/home/simsan/exjobb/modular/"; 
+	
+	std::string choice = b_pwd;
+	std::string model = "3DXY/";
 		  
-	std::string warmlatpath = h_pwd + "warmLattice/3DXY/"; 
-	std::string maxepath = h_pwd + "maxE/3DXY/"; 
+	std::string mep= choice + "maxE/" + model; 
+	std::string wlp= choice + "warmLattice/" + model; 
 
 	if (world_rank != 0){
-		if (world_rank == 1){
-			_3DXY::wolffHistJob(8.0L,maxepath,warmlatpath);
-		}
-		if (world_rank == 2){
-			Ising3D::warmupJob(64.0L,maxepath,warmlatpath);
-		}
-		if (world_rank == 3){
-			Ising3D::warmupJob(32.0L,maxepath,warmlatpath);
+		_3DXY::warmupJob(64.0L,mep,wlp);
 		}
 
 	}

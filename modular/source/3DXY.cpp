@@ -72,7 +72,7 @@ void _3DXY::warmupJob(long double L, std::string maxepath,std::string warmlatpat
 	Cluster c(L);
 	RandStruct r;
 	Lattice3DXY lat(L,runTemp,cold,r,c,maxepath,warmlatpath);
-	lat.loadLattice();
+	//lat.loadLattice();
 	long double Neq = 1000.0L;
 	while (true){
 		warmup(lat,Neq);
