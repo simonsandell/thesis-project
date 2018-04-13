@@ -31,8 +31,8 @@ long double clusterIsing3D(LatticeIsing3D& lat){
 	//update energy, mag etc..
 	long double enAfter = lat.siteEnergy(s1,s2,s3);
 	updateVals(lat,
-			enBefore-enAfter,
-			spinBefore-spinAfter);
+			-enBefore+enAfter,
+			-spinBefore+spinAfter);
 	//find indices of nearest neighbours
 	int n1m = (s1 -1 + lat.int_L )%lat.int_L;
 	int n1p = (s1 +1 + lat.int_L )%lat.int_L;
@@ -94,8 +94,8 @@ long double clusterIsing3D(LatticeIsing3D& lat){
 					//update energy and magnetization
 					enAfter = lat.siteEnergy(std::get<0>(current),std::get<1>(current),std::get<2>(current));
 					updateVals(lat,
-							enBefore-enAfter,
-							spinBefore-spinAfter);
+							-enBefore+enAfter,
+							-spinBefore+spinAfter);
 					//find indices of neighbours
 					neig1 = std::make_tuple(
 							(std::get<0>(current) + 1) % lat.int_L, 
