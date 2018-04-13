@@ -45,7 +45,9 @@ int main(){
 			char *buf = (char*)malloc(sizeof(char)*(char_amount+1));
 			MPI_Recv(buf,char_amount,MPI_CHAR,MPI_ANY_SOURCE,MPI_ANY_TAG,MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 			if (status.MPI_TAG == 1 || status.MPI_TAG == 0){
+				std::cout << "before mpi_rev message" << std::endl;
 				std::cout.write(buf,sizeof(char)*(char_amount+1));
+				std::cout << "after mpi_rev message" << std::endl;
 			}
 			if (status.MPI_TAG == 1){
 				N_finished +=1;
