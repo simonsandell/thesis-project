@@ -34,9 +34,11 @@ def anaIsing3D(fName,doT,doL,doSC2,doSC3,doTeq,doAnalyze,doPlot,doPrint):
             strlist = [x for x in strlist if not (x== "\n")];
             try:
                 fllist = [float(x) for x in strlist];
+                if (len(fllist) != 19):
+                    print('bad line at row ' + str(1 + len(data)));
                 data.append(fllist);
             except:
-                print('data load failed at row  ' + str(2 + len(data)));
+                print('data load failed at row  ' + str(1 + len(data)));
                 data.append(strlist);
                 load_failed = True;
         if (load_failed):
