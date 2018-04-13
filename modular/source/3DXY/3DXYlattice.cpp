@@ -260,18 +260,22 @@ void Lattice3DXY::testConsistent(){
 	std::cout << std::fixed << accum << std::endl;
 }
 
-std::string wlpath(std::string wlp,long double l){
+std::string timetag3dxy(){
 	time_t  t = time(0);
 	struct tm * now = localtime(& t);
 
 	char buffer [80];
 	strftime (buffer,80,"%Y-%m-%d.%H:%M:%S",now);
 	std::ostringstream mstream;
-	mstream << wlp << l<<"_" << buffer  <<"_.lat";
+	mstream << buffer;  
 	return mstream.str();
 }
-
 void Lattice3DXY::saveLattice(){
+	std::string tt = timetag3dxy();
+	saveLatticeAs(tt);
+}
+
+void Lattice3DXY::saveLatticeAs(std::string name){
 	//save theLattice, runTemp not beta, L not Nspins, Neqsweeps, NTotSweeps,
 	//	Neqclusts,NTotClusts,
 	//	coldstart, warmedup,
@@ -294,9 +298,10 @@ void Lattice3DXY::saveLattice(){
 		std::cout << "loading failed, outPutter has lines" << std::endl;
 		exit(1);
 	}
-	std::string fpath = wlpath(warmLatPath,L);
+	std::ostringstream fpath;
+	fpath << warmLatPath << L << "_" << name << "_.lat";
+	std::ofstream ofs(fpath.str().c_str(),std::ios::binary);
 
-	std::ofstream ofs(fpath.c_str(),std::ios::binary);
 	if( ofs){
 		//save theLattice
 		for (int i = 0; i< L;++i){

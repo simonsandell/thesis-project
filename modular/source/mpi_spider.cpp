@@ -32,8 +32,8 @@ int main(){
 
 	if (world_rank != 0){
 		_3DXY::warmupJob(64.0L,mep,wlp);
-		}
-
+		std::string endmsg = "finished";	
+		MPI_Send(endmsg.c_str(),endmsg.size(),MPI_CHAR,0,1,MPI_COMM_WORLD);
 	}
 	else{
 		int N_finished =0;

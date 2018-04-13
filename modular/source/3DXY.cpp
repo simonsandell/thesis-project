@@ -95,4 +95,5 @@ void _3DXY::teqJob(long double L,bool cold,std::string maxepath,std::string warm
 		Nsamp *= 2.0L;
 		wolffHistRun3DXY(lat,Nsamp,Trange,Ntemps);
 	}
+	
 }
