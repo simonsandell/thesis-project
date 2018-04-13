@@ -15,12 +15,12 @@
 long double Lattice3DXY::siteEnergy( int &s1, int &s2, int &s3){
 	long double sum = 0.0L;
 	//find indices of neighbours
-	int n1m = (s1 -1 + (int)L )%(int)L;
-	int n1p = (s1 +1 + (int)L )%(int)L;
-	int n2m = (s2 -1 + (int)L )%(int)L;
-	int n2p = (s2 +1 + (int)L )%(int)L;
-	int n3m = (s3 -1 + (int)L )%(int)L;
-	int n3p = (s3 +1 + (int)L )%(int)L;
+	int n1m = (s1 -1 + int_L )%int_L;
+	int n1p = (s1 +1 + int_L )%int_L;
+	int n2m = (s2 -1 + int_L )%int_L;
+	int n2p = (s2 +1 + int_L )%int_L;
+	int n3m = (s3 -1 + int_L )%int_L;
+	int n3p = (s3 +1 + int_L )%int_L;
 	sum -= cos(theLattice[s1][s2][s3]-theLattice[n1m][s2][s3]);
 	sum -= cos(theLattice[s1][s2][s3]-theLattice[n1p][s2][s3]);
 	sum -= cos(theLattice[s1][s2][s3]-theLattice[s1][n2m][s3]);
@@ -31,22 +31,22 @@ long double Lattice3DXY::siteEnergy( int &s1, int &s2, int &s3){
 }
 //calculate sin(theta - theta_x) upwards +, downward -
 long double Lattice3DXY::sinX(int &s1, int &s2, int &s3,long double &angle){
-	int np = (s1 + 1) %(int)L;
-	int nm = (s1 -1 + (int)L) % (int)L;	
+	int np = (s1 + 1) %int_L;
+	int nm = (s1 -1 + int_L) % int_L;	
 	long double ret = 0.0L;
 	ret = sin(theLattice[nm][s2][s3] - angle) + sin(angle - theLattice[np][s2][s3]);
 	return ret;
 }
 long double Lattice3DXY::sinY(int &s1, int &s2, int &s3,long double &angle){
-	int np = (s2 + 1) %(int)L;
-	int nm = (s2 -1 + (int)L) % (int)L;	
+	int np = (s2 + 1) %int_L;
+	int nm = (s2 -1 + int_L) % int_L;	
 	long double ret = 0.0L;
 	ret = sin(theLattice[s1][nm][s3] - angle) + sin(angle - theLattice[s1][np][s3]);
 	return ret;
 }
 long double Lattice3DXY::sinZ(int &s1, int &s2, int &s3,long double &angle){
-	int np = (s3 + 1) %(int)L;
-	int nm = (s3 -1 + (int)L) % (int)L;	
+	int np = (s3 + 1) %int_L;
+	int nm = (s3 -1 + int_L) % int_L;	
 	long double ret = 0.0L;
 	ret = sin(theLattice[s1][s2][nm] - angle) + sin(angle - theLattice[s1][s2][np]);
 	return ret;
@@ -57,7 +57,7 @@ long double calcSinX(long double ***lattice,long double  L){
 	for (int i =0; i< L; ++i){
 		for (int j =0; j< L ; ++j){
 			for (int k = 0; k<L; ++k){
-				sum += sin(lattice[i][j][k] - lattice[(i+1)%(int)L][j][k]);
+				sum += sin(lattice[i][j][k] - lattice[(i+1)%int_L][j][k]);
 			}
 		}
 	}
@@ -68,7 +68,7 @@ long double calcSinY(long double ***lattice,long double  L){
 	for (int i =0; i< L; ++i){
 		for (int j =0; j< L ; ++j){
 			for (int k = 0; k<L; ++k){
-				sum += sin(lattice[i][j][k] - lattice[i][(j+1)%(int)L][k]);
+				sum += sin(lattice[i][j][k] - lattice[i][(j+1)%int_L][k]);
 			}
 		}
 	}
@@ -79,7 +79,7 @@ long double calcSinZ(long double ***lattice,long double  L){
 	for (int i =0; i< L; ++i){
 		for (int j =0; j< L ; ++j){
 			for (int k = 0; k<L; ++k){
-				sum += sin(lattice[i][j][k] - lattice[i][j][(k+1)%(int)L]);
+				sum += sin(lattice[i][j][k] - lattice[i][j][(k+1)%int_L]);
 			}
 		}
 	}
@@ -129,11 +129,11 @@ long double calcEn(Lattice3DXY* lat){
 long double*** Lattice3DXY::newLattice(long double L,bool cold){
 	//make new lattice
 	long double ***lattice;
-	lattice = new long double **[(int)L];
+	lattice = new long double **[int_L];
 	for (int i = 0; i< L;++i){
-		lattice[i] = new long double *[(int)L];
+		lattice[i] = new long double *[int_L];
 		for (int j =0;j<L;++j){
-			lattice[i][j] = new long double[(int)L];
+			lattice[i][j] = new long double[int_L];
 		}
 	}
 
@@ -181,6 +181,7 @@ Lattice3DXY::Lattice3DXY(int l,long double rT, bool cold,RandStruct r,Cluster c,
 	NTotSweeps= 0.0L;
 	Neqclusts = 0;
 	NTotClusts= 0;
+	int_L = (long int) (L + 0.5L);
 	coldstart = cold;
 	warmedUp = false;
 

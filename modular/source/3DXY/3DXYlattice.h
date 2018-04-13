@@ -13,7 +13,7 @@ struct Lattice3DXY{
 	long double *** theLattice;
 	long double runTemp,beta;
 	long double L,Nspins,Neqsweeps,NTotSweeps;
-	long int Neqclusts,NTotClusts;	
+	long int Neqclusts,NTotClusts,int_L;
 	bool coldstart,warmedUp;
 	std::string warmLatPath;
 	std::string maxEPath;

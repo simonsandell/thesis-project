@@ -70,12 +70,12 @@ long double cluster3DXY(Lattice3DXY& lat){
 			syBef,syAft,
 			szBef,szAft);
 	//find indices of nearest neighbours
-	int n1m = (s1 -1 + (int)lat.L )%(int)lat.L;
-	int n1p = (s1 +1 + (int)lat.L )%(int)lat.L;
-	int n2m = (s2 -1 + (int)lat.L )%(int)lat.L;
-	int n2p = (s2 +1 + (int)lat.L )%(int)lat.L;
-	int n3m = (s3 -1 + (int)lat.L )%(int)lat.L;
-	int n3p = (s3 +1 + (int)lat.L )%(int)lat.L;
+	int n1m = (s1 -1 + lat.int_L )%lat.int_L;
+	int n1p = (s1 +1 + lat.int_L )%lat.int_L;
+	int n2m = (s2 -1 + lat.int_L )%lat.int_L;
+	int n2p = (s2 +1 + lat.int_L )%lat.int_L;
+	int n3m = (s3 -1 + lat.int_L )%lat.int_L;
+	int n3p = (s3 +1 + lat.int_L )%lat.int_L;
 	std::tuple<int,int,int,long double> neig1 = std::make_tuple(n1m,s2,s3,angleAfter);
 	std::tuple<int,int,int,long double> neig2 = std::make_tuple(n1p,s2,s3,angleAfter);
 	std::tuple<int,int,int,long double> neig3 = std::make_tuple(s1,n2m,s3,angleAfter);
@@ -144,34 +144,34 @@ long double cluster3DXY(Lattice3DXY& lat){
 						szBef,szAft);
 				//find indices of neighbours
 				neig1 = std::make_tuple(
-						(std::get<0>(current) + 1) % (int)lat.L, 
+						(std::get<0>(current) + 1) % lat.int_L, 
 						std::get<1>(current),
 						std::get<2>(current),
 						angleAfter);
 				neig2 = std::make_tuple(
-						(std::get<0>(current) + (int)lat.L - 1) % (int)lat.L,
+						(std::get<0>(current) + lat.int_L - 1) % lat.int_L,
 						std::get<1>(current),
 						std::get<2>(current),
 						angleAfter);
 				neig3 = std::make_tuple(
 						std::get<0>(current),
-						(std::get<1>(current) + 1) % (int)lat.L,
+						(std::get<1>(current) + 1) % lat.int_L,
 						std::get<2>(current),
 						angleAfter);
 				neig4 = std::make_tuple(
 						std::get<0>(current),
-						(std::get<1>(current) + (int)lat.L - 1) % (int)lat.L,
+						(std::get<1>(current) + lat.int_L - 1) % lat.int_L,
 						std::get<2>(current),
 						angleAfter);
 				neig5 = std::make_tuple(
 						std::get<0>(current),
 						std::get<1>(current),
-						(std::get<2>(current) + 1) % (int)lat.L,
+						(std::get<2>(current) + 1) % lat.int_L,
 						angleAfter);
 				neig6 = std::make_tuple(
 						std::get<0>(current),
 						std::get<1>(current),
-						(std::get<2>(current) + (int)lat.L - 1)%(int)lat.L,
+						(std::get<2>(current) + lat.int_L - 1)%lat.int_L,
 						angleAfter);
 				//if a neighbour is not already part of the cluster, add it to perimeter list
 				if (!lat.clust.theCluster[std::get<0>(neig1)][std::get<1>(neig1)][std::get<2>(neig1)] ){
