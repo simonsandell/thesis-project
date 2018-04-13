@@ -29,7 +29,7 @@ int main(){
 
 	if (world_rank != 0){
 		if (world_rank == 1){
-			Ising3D::warmupJob(128.0L,maxepath,warmlatpath);
+			_3DXY::wolffHistJob(8.0L,maxepath,warmlatpath);
 		}
 		if (world_rank == 2){
 			Ising3D::warmupJob(64.0L,maxepath,warmlatpath);
@@ -46,10 +46,12 @@ int main(){
 			MPI_Status status;
 			MPI_Probe (MPI_ANY_SOURCE,MPI_ANY_TAG,MPI_COMM_WORLD, &status);
 			MPI_Get_count(&status,MPI_CHAR,&char_amount);
-			char *buf = (char*)malloc(sizeof(char)*char_amount);
+			char *buf = (char*)malloc(sizeof(char)*(char_amount+1));
 			MPI_Recv(buf,char_amount,MPI_CHAR,MPI_ANY_SOURCE,MPI_ANY_TAG,MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-			std::cout << buf;
-			if (status.MPI_TAG != 0){
+			if (status.MPI_TAG == 1 || status.MPI_TAG == 0){
+				std::cout.write(buf,sizeof(char)*(char_amount+1));
+			}
+			if (status.MPI_TAG == 1){
 				N_finished +=1;
 				if (N_finished > (world_size -2)){
 					break;

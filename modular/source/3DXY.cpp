@@ -63,9 +63,7 @@ void _3DXY::wolffHistJob(long double L,std::string maxepath,std::string warmlatp
 		wolffHistRun3DXY(lat,Nsamp,Trange,Ntemps);
 		warmup(lat,Nbetw);
 	}
-	if (lat.oPer.outputLines.size() > 0){
-		lat.oPer.printData(1);
-	}
+	lat.oPer.printData(1);
 
 }
 void _3DXY::warmupJob(long double L, std::string maxepath,std::string warmlatpath){

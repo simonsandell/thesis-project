@@ -54,10 +54,11 @@ long double Lattice3DXY::sinZ(int &s1, int &s2, int &s3,long double &angle){
 ;
 long double calcSinX(long double ***lattice,long double  L){
 	long double sum = 0.0L;
+	int intel = (int)(L+0.5L);
 	for (int i =0; i< L; ++i){
 		for (int j =0; j< L ; ++j){
 			for (int k = 0; k<L; ++k){
-				sum += sin(lattice[i][j][k] - lattice[(i+1)%int_L][j][k]);
+				sum += sin(lattice[i][j][k] - lattice[(i+1)%intel][j][k]);
 			}
 		}
 	}
@@ -65,10 +66,11 @@ long double calcSinX(long double ***lattice,long double  L){
 }
 long double calcSinY(long double ***lattice,long double  L){
 	long double sum = 0.0L;
+	int intel = (int)(L+0.5L);
 	for (int i =0; i< L; ++i){
 		for (int j =0; j< L ; ++j){
 			for (int k = 0; k<L; ++k){
-				sum += sin(lattice[i][j][k] - lattice[i][(j+1)%int_L][k]);
+				sum += sin(lattice[i][j][k] - lattice[i][(j+1)%intel][k]);
 			}
 		}
 	}
@@ -76,10 +78,11 @@ long double calcSinY(long double ***lattice,long double  L){
 }
 long double calcSinZ(long double ***lattice,long double  L){
 	long double sum = 0.0L;
+	int intel = (int)(L+0.5L);
 	for (int i =0; i< L; ++i){
 		for (int j =0; j< L ; ++j){
 			for (int k = 0; k<L; ++k){
-				sum += sin(lattice[i][j][k] - lattice[i][j][(k+1)%int_L]);
+				sum += sin(lattice[i][j][k] - lattice[i][j][(k+1)%intel]);
 			}
 		}
 	}
