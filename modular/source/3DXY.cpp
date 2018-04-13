@@ -50,20 +50,19 @@ void _3DXY::wolffHistJob(long double L,std::string maxepath,std::string warmlatp
 	else {
 		Trange = getTrange(startT,endT,Ntemps);
 	}
-	long double 	Neq=			1.0L;
+	long double 	Neq=			1000.0L;
 	bool 		cold=			true;
-	long double	Nsamp=			1.0L;
-	long double 	Nbetw=			1.0L;
-	int 		Nruns=			100;
+	long double	Nsamp=			1000.0L;
+	long double 	Nbetw=			100.0L;
 	Cluster c(L);
 	RandStruct r;
 	Lattice3DXY lat(L,runTemp,cold,r,c,maxepath,warmlatpath);
+	lat.loadLattice();
 	warmup(lat,Neq);
-	for (int i=0; i< Nruns; ++i){	
+	while (true){	
 		wolffHistRun3DXY(lat,Nsamp,Trange,Ntemps);
 		warmup(lat,Nbetw);
 	}
-	lat.oPer.printData(1);
 
 }
 void _3DXY::warmupJob(long double L, std::string maxepath,std::string warmlatpath){
