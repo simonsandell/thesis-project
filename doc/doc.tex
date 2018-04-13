@@ -28,7 +28,10 @@
   \caption{Clarification of notation}
 \end{table}
 \section{Introduction}
-The lambda phase transition in Helium-4 has been studied extensively both in theory, simulations and experiments. In 2003 a calculation of the critical exponent alpha describing the divergece of the heat capacity, was performed on the space-shuttle Something, and the exponent was calculated to the today highest standing precision. Theoretical calculations (pseudo-epsilon expansion etc) come up with a value in agreement with the experimental value. However, to date, the numerical estimates, while not extremelly far off, there still existst a discrepancy. In this thesis we have performed numerical studies to a higher degree of precision and our results show a better/the same/worse agreement with the experimental value. Agreement shows that numerical studies are a valid method of study of these systems, and discredits the idea that numberical simulations may be part of a different but closely related universality class.
+The lambda phase transition in Helium-4 has been studied extensively both in theory, simulations and experiments. In 2003 the results of measurements performed in orbit was published\ref{space} stating a value for the critical exponent alpha to unprecedented precision. 
+The experiment was performed on the Space Shuttle Columbia, the reason for this is that a gravitational gradient will introduce pressure, causing a transition broadening. In theory, the heat capacity should diverge to infinity at the transition temperature.
+The measurements of the heat capacity as well as the superfluid density was performed, to temperatures in the range of $nK$ of $T_c$, with no evidence of broadening.
+Theoretical calculations (pseudo-epsilon expansion etc) come up with a value in agreement with the experimental value. However, to date, the numerical estimates, while not extremelly far off, there still existst a discrepancy. In this thesis we have performed numerical studies to a higher degree of precision and our results show a better/the same/worse agreement with the experimental value. Agreement shows that numerical studies are a valid method of study of these systems, and discredits the idea that numberical simulations may be part of a different but closely related universality class.
 \section{Method}
 There are many different models in the same universality class as the normal-superfluid Helimu-4 transition, for example the $\phi^4$-model, the ddXY model etc.
 In this thesis we have chosen the simulate the 3DXY-model. This is convenient because of the relative simplicity of the model, and that it is well known and studied.
@@ -196,7 +199,7 @@ But it turns out that the critical phenomena (phase transitions) only depend on 
 
 \section{But anyways, that stuff is hard so lets just use RNG's}
 Since we now know all that stuff, we can use it to our advantage. We can study the critical behaviour of say Helium-4, which we know is in the $O(2)$ universality class, by calculation themodynamical averages directly by using Monte-Carlo method on the simulated 3DXY-model, which should have the exact same critical exponents. 
-The crux is that one cannot simulate the infinite size 3DXY-model due to computer memory finite-ness, thus one simulates instead finite-size versions of the 3DXY-model. The theory of how finite size systems relate to the infinite size models is called finite size scaling. The normal power-laws aquire correction terms, which needs to be accounted for.
+One inconveinece is that one cannot simulate the infinite size 3DXY-model due to computer memory finite-ness, thus one simulates instead finite-size versions of the 3DXY-model. The theory of how finite size systems relate to the infinite size models is called finite size scaling. The normal power-laws aquire correction terms, which needs to be accounted for.
 
 \section{Binder cumulant}
 The quantity $b =\frac{\langle M^4 \rangle}{\langle M^2\rangle^2}$ is useful as it approaches a constant as $t\rightarrow 0 $, as,  disregarding scaling corrections,
@@ -261,15 +264,16 @@ from which the scaling of many other quantites can be derived, as derivatives, s
 \end{table}
 
 \section{Finite size scaling}
-The assumption we use in this paper for the finite size scaling is as follows
+The model we use in this paper for the finite size scaling is as follows
 \begin{equation}
   B(L,t=0) = b_0 + b_1L^{-\omega}.
 \end{equation}
-This means that
+Higer order terms are neglected.
+Using this model we get
 \begin{align}
   b'(L) \equiv B(2L,t=0) - B(L,t=0) &= b_1(2^{-\omega} -1)L^{-\omega}\\
   b''(L)\equiv \frac{b'(2L)}{b'(L)} &= 2^{-\omega}\\
-  \omega &= -\frac{\ln(b''(L))}{\ln(2)}
+  \omega &= -\frac{\ln(b''(L))}{\ln(2)}.
 \end{align}
 Note that this only holds at the critical temperature, the $\textit{constants}$ $b_0, b_2$ are functions of temperature. Thus if we plot this function using at least four different system sizes, we can get several graphs that intersect at the critical temperature, and from that the scaling correction $\omega$ can be read of without the need for any form of parameter fitting. This depends on the assumption that the higher order corrections are sufficiently small, which they might not in fact be for the lowest system size we have simulated, $L=4$. This method also fails when $b'(L)$ and $b'(2L)$ differ in sign, since then $log(b''(l)$ will be undefined.
 For such cases one can resort to methods of parameter fitting.
@@ -297,7 +301,7 @@ The figures where produced using the open source program Grace available at ``pl
 \section{Results}
 \subsection{Data Analysis}
 The simulation program outputs raw data ordered in lines. Data from one ``simulation'' is contained in $N_{temperatures} \cdot N_{averages per simulation} \cdot N_{simulations}$.
-To calculate quantities of interest from this raw data, a python3 script has been written, utilizing the numpy library. All available raw data is loaded into a numpy ndarray, and sorted by system size and temperature. Then for each block of data with one temperature and one system size, combined averages are calculated and from these, further functions of the averages are calculated, such as the Binder Parameter, it's derivative, Susceptibility, Superfluid density, etc. To estimate the statistical error in these estimations, we utilize a resampling method usually refered to as the jackknife method. For each block used in calculating the estimations, a jackknife function is called, which calculates the quantities again, but with a subblock of data omitted.
+To calculate quantities of interest from this raw data, a python script has been written, utilizing the numpy library. All available raw data is loaded into a numpy ndarray, and sorted by system size and temperature. Then for each block of data with one temperature and one system size, combined averages are calculated and from these, further functions of the averages are calculated, such as the Binder Parameter, it's derivative, Susceptibility, Superfluid density, etc. To estimate the statistical error in these estimations, we utilize a resampling method usually refered to as the jackknife method. For each block used in calculating the estimations, a jackknife function is called, which calculates the quantities again, but with a subblock of data omitted.
 \subsection{3DXY-model}
 Simulations were performed using the Wolff-cluster algorithm at the temperature $T_{run} = 2.2020~K$. Histogram extrapolation was performed to extrapolate to the range of temperatures $T_{range} = 2.2015-2.2030 ~ K$.
 The simulations are structured so that a lattice is initialized in the zero temperature state, all spins pointing in one direction. Then clusterupdates are performed until over 100k sweeps have been performed.
@@ -307,6 +311,8 @@ Thus the number of clusters and sweeps performed as warmup varies slightly betwe
 
 After the warmup, cluster updates are performed for 100k more sweeps, and the thermodynamic quantities are collected after each update. Then, averages are calculated and printed. Then 100 sweeps are performed to take the lattice to a state not correlated, and another 100k sample sweeps are performed. This is repeated 100 times. The system sizes simulated are 4, 8, 16, 32, 64 and 128. 
 The number of simulations currently used to calculate $U_4, \rho_s, \chi $ etc. for the system sizes 4
+
+The critical exponets X was
 
 \begin{table}[htpb]
 \begin{center}
