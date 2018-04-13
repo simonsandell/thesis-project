@@ -39,9 +39,9 @@ void _3DXY::wolffHistJob(long double L,std::string maxepath,std::string warmlatp
 
 	long double runTemp = 2.20200000000000L;
 
-	long double	startT=			2.20150L;
-	long double	endT=			2.20300L;
-	int 		Ntemps=			31;
+	long double	startT=			2.20100L;
+	long double	endT=			2.20350L;
+	int 		Ntemps=			101;
 	long double* Trange;
 	if (Ntemps < 2) {
 		Trange = new long double[1];
