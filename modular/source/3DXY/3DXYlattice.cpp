@@ -129,11 +129,12 @@ long double calcEn(Lattice3DXY* lat){
 long double*** Lattice3DXY::newLattice(long double L,bool cold){
 	//make new lattice
 	long double ***lattice;
-	lattice = new long double **[int_L];
+	int intel = (int)(L+0.5L);
+	lattice = new long double **[intel];
 	for (int i = 0; i< L;++i){
-		lattice[i] = new long double *[int_L];
+		lattice[i] = new long double *[intel];
 		for (int j =0;j<L;++j){
-			lattice[i][j] = new long double[int_L];
+			lattice[i][j] = new long double[intel];
 		}
 	}
 
@@ -393,6 +394,7 @@ void Lattice3DXY::loadLattice(){
 		//recreate other quants
 		Nspins = L*L*L;
 		beta = 1.0L/runTemp;
+		int_L = (long int)(L+0.5L);
 		updateQuants();
 
 	}
