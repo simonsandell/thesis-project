@@ -100,7 +100,7 @@ def findteq(mat,temp,betanu,path,drop_smallest,p):
     z = 0.0;
     dz = 0.1;
     while (z < 1.3): 
-        if (z > 0.7):
+        if (z > 0.6):
             dz = 0.01;
         if (z > 1.15):
             dz = 0.1;

@@ -28,14 +28,21 @@ def ana3DXY(fName,doT,doL,doSC2,doSC3,doTeq,doAnalyze,doPlot,doPrint):
     scalingDir = outdir + 'scalingCorr';
     
     if (doAnalyze):
+        load_failed = False;
         datafile = open(indir+fName,"r");
         data = [];
         for ln in datafile:
             strlist = ln.rsplit(" ");
             strlist = [x for x in strlist if not (x== "\n")];
-            fllist = [float(x) for x in strlist];
-            print(len(data));
-            data.append(fllist);
+            try:
+                fllist = [float(x) for x in strlist];
+                data.append(fllist);
+            except:
+                print('bad data at row  ' + str(2 + len(data)));
+                data.append(strlist);
+                load_failed = True;
+        if (load_failed):
+            exit(-1);
         dataMatrix = np.array(data);
         print("loading done");
         if (doT):

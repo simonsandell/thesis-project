@@ -27,6 +27,17 @@ if (preset == "ana"):
 if (preset ==  "plot"):
     doAna=False;
     doPrint=False;
+    doSC2 = True;
+if (preset ==  "plotT"):
+    doAna=False;
+    doPrint=False;
+    doL = False;
+    doSC2 = True;
+if (preset ==  "plotL"):
+    doAna=False;
+    doPrint=False;
+    doTemp = False;
+    doSC2 = True;
 if (preset ==  "all"):
     doSC2 = True;
     doAna =True;

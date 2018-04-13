@@ -26,14 +26,21 @@ def anaIsing3D(fName,doT,doL,doSC2,doSC3,doTeq,doAnalyze,doPlot,doPrint):
     indir = "./output/Ising3D/"
     scalingDir = outdir + 'scalingCorr';
     if (doAnalyze):
+        load_failed = False;
         datafile = open(indir+fName,"r");
         data = [];
         for ln in datafile:
             strlist = ln.rsplit(" ");
             strlist = [x for x in strlist if not (x== "\n")];
-            fllist = [float(x) for x in strlist];
-            print(len(data))
-            data.append(fllist);
+            try:
+                fllist = [float(x) for x in strlist];
+                data.append(fllist);
+            except:
+                print('data load failed at row  ' + str(2 + len(data)));
+                data.append(strlist);
+                load_failed = True;
+        if (load_failed):
+            exit(-1);
         dataMatrix = np.array(data);
         print("loading done");
         if (doT):
