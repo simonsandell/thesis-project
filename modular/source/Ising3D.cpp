@@ -46,7 +46,7 @@ void Ising3D::wolffHistJob(long double L,std::string maxepath,std::string warmla
 		Trange[0] = runTemp;
 	}
 	else {
-		Trange = getTrangeIsing3D(startT,endT,int(Ntemps));
+		Trange = getTrangeIsing3D(startT,endT,Ntemps);
 	}
 	long double 	Neq=			100000.0L;
 	bool 		cold=			true;

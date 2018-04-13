@@ -48,7 +48,7 @@ void _3DXY::wolffHistJob(long double L,std::string maxepath,std::string warmlatp
 		Trange[0] = runTemp;
 	}
 	else {
-		Trange = getTrange(startT,endT,int(Ntemps));
+		Trange = getTrange(startT,endT,Ntemps);
 	}
 	long double 	Neq=			1.0L;
 	bool 		cold=			true;
