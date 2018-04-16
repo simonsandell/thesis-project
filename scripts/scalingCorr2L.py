@@ -48,19 +48,19 @@ def calculate(mat,i,ifirst,ofiles,function):
     if (N_corrs == 0):
         print(llist);
         print("too few L's")
-        exit();
-    lind = np.append(lind,-1);
-    scalingcorr =[];
-    delta = [];
-    for x in range(N_corrs):
-        submat2L = submat[lind[x]:lind[x+2],:];
-        scalingcorr.append(function(submat2L));
-        delta.append(jackknife.getJackDelta(submat2L,function,100));
-    
-    fstr= "{:30.30f}";
-    ostr = "{:.5f}";
-    for x in range(len(scalingcorr)):
-        ofiles[x].write(fstr.format(T)+"    "+fstr.format(scalingcorr[x][0])+"    "+fstr.format(delta[x][0])+"    "+ostr.format(omega)+"\n")
+    else:
+        lind = np.append(lind,-1);
+        scalingcorr =[];
+        delta = [];
+        for x in range(N_corrs):
+            submat2L = submat[lind[x]:lind[x+2],:];
+            scalingcorr.append(function(submat2L));
+            delta.append(jackknife.getJackDelta(submat2L,function,100));
+        
+        fstr= "{:30.30f}";
+        ostr = "{:.5f}";
+        for x in range(len(scalingcorr)):
+            ofiles[x].write(fstr.format(T)+"    "+fstr.format(scalingcorr[x][0])+"    "+fstr.format(delta[x][0])+"    "+ostr.format(omega)+"\n")
 
 
 
@@ -74,7 +74,7 @@ def analyze(mat,dirname,function,orange):
     sortedMat = mat[ind];
     
     #define range of omegas
-    TOL = 0.000001;
+    TOL = 0.00001;
     for n in range(len(orange)):
         omega = orange[n];
         omegavec = np.ones((sortedMat.shape[0],1));
@@ -85,7 +85,7 @@ def analyze(mat,dirname,function,orange):
         T = sortedMat[0,1];
         ofiles= openFiles(n,omega,dirname);
         for i in range(omegamat.shape[0]):
-            if (omegamat[i,1] != T):
+            if (abs(omegamat[i,1] - T) > TOL):
                 calculate(omegamat,i,ifirst,ofiles,function);
                 ifirst = i;
                 T = omegamat[i,1];

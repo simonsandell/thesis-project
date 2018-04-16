@@ -49,7 +49,6 @@ def calculate(mat,i,istart,FileList,function):
 # 14     15     16     17     18     19     20     21                
 # SX     SY     SZ     bin    dBdT   xi     rs     expFac
 def analyze(mat,dirname,function):
-    subprocess.call(['mkdir',dirname])
     #Sort input data, by temperature, then L
     ind = np.lexsort((mat[:,0],mat[:,1]));
     sortedMat = mat[ind];

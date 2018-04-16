@@ -93,6 +93,7 @@ def sigmaIntersect(directory):
         #now all lines for one omega are in bigmat
         intersections[:] = [];
         intersections2[:] = [];
+        print(bigmat.shape)
         xinds = [x for x in range(bigmat.shape[1]) if ((x % 2) == 0)];
         yinds = [x for x in range(bigmat.shape[1]) if ((x % 2) == 1)];
         for i in range(len(xinds)-1):

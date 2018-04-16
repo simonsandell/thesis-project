@@ -63,8 +63,8 @@ def graceDirPlot(directory,title, xaxis ,yaxis,xlog,ylog, doPrint):
         del syscall[0];
         time.sleep(1.5);
     syscall = ["xmgrace"] + syscall;
-    subprocess.Popen(syscall);
     time.sleep(1.5);
+    subprocess.Popen(syscall);
 
 def initAnim():
     subprocess.call(['rm','-r','/tmp/temppng'])

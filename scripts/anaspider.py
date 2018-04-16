@@ -38,6 +38,12 @@ if (preset ==  "plotL"):
     doPrint=False;
     doTemp = False;
     doSC2 = True;
+if (preset == "sc2"):
+    doSC2 = True;
+    doAna = True;
+    doTemp = False;
+    doSC3 = False;
+    doL = False;
 if (preset ==  "all"):
     doSC2 = True;
     doAna =True;

@@ -63,13 +63,11 @@ def ana3DXY(fName,doT,doL,doSC2,doSC3,doTeq,doAnalyze,doPlot,doPrint):
         if (doSC2):
             dirname = scalingDir + '/omegaRS2L';
             anaSC2L.analyze(dataMatrix,dirname,
-                SCrhos2L.calcOmegaRS2L,anaFuncs.getOmegaRange(0.2,0.4,0.005));
-            intersectOmega.sigmaIntersect(dirname);
+                SCrhos2L.calcOmegaRS2L,anaFuncs.getOmegaRange(0.0,1.4,0.05));
             print("2L RS done");
             dirname = scalingDir + '/omegaBin2L';
             anaSC2L.analyze(dataMatrix,dirname,
-                SCbin2L.calcOmegaBin2L,anaFuncs.getOmegaRange(0.7,1.2,0.005));
-            intersectOmega.sigmaIntersect(dirname);
+                SCbin2L.calcOmegaBin2L,anaFuncs.getOmegaRange(0.0,1.4,0.05));
             print("2L Bin done")
         if (doTeq):
             tp.analyze(dataMatrix,"./foutput/3DXY/vsN/"+fName,2.20200000);
@@ -79,6 +77,9 @@ def ana3DXY(fName,doT,doL,doSC2,doSC3,doTeq,doAnalyze,doPlot,doPrint):
             fteq.findteq(dataMatrix,2.202000000,0.51891688,outdir + "teq/sigma_vs_z_drop4.dat",True,paramguess);
             print("find_teq done")
     if (doPlot):
+        intersectOmega.sigmaIntersect(outdir+"scalingCorr/omegaBin2L");
+        intersectOmega.sigmaIntersect(outdir+"scalingCorr/omegaRS2L");
+
         if (doT):
             vstdir = outdir + "vsT/"
             for dirname in  os.listdir(vstdir):

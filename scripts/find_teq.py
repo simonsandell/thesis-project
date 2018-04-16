@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 
 import numpy as np
+import scipy.stats as sps
 import scipy.optimize as spo
 
 #returns avg mag
@@ -70,36 +71,40 @@ def analyze(mat,temp,betanu,z):
             curr_L = smat[i,0];
     ret.append(oneSize(smat[startI:,:],temp,betanu,z));
     return ret;
-
-def getDist(res):
-    return np.std(res[:,0]) + np.std(res[:,1]) + np.std(res[:,2]);
-    
+#write output
 def writeToFile(f,x,y):
     fstr= "{:30.30f}";
     f.write(fstr.format(x) + "    " + fstr.format(y) + "    0.0\n");
     
-def matmax(mat):
-    i,j = np.unravel_index(mat.argmax(),mat.shape);
-    return mat[i,j];
 def fit(params,X):
+    X = np.array(X);
     a = params[0]
     b = params[1]
     c = params[2]
     return a*np.exp(b*X) + c;
 
 def plot_comp(params,x,y):
+    plt.gca().set_xscale('log');
     plt.scatter(x,y);
-    X = np.geomspace(x[0],x[-1],20.0);
+    X = np.geomspace(pow(10,-3),x[-1],20.0);
     Y = fit(params,X);
     plt.plot(X,Y,linewidth=2.0);
 
-    
+def chisquare(params,x,y):
+    Y = fit(params,x);
+    cs = sps.chisquare(y,Y);
+    print(cs);
+    print(params);
+
+    return cs[0];
+
 def findteq(mat,temp,betanu,path,drop_smallest,p):
-    #plt.figure();
+
     f = open(path,"w");
     z = 0.0;
     dz = 0.1;
     while (z < 1.3): 
+        #plt.gca().set_title("z = " + str(z));
         if (z > 0.6):
             dz = 0.01;
         if (z > 1.15):
@@ -110,20 +115,21 @@ def findteq(mat,temp,betanu,path,drop_smallest,p):
         res = [];
         res[:] = [];
         
+        x = [];
+        y = [];
+        x[:] = [];
+        y[:] = [];
 
         for j in range(len(rescaled)):
-            x = rescaled[j][:,0];
-            y = rescaled[j][:,1];
-            #fit to exp funk
-            print(rescaled[0])
-            params,covars = spo.curve_fit(lambda t,a,b,c: a*np.exp(b*t) + c,x,y,p0=(p[0],p[1],p[2]),maxfev=2000);
-            TOL = 10.0;
-            if (matmax(covars) > TOL):
-                print("bad fit")
-            else:
-                res.append(params);
+            x.extend(rescaled[j][:,0]);
+            y.extend(rescaled[j][:,1]);
+        #fit to exp func
+        
+        params,covars = spo.curve_fit(lambda t,a,b,c: a*np.exp(b*t) + c,x,y,p0=(p[0],p[1],p[2]),maxfev=2000);
+        #plot_comp(params,x,y);
+        #plt.show();
+        goodness = chisquare(params,x,y);
         res = np.array(res);
-        goodness = getDist(np.array(res));
         writeToFile(f,z,goodness);
         z = z+ dz;
         
