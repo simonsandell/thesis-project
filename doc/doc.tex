@@ -28,10 +28,23 @@
   \caption{Clarification of notation}
 \end{table}
 \section{Introduction}
-The lambda phase transition in Helium-4 has been studied extensively both in theory, simulations and experiments. In 2003 the results of measurements performed in orbit was published\ref{space} stating a value for the critical exponent alpha to unprecedented precision. 
+The superfluid transition in helium got it's nickname, ``The lambda transition'', due to the peculiar shape of the graph of heat capacity versus temperature, which resemples the greek letter. 
+
+The transition happens at about 2.2 K, at normal pressure, where the liquid transitions into a superfluid state.
+
+
+The lambda phase transition in Helium-4 has been studied extensively both in theory, simulations and experiments. In 2003 the results of measurements performed in orbit was published\ref{space} stating a value for the critical exponent alpha to unprecedented precision.
+
 The experiment was performed on the Space Shuttle Columbia, the reason for this is that a gravitational gradient will introduce pressure, causing a transition broadening. In theory, the heat capacity should diverge to infinity at the transition temperature.
 The measurements of the heat capacity as well as the superfluid density was performed, to temperatures in the range of $nK$ of $T_c$, with no evidence of broadening.
-Theoretical calculations (pseudo-epsilon expansion etc) come up with a value in agreement with the experimental value. However, to date, the numerical estimates, while not extremelly far off, there still existst a discrepancy. In this thesis we have performed numerical studies to a higher degree of precision and our results show a better/the same/worse agreement with the experimental value. Agreement shows that numerical studies are a valid method of study of these systems, and discredits the idea that numberical simulations may be part of a different but closely related universality class.
+
+Theoretical calculations of Asdf et al. (pseudo-epsilon expansion techniques\ref{pseps}) have given predictions of the critical exponents which to the stated precision agrees with the value seen in experiment.
+
+However, the numerical studies performed has predicted values that are incompatible with both experiment and the theoretical predictions. \ref{hasenbucsh} 
+In this thesis our aim was to achieve numerical estimation to higher precision than prefious studies, and by utilizing a special scaling correction approach, to investigave whether the discrepancy would disappear or emerge more clearly. 
+
+Our results show a better/the same/worse agreement with the experimental value. Agreement shows that numerical studies are a valid method of study of these systems, and discredits the idea that numberical simulations may be part of a different but closely related universality class.
+
 \section{Method}
 There are many different models in the same universality class as the normal-superfluid Helimu-4 transition, for example the $\phi^4$-model, the ddXY model etc.
 In this thesis we have chosen the simulate the 3DXY-model. This is convenient because of the relative simplicity of the model, and that it is well known and studied.
@@ -197,9 +210,9 @@ The
 The theromodynamics of any model; the phase diagram, correlation functions, other quantites etc, may depend on the specific values of coupling parameters in the hamiltonian, symmetries, dimensionality, type of lattice, etc. 
 But it turns out that the critical phenomena (phase transitions) only depend on three things, the symmetries of the hamiltonian, the dimensionality and the range of interations ( type of critical point ).
 
-\section{But anyways, that stuff is hard so lets just use RNG's}
-Since we now know all that stuff, we can use it to our advantage. We can study the critical behaviour of say Helium-4, which we know is in the $O(2)$ universality class, by calculation themodynamical averages directly by using Monte-Carlo method on the simulated 3DXY-model, which should have the exact same critical exponents. 
-One inconveinece is that one cannot simulate the infinite size 3DXY-model due to computer memory finite-ness, thus one simulates instead finite-size versions of the 3DXY-model. The theory of how finite size systems relate to the infinite size models is called finite size scaling. The normal power-laws aquire correction terms, which needs to be accounted for.
+\section{.}
+We can study the critical behaviour of say Helium-4, which we know is in the $O(2)$ universality class, by calculation themodynamical averages directly by using Monte-Carlo method on the simulated 3DXY-model, which should have the exact same critical exponents. 
+One inconvenience is that one cannot simulate the infinite size 3DXY-model due to computer memory finite-ness, thus one simulates instead finite-size versions of the 3DXY-model. The theory of how finite size systems relate to the infinite size models is called finite size scaling. The normal power-laws aquire correction terms, which needs to be accounted for.
 
 \section{Binder cumulant}
 The quantity $b =\frac{\langle M^4 \rangle}{\langle M^2\rangle^2}$ is useful as it approaches a constant as $t\rightarrow 0 $, as,  disregarding scaling corrections,

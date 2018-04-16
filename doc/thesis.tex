@@ -55,13 +55,16 @@
 \cplogo{\includegraphics[height=2.5cm]{./kthlogo.eps}}
 \innerlogo{\includegraphics[height=2.5cm]{./kthlogo.eps}}
 %\subtitle{A carefully crafted subtitle for people not settling with the\\usual title, giving yet longer, funnier, and better smelling, title}
-\division{Theoretical Particle Physics}
+\division{Condensed Matter Theory}
 \centercomment{\centerline{Typeset in \LaTeX}}
 %\foregincomment{Akademisk avhandling f\"or avl\"aggande av teknologie licentiatexamen (TeknL) inom
 %\"amnesomr{\aa}det teoretisk fysik.}
 %\dedication{To Someone}
 
 %\usepackage[swedish]{babel}
+\usepackage{verbatim}
+\usepackage{bm}
+\usepackage{enumerate}
 \usepackage[dvips]{graphicx}
 \usepackage{amsmath,amsfonts,amssymb}
 \usepackage[utf8]{inputenc}
@@ -97,6 +100,8 @@
 \newcommand{\eg}{{\it e.g.}}
 \newcommand{\hc}{{\rm h.c.}}
 \newcommand{\trm}[1]{\textrm{#1}}
+\newcommand{\oxx}{\omega_{XX'}}
+\newcommand{\hamxy}{\sum\limits_{\langle i,j\rangle}\bm{s_i}\cdot\bm{s_j}}
 
 \begin{document}
 
@@ -139,9 +144,6 @@ And here..
 
 \chapter{Model}\label{ch:DarkMatter}
 \input{model}
-
-\chapter{Simulations}\label{ch:NeutrinoPhysics}
-\input{simulations}
 
 \chapter{Results}\label{ch:ColliderPhenomenology}
 \input{results}

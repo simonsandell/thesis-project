@@ -2,6 +2,57 @@
 %     Created: mån feb 12 01:00  2018 C
 % Last Change: mån feb 12 01:00  2018 C
 %
-This is the preface.
+\section{Results}
+\subsection{Data Analysis}
+The simulation program outputs raw data ordered in lines. Data from one ``simulation'' is contained in $N_{temperatures} \cdot N_{averages per simulation} \cdot N_{simulations}$.
+To calculate quantities of interest from this raw data, a python script has been written, utilizing the numpy library. All available raw data is loaded into a numpy ndarray, and sorted by system size and temperature. Then for each block of data with one temperature and one system size, combined averages are calculated and from these, further functions of the averages are calculated, such as the Binder Parameter, it's derivative, Susceptibility, Superfluid density, etc. To estimate the statistical error in these estimations, we utilize a resampling method usually refered to as the jackknife method. For each block used in calculating the estimations, a jackknife function is called, which calculates the quantities again, but with a subblock of data omitted.
+\subsection{3DXY-model}
+Simulations were performed using the Wolff-cluster algorithm at the temperature $T_{run} = 2.2020~K$. Histogram extrapolation was performed to extrapolate to the range of temperatures $T_{range} = 2.2015-2.2030 ~ K$.
+The simulations are structured so that a lattice is initialized in the zero temperature state, all spins pointing in one direction. Then clusterupdates are performed until over 100k sweeps have been performed.
+
+(We say that one sweep has been performed when a number of spins equal to the total number of spins on the lattice has been tested to be added to a cluster.
+Thus the number of clusters and sweeps performed as warmup varies slightly between independent simulations)
+
+After the warmup, cluster updates are performed for 100k more sweeps, and the thermodynamic quantities are collected after each update. Then, averages are calculated and printed. Then 100 sweeps are performed to take the lattice to a state not correlated, and another 100k sample sweeps are performed. This is repeated 100 times. The system sizes simulated are 4, 8, 16, 32, 64 and 128. 
+The number of simulations currently used to calculate $U_4, \rho_s, \chi $ etc. for the system sizes 4
+
+The critical exponets X was
+
+\begin{table}[htpb]
+\begin{center}
+\begin{tabular}{l l l}
+  L & No. simulations & No. uncorrelated averages\\
+  4 & 110 & 11000\\
+  8 & 110 & 11000\\
+  16 & 45.54 & 4554\\
+  32 & 12 & 1200\\
+  64 & 1.16 & 116 \\
+  128 & 0  & 0 \\
+\end{tabular}
+\end{center}
+\caption{Number of simulations performed on the 3DXY-model}
+\end{table}
+
+\begin{table}[htpb]
+\begin{center}
+\begin{tabular}{l l l}
+  L & No. simulations & No. uncorrelated averages\\
+  4 & 100 & 10000\\
+  8 & 100 & 10000\\
+  16 & 100 & 10000\\
+  32 & 97.52 & 9752 \\
+  64 & 5.8 & 580 \\
+  128 & 1.15  & $115^{*}$ \\
+\end{tabular}
+\end{center}
+\caption{Number of simulations performed on the Ising3D-model  \textsuperscript{*The simulation of 128 is not doing so well, as evident in the plots}}
+\end{table}
+\subsection{Ising3D model}
+The same general formula is used when simulating the Ising3D model, however, the temperature range is changed to capture the phase transition, $T_{\trm{run}} = 4.50, ~ T_{\trm{range}} = 4.486-4.515$.
+
+
+
+\input{figures.tex}
+
 
 

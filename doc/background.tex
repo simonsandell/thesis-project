@@ -2,26 +2,218 @@
 %     Created: mån feb 12 01:00  2018 C
 % Last Change: mån feb 12 01:00  2018 C
 %
-This is the background.
-
-\section{Monte Carlo}
+%\section{Monte Carlo}
+%In statistical physics averages are calculated from 
+%\begin{equation}
+%  \langle A\rangle = \frac{1}{Z}\trm{Tr} e^{-H/T} = \sum_x A(x) P(x)
+%  \label{}
+%\end{equation}
+%where  $P(x) = (1/Z)exp(-H(x))$ is the Boltzmann distribution.
+%The practical and convievable way to evaluate these averages using Monte Carlo is to use importance sampling, i.e. do not form averages from uniformly random system configurations, but instead generate configurations that are Boltzmann distributed.   
+%Thus thermal Monte Carlo averages have the form 
+%\begin{equation}
+%  \langle A \rangle = \frac{1}{N} \sum_x A(x) \pm \frac{\sigma	}{\sqrt N}
+%  \label{}
+%\end{equation}
+%where the states $x$ are Boltzmann distributed.
+%However, the Boltzmann distribution may be unsuitable for some systems/configurations we want to study, so we can use any other distribution as 
+%\begin{equation}
+%  \langle A \rangle = \frac{\frac{1}{N}\sum_y \frac{A(y) e^{-H(x)/T}}{P'(y)}}{\frac{1}{N}\sum_y \frac{e^{-H(y)/T}}{P'(y)}}  
+%  \label{}
+%\end{equation}
+% where the states $y$ are distributed according to $P'(y)$.
+\section{Method}
+There are many different models in the same universality class as the normal-superfluid Helimu-4 transition, for example the $\phi^4$-model, the ddXY model etc.
+In this thesis we have chosen the simulate the 3DXY-model. This is convenient because of the relative simplicity of the model, and that it is well known and studied.
+The numerical method used to calculate thermodynamic averages is a Wolff algorithm.
+To achieve good statistics in a reasonable amount of time, it is necessary to utilize a global update algorithm, since the model experiences so called critical slowing down near the transition temperature. 
+Near the transition temperature, the correlation length diverges, so thermal fluctuations propagate very long distances, and so the system takes a very long time to equilibrate to the equilibrum value.
+\subsection{Monte Carlo}
 In statistical physics averages are calculated from 
 \begin{equation}
   \langle A\rangle = \frac{1}{Z}\trm{Tr} e^{-H/T} = \sum_x A(x) P(x)
-  \label{}
 \end{equation}
 where  $P(x) = (1/Z)exp(-H(x))$ is the Boltzmann distribution.
 The practical and convievable way to evaluate these averages using Monte Carlo is to use importance sampling, i.e. do not form averages from uniformly random system configurations, but instead generate configurations that are Boltzmann distributed.   
 Thus thermal Monte Carlo averages have the form 
 \begin{equation}
   \langle A \rangle = \frac{1}{N} \sum_x A(x) \pm \frac{\sigma	}{\sqrt N}
-  \label{}
 \end{equation}
 where the states $x$ are Boltzmann distributed.
 However, the Boltzmann distribution may be unsuitable for some systems/configurations we want to study, so we can use any other distribution as 
 \begin{equation}
   \langle A \rangle = \frac{\frac{1}{N}\sum_y \frac{A(y) e^{-H(x)/T}}{P'(y)}}{\frac{1}{N}\sum_y \frac{e^{-H(y)/T}}{P'(y)}}  
-  \label{}
 \end{equation}
  where the states $y$ are distributed according to $P'(y)$.
 
+ Importance sampling is a way of reducing the error in the Monte Carlo estimate. Instead of choosing sample points distributed uniformly, one can try to choose the most probable states. Since thermal systems are Boltzmann-distributed, we want a way to randomly generate states distributed according to the Boltzmann distribution.
+\subsection{Markov process}
+A Markovian process is one for which the probility of getting to any state in the system is determined solely by the current state. I.e. the probability of going from state $x_i$ to $x_{j}$ is given by a transition probability $w(x_i \rightarrow x_j)$. The master equation describing the evolution of the probability distribution can then be written $P(x_i )$
+ 
+
+
+\subsection{Histrogram extrapolation}
+Histogram extrapolation is a method to extract more data from a run. 
+Averages are calculated as
+\begin{equation}
+  \langle A \rangle_{\beta_0} =  \frac{\sum_{x}A_x e^{-\beta_0 H_x}}{\sum_{x}e^{-\beta_0 H_x}}
+\end{equation}
+To get the average of A at some different temperature, say $\beta_1$, we can do
+\begin{align}
+  \langle A\rangle_{\beta_1} =  \frac{\sum_{x}A_x e^{-\beta_1 H_x}}{\sum_{x}e^{-\beta_1 H_x}} = \\
+  = \frac{\sum_x A_x e^{-(\beta_1 - \beta_0)H_x} e^{-\beta_0 H_x}}{\sum_x e^{-(\beta_1 - \beta_0)H_x}e^{-\beta_0 H_x}} = \\
+  = \frac{\langle A e^{-(\beta_1 - \beta_0)H}\rangle_{\beta_0}}{\langle e^{-(\beta_1 - \beta_0)H}\rangle_{\beta_0}}
+\end{align}
+Since the value of $abs(\beta_1 -\beta_0)$ will be small in practice, and the value of the energy will increase with the systemsize, precision will be lost in the calculation of $\exp\left( \beta_1 - \beta_0 \right)H_x$. To mitigate this, one can subtract a constant from the energy of the system, $H_max$, since a constant shift in energy will not change expectation values, since it just factors out of both sums and cancels.
+\subsection{Wolff Algorithm}
+The Wolff algorithm is a non-local update method, and is an improvement upon the Swendsen-Wang method in which spin bonds are scanned and either deleted or frozen. This will divide the lattice into clusters, which are then flipped/updated with certain probabilites. In the Wolff algorithm only a single cluster is generated, with the starting spin uniformly random. That way of initializing the cluster, one can expect to hit large clusters with higher probability, since probability of hitting a cluster should depend on its size.
+Thus one can avoid the many single spin clusters usually generated in the Swendsen-Wang method.
+For a markovian update method to give a chain of system configurations with distribution according to the Boltzmann-factor, it must satisfy two conditions, 
+
+(i) for any given state of the simulated system, any other state must be reachable in a finite number of steps.
+
+(ii) Non-periodicity, it should not be possible to return to a preivous state immediatley, only after a number of steps, $t =nk,~ n = 1,2,3\dots$.
+This hold for the Wolff method, since a valid cluster consists of just shifting a single spin with a random angle, thus any configuration can be reached in $N \leq N_{\trm{spins}}$ steps. Also, since the first spin selected is always flipped, the condition of Non-periodicity is also fulfilled.
+The algorithm must also have a transition probability configured so that after a long time, the desired stationary distribution is reached, in our case the Boltzmann-distribution.
+Call the desired staionary distribution $\rho(X)$, the transition probability $T(X \rightarrow X')$ and the probability of state $X$ at markov timestep t $\rho(X,t)$.
+Then the master equaion is 
+\begin{equation}
+  \rho(X, t+1) - \rho(X,t) = -\sum_{X'} T(X\rightarrow X')\rho(X,t) +\sum_{X} T(X'\rightarrow X)\rho(X',t).
+\end{equation}
+Then solving for the stationary solution, we get
+\begin{equation}
+  \sum_{X'}T(X\rightarrow X') \rho(X) =  \sum_{X}T(X'\rightarrow X) \rho(X')
+\end{equation}
+which is hard to solve in general, but with a very famous paritcular solution called the detailed balace solution can be found,
+\begin{align}
+  \frac{T(X\rightarrow X')}{T(X'\rightarrow X)} = \frac{\rho(X')}{\rho(X)} 
+  \label{eq:detbal}
+\end{align}
+for all states $X,~X'$.
+
+This solution can be decomposed as
+\begin{equation}
+  T(X\rightarrow X') = \omega_{XX'} A_{XX'}
+\end{equation}
+where $\oxx$ represents a trial probability and $A_{XX'}$ represents an acceptance probability.
+We let $\omega_{XX'}$ satisfy
+\begin{align}
+  \oxx = \omega_{X'X}\\
+  0 \leq \oxx \leq 1\\
+  \sum_{X'} \oxx = 1.
+\end{align}
+Inserting this form of $T$ into the detailed balance equation then gives
+\begin{equation}
+  \frac{A_{XX'}}{A_{X'X}} = \frac{\rho_{X'}}{\rho_{X}}.
+\end{equation}
+In the metropolis algorithm one chooses the acceptance probability as follows
+Step 1: From state $X$ propose a new trial state $X'$ with probability given by $\oxx$. Then accept that state with probability 
+\begin{equation}
+  A_{XX'} = 
+  \begin{cases}
+    	1 &\trm{ if } \frac{\rho(X')}{\rho(X)} \geq 1\\
+	\frac{\rho(X')}{\rho(X)}&\trm{ if } \frac{\rho(X')}{\rho(X)} < 1 .
+  \end{cases}
+\end{equation}
+The trial probability is usually just a uniform distribution.
+\subsubsection{Wolff on the 3DXY-model}
+In the 3DXY-model, each spin is characterized by a single value, their angle $\alpha$.
+We define the hamiltonian of the 3DXY-model as 
+\begin{equation}
+  H = \beta\sum_{<s_i,s_j>} \cos(\alpha_i - \alpha_j)
+\end{equation}
+where $<s_i,s_>$ denote that only sites $s_i$ and $s_j$ which are nearest neighours should be included.
+The probability of adding spin to the cluster is
+\begin{equation}
+ P(\alpha_i,\alpha_j,\alpha_u) = 1 - \exp(2\beta \cos(\alpha_j - \alpha_u)\cos(\alpha_i - \alpha_u))
+  \label{pflip}
+\end{equation}
+where $\bm{u}$ is the normal to the plane through which the spins are reflected when added.
+When a spin is added to the cluster, it is reflected through a plane.
+The Wolff-algorithm is defined as follows for the 3DXY-model:
+\begin{enumerate}[(i)]
+\item Select a starting spin with uniform probability. Select a random plane with normal $\bm{u}$, with the angle $\alpha_u$  to reflect spins through. Reflect the starting spin through the plane, taking it to 
+$$\alpha \rightarrow R(\alpha,\alpha_u) = \pi + 2\alpha_u - \alpha$$
+
+and mark it as part of cluster.
+
+\item Add it's neighbours to a list of perimeter spins, to be tried for inclusion in the cluster.
+
+\item Pick out any element in the list. Try to add it to the cluster with probability as defined above. If it is accepted, add it to the cluster. Add nearest neighbours that are not part of the cluster already to the perimeter list.
+
+\item Repeat (iii) until the perimeter list is empty.
+\end{enumerate}
+For the Wolff-algorithm, to show that it satisfies detailed balance, condiser a 
+state $X$ and a state $X'$ differing by a flip of the cluster $c$. 
+The transition probabilities obey
+\begin{align}
+  \frac{T(X\rightarrow X')}{T(X'\rightarrow X)} &= \prod_{\langle s_i s_j \rangle \in \bm{\partial} c} \frac{ 1- P(R(\alpha_i,\alpha_u),\alpha_j,\alpha_u)}{1- P(R(\alpha'_i,\alpha_u),\alpha'_j,\alpha_u)}
+\end{align}
+where the product is over nearest neighbour bonds where $s_i \in x, s_j \notin c$.
+Thus we have that $ R(\alpha_i,\alpha_u) = \alpha'_i $, $R(\alpha'_i) = \alpha_i$ and $\alpha_j = \alpha'_j$.
+We get
+\begin{align}
+  \frac{T(X\rightarrow X')}{T(X'\rightarrow X)}&= \prod_{\langle s_i s_j \rangle \in \bm{\partial} c} \frac{ \exp\left\{2\beta\cos(R(\alpha_i,\alpha_u) - \alpha_u)\cos(\alpha_j - \alpha_u)\right\}}{ \exp\left\{2\beta\cos(R(\alpha'_i,\alpha_u) - \alpha_u)\cos(\alpha'_j -\alpha_u)\right\}} = \\
+  &= \prod_{\langle s_i s_j \rangle \in \bm{\partial} c} \frac{ \exp\left\{2\beta\cos(\alpha'_i - \alpha_u)\cos(\alpha'_j - \alpha_u)\right\}}{ \exp\left\{2\beta\cos(\alpha_i,\alpha_u) - \alpha_u)\cos(\alpha_j -\alpha_u)\right\}} = \\
+  &= \frac{\rho(X')}{\rho(X)}.
+\end{align}
+
+\section{Thermodynamics}
+\begin{equation}
+  H_{\trm{3DXY}} = -K\sum\limits_{\langle i,j\rangle} \bm{s_i}\cdot\bm{s_j} = -K\sum\limits_{\langle i,j\rangle} \cos(\alpha_i - \alpha_j)
+\end{equation}
+We set $K=1$.
+\begin{equation}
+  Z = \trm{Tr} \exp\left[-\beta \left( H_\Omega - \int d^d \bm{r} H(\bm{r})\eta(\bm{r})\right)\right]
+\end{equation}
+\begin{equation}
+  \label{}
+\end{equation}
+\section{Scaling}
+Often in physics relations between different physical quantities are described by power-laws, $f = f(\chi)\cdot g^{x}$. So also in statistical physics, where such laws are fundamental to understanding phase transitions.
+In statistical physics, when studying a specific system, the fundamental quantity is some thermodynamic potential,  Gibbs, Helmholtz. From this potential, several other physical quantites are derived, such as the energy, magnetization, and other that may depend on the specifics. 
+If the system has a phasetransition, often, but not always, since what constitutes a phase transition is not trivial, physical quantites will diverege, and follow certain scaling laws as they do. 
+Using mean field theory to calculate these laws gives always a fractional exponent in the laws, but experiments had shown evidence of non-fractional exponents. 
+Kadanoff realized that a diverging correlation length implied that there was a relation between the lenght scale at which the order parameter was defined and the coupling constants of an effective Hamiltonian. Altough his block-spin approach does not enable one to compute the critical expoents, it was an important step.
+The full theory of Renormalization Group was put forth by Wilson.
+The core concept is the renormalization group transformations which takes a Hamiltonian and by some method/rule of coarse-graining clumps together short wave-length degrees of freedom, and defines a new effective hamiltonian describing the long-wavelength degrees of freedom with new coupling parameters for the new lenghtscale.
+The name renormalization group is not entirely appropriate, since these transformations are in general complicated and non-linear, thus not always having inverses. But the transformations do have the associative property of groups. Rescaling the system by some length $l_1$ and then rescaling again by some other length $l_2$ should be equivalent to performing the rescaling in the other order.
+But so far all we did was remove a finite number of degrees of freedom from out system, how can that explain the sigular behaviour at phase transitions? By repeating the transformations an infinite number of times, singular behaviour can be introduced.
+The partition function is what we really want to compute to know everything about a physical system, but that task is most often simply unachievable. The renormalization transformation are also not easy to compute, but the transformation of the coupling constants can be approximated.
+\subsection{fixed points}
+The 
+
+\subsection{Universality}
+The theromodynamics of any model; the phase diagram, correlation functions, other quantites etc, may depend on the specific values of coupling parameters in the hamiltonian, symmetries, dimensionality, type of lattice, etc. 
+But it turns out that the critical phenomena (phase transitions) only depend on three things, the symmetries of the hamiltonian, the dimensionality and the range of interations ( type of critical point ).
+
+\section{.}
+We can study the critical behaviour of say Helium-4, which we know is in the $O(2)$ universality class, by calculation themodynamical averages directly by using Monte-Carlo method on the simulated 3DXY-model, which should have the exact same critical exponents. 
+One inconvenience is that one cannot simulate the infinite size 3DXY-model due to computer memory finite-ness, thus one simulates instead finite-size versions of the 3DXY-model. The theory of how finite size systems relate to the infinite size models is called finite size scaling. The normal power-laws aquire correction terms, which needs to be accounted for.
+
+\section{Binder cumulant}
+The quantity $b =\frac{\langle M^4 \rangle}{\langle M^2\rangle^2}$ is useful as it approaches a constant as $t\rightarrow 0 $, as,  disregarding scaling corrections,
+\begin{equation}
+  \langle M^4 \rangle \sim t^{}
+\end{equation}
+\section{Scaling hypothesis}
+The scaling hypothesis is often stated as
+\begin{equation}
+  f_{singular}(t,h) = t^{2- \alpha} g_f\left(\frac{h}{t^\Delta}\right)
+\end{equation}
+from which the scaling of many other quantites can be derived, as derivatives, second derivatives and combinations of such.
+\subsection{Scaling laws}
+\begin{align}
+	\alpha + 2\beta + \gamma = 2\\
+	\gamma = \beta(\delta -1)\\
+	d\nu = 2 - \alpha
+\end{align}
+\subsection{Definitions of critical exponents}
+\begin{align}
+  \beta &= \frac{1}{k_B T} \\
+  F &= -\beta \log Z\\
+  F_s(u_t,u_h) &= L^{-d}f_s(L^{y_t}u_t,L^{y_h}u_h)\\
+  M &\sim (-t)^{\beta}\\
+  \chi &\sim |t|^{-\gamma}\\
+  \xi &\sim |t|^{-\nu}
+\end{align}  
