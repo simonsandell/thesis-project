@@ -73,7 +73,7 @@ void _3DXY::warmupJob(long double L, std::string maxepath,std::string warmlatpat
 	Lattice3DXY lat(L,runTemp,cold,r,c,maxepath,warmlatpath);
 	//lat.loadLattice();
 	long double Neq = 1000.0L;
-	while (true){
+	while (lat.NTotSweeps < 100000.0L){
 		warmup(lat,Neq);
 		lat.saveLattice();
 	}

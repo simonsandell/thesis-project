@@ -35,11 +35,11 @@ long double * getTrangeIsing3D(long double start, long double end, int N){
 }
 
 void Ising3D::wolffHistJob(long double L,std::string maxepath,std::string warmlatpath){
-	long double runTemp = 4.50000000000000L;
+	long double runTemp = 4.51000000000000L;
 
-	long double	startT=			4.48500L;
-	long double	endT=			4.51500L;
-	int 		Ntemps=			41;
+	long double	startT=			4.49000L;
+	long double	endT=			4.53000L;
+	int 		Ntemps=			101;
 	long double* Trange;
 	if (Ntemps < 2) {
 		Trange = new long double[1];
@@ -50,24 +50,23 @@ void Ising3D::wolffHistJob(long double L,std::string maxepath,std::string warmla
 	}
 	long double 	Neq=			100000.0L;
 	bool 		cold=			true;
-	long double	Nsamp=			100000.0L;
+	long double	Nsamp=			1000.0L;
 	long double 	Nbetw=			100;
-	int 		Nruns=			100;
 	long double beta = 1.0L/runTemp;
 
 	Cluster clust(L);
 	RandStruct rand;
 
 	LatticeIsing3D lat(L,cold,beta,rand,clust,maxepath,warmlatpath);
-	warmup(lat,(Neq));
-	for (int i=0; i< Nruns; ++i){	
+	warmup(lat,Neq);
+	while(true){	
 		wolffHistRunIsing3D(lat,Nsamp,Trange,Ntemps);
 		warmup(lat,Nbetw);
 	}
 }
 
 void Ising3D::teqJob(long double L,bool cold,std::string maxepath,std::string warmlatpath){
-	long double runTemp = 4.500000000000000L;
+	long double runTemp = 4.510000000000000L;
 	long double beta = 1.0L/runTemp;
 	Cluster c(L);
 	RandStruct r;
@@ -85,7 +84,7 @@ void Ising3D::teqJob(long double L,bool cold,std::string maxepath,std::string wa
 }
 
 void Ising3D::warmupJob(long double L, std::string maxepath,std::string warmlatpath){
-	long double runTemp = 4.5000000000000000L;
+	long double runTemp = 4.5100000000000000L;
 	long double beta = 1.0L/runTemp;
 	bool cold = true;
 	Cluster c(L);
@@ -97,6 +96,7 @@ void Ising3D::warmupJob(long double L, std::string maxepath,std::string warmlatp
 		warmup(lat,Neq);
 		lat.saveLatticeAs("latest");
 		std::cout << lat.L << " energy " << lat.energy << std::endl;
+		std::cout << lat.L << " NTotSweeps " << lat.NTotSweeps << std::endl;
 	}
 }
 

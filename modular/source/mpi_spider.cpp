@@ -24,16 +24,28 @@ int main(){
         std::string h_pwd = "/home/simon/exjobb/modular/"; 
 	std::string o_pwd = "/home/simsan/exjobb/modular/"; 
 	
-	std::string choice = b_pwd;
+	std::string env = b_pwd;
 	std::string model = "3DXY/";
 		  
-	std::string mep= choice + "maxE/" + model; 
-	std::string wlp= choice + "warmLattice/" + model; 
+	std::string mep= env + "maxE/" + model; 
+	std::string wlp= env + "warmLattice/" + model; 
 
 	if (world_rank != 0){
-		_3DXY::wolffHistJob(128.0L,mep,wlp);
-		//std::string endmsg = "finished";	
-		//MPI_Send(endmsg.c_str(),endmsg.size(),MPI_CHAR,0,1,MPI_COMM_WORLD);
+		std::string endmsg = "finished";	
+		if (world_rank == 1){
+			_3DXY::warmupJob(4.0L,mep,wlp);
+			_3DXY::warmupJob(8.0L,mep,wlp);
+			_3DXY::warmupJob(16.0L,mep,wlp);
+			MPI_Send(endmsg.c_str(),endmsg.size(),MPI_CHAR,0,1,MPI_COMM_WORLD);
+		}
+		if (world_rank == 3){
+			_3DXY::warmupJob(32.0L,mep,wlp);
+			MPI_Send(endmsg.c_str(),endmsg.size(),MPI_CHAR,0,1,MPI_COMM_WORLD);
+		}
+		if (world_rank == 4){
+			_3DXY::warmupJob(64.0L,mep,wlp);
+			MPI_Send(endmsg.c_str(),endmsg.size(),MPI_CHAR,0,1,MPI_COMM_WORLD);
+		}
 	}
 	else{
 		int N_finished =0;
