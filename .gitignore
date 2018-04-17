@@ -43,6 +43,9 @@ Thumbs.db
 *.ps
 *.pdf
 *.dvi
+*.bbl
+*.toc
+*.blg
 
 *.pyc
 # Directories 

@@ -280,6 +280,8 @@ void LatticeIsing3D::loadLattice(){
 		updateQuants();//sets energy and mag
 		PROB = 1.0L - exp(-2.0L*beta);
 		int_L = (int) (L+0.5L);
+		//maxE should not have been saved..
+		maxE = getMaxE(maxEPath,L);
 
 	}
 }

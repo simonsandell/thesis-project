@@ -404,6 +404,9 @@ void Lattice3DXY::loadLattice(){
 		beta = 1.0L/runTemp;
 		int_L = (long int)(L+0.5L);
 		updateQuants();
+		//maxE shouldnt have been saved..
+		maxE = getMaxE(maxEPath,L);
+
 
 	}
 
