@@ -100,6 +100,15 @@ void Ising3D::warmupJob(long double L, std::string maxepath,std::string warmlatp
 	}
 }
 
+void Ising3D::loadandPrint(long double L,std::string maxepath,std::string warmlatpath){
+	long double runTemp = 4.5100000000000L;
+	Cluster c(L);
+	RandStruct r;
+	LatticeIsing3D lat(L,runTemp,true,r,c,maxepath,warmlatpath);
+	lat.loadLattice();
+	lat.printVals();
+}
+
 
 
 

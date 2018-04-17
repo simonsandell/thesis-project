@@ -16,6 +16,9 @@ long double getMaxE(std::string path,long double L){
 	long double maxE;
 	file >> std::fixed >> maxE;
 	if (abs(maxE) < 1.0L){
+		std::cout << maxE << std::endl;
+		std::cout << path << std::endl;
+		std::cout << L<< std::endl;
 		std::cout << "failed to get MaxE" << std::endl;
 		exit(1);
 	}

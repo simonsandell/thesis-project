@@ -10,5 +10,6 @@ namespace Ising3D{
 	void wolffHistJob(long double L,std::string maxepath,std::string warmlatpath);
 	void teqJob(long double L,bool cold,std::string maxepath,std::string warmlatpath);
 	void warmupJob(long double L,std::string maxepath,std::string warmlatpath);
+	void loadandPrint(long double L,std::string maxepath,std::string warmlatpath);
 };
 #endif

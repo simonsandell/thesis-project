@@ -24,28 +24,19 @@ int main(){
         std::string h_pwd = "/home/simon/exjobb/modular/"; 
 	std::string o_pwd = "/home/simsan/exjobb/modular/"; 
 	
-	std::string env = b_pwd;
-	std::string model = "3DXY/";
+	std::string env = h_pwd;
+	std::string model = "Ising3D/";
 		  
 	std::string mep= env + "maxE/" + model; 
 	std::string wlp= env + "warmLattice/" + model; 
 
 	if (world_rank != 0){
-		std::string endmsg = "finished";	
-		if (world_rank == 1){
-			_3DXY::warmupJob(4.0L,mep,wlp);
-			_3DXY::warmupJob(8.0L,mep,wlp);
-			_3DXY::warmupJob(16.0L,mep,wlp);
-			MPI_Send(endmsg.c_str(),endmsg.size(),MPI_CHAR,0,1,MPI_COMM_WORLD);
-		}
-		if (world_rank == 3){
-			_3DXY::warmupJob(32.0L,mep,wlp);
-			MPI_Send(endmsg.c_str(),endmsg.size(),MPI_CHAR,0,1,MPI_COMM_WORLD);
-		}
-		if (world_rank == 4){
-			_3DXY::warmupJob(64.0L,mep,wlp);
-			MPI_Send(endmsg.c_str(),endmsg.size(),MPI_CHAR,0,1,MPI_COMM_WORLD);
-		}
+		Ising3D::loadandPrint(128.0L,mep,wlp);
+		Ising3D::loadandPrint(64.0L,mep,wlp);
+		Ising3D::loadandPrint(32.0L,mep,wlp);
+		Ising3D::loadandPrint(16.0L,mep,wlp);
+		Ising3D::loadandPrint(8.0L,mep,wlp);
+		Ising3D::loadandPrint(4.0L,mep,wlp);
 	}
 	else{
 		int N_finished =0;

@@ -272,8 +272,9 @@ void LatticeIsing3D::loadLattice(){
 		str2.resize(sz2);
 		ifs.read(&str2[0],sz2);
 
-		warmLatPath = str1;
-		maxEPath = str2;
+		//redundant and bad
+		//warmLatPath = str1;
+		//maxEPath = str2;
 		
 		//recreate other quants
 		Nspins = L*L*L;
@@ -284,4 +285,8 @@ void LatticeIsing3D::loadLattice(){
 		maxE = getMaxE(maxEPath,L);
 
 	}
+}
+void LatticeIsing3D::printVals(){
+	std::cout << "beta, L, NTotSweeps,NTotClusts, coldstart, warmLatPath ,maxEPath, maxE, energy " << std::endl <<
+	beta << " " << L << " " << NTotSweeps<< " " <<NTotClusts<< " " << coldstart<< " " << warmLatPath << " " <<maxEPath<< " " << maxE<< " " << energy << std::endl; 
 }

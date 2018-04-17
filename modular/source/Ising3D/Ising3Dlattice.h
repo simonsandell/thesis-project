@@ -42,6 +42,6 @@ struct LatticeIsing3D{
 	void saveLattice();
 	void saveLatticeAs(std::string name);
 	void loadLattice();
-
+	void printVals();
 	};
 #endif

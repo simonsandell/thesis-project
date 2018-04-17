@@ -396,8 +396,8 @@ void Lattice3DXY::loadLattice(){
 		str2.resize(sz2);
 		ifs.read(&str2[0],sz2);
 
-		warmLatPath = str1;
-		maxEPath = str2;
+		//warmLatPath = str1;
+		//maxEPath = str2;
 		
 		//recreate other quants
 		Nspins = L*L*L;
@@ -412,6 +412,11 @@ void Lattice3DXY::loadLattice(){
 
 }
 
+void Lattice3DXY::printVals(){
+	std::cout << "runTemp L, NTotSweeps,NTotClusts, coldstart, warmLatPath ,maxEPath, maxE, energy " << std::endl <<
+	runTemp << " " << L << " " << NTotSweeps<< " " <<NTotClusts<< " " << coldstart<< " " << warmLatPath << " " <<maxEPath<< " " << maxE<< " " << energy << std::endl;
+
+}
 
 
 
