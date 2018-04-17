@@ -10,7 +10,7 @@ import teqPlot as tp
 import find_teq as fteq
 #functions
 from _3DXY import bin_omega_3L as SCbin3L
-from _3DXY import bin_omega_2L as SCbin2L
+import bin_omega_2L as SCbin2L
 from _3DXY import rhos_omega_3L as SCrhos3L
 from _3DXY import rhos_omega_2L as SCrhos2L
 
@@ -63,16 +63,16 @@ def ana3DXY(fName,doT,doL,doSC2,doSC3,doTeq,doAnalyze,doPlot,doPrint):
         if (doSC2):
             dirname = scalingDir + '/omegaRS2L';
             anaSC2L.analyze(dataMatrix,dirname,
-                SCrhos2L.calcOmegaRS2L,anaFuncs.getOmegaRange(0.0,1.4,0.05));
+                SCrhos2L.SC2LRho,anaFuncs.getOmegaRange(0.0,1.4,0.05));
             print("2L RS done");
             dirname = scalingDir + '/omegaBin2L';
             anaSC2L.analyze(dataMatrix,dirname,
-                SCbin2L.calcOmegaBin2L,anaFuncs.getOmegaRange(0.0,1.4,0.05));
+                SCbin2L.SC2LBin,anaFuncs.getOmegaRange(0.0,1.4,0.05));
             print("2L Bin done")
         if (doTeq):
             tp.analyze(dataMatrix,"./foutput/3DXY/vsN/"+fName,2.20200000);
             print("Teq done");
-            paramguess = [-1.0,-0.2,1.10]
+            paramguess = [-1.0,-0.02,1.10]
             fteq.findteq(dataMatrix,2.202000000,0.51891688,outdir + "teq/sigma_vs_z.dat",False,paramguess);
             fteq.findteq(dataMatrix,2.202000000,0.51891688,outdir + "teq/sigma_vs_z_drop4.dat",True,paramguess);
             print("find_teq done")

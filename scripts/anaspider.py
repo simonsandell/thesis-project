@@ -44,6 +44,7 @@ if (preset == "sc2"):
     doTemp = False;
     doSC3 = False;
     doL = False;
+    doPlot = False;
 if (preset ==  "all"):
     doSC2 = True;
     doAna =True;

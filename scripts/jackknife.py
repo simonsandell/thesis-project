@@ -31,8 +31,12 @@ def getJackDelta(mat,calcMeans,blocks):
     javgs = np.array(javgs);
     deltas = [];
     sqrN = pow(N_blocks,0.5);
-    for x in range(javgs.shape[1]):
-        deltas.append(sqrN*np.std(javgs[:,x]));
+    if (javgs.ndim > 1):
+        for x in range(javgs.shape[1]):
+            deltas.append(sqrN*np.std(javgs[:,x]));
+    else:
+        deltas.append(sqrN*np.std(javgs));
+
     return deltas;
 
 

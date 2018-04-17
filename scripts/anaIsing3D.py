@@ -10,7 +10,7 @@ import teqPlot as tp
 import find_teq as fteq
 #functions
 from Ising3D import bin_omega_3L as SCbin3L
-from Ising3D import bin_omega_2L as SCbin2L
+import bin_omega_2L as SCbin2L
 
 import intersectOmega
 import anaFuncs
@@ -53,7 +53,7 @@ def anaIsing3D(fName,doT,doL,doSC2,doSC3,doTeq,doAnalyze,doPlot,doPrint):
             print("L done");
         if (doSC3):
             dirname = scalingDir + "/omegaBin3L"
-            anaSC3L.analyze(dataMatrix,dirname,SCbin3L.calcOmegaBin3L);
+            anaSC3L.analyze(dataMatrix,dirname,SCbin3L.SC2LBin);
             print("3L Bin done");
         if (doSC2):
             dirname = scalingDir + '/omegaBin2L';
@@ -64,7 +64,7 @@ def anaIsing3D(fName,doT,doL,doSC2,doSC3,doTeq,doAnalyze,doPlot,doPrint):
         if (doTeq):
             tp.analyze(dataMatrix,outdir + "vsN/"+fName,4.50000000);
             print("teq done");
-            paramguess = [-.8,-0.1, +1.1];
+            paramguess = [-.8,-0.01, +1.1];
             fteq.findteq(dataMatrix,4.500000000,0.51814925,outdir + "teq/sigma_vs_z.dat",False,paramguess);
             fteq.findteq(dataMatrix,4.500000000,0.51814925,outdir + "teq/sigma_vs_z_drop4.dat",True,paramguess);
             print("find_teq done")
