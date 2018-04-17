@@ -75,7 +75,7 @@ void _3DXY::warmupJob(long double L, std::string maxepath,std::string warmlatpat
 	long double Neq = 1000.0L;
 	while (lat.NTotSweeps < 100000.0L){
 		warmup(lat,Neq);
-		lat.saveLattice();
+		lat.saveLatticeAs("latest");
 	}
 }
 	
