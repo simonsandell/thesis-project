@@ -93,8 +93,6 @@ def plot_comp(params,x,y):
 def chisquare(params,x,y):
     Y = fit(params,x);
     cs = sps.chisquare(y,Y);
-    print(cs);
-    print(params);
 
     return cs[0];
 

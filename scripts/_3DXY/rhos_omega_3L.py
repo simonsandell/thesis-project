@@ -41,12 +41,12 @@ def calcOmegaRS3L(mat):
     if (llist.shape[0] < 3):
         print(llist.shape)
         print("bad shape");
-        exit()
-    avgs = [];
-    avgs.append(calcAvgs(mat[lind[0]:lind[1],:]));
-    avgs.append(calcAvgs(mat[lind[1]:lind[2],:]));
-    avgs.append(calcAvgs(mat[lind[2]:,:]));
-    avgsmat = np.array(avgs);
-    scs = getScalingCorrections(avgsmat);
-    return scs;
+    else:
+        avgs = [];
+        avgs.append(calcAvgs(mat[lind[0]:lind[1],:]));
+        avgs.append(calcAvgs(mat[lind[1]:lind[2],:]));
+        avgs.append(calcAvgs(mat[lind[2]:,:]));
+        avgsmat = np.array(avgs);
+        scs = getScalingCorrections(avgsmat);
+        return scs;
 
