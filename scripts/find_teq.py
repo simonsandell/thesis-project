@@ -1,4 +1,4 @@
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 
 import numpy as np
 import scipy.stats as sps
@@ -83,12 +83,12 @@ def fit(params,X):
     c = params[2]
     return a*np.exp(b*X) + c;
 
-def plot_comp(params,x,y):
-    plt.gca().set_xscale('log');
-    plt.scatter(x,y);
-    X = np.geomspace(pow(10,-3),x[-1],20.0);
-    Y = fit(params,X);
-    plt.plot(X,Y,linewidth=2.0);
+#def plot_comp(params,x,y):
+#    plt.gca().set_xscale('log');
+#    plt.scatter(x,y);
+#    X = np.geomspace(pow(10,-3),x[-1],20.0);
+#    Y = fit(params,X);
+#    plt.plot(X,Y,linewidth=2.0);
 
 def chisquare(params,x,y):
     Y = fit(params,x);
