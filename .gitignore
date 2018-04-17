@@ -54,7 +54,6 @@ output/
 teqoutput/
 old_output/
 test/
-warmLattice/
 lattices/
 __pycache__/
 # octpus cluster output files
