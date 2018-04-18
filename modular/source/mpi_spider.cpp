@@ -31,12 +31,11 @@ int main(){
 	std::string wlp= env + "warmLattice/" + model; 
 
 	if (world_rank != 0){
-		Ising3D::loadandPrint(128.0L,mep,wlp);
-		Ising3D::loadandPrint(64.0L,mep,wlp);
-		Ising3D::loadandPrint(32.0L,mep,wlp);
-		Ising3D::loadandPrint(16.0L,mep,wlp);
-		Ising3D::loadandPrint(8.0L,mep,wlp);
-		Ising3D::loadandPrint(4.0L,mep,wlp);
+		Ising3D::teqJob(64.0L,mep,wlp);
+		Ising3D::teqJob(32.0L,mep,wlp);
+		Ising3D::teqJob(16.0L,mep,wlp);
+		Ising3D::teqJob(8.0L,mep,wlp);
+		Ising3D::teqJob(4.0L,mep,wlp);
 	}
 	else{
 		int N_finished =0;
