@@ -13,17 +13,18 @@ def openFiles(directory):
     
 
 #in goes all data for a specific temperature
-def calculate(mat,i,istart,FileList,function,linds):
+def calculate(mat,i,istart,FileList,function,lind):
     T = mat[istart,1];
-    N_L = linds.shape[0];
+    N_L = lind.shape[0];
     N_corrs = N_L -2;
     lind = np.append(lind,-1);
     scalingcorrs = [];
     deltas = [];
+    Tmat = mat[istart:i,:]; 
     for x in range(N_corrs):
-        submat3L = submat[lind[x]:lind[x+3],:];
+        submat3L = Tmat[lind[x]:lind[x+3],:];
         scalingcorrs.append(function(submat3L));
-        deltas.append(jackknife.getJackDelta(submat3L,function,100));
+        deltas.append(jackknife.getJackDelta(submat3L,function,1000));
 
     fstr= "{:30.30f}";
     for x in range(len(scalingcorrs)):

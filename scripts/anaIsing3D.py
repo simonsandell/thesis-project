@@ -64,9 +64,10 @@ def anaIsing3D(fName,doT,doL,doSC2,doSC3,doTeq,doAnalyze,doPlot,doPrint):
         if (doTeq):
             tp.analyze(dataMatrix,outdir + "vsN/"+fName,4.50000000);
             print("teq done");
-            paramguess = [-.8,-0.01, +1.1];
-            fteq.findteq(dataMatrix,4.500000000,0.51814925,outdir + "teq/sigma_vs_z.dat",False,paramguess);
-            fteq.findteq(dataMatrix,4.500000000,0.51814925,outdir + "teq/sigma_vs_z_drop4.dat",True,paramguess);
+            paramguess = [-.8,-0.1, +1.1];
+            betanu = 0.51814925;
+            fteq.findteq(dataMatrix,4.500000000,betanu,outdir + "teq/sigma_vs_z.dat",False,paramguess);
+            fteq.findteq(dataMatrix,4.500000000,betanu,outdir + "teq/sigma_vs_z_drop4.dat",True,paramguess);
             print("find_teq done")
     if (doPlot):
         if (doT):

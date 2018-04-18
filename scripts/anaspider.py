@@ -21,6 +21,11 @@ doAna = False;
 doPlot= True;
 doPrint=True;
 
+if (preset == "sc3"):
+    doAna = True;
+    doTemp = False;
+    doL = False;
+    doPlot = False;
 
 if (preset == "ana"):
     doAna=True;
