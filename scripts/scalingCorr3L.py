@@ -59,4 +59,4 @@ def analyze(mat,dirname,function):
     for i in range(len(T_vals)):
         L_vals,L_inds = np.unique(sortedMat[T_inds[i]:T_inds[i+1],0],return_index=True);
         if (len(L_vals) > 2):
-            calculate(sortedMat,T_inds[i+1],T_inds[i],filelist,function);
+            calculate(sortedMat,T_inds[i+1],T_inds[i],filelist,function,L_inds);
