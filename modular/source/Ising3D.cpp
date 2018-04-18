@@ -74,7 +74,7 @@ void Ising3D::teqJob(long double L,bool cold,std::string maxepath,std::string wa
 	
 	int Ntemps = 1;
 	long double Trange[1] = {runTemp};
-	long double Nsamp = 2;
+	long double Nsamp = 2.0L;
 	wolffHistRunIsing3D(lat,Nsamp,Trange,Ntemps);
 	wolffHistRunIsing3D(lat,Nsamp,Trange,Ntemps);
 	for (int i = 0; i< 18; ++i){
