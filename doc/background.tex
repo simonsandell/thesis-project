@@ -29,13 +29,15 @@ The numerical method used to calculate thermodynamic averages is a Wolff algorit
 To achieve good statistics in a reasonable amount of time, it is necessary to utilize a global update algorithm, since the model experiences so called critical slowing down near the transition temperature. 
 Near the transition temperature, the correlation length diverges, so thermal fluctuations propagate very long distances, and so the system takes a very long time to equilibrate to the equilibrum value.
 \subsection{Monte Carlo}
-In statistical physics averages are calculated from 
+In statistical physics, averages are calculated from 
 \begin{equation}
   \langle A\rangle = \frac{1}{Z}\trm{Tr} e^{-H/T} = \sum_x A(x) P(x)
 \end{equation}
 where  $P(x) = (1/Z)exp(-H(x))$ is the Boltzmann distribution.
-The practical and convievable way to evaluate these averages using Monte Carlo is to use importance sampling, i.e. do not form averages from uniformly random system configurations, but instead generate configurations that are Boltzmann distributed.   
-Thus thermal Monte Carlo averages have the form 
+We often define models by writing down the mathematical expression for the Hamiltonian. However, it is often very hard or practically impossible to write down the partition function $Z$. But there are luckily ways to compute these averages without doing so.
+
+One way to evaluate these averages is using Monte-Carlo methods. 
+Monte Carlo averages have the form 
 \begin{equation}
   \langle A \rangle = \frac{1}{N} \sum_x A(x) \pm \frac{\sigma	}{\sqrt N}
 \end{equation}
