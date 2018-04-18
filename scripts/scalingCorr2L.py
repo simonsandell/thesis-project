@@ -76,13 +76,8 @@ def analyze(mat,dirname,function,orange):
     TOL = 0.00001;
     for n in range(len(orange)):
         omega = orange[n];
-        ifirst = 0;
-        L = sortedMat[0,0];
-        T = sortedMat[0,1];
         ofiles= openFiles(n,omega,dirname);
         T_vals,T_inds =np.unique(sortedMat[:,1],return_index=True);
         T_inds = np.append(T_inds,-1);
         for i in range(len(T_vals)): 
                 calculate(sortedMat,T_inds[i+1],T_inds[i],function,ofiles);
-                ifirst = i;
-                T = sortedMat[i,1];

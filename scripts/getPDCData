@@ -1,4 +1,4 @@
 #!/bin/bash
 #Retrieves raw data from PDC
 # transfer nodes t04n27 and t04n28.pdc.kth.se
-scp -o GSSAPIDelegateCredentials=yes -o GSSAPIKeyExchange=yes -o GSSAPIAuthentication=yes -r simsan@t04n28.pdc.kth.se:/cfs/klemming/scratch/s/simsan/$1 .
+scp -o GSSAPIDelegateCredentials=yes -o GSSAPIKeyExchange=yes -o GSSAPIAuthentication=yes -r simsan@t04n28.pdc.kth.se:/cfs/klemming/scratch/s/simsan/$1 $2

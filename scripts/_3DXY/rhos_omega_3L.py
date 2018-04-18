@@ -41,6 +41,7 @@ def calcOmegaRS3L(mat):
     if (llist.shape[0] < 3):
         print(llist.shape)
         print("bad shape");
+        return 0;
     else:
         avgs = [];
         avgs.append(calcAvgs(mat[lind[0]:lind[1],:]));

@@ -13,12 +13,9 @@ def openFiles(directory):
     
 
 #in goes all data for a specific temperature
-def calculate(mat,i,istart,FileList,function):
-    #start by splitting by system size L
-    submat = mat[istart:i,:];
-    T = submat[0,1];
-    llist,lind = np.unique(submat[:,0],return_index=True);
-    N_L = llist.shape[0];
+def calculate(mat,i,istart,FileList,function,linds):
+    T = mat[istart,1];
+    N_L = linds.shape[0];
     N_corrs = N_L -2;
     lind = np.append(lind,-1);
     scalingcorrs = [];
@@ -57,11 +54,9 @@ def analyze(mat,dirname,function):
     TOL = 0.000001;
     ifirst = 0;
     filelist = openFiles(dirname);
-    for i in range(sortedMat.shape[0]):
-        if (sortedMat[i,1] != T):
-            calculate(sortedMat,i,ifirst,filelist,function);
-            ifirst = i;
-            T = sortedMat[i,1];
-            
-    #one final write
-    calculate(sortedMat,i+1,ifirst,filelist,function);
+    T_vals,T_inds =np.unique(sortedMat[:,1],return_index=True);
+    T_inds = np.append(T_inds,-1);
+    for i in range(len(T_vals)):
+        L_vals,L_inds = np.unique(sortedMat[T_inds[i]:T_inds[i+1],0],return_index=True);
+        if (len(L_vals) > 2):
+            calculate(sortedMat,T_inds[i+1],T_inds[i],filelist,function);
