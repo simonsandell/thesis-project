@@ -53,7 +53,7 @@ def anaIsing3D(fName,doT,doL,doSC2,doSC3,doTeq,doAnalyze,doPlot,doPrint):
             print("L done");
         if (doSC3):
             dirname = scalingDir + "/omegaBin3L"
-            anaSC3L.analyze(dataMatrix,dirname,SCbin3L.SC2LBin);
+            anaSC3L.analyze(dataMatrix,dirname,SCbin3L.calcOmegaBin3L);
             print("3L Bin done");
         if (doSC2):
             dirname = scalingDir + '/omegaBin2L';
