@@ -54,70 +54,55 @@ def findDist(intersections):
     
 def findIntersection(X1,Y1,X2,Y2):
     ret = [];
-    for i in range(len(X1)-1):
+    for i in range(len(X1)-2):
         intersection = intersects(X1[i:i+2],Y1[i:i+2],X2[i:i+2],Y2[i:i+2]);
         if (intersection[0] != -1):
             ret.append(intersection);
     return ret;
 
-def sigmaIntersect(directory):
-    fdat = [];
+def sigmaIntersect(directory,skipsmallest):
+    filedata =[]; 
     intersections = [];
-    intersections2 = [];
-    measures= [];
-    measures2=[];
-    for subdir in sorted(os.listdir(directory)):
-        bigmat = np.array([]);
-        #each subdir should generate one sigma
-        omega = -1;
-        for filename in sorted(os.listdir(os.path.join(directory,subdir))):
-            if (os.stat(os.path.join(directory,subdir,filename)).st_size != 0):
-                 #want to compare each line to 
-                of = open(os.path.join(directory,subdir,filename),"r");
-                fdat[:] = [];
-                for ln in of:
-                    strln = ln.rsplit("    ");
-                    strln = [x.replace("\n","") for x in strln];
-                    flln = [float(x) for x in strln];
-                    x = flln[0];
-                    y = flln[1];
-                    if (omega == -1):
-                        omega = flln[3];
-                    fdat.append([x,y]);
-                far = np.array(fdat);
-                if (bigmat.shape[0] == 0):
-                    bigmat = far;
-                else:
-                    bigmat = np.append(bigmat,far,axis=1);
+    measures=[];
 
-        #now all lines for one omega are in bigmat
+    #each file covers one omega
+    for filename in sorted(os.listdir(directory)):
+        if (os.stat(os.path.join(directory,filename)).st_size != 0):
+            filedata[:] = [];
+            of = open(os.path.join(directory,filename),"r");
+            for ln in of:
+                strln = ln.rsplit("    ");
+                strln = [x.replace("\n","") for x in strln];
+                flln = [float(x) for x in strln];
+                filedata.append(flln); 
+        data = np.array(filedata);
+        omega = data[0,5];
+        #sort by L,then T
+        ind = np.lexsort((data[:,2],data[:,0]));
+        data = data[ind];
+        l_vals,l_inds = np.unique(data[:,0],return_index=True);
+        l_inds = np.append(l_inds,-1);
+        N_L = len(l_vals);
+        if (skipsmallest):
+            l_inds = l_inds[1:];
+            N_L = N_L -1;
         intersections[:] = [];
-        intersections2[:] = [];
-        xinds = [x for x in range(bigmat.shape[1]) if ((x % 2) == 0)];
-        yinds = [x for x in range(bigmat.shape[1]) if ((x % 2) == 1)];
-        for i in range(len(xinds)-1):
-            x2= xinds[i+1:];
-            y2= yinds[i+1:];
-            for j in range(len(x2)):
-                intersections.append(findIntersection(bigmat[:,xinds[i]],bigmat[:,yinds[i]],
-                        bigmat[:,x2[j]],bigmat[:,y2[j]]));
-        for i in range(len(xinds)-2):
-            x2= xinds[i+2:];
-            y2= yinds[i+2:];
-            for j in range(len(x2)):
-                intersections2.append(findIntersection(bigmat[:,xinds[i+1]],bigmat[:,yinds[i+1]],
-                        bigmat[:,x2[j]],bigmat[:,y2[j]]));
-        #now intersections are found
-        #remove empty listst;
-        intersections = [x for x in intersections if x != []];
-        intersections2 = [x for x in intersections2 if x != []];
-        if (len(intersections) == 3 or len(intersections) == 6 or len(intersections) == 10):
+        for i in range(N_L-1):
+            x1 = data[l_inds[i]:l_inds[i+1],2];
+            y1 = data[l_inds[i]:l_inds[i+1],3];
+            for j in range(N_L -1 -i):
+                x2 = data[l_inds[i+j+1]:l_inds[i+j+2],2];
+                y2 = data[l_inds[i+j+1]:l_inds[i+j+2],3];
+                isec = findIntersection(x1,y1,x2,y2);
+                if (len(isec)==1):
+                    intersections.append(isec);
+                if (len(isec)>1):
+                    print(isec);
+                    print("more than 1 isec");
+
+        if (len(intersections) > 1):
             measures.append([omega,findDist(intersections)]);
-        if (len(intersections2) == 3 or len(intersections2) == 6 or len(intersections2) == 10):
-            measures2.append([omega,findDist(intersections2)]);
 
     fullpath= getDirName(directory);
     filename = os.path.join(fullpath,"std.dat");
-    filename2 = os.path.join(fullpath,"std_wo4.dat");
     writeToFile(measures,filename);
-    writeToFile(measures2,filename2);

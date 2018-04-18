@@ -13,7 +13,7 @@ def SC2LBin(mat,omega):
     llist,lind = np.unique(mat[:,0],return_index=True);
     if (llist.shape[0]<2):
         print(llist.shape);
-        print("bad shape");
+        print("SC2LBin: bad shape");
         return -1;
     else:
         return calcSC2BinQuant(mat,omega,lind);

@@ -77,8 +77,8 @@ def ana3DXY(fName,doT,doL,doSC2,doSC3,doTeq,doAnalyze,doPlot,doPrint):
             fteq.findteq(dataMatrix,2.202000000,0.51891688,outdir + "teq/sigma_vs_z_drop4.dat",True,paramguess);
             print("find_teq done")
     if (doPlot):
-        intersectOmega.sigmaIntersect(outdir+"scalingCorr/omegaBin2L");
-        intersectOmega.sigmaIntersect(outdir+"scalingCorr/omegaRS2L");
+        intersectOmega.sigmaIntersect(outdir+"scalingCorr/omegaBin2L",False);
+        intersectOmega.sigmaIntersect(outdir+"scalingCorr/omegaRS2L",False);
 
         if (doT):
             vstdir = outdir + "vsT/"
@@ -104,11 +104,11 @@ def ana3DXY(fName,doT,doL,doSC2,doSC3,doTeq,doAnalyze,doPlot,doPrint):
                     xaxis = "Temperature"
                     title = "3DXY_" + anaFuncs.dirToTitle(dirname) + "_vs_" + xaxis;
                     gps.graceDirPlot(fullpath,title,xaxis,yaxis,False,False,doPrint);
-                if ("2L" in fullpath and "std" not in fullpath and doSC2 and doPrint):
+                if ("2L" in fullpath and "std" not in fullpath and doSC2):
                     yaxis = anaFuncs.dirToYaxis(dirname);
                     xaxis = "Temperature"
                     title = "3DXY_" + anaFuncs.dirToTitle(dirname) + "_vs_" + xaxis;
-                    gps.graceAnimation(fullpath,title,xaxis,yaxis);
+                    gps.graceDirPlot(fullpath,title,xaxis,yaxis,False,False,doPrint);
                 if (("std" in fullpath) and doSC2):
                     yaxis = anaFuncs.dirToYaxis(dirname);
                     xaxis = r"\xw\0";
