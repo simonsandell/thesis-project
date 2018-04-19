@@ -34,12 +34,17 @@ def oneTemp(mat,nfac):
 
 #we have block data for one L, pick out interesting temp.
 def oneSize(mat,temp,betanu,z):
+    startI = 0;
+    endI = -1;
+    print(np.log(1/mat[-1,9])/np.log(mat[0,0]))
     #first, rescale mag and N
     for i in range(mat.shape[0]):
         mat[i,4] = mat[i,4]*pow(mat[i,0],-z);
-        mat[i,9] = mat[i,9]*pow(mat[i,0],betanu);
+        #mat[i,9] = mat[i,9]*pow(mat[i,0],betanu);
+        mat[i,9] = mat[i,9]/mat[-1,9];
 
-    TOL = 0.000000005;
+    TOL = 0.000005;
+    i = 0;
     for i in range(mat.shape[0]):
         if (abs(mat[i,1] - temp) < TOL):
             startI = i;
@@ -57,19 +62,11 @@ def oneSize(mat,temp,betanu,z):
 
 #sort by L, then NTotSweeps
 def analyze(mat,temp,betanu,z):
-    ind = np.lexsort((mat[:,4],mat[:,1],mat[:,0]));
-    smat = mat[ind];
-
-    curr_L = mat[0,0];
-    startI = 0;
-
-    ret = [];
-    for i in range(smat.shape[0]):
-        if (smat[i,0] != curr_L):
-            ret.append(oneSize(smat[startI:i,:],temp,betanu,z));
-            startI = i;
-            curr_L = smat[i,0];
-    ret.append(oneSize(smat[startI:,:],temp,betanu,z));
+    lv,li = np.unique(mat[:,0],return_index=True);
+    li = np.append(li,mat.shape[0]);
+    ret =[];
+    for i in range(len(lv)):
+        ret.append(oneSize(mat[li[i]:li[i+1],:],temp,betanu,z));
     return ret;
 #write output
 def writeToFile(f,x,y):
@@ -97,12 +94,15 @@ def chisquare(params,x,y):
     return cs[0];
 
 def findteq(mat,temp,betanu,path,drop_smallest,p):
-
+    ind = np.lexsort((mat[:,4],mat[:,1],mat[:,0]));
+    mat = mat[ind];
     f = open(path,"w");
     z = 0.0;
     dz = 0.05;
     while (z < 1.3): 
-        rescaled = analyze(mat,temp,betanu,z);
+        tempmat = np.empty_like(mat);
+        tempmat[:] = mat;
+        rescaled = analyze(tempmat,temp,betanu,z);
         if (drop_smallest):
             del rescaled[0];
         res = [];
@@ -117,13 +117,12 @@ def findteq(mat,temp,betanu,path,drop_smallest,p):
             x.extend(rescaled[j][:,0]);
             y.extend(rescaled[j][:,1]);
         #fit to exp func
-        
         params,covars = spo.curve_fit(lambda t,a,b,c: a*np.exp(b*t) + c,x,y,p0=(p[0],p[1],p[2]),maxfev=2000);
 
         #plotting
-        #plt.gca().set_title("z = " + str(z));
-        #plot_comp(params,x,y);
-        #plt.show();
+        plt.gca().set_title("z = " + str(z));
+        plot_comp(params,x,y);
+        plt.show();
 
         goodness = chisquare(params,x,y);
         res = np.array(res);
