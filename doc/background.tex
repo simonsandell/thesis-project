@@ -23,7 +23,13 @@
 %\end{equation}
 % where the states $y$ are distributed according to $P'(y)$.
 
-\section{Thermodynamics}
+\section{Model}
+There are many different models in the same universality class as the normal-superfluid Helimu-4 transition, for example the $\phi^4$-model, the ddXY model etc.
+In this thesis we have chosen the simulate the 3DXY-model. This is convenient because of the relative simplicity of the model, and that it is well known and studied.
+The numerical method used to calculate thermodynamic averages is a Wolff algorithm.
+To achieve good statistics in a reasonable amount of time, it is necessary to utilize a global update algorithm, since the model experiences so called critical slowing down near the transition temperature. 
+Near the transition temperature, the correlation length diverges, so thermal fluctuations propagate very long distances, and so the system takes a very long time to equilibrate to the equilibrum value.
+
 \begin{equation}
   H_{\trm{3DXY}} = -K\sum\limits_{\langle i,j\rangle} \bm{s_i}\cdot\bm{s_j} = -K\sum\limits_{\langle i,j\rangle} \cos(\alpha_i - \alpha_j)
 \end{equation}
@@ -45,44 +51,50 @@ The core concept is the renormalization group transformations which takes a Hami
 The name renormalization group is not entirely appropriate, since these transformations are in general complicated and non-linear, thus not always having inverses. But the transformations do have the associative property of groups. Rescaling the system by some length $l_1$ and then rescaling again by some other length $l_2$ should be equivalent to performing the rescaling in the other order.
 But so far all we did was remove a finite number of degrees of freedom from out system, how can that explain the sigular behaviour at phase transitions? By repeating the transformations an infinite number of times, singular behaviour can be introduced.
 The partition function is what we really want to compute to know everything about a physical system, but that task is most often simply unachievable. The renormalization transformation are also not easy to compute, but the transformation of the coupling constants can be approximated.
-\subsection{Universality}
+\section{Universality}
 The theromodynamics of any model; the phase diagram, correlation functions, other quantites etc, may depend on the specific values of coupling parameters in the hamiltonian, symmetries, dimensionality, type of lattice, etc. 
 But it turns out that the critical phenomena (phase transitions) only depend on three things, the symmetries of the hamiltonian, the dimensionality and the range of interations ( type of critical point ).
 
 We can study the critical behaviour of say Helium-4, which we know is in the $O(2)$ universality class, by calculation themodynamical averages directly by using Monte-Carlo method on the simulated 3DXY-model, which should have the exact same critical exponents. 
 One inconvenience is that one cannot simulate the infinite size 3DXY-model due to computer memory finite-ness, thus one simulates instead finite-size versions of the 3DXY-model. The theory of how finite size systems relate to the infinite size models is called finite size scaling. The normal power-laws aquire correction terms, which needs to be accounted for.
 
-\subsection{Model}
-There are many different models in the same universality class as the normal-superfluid Helimu-4 transition, for example the $\phi^4$-model, the ddXY model etc.
-In this thesis we have chosen the simulate the 3DXY-model. This is convenient because of the relative simplicity of the model, and that it is well known and studied.
-The numerical method used to calculate thermodynamic averages is a Wolff algorithm.
-To achieve good statistics in a reasonable amount of time, it is necessary to utilize a global update algorithm, since the model experiences so called critical slowing down near the transition temperature. 
-Near the transition temperature, the correlation length diverges, so thermal fluctuations propagate very long distances, and so the system takes a very long time to equilibrate to the equilibrum value.
 
+\section{Finite size scaling}
+Consider a system with coupling constants $K$ and linear finite size $L$. 
+The singular part of the free energy scales as
+\begin{equation}
+  f_s([K],L^{-1}) = l^{-d}f_s([K],lL^{-1}).
+  \label{}
+\end{equation}
+Close to a fixed point of the RG, we can write this equation in terms of right eigenvectors of the linearized RG-transform,
+\begin{equation}
+  f_s(t,h,K_3,\cdots,L^{-1}) = l^{-d}f_s(tl^{y_t},hl^{y_h},K_3 l^{y_3},\cdots,lL^{-1}).
+  \label{}
+\end{equation}
+It is evident that the inverse size of the system is in fact a relevant eigenvector with eigenvalue $y_L = 1$, and finite size effects needs to be considered. 
+The models we study in this paper have the external field set to zero, we can then write the scaling form of the free energy as
+\begin{equation}
+  f_s(t,L^{-1}) = |t|^{2-\alpha}F_{f}^{\pm}(L^{-1}|t|^{-1/y_t})
+  \label{}
+\end{equation}
 
+\section{Scaling laws}
+\begin{align}
+  	y_t &= \nu\\
+	2 &= \alpha + 2\beta + \gamma \\
+	\gamma &= \beta(\delta -1)\\
+	d\nu &= 2 - \alpha
+\end{align}
+\section{Definitions of critical exponents}
+\begin{align}
+  \beta &= \frac{1}{k_B T} \\
+  F &= -\beta \log Z\\
+  M &\sim (-t)^{\beta}\\
+  \chi &\sim |t|^{-\gamma}\\
+  \xi &\sim |t|^{-\nu}
+\end{align}  
 \section{Binder cumulant}
 The quantity $b =\frac{\langle M^4 \rangle}{\langle M^2\rangle^2}$ is useful as it approaches a constant as $t\rightarrow 0 $, as,  disregarding scaling corrections,
 \begin{equation}
   \langle M^4 \rangle \sim t^{}
 \end{equation}
-\section{Scaling hypothesis}
-The scaling hypothesis is often stated as
-\begin{equation}
-  f_{singular}(t,h) = t^{2- \alpha} g_f\left(\frac{h}{t^\Delta}\right)
-\end{equation}
-from which the scaling of many other quantites can be derived, as derivatives, second derivatives and combinations of such.
-\subsection{Scaling laws}
-\begin{align}
-	\alpha + 2\beta + \gamma = 2\\
-	\gamma = \beta(\delta -1)\\
-	d\nu = 2 - \alpha
-\end{align}
-\subsection{Definitions of critical exponents}
-\begin{align}
-  \beta &= \frac{1}{k_B T} \\
-  F &= -\beta \log Z\\
-  F_s(u_t,u_h) &= L^{-d}f_s(L^{y_t}u_t,L^{y_h}u_h)\\
-  M &\sim (-t)^{\beta}\\
-  \chi &\sim |t|^{-\gamma}\\
-  \xi &\sim |t|^{-\nu}
-\end{align}  
