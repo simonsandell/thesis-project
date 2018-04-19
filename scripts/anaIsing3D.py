@@ -58,7 +58,7 @@ def anaIsing3D(fName,doT,doL,doSC2,doSC3,doTeq,doAnalyze,doPlot,doPrint):
         if (doSC2):
             dirname = scalingDir + '/omegaBin2L';
             anaSC2L.analyze(dataMatrix,dirname,
-                SCbin2L.calcOmegaBin2L,anaFuncs.getOmegaRange(0.7,1.2,0.005));
+                SCbin2L.SC2LBin,anaFuncs.getOmegaRange(0.7,1.2,0.005));
             intersectOmega.sigmaIntersect(dirname);
             print("2L Bin done")
         if (doTeq):

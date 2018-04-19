@@ -29,6 +29,7 @@ if (preset == "sc3"):
 
 if (preset == "ana"):
     doAna=True;
+    doSC2=True;
 if (preset ==  "plot"):
     doAna=False;
     doPrint=False;
@@ -53,6 +54,8 @@ if (preset == "sc2"):
 if (preset ==  "all"):
     doSC2 = True;
     doAna =True;
+    doPrint=False;
+    doPlot=False;
 if (preset == "teq"):
     doTemp = False;
     doL = False;
