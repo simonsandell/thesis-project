@@ -71,6 +71,7 @@ void Ising3D::teqJob(long double L,bool cold,std::string maxepath,std::string wa
 	Cluster c(L);
 	RandStruct r;
 	LatticeIsing3D lat(L,cold,beta,r,c,maxepath,warmlatpath);
+	lat.maxE *= 2.0L;
 	
 	int Ntemps = 1;
 	long double Trange[1] = {runTemp};

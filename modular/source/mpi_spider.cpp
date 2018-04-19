@@ -24,18 +24,20 @@ int main(){
         std::string h_pwd = "/home/simon/exjobb/modular/"; 
 	std::string o_pwd = "/home/simsan/exjobb/modular/"; 
 	
-	std::string env = h_pwd;
+	std::string env = o_pwd;
 	std::string model = "Ising3D/";
 		  
 	std::string mep= env + "maxE/" + model; 
 	std::string wlp= env + "warmLattice/" + model; 
 
 	if (world_rank != 0){
-		Ising3D::teqJob(64.0L,mep,wlp);
-		Ising3D::teqJob(32.0L,mep,wlp);
-		Ising3D::teqJob(16.0L,mep,wlp);
-		Ising3D::teqJob(8.0L,mep,wlp);
-		Ising3D::teqJob(4.0L,mep,wlp);
+		bool cold = false;
+		Ising3D::teqJob(16.0L,cold,mep,wlp);
+		Ising3D::teqJob(8.0L,cold,mep,wlp);
+		Ising3D::teqJob(4.0L,cold,mep,wlp);
+		std::string bigstr = "\nfinished\n";
+		MPI_Send(bigstr.c_str(),bigstr.size(),MPI_CHAR,0,1,MPI_COMM_WORLD);
+
 	}
 	else{
 		int N_finished =0;
