@@ -72,7 +72,7 @@ def ana3DXY(fName,doT,doL,doSC2,doSC3,doTeq,doAnalyze,doPlot,doPrint):
         if (doTeq):
             tp.analyze(dataMatrix,"./foutput/3DXY/vsN/"+fName,2.20200000);
             print("Teq done");
-            paramguess = [-1.0,-0.02,1.10]
+            paramguess = [1.0,-0.1, +1.1,-.01];
             fteq.findteq(dataMatrix,2.202000000,0.51891688,outdir + "teq/sigma_vs_z.dat",False,paramguess);
             fteq.findteq(dataMatrix,2.202000000,0.51891688,outdir + "teq/sigma_vs_z_drop4.dat",True,paramguess);
             print("find_teq done")
@@ -123,7 +123,7 @@ def ana3DXY(fName,doT,doL,doSC2,doSC3,doTeq,doAnalyze,doPlot,doPrint):
 
             fteqdir = outdir + "teq/";
             xaxis = "z";
-            yaxis = r"\xS\0";
+            yaxis = anaFuncs.dirToYaxis("teq");
             title = "3DXY_" + anaFuncs.dirToTitle("teq");
             gps.graceDirPlot(fteqdir,title,xaxis,yaxis,False,False,doPrint);
     

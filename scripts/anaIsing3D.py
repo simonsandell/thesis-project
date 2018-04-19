@@ -65,7 +65,7 @@ def anaIsing3D(fName,doT,doL,doSC2,doSC3,doTeq,doAnalyze,doPlot,doPrint):
             print(dataMatrix.shape);
             tp.analyze(dataMatrix,outdir + "vsN/"+fName,4.51000000);
             print("teq done");
-            paramguess = [-.8,-0.1, +1.1];
+            paramguess = [1.0,-0.1, +1.1,-.01];
             betanu = 0.51814925;
             fteq.findteq(dataMatrix,4.510000000,betanu,outdir + "teq/sigma_vs_z.dat",False,paramguess);
             fteq.findteq(dataMatrix,4.510000000,betanu,outdir + "teq/sigma_vs_z_drop4.dat",True,paramguess);
@@ -114,7 +114,7 @@ def anaIsing3D(fName,doT,doL,doSC2,doSC3,doTeq,doAnalyze,doPlot,doPrint):
 
             fteqdir = outdir + "teq/";
             xaxis = "z";
-            yaxis = r"\xS\0";
+            yaxis = anaFuncs.dirToYaxis("teq");
             title = "Ising3D_" + anaFuncs.dirToTitle("teq");
             gps.graceDirPlot(fteqdir,title,xaxis,yaxis,False,False,doPrint);
 

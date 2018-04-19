@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-
+import cmath
 import numpy as np
 import scipy.stats as sps
 import scipy.optimize as spo
@@ -13,7 +13,14 @@ def writeLine(mat,avgN):
     return [avgN,avgM];
 
 #now we have data for only interesting temp, separete N_sweeps and print
-def oneTemp(mat,nfac):
+def oneTemp(mat,nfac,z,betanu):
+
+    print(np.log(1/mat[-1,9])/np.log(mat[0,0]))
+    #first, rescale mag and N
+    for i in range(mat.shape[0]):
+        mat[i,4] = mat[i,4]*pow(mat[i,0],-z);
+        mat[i,9] = mat[i,9]*pow(mat[i,0],betanu);
+        #mat[i,9] = mat[i,9]/mat[-1,9];
     result =[];
     startI = 0;
     high_N=4.0*nfac;
@@ -33,41 +40,35 @@ def oneTemp(mat,nfac):
 
 
 #we have block data for one L, pick out interesting temp.
-def oneSize(mat,temp,betanu,z):
+def oneSize(lmat,temp,betanu,z):
     startI = 0;
     endI = -1;
-    print(np.log(1/mat[-1,9])/np.log(mat[0,0]))
-    #first, rescale mag and N
-    for i in range(mat.shape[0]):
-        mat[i,4] = mat[i,4]*pow(mat[i,0],-z);
-        #mat[i,9] = mat[i,9]*pow(mat[i,0],betanu);
-        mat[i,9] = mat[i,9]/mat[-1,9];
-
     TOL = 0.000005;
     i = 0;
-    for i in range(mat.shape[0]):
-        if (abs(mat[i,1] - temp) < TOL):
+    for i in range(lmat.shape[0]):
+        if (abs(lmat[i,1] - temp) < TOL):
             startI = i;
             endI = i;
             while True:
-                if (abs(mat[endI,1] - temp)< TOL):
+                if (abs(lmat[endI,1] - temp)< TOL):
                     endI = endI +1;
                 else:
                     break;
-                if (endI == mat.shape[0]):
+                if (endI == lmat.shape[0]):
                     break;
             break;
-    ret = oneTemp(mat[startI:endI,:],pow(mat[i,0],-z));
+    ret = oneTemp(lmat[startI:endI,:],pow(lmat[i,0],-z),z,betanu);
     return ret;
 
 #sort by L, then NTotSweeps
-def analyze(mat,temp,betanu,z):
-    lv,li = np.unique(mat[:,0],return_index=True);
-    li = np.append(li,mat.shape[0]);
+def analyze(tmat,temp,betanu,z):
+    lv,li = np.unique(tmat[:,0],return_index=True);
+    li = np.append(li,tmat.shape[0]);
     ret =[];
     for i in range(len(lv)):
-        ret.append(oneSize(mat[li[i]:li[i+1],:],temp,betanu,z));
+        ret.append(oneSize(tmat[li[i]:li[i+1],:],temp,betanu,z));
     return ret;
+
 #write output
 def writeToFile(f,x,y):
     fstr= "{:30.30f}";
@@ -77,15 +78,16 @@ def fit(params,X):
     X = np.array(X);
     a = params[0]
     b = params[1]
-    c = params[2]
-    return a*np.exp(b*X) + c;
+    return   a*(1 -np.exp(b*X));
 
 def plot_comp(params,x,y):
-    plt.gca().set_xscale('log');
+    #plt.gca().set_xscale('log');
     plt.scatter(x,y);
-    X = np.geomspace(pow(10,-3),x[-1],20.0);
+    #X = np.geomspace(pow(10,-3),x[-1],100.0);
+    X = np.linspace(0,100,100.0);
     Y = fit(params,X);
     plt.plot(X,Y,linewidth=2.0);
+    plt.gca().set_xlim(left=-5.0,right=100.0);
 
 def chisquare(params,x,y):
     Y = fit(params,x);
@@ -99,11 +101,13 @@ def findteq(mat,temp,betanu,path,drop_smallest,p):
     f = open(path,"w");
     z = 0.0;
     dz = 0.05;
-    while (z < 1.3): 
+    doPlot = input("Plot fit?");
+    while (z < 2.0): 
         tempmat = np.empty_like(mat);
         tempmat[:] = mat;
         rescaled = analyze(tempmat,temp,betanu,z);
         if (drop_smallest):
+            del rescaled[0];
             del rescaled[0];
         res = [];
         res[:] = [];
@@ -117,17 +121,18 @@ def findteq(mat,temp,betanu,path,drop_smallest,p):
             x.extend(rescaled[j][:,0]);
             y.extend(rescaled[j][:,1]);
         #fit to exp func
-        params,covars = spo.curve_fit(lambda t,a,b,c: a*np.exp(b*t) + c,x,y,p0=(p[0],p[1],p[2]),maxfev=2000);
+        params,covars = spo.curve_fit(lambda t,a,b,: a*(1-np.exp(b*t)),x,y,p0=(p[0],p[1]),maxfev=2000);
 
         #plotting
-        plt.gca().set_title("z = " + str(z));
-        plot_comp(params,x,y);
-        plt.show();
 
         goodness = chisquare(params,x,y);
         res = np.array(res);
         writeToFile(f,z,goodness);
         z = z+ dz;
         
+        if (doPlot == "Y"):
+            plt.gca().set_title("z = " + str(z));
+            plot_comp(params,x,y);
+            plt.show();
 
 

@@ -23,7 +23,8 @@ def dirToYaxis(dirname):
             'omegaBin2L':r'L\S\xw\0\N\c7\C[B(2L) - B(L)]',
             'omegaRS2L':r'L\S\xw\0\N\c7\C[2L\xr\)(2L) - L\xr\0(L)]',
             'std_omegaBin2L':r'\xs\0\sBin2L\N',
-            'std_omegaRS2L':r'\xs\0\sRS2L\N'};
+            'std_omegaRS2L':r'\xs\0\sRS2L\N',
+            'teq':r'\xc\0\S2\N'};
     return dirLex[dirname];
             
 def dirToTitle(dirname):
