@@ -1,6 +1,9 @@
 import os
 import numpy as np
 import math
+
+import matplotlib.pyplot as plt
+
 def getDirName(directory):
     b =os.path.dirname(directory);
     a = (directory.replace(b,""))
@@ -59,12 +62,31 @@ def findIntersection(X1,Y1,X2,Y2):
         if (intersection[0] != -1):
             ret.append(intersection);
     return ret;
+def plot_lines(mat,linds):
+    for i in range(len(linds)-1):
+        plt.plot(mat[linds[i]:linds[i+1],2],mat[linds[i]:linds[i+1],3]);
+    plt.show();
+def selectInt(ints, tc):
+    reti = "asfd";
+    minD = 1000;
+    for i in range(len(ints)):
+        D = np.abs(ints[i][0] - tc);
+        if (D < minD):
+            minD = D;
+            reti = i;
+    if (minD != 1000):
+        return [ints[i]];
+    else:
+        print("select int failed")
+        exit(-1);
 
-def sigmaIntersect(directory,skipsmallest):
+    
+
+def sigmaIntersect(directory,skipsmallest,tcguess):
     filedata =[]; 
     intersections = [];
     measures=[];
-
+    doPlot = input("plot?");
     #each file covers one omega
     for filename in sorted(os.listdir(directory)):
         if (os.stat(os.path.join(directory,filename)).st_size != 0):
@@ -86,6 +108,8 @@ def sigmaIntersect(directory,skipsmallest):
         if (skipsmallest):
             l_inds = l_inds[1:];
             N_L = N_L -1;
+        if (doPlot == "Y"):
+            plot_lines(data,l_inds);
         intersections[:] = [];
         for i in range(N_L-1):
             x1 = data[l_inds[i]:l_inds[i+1],2];
@@ -97,8 +121,7 @@ def sigmaIntersect(directory,skipsmallest):
                 if (len(isec)==1):
                     intersections.append(isec);
                 if (len(isec)>1):
-                    print(isec);
-                    print("more than 1 isec");
+                    intersections.append(selectInt(isec,tcguess));
 
         if (len(intersections) > 1):
             measures.append([omega,findDist(intersections)]);

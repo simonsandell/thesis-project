@@ -58,8 +58,7 @@ def anaIsing3D(fName,doT,doL,doSC2,doSC3,doTeq,doAnalyze,doPlot,doPrint):
         if (doSC2):
             dirname = scalingDir + '/omegaBin2L';
             anaSC2L.analyze(dataMatrix,dirname,
-                SCbin2L.calcOmegaBin2L,anaFuncs.getOmegaRange(0.7,1.2,0.005));
-            intersectOmega.sigmaIntersect(dirname,False);
+                SCbin2L.calcOmegaBin2L,anaFuncs.getOmegaRange(0.0,1.0,0.005));
             print("2L Bin done")
         if (doTeq):
             print(dataMatrix.shape);
@@ -71,6 +70,8 @@ def anaIsing3D(fName,doT,doL,doSC2,doSC3,doTeq,doAnalyze,doPlot,doPrint):
             fteq.findteq(dataMatrix,4.510000000,betanu,outdir + "teq/sigma_vs_z_drop4.dat",True,paramguess);
             print("find_teq done")
     if (doPlot):
+        intersectOmega.sigmaIntersect(scalingDir + "/omegaBin2L",False,4.510);
+        intersectOmega.sigmaIntersect(scalingDir + "/omegaBin2L",True,4.510);
         if (doT):
             vstdir = outdir + "vsT/"
             for dirname in  os.listdir(vstdir):

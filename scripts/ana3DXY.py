@@ -77,8 +77,8 @@ def ana3DXY(fName,doT,doL,doSC2,doSC3,doTeq,doAnalyze,doPlot,doPrint):
             fteq.findteq(dataMatrix,2.202000000,0.51891688,outdir + "teq/sigma_vs_z_drop4.dat",True,paramguess);
             print("find_teq done")
     if (doPlot):
-        intersectOmega.sigmaIntersect(outdir+"scalingCorr/omegaBin2L",False);
-        intersectOmega.sigmaIntersect(outdir+"scalingCorr/omegaRS2L",False);
+        intersectOmega.sigmaIntersect(outdir+"scalingCorr/omegaBin2L",False,2.202);
+        intersectOmega.sigmaIntersect(outdir+"scalingCorr/omegaRS2L",False,2.202);
 
         if (doT):
             vstdir = outdir + "vsT/"
