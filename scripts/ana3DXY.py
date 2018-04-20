@@ -63,11 +63,11 @@ def ana3DXY(fName,doT,doL,doSC2,doSC3,doTeq,doAnalyze,doPlot,doPrint):
         if (doSC2):
             dirname = scalingDir + '/omegaRS2L';
             anaSC2L.analyze(dataMatrix,dirname,
-                SCrhos2L.SC2LRho,anaFuncs.getOmegaRange(0.0,1.4,0.05));
+                SCrhos2L.SC2LRho,anaFuncs.getOmegaRange(0.0,1.2,0.05));
             print("2L RS done");
             dirname = scalingDir + '/omegaBin2L';
             anaSC2L.analyze(dataMatrix,dirname,
-                SCbin2L.SC2LBin,anaFuncs.getOmegaRange(0.0,1.4,0.05));
+                SCbin2L.SC2LBin,anaFuncs.getOmegaRange(0.0,1.2,0.05));
             print("2L Bin done")
         if (doTeq):
             tp.analyze(dataMatrix,"./foutput/3DXY/vsN/"+fName,2.20200000);
