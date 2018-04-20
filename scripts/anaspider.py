@@ -12,60 +12,15 @@ else:
 
 
 doTemp = True;
-doL = True;
+doL = False;
 doSC2 = False;
-doSC3 = True;
+doSC3 = False;
 doTeq = False;
 
-doAna = False;
-doPlot= True;
-doPrint=True;
+doAna = True;
+doPlot= False;
+doPrint=False;
 
-if (preset == "sc3"):
-    doAna = True;
-    doTemp = False;
-    doL = False;
-    doPlot = False;
-
-if (preset == "ana"):
-    doAna=True;
-    doSC2=True;
-if (preset ==  "plot"):
-    doAna=False;
-    doPrint=False;
-    doSC2 = True;
-if (preset == "print"):
-    doAna=False;
-    doSC2 = True;
-if (preset ==  "plotT"):
-    doAna=False;
-    doPrint=False;
-    doL = False;
-    doSC2 = True;
-if (preset ==  "plotL"):
-    doAna=False;
-    doPrint=False;
-    doTemp = False;
-    doSC2 = True;
-if (preset == "sc2"):
-    doSC2 = True;
-    doAna = True;
-    doTemp = False;
-    doSC3 = False;
-    doL = False;
-    doPlot = False;
-if (preset ==  "all"):
-    doSC2 = True;
-    doAna =True;
-    doPrint=False;
-    doPlot=False;
-if (preset == "teq"):
-    doTemp = False;
-    doL = False;
-    doSC3 = False;
-
-    doAna = True;
-    doTeq = True;
     
 
 

@@ -51,7 +51,7 @@ def calcFunctions(mat):
     res.append(getRS(avgs[7],avgs[14],avgs[15],avgs[16],avgs[21],L,T));
     return res;
 
-def calcAvg(mat,i,istart,FileList):
+def calcAvg(mat,i,istart,FileList,masterfile):
 # Format::
 # 0      1      2      3      4      5      6            
 # L      T      neqsw  neqcl  nsmsw  nsmcl  cold
@@ -74,8 +74,12 @@ def calcAvg(mat,i,istart,FileList):
     deltas = jackknife.getJackDelta(submat,calcFunctions,100);
     #write T, avg, delta, N, to files
     fstr= "{:30.30f}";
+    master_line = fstr.format(L) + " " + fstr.format(L) + " ";
     for i in range(len(functions)):
+        master_line + master_line + fstr.format(functions[i]) + " ";
         FileList[i].write(fstr.format(T)+"    "+fstr.format(functions[i])+"    "+fstr.format(deltas[i])+"    "+fstr.format(N)+"\n")
+    master_line = master_line + "\n";
+    masterfile.write(master_line);
 
 #
 #read raw data from file in ./output
@@ -90,7 +94,7 @@ def calcAvg(mat,i,istart,FileList):
 # 14     15     16     17     18     19     20     21                
 # SX     SY     SZ     bin    dBdT   xi     rs     expFac
 def analyze(inData,fName):
-
+    masterfile = open("./averages/" + fName + ".avg","w");
     ind = np.lexsort((inData[:,21],inData[:,20],inData[:,19],inData[:,18],inData[:,17],inData[:,16],inData[:,15],inData[:,14],inData[:,13],inData[:,12],inData[:,11],inData[:,10],inData[:,9],inData[:,8],inData[:,7],inData[:,5],inData[:,4],inData[:,3],inData[:,2],inData[:,6],inData[:,1],inData[:,0]));
     sortedMat= inData[ind];
     
@@ -106,15 +110,15 @@ def analyze(inData,fName):
     for i in range(sortedMat.shape[0]):
         #if new value of L, make new outputfile
         if(TOL < abs(sortedMat[i,0] - L)):
-            calcAvg(sortedMat,i,ifirst,FileList);
+            calcAvg(sortedMat,i,ifirst,FileList,masterfile);
             ifirst = i;
             L = float(sortedMat[i,0])
             T = float(sortedMat[i,1])
             #open new files since L has changed
             openFiles(FileList,L,fName);
         elif(TOL < abs(sortedMat[i,1] - T)):
-            calcAvg(sortedMat,i,ifirst,FileList);
+            calcAvg(sortedMat,i,ifirst,FileList,masterfile);
             ifirst = i;
             T = float(sortedMat[i,1])
     #one final write
-    calcAvg(sortedMat,i+1,ifirst,FileList);
+    calcAvg(sortedMat,i+1,ifirst,FileList,masterfile);

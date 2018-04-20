@@ -53,7 +53,7 @@ def findDist(intersections):
 
     ret = 0.0;
     for i in range(npints.shape[0]):
-        ret = ret + dist(npints[i,0],npints[i,1],avgX,avgY);
+        ret = ret + (dist(npints[i,0],npints[i,1],avgX,avgY));
     return ret;
 
 
@@ -70,11 +70,29 @@ def plot_lines(mat,linds,ints):
         plt.plot(mat[linds[i]:linds[i+1],2],mat[linds[i]:linds[i+1],3]);
     x=[];
     y=[];
+    xmn = 10;
+    xmx = 0;
+    ymn = 10;
+    ymx = 0;
+
     for i in range(len(ints)):
         x.append(ints[i][0]);
         y.append(ints[i][1]);
+        if (x[i] > xmx):
+            xmx = x[i];
+        if (x[i] < xmn):
+            xmn = x[i];
+        if (y[i] > ymx):
+            ymx = y[i];
+        if (y[i] < ymn):
+            ymn = y[i];
+    xmx += 0.1*(xmx-xmn);
+    ymx += 0.1*(ymx-ymn);
+    xmn -= 0.1*(xmx-xmn);
+    ymn -= 0.1*(ymx-ymn);
     plt.scatter(x,y);
-    plt.gca().set_xlim(left=1.0,right=100.0);
+    plt.gca().set_xlim(left=xmn,right=xmx);
+    plt.gca().set_ylim(top=ymn,bottom=ymx);
     plt.show();
 
 def selectInt(ints, tc):
