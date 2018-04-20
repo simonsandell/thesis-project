@@ -52,14 +52,14 @@ void _3DXY::wolffHistJob(long double L,std::string maxepath,std::string warmlatp
 	}
 	long double 	Neq=			1000.0L;
 	bool 		cold=			true;
-	long double	Nsamp=			1000.0L;
+	long double	Nsamp=			100000.0L;
 	long double 	Nbetw=			100.0L;
 	Cluster c(L);
 	RandStruct r;
 	Lattice3DXY lat(L,runTemp,cold,r,c,maxepath,warmlatpath);
 	lat.loadLattice();
 	warmup(lat,Neq);
-	while (true){	
+	for (int i = 0; i < 1000; ++i){
 		wolffHistRun3DXY(lat,Nsamp,Trange,Ntemps);
 		warmup(lat,Nbetw);
 	}

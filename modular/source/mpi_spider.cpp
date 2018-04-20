@@ -30,23 +30,13 @@ int main(){
 	std::string o_pwd = "/home/simsan/exjobb/modular/"; 
 	
 	std::string env = o_pwd;
-	std::string model = "Ising3D/";
+	std::string model = "3DXY/";
 		  
 	std::string mep= env + "maxE/" + model; 
 	std::string wlp= env + "warmLattice/" + model; 
 
 	if (world_rank != 0){
-		bool cold = false;
-		for ( int i = 0; i < 100; ++i){
-			Ising3D::teqJob(4.0L,cold,mep,wlp);
-			Ising3D::teqJob(8.0L,cold,mep,wlp);
-			Ising3D::teqJob(16.0L,cold,mep,wlp);
-			Ising3D::teqJob(32.0L,cold,mep,wlp);
-			Ising3D::teqJob(64.0L,cold,mep,wlp);
-		}
-		std::string fstr = "\n~finished~\n";
-		int tag = 1;
-		MPI_Send(fstr.c_str(),fstr.size(),MPI_CHAR,0,tag,MPI_COMM_WORLD);
+		_3DXY::wolffHistJob(4.0L,mep,wlp);
 	}
 	else{
 		
