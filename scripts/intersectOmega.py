@@ -44,6 +44,7 @@ def intersects(x1,y1,x2,y2):
 
 def dist(x1,y1,x2,y2):
     return pow(pow(x1-x2,2) + pow(y1-y2,2),0.5)
+
 def findDist(intersections):
     npints = np.squeeze(np.array(intersections));
     avgX = np.mean(npints[:,0]);
@@ -62,12 +63,18 @@ def findIntersection(X1,Y1,X2,Y2):
         if (intersection[0] != -1):
             ret.append(intersection);
     return ret;
-def plot_lines(mat,linds):
+def plot_lines(mat,linds,ints):
     for i in range(len(linds)-1):
         plt.plot(mat[linds[i]:linds[i+1],2],mat[linds[i]:linds[i+1],3]);
+    x=[];
+    y=[];
+    for i in range(len(ints)):
+        x.append(ints[i][0]);
+        y.append(ints[i][1]);
+    plt.scatter(x,y);
     plt.show();
 def selectInt(ints, tc):
-    reti = "asfd";
+    reti = 0;
     minD = 1000;
     for i in range(len(ints)):
         D = np.abs(ints[i][0] - tc);
@@ -75,7 +82,7 @@ def selectInt(ints, tc):
             minD = D;
             reti = i;
     if (minD != 1000):
-        return [ints[i]];
+        return ints[reti];
     else:
         print("select int failed")
         exit(-1);
@@ -85,6 +92,7 @@ def selectInt(ints, tc):
 def sigmaIntersect(directory,skipsmallest,tcguess):
     filedata =[]; 
     intersections = [];
+    test_intersections = [];
     measures=[];
     doPlot = input("plot?");
     #each file covers one omega
@@ -108,9 +116,8 @@ def sigmaIntersect(directory,skipsmallest,tcguess):
         if (skipsmallest):
             l_inds = l_inds[1:];
             N_L = N_L -1;
-        if (doPlot == "Y"):
-            plot_lines(data,l_inds);
         intersections[:] = [];
+        test_intersections[:] = [];
         for i in range(N_L-1):
             x1 = data[l_inds[i]:l_inds[i+1],2];
             y1 = data[l_inds[i]:l_inds[i+1],3];
@@ -118,14 +125,27 @@ def sigmaIntersect(directory,skipsmallest,tcguess):
                 x2 = data[l_inds[i+j+1]:l_inds[i+j+2],2];
                 y2 = data[l_inds[i+j+1]:l_inds[i+j+2],3];
                 isec = findIntersection(x1,y1,x2,y2);
+                for k in range(len(isec)):
+                    test_intersections.append(isec[k]);
                 if (len(isec)==1):
-                    intersections.append(isec);
+                    intersections.append(isec[0]);
                 if (len(isec)>1):
+
                     intersections.append(selectInt(isec,tcguess));
+
+        if (doPlot == "Y"):
+            plot_lines(data,l_inds,test_intersections);
+            plot_lines(data,l_inds,intersections);
 
         if (len(intersections) > 1):
             measures.append([omega,findDist(intersections)]);
 
     fullpath= getDirName(directory);
     filename = os.path.join(fullpath,"std.dat");
+    if (skipsmallest): 
+        filename = os.path.join(fullpath,"std_drop_2_smallest.dat");
+    print(measures);
+    measures = sorted(measures)
+    print(measures);
+
     writeToFile(measures,filename);

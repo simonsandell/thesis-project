@@ -78,7 +78,9 @@ def ana3DXY(fName,doT,doL,doSC2,doSC3,doTeq,doAnalyze,doPlot,doPrint):
             print("find_teq done")
     if (doPlot):
         intersectOmega.sigmaIntersect(outdir+"scalingCorr/omegaBin2L",False,2.202);
+        intersectOmega.sigmaIntersect(outdir+"scalingCorr/omegaBin2L",True,2.202);
         intersectOmega.sigmaIntersect(outdir+"scalingCorr/omegaRS2L",False,2.202);
+        intersectOmega.sigmaIntersect(outdir+"scalingCorr/omegaRS2L",True,2.202);
 
         if (doT):
             vstdir = outdir + "vsT/"
