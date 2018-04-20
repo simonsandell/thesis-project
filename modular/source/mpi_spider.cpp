@@ -1,5 +1,7 @@
 #include <mpi.h>
+#include <string>
 #include <iostream>
+#include <limits>
 
 #include "clusterStruct.h"
 #include "randStruct.h"
@@ -8,6 +10,9 @@
 #include "3DXY.h"
 
 int main(){
+
+	typedef std::numeric_limits<long double> dbl;
+	std::cout.precision(dbl::max_digits10 + 5);
 
 	MPI_Init(NULL,NULL);
 
@@ -32,28 +37,34 @@ int main(){
 
 	if (world_rank != 0){
 		bool cold = false;
-		Ising3D::teqJob(16.0L,cold,mep,wlp);
-		Ising3D::teqJob(8.0L,cold,mep,wlp);
-		Ising3D::teqJob(4.0L,cold,mep,wlp);
-		std::string bigstr = "\nfinished\n";
-		MPI_Send(bigstr.c_str(),bigstr.size(),MPI_CHAR,0,1,MPI_COMM_WORLD);
-
+		for ( int i = 0; i < 100; ++i){
+			Ising3D::teqJob(4.0L,cold,mep,wlp);
+			Ising3D::teqJob(8.0L,cold,mep,wlp);
+			Ising3D::teqJob(16.0L,cold,mep,wlp);
+			Ising3D::teqJob(32.0L,cold,mep,wlp);
+			Ising3D::teqJob(64.0L,cold,mep,wlp);
+		}
+		std::string fstr = "\n~finished~\n";
+		int tag = 1;
+		MPI_Send(fstr.c_str(),fstr.size(),MPI_CHAR,0,tag,MPI_COMM_WORLD);
 	}
 	else{
-		int N_finished =0;
+		
+		int N_finished = 0;
 		while (true){
 			int char_amount;
 			MPI_Status status;
-			MPI_Probe (MPI_ANY_SOURCE,MPI_ANY_TAG,MPI_COMM_WORLD, &status);
+			MPI_Probe(MPI_ANY_SOURCE,MPI_ANY_TAG,MPI_COMM_WORLD, &status);
 			MPI_Get_count(&status,MPI_CHAR,&char_amount);
 			char *buf = (char*)malloc(sizeof(char)*(char_amount+1));
 			MPI_Recv(buf,char_amount,MPI_CHAR,MPI_ANY_SOURCE,MPI_ANY_TAG,MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 			if (status.MPI_TAG == 1 || status.MPI_TAG == 0){
+
 				std::cout.write(buf,sizeof(char)*(char_amount));
 			}
 			if (status.MPI_TAG == 1){
 				N_finished +=1;
-				if (N_finished > (world_size -2)){
+				if (N_finished == (world_size - 1)){
 					break;
 				}
 			}
