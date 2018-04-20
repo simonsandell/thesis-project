@@ -20,7 +20,7 @@ import gps
 
 
 #################
-def anaIsing3D(fName,doT,doL,doSC2,doSC3,doTeq,doAnalyze,doPlot,doPrint):
+def ana(fName,doT,doL,doSC2,doSC3,doTeq,doAnalyze,doPlot,doPrint):
     doScaling = doSC2 or doSC3;
     outdir= "./foutput/Ising3D/"
     indir = "./output/Ising3D/"

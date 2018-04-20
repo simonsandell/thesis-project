@@ -74,9 +74,9 @@ def calcAvg(mat,i,istart,FileList,masterfile):
     deltas = jackknife.getJackDelta(submat,calcFunctions,100);
     #write T, avg, delta, N, to files
     fstr= "{:30.30f}";
-    master_line = fstr.format(L) + " " + fstr.format(L) + " ";
+    master_line = fstr.format(L) + " " + fstr.format(T) + " ";
     for i in range(len(functions)):
-        master_line + master_line + fstr.format(functions[i]) + " ";
+        master_line = master_line + fstr.format(functions[i]) + " ";
         FileList[i].write(fstr.format(T)+"    "+fstr.format(functions[i])+"    "+fstr.format(deltas[i])+"    "+fstr.format(N)+"\n")
     master_line = master_line + "\n";
     masterfile.write(master_line);
@@ -95,6 +95,7 @@ def calcAvg(mat,i,istart,FileList,masterfile):
 # SX     SY     SZ     bin    dBdT   xi     rs     expFac
 def analyze(inData,fName):
     masterfile = open("./averages/" + fName + ".avg","w");
+    masterfile.write("# L T En Mag Bin dBdT Chi Rs");
     ind = np.lexsort((inData[:,21],inData[:,20],inData[:,19],inData[:,18],inData[:,17],inData[:,16],inData[:,15],inData[:,14],inData[:,13],inData[:,12],inData[:,11],inData[:,10],inData[:,9],inData[:,8],inData[:,7],inData[:,5],inData[:,4],inData[:,3],inData[:,2],inData[:,6],inData[:,1],inData[:,0]));
     sortedMat= inData[ind];
     

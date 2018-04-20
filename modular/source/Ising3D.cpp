@@ -58,6 +58,7 @@ void Ising3D::wolffHistJob(long double L,std::string maxepath,std::string warmla
 	RandStruct rand;
 
 	LatticeIsing3D lat(L,cold,beta,rand,clust,maxepath,warmlatpath);
+	lat.loadLattice();
 	warmup(lat,Neq);
 	while(true){	
 		wolffHistRunIsing3D(lat,Nsamp,Trange,Ntemps);

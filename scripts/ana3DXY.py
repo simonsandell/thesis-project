@@ -19,7 +19,8 @@ import anaFuncs
 import gps
 
 
-def ana3DXY(fName,doT,doL,doSC2,doSC3,doTeq,doAnalyze,doPlot,doPrint):
+def ana(fName,doT,doL,doSC2,doSC3,doTeq,doAnalyze,doPlot,doPrint):
+    print(fName);
     doScaling = doSC2 or doSC3;
 
     #################
