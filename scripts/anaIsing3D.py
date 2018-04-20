@@ -96,11 +96,11 @@ def anaIsing3D(fName,doT,doL,doSC2,doSC3,doTeq,doAnalyze,doPlot,doPrint):
                     xaxis = "Temperature"
                     title = "Ising3D_" + anaFuncs.dirToTitle(dirname) + "_vs_" + xaxis;
                     gps.graceDirPlot(fullpath,title,xaxis,yaxis,False,False,doPrint);
-                if ("2L" in fullpath and "std" not in fullpath and doSC2 and doPrint):
-                    yaxis = anaFuncs.dirToYaxis(dirname);
-                    xaxis = "Temperature"
-                    title = "Ising3D_" + anaFuncs.dirToTitle(dirname) + "_vs_" + xaxis;
-                    gps.graceAnimation(fullpath,title,xaxis,yaxis);
+                #if ("2L" in fullpath and "std" not in fullpath and doSC2 and doPrint):
+                #    yaxis = anaFuncs.dirToYaxis(dirname);
+                #    xaxis = "Temperature"
+                #    title = "Ising3D_" + anaFuncs.dirToTitle(dirname) + "_vs_" + xaxis;
+                #    gps.graceAnimation(fullpath,title,xaxis,yaxis);
                 if (("std" in fullpath) and doSC2):
                     yaxis = anaFuncs.dirToYaxis(dirname);
                     xaxis = r"\xw\0";

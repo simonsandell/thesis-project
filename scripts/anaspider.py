@@ -34,6 +34,9 @@ if (preset ==  "plot"):
     doAna=False;
     doPrint=False;
     doSC2 = True;
+if (preset == "print"):
+    doAna=False;
+    doSC2 = True;
 if (preset ==  "plotT"):
     doAna=False;
     doPrint=False;

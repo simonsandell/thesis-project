@@ -4,11 +4,11 @@ def initFile():
     f = open("figures.tex","w");
     return f;
 
-def writeFig(filepath,cap,f):
+def writeFig(filepath,cap,f,filename):
     f.write(r'\begin{figure}[!htpb]' + "\n")
     f.write(r'  \centering' + "\n")
-    f.write(r'  \includegraphics[width=15cm]{' + filepath + r'}' + "\n")
-    f.write(r'  \caption{' + cap + r'}' + "\n")
+    f.write(r'  \includegraphics[width=\textwidth]{' + filepath + r'}' + "\n")
+    f.write(r'  \caption{' + cap + " " +filename.replace("_"," ").replace(".eps","") +  r'}' + "\n")
     f.write(r'\end{figure}' + "\n")
     f.write("\n");
 
@@ -21,9 +21,9 @@ for subdirs,dirs, files in os.walk(directory):
         if (".eps" in f):
             if ("3DXY" in subdirs):
                 cap = "3DXY";
-                writeFig(os.path.join(subdirs,f),cap,writefile)
+                writeFig(os.path.join(subdirs,f),cap,writefile,f)
             if ("Ising3D" in subdirs):
                 cap = "Ising3D";
-                writeFig(os.path.join(subdirs,f),cap,writefile)
+                writeFig(os.path.join(subdirs,f),cap,writefile,f)
 
     

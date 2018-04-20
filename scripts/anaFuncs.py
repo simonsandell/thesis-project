@@ -18,10 +18,10 @@ def dirToYaxis(dirname):
             'm2':r'm\S2\N',
             'm4':r'm\S4\N',
             'c':'C - Heat Capacity',
-            'omegaBin3L':r'\xw\0 B scaling correction',
-            'omegaRS3L':r'\xw\0 \xr\0\ss\N scaling correction',
+            'omegaBin3L':r'\xw\0 = -ln(B(4L) - B(2L)/B(2L) - B(L))/ln(2)',
+            'omegaRS3L':r'\xw\0 = -ln(\xr\0\ss\N(4L) - \xr\0\ss\N(2L)/\xr\0\ss\N(2L) - \xr\0\ss\N(L))/ln(2)',
             'omegaBin2L':r'L\S\xw\0\N\c7\C[B(2L) - B(L)]',
-            'omegaRS2L':r'L\S\xw\0\N\c7\C[2L\xr\)(2L) - L\xr\0(L)]',
+            'omegaRS2L':r'L\S\xw\0\N\c7\C[2L\xr\0)(2L) - L\xr\0(L)]',
             'std_omegaBin2L':r'\xs\0\sBin2L\N',
             'std_omegaRS2L':r'\xs\0\sRS2L\N',
             'teq':r'\xc\0\S2\N'};

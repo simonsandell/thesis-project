@@ -106,11 +106,11 @@ def ana3DXY(fName,doT,doL,doSC2,doSC3,doTeq,doAnalyze,doPlot,doPrint):
                     xaxis = "Temperature"
                     title = "3DXY_" + anaFuncs.dirToTitle(dirname) + "_vs_" + xaxis;
                     gps.graceDirPlot(fullpath,title,xaxis,yaxis,False,False,doPrint);
-                if ("2L" in fullpath and "std" not in fullpath and doSC2):
-                    yaxis = anaFuncs.dirToYaxis(dirname);
-                    xaxis = "Temperature"
-                    title = "3DXY_" + anaFuncs.dirToTitle(dirname) + "_vs_" + xaxis;
-                    gps.graceDirPlot(fullpath,title,xaxis,yaxis,False,False,doPrint);
+                #if ("2L" in fullpath and "std" not in fullpath and doSC2):
+                #    yaxis = anaFuncs.dirToYaxis(dirname);
+                #    xaxis = "Temperature"
+                #    title = "3DXY_" + anaFuncs.dirToTitle(dirname) + "_vs_" + xaxis;
+                #    gps.graceDirPlot(fullpath,title,xaxis,yaxis,False,False,doPrint);
                 if (("std" in fullpath) and doSC2):
                     yaxis = anaFuncs.dirToYaxis(dirname);
                     xaxis = r"\xw\0";

@@ -50,9 +50,11 @@ def findDist(intersections):
     avgX = np.mean(npints[:,0]);
     avgY = np.mean(npints[:,1]);
     dlist = [];
+
+    ret = 0.0;
     for i in range(npints.shape[0]):
-        dlist.append(dist(npints[i,0],npints[i,1],avgX,avgY));
-    return np.mean(dlist);
+        ret = ret + dist(npints[i,0],npints[i,1],avgX,avgY);
+    return ret;
 
 
     
@@ -72,7 +74,9 @@ def plot_lines(mat,linds,ints):
         x.append(ints[i][0]);
         y.append(ints[i][1]);
     plt.scatter(x,y);
+    plt.gca().set_xlim(left=1.0,right=100.0);
     plt.show();
+
 def selectInt(ints, tc):
     reti = 0;
     minD = 1000;
@@ -144,8 +148,6 @@ def sigmaIntersect(directory,skipsmallest,tcguess):
     filename = os.path.join(fullpath,"std.dat");
     if (skipsmallest): 
         filename = os.path.join(fullpath,"std_drop_2_smallest.dat");
-    print(measures);
     measures = sorted(measures)
-    print(measures);
 
     writeToFile(measures,filename);
