@@ -4,33 +4,32 @@
 %
 
 \section{Monte Carlo}
-In statistical physics, averages are calculated from 
+In statistical physics, predictions come from thermal averages calculated from 
 \begin{equation}
   \langle A\rangle = \frac{1}{Z}\trm{Tr} e^{-H/T} = \sum_x A(x) P(x)
 \end{equation}
-where  $P(x) = (1/Z)exp(-H(x))$ is the Boltzmann distribution.
-We often define models by writing down the mathematical expression for the Hamiltonian. However, it is often very hard or practically impossible to write down the partition function $Z$. But there are luckily ways to compute these averages without doing so.
-
-One way to evaluate these averages is using Monte-Carlo methods. 
+where  $P(x) = (1/Z)\trm{exp}(-H(x))$ is the Boltzmann distribution.
+Models of physical systems are described by writing down the mathematical expression for the Hamiltonian. However, an expression for the partition function $Z$ can in most cases not be found. So using the first representation to calculate averages is for most models not possible. The other form shows another way to calculate the averages, at least approximatesly, by simulation. 
 Monte Carlo averages have the form 
 \begin{equation}
   \langle A \rangle = \frac{1}{N} \sum_x A(x) \pm \frac{\sigma	}{\sqrt N}
 \end{equation}
 where the states $x$ are Boltzmann distributed.
-However, the Boltzmann distribution may be unsuitable for some systems/configurations we want to study, so we can use any other distribution as 
+
+The Boltzmann distribution may be unsuitable for some systems/configurations we want to study. In practice, we can use any distribution we want, if we introduce the proper normalization.
 \begin{equation}
   \langle A \rangle = \frac{\frac{1}{N}\sum_y \frac{A(y) e^{-H(x)/T}}{P'(y)}}{\frac{1}{N}\sum_y \frac{e^{-H(y)/T}}{P'(y)}}  
 \end{equation}
  where the states $y$ are distributed according to $P'(y)$.
 
- Importance sampling is a way of reducing the error in the Monte Carlo estimate. Instead of choosing sample points distributed uniformly, one can try to choose the most probable states. Since thermal systems are Boltzmann-distributed, we want a way to randomly generate states distributed according to the Boltzmann distribution.
+%Importance sampling is a way of reducing the error in the Monte Carlo estimate. Instead of choosing sample points distributed uniformly, one can try to choose the most probable states. Since thermal systems are Boltzmann-distributed, we want a way to randomly generate states distributed according to the Boltzmann distribution.
 
-%//\subsection{Markov process}
+%//\section{Markov process}
 %//A Markovian process is one for which the probility of getting to any state in the system is determined solely by the current state. I.e. the probability of going from state $x_i$ to $x_{j}$ is given by a transition probability $w(x_i \rightarrow x_j)$. The master equation describing the evolution of the probability distribution can then be written $P(x_{i+1}) = k
 %// 
 %//
 
-\subsection{Histrogram extrapolation}
+\section{Histrogram extrapolation}
 Histogram extrapolation is a method used to extrapolate data obtained from a simualtion.
 By calculating additional averages during the simulation proceeds, one can obtain data for a range of temperatures surrounding the actual temperature the simulation is running at.
 The averages are calculated as
@@ -41,10 +40,17 @@ To get the average of A at some different temperature, say $\beta_1$, we can do
 \begin{align}
   \langle A\rangle_{\beta_1} =  \frac{\sum_{x}A_x e^{-\beta_1 H_x}}{\sum_{x}e^{-\beta_1 H_x}} = \\
   = \frac{\sum_x A_x e^{-(\beta_1 - \beta_0)H_x} e^{-\beta_0 H_x}}{\sum_x e^{-(\beta_1 - \beta_0)H_x}e^{-\beta_0 H_x}} = \\
-  = \frac{\langle A e^{-(\beta_1 - \beta_0)H}\rangle_{\beta_0}}{\langle e^{-(\beta_1 - \beta_0)H}\rangle_{\beta_0}}
+  = \frac{\langle A e^{-(\beta_1 - \beta_0)H}\rangle_{\beta_0}}{\langle e^{-(\beta_1 - \beta_0)H}\rangle_{\beta_0}}.
 \end{align}
-Since the value of $|beta_1 -\beta_0|$ will be small in practice, and the value of the energy will increase with the system size, precision will be lost in the calculation of $\exp\left( \beta_1 - \beta_0 \right)H_x$. To mitigate this, one can subtract a constant from the energy of the system, $H_max$, since a constant shift in energy will not change expectation values, since it just factors out of both sums and cancels.
-\subsection{Wolff Algorithm}
+The range of temperatures to which extrapolation is viable will decrease with system size,
+as loss in precision will occur when the exponential factor becomes large. To minimize the exponential factor, one can shift the energy of the system by a constant, which we call $H_{max}$. A constant shift in energy does not affect the values, 
+\begin{equation}
+  \langle A \rangle = \frac{e^{\beta H_{max}}}{e^{\beta H_{max}}}\frac{\sum_x A_x e^{-\beta H_x}}{\sum_x e^{-\beta H_x}}= \frac{\sum_x A_x e^{-\beta(H_x-H_{max})}}{\sum_x e^{-\beta(H_x-H_{max})}}.
+  \label{}
+\end{equation}
+This technique can extend the range of temperate, but fluctuations in energy grow with the system size, so for high enough system sizes, extrapolation becomes fruitless.
+
+\section{Wolff Algorithm}
 The Wolff algorithm is a non-local update method, and is an improvement upon the Swendsen-Wang method in which spin bonds are scanned and either deleted or frozen. This will divide the lattice into clusters, which are then flipped/updated with certain probabilites. In the Wolff algorithm only a single cluster is generated, with the starting spin uniformly random. That way of initializing the cluster, one can expect to hit large clusters with higher probability, since probability of hitting a cluster should depend on its size.
 Thus one can avoid the many single spin clusters usually generated in the Swendsen-Wang method.
 For a markovian update method to give a chain of system configurations with distribution according to the Boltzmann-factor, it must satisfy two conditions, 
@@ -95,7 +101,7 @@ Step 1: From state $X$ propose a new trial state $X'$ with probability given by 
   \end{cases}
 \end{equation}
 The trial probability is usually just a uniform distribution.
-\subsubsection{Wolff on the 3DXY-model}
+\section{Wolff on the 3DXY-model}
 In the 3DXY-model, each spin is characterized by a single value, their angle $\alpha$.
 We define the hamiltonian of the 3DXY-model as 
 \begin{equation}
@@ -134,6 +140,7 @@ We get
 \begin{align}
   \frac{T(X\rightarrow X')}{T(X'\rightarrow X)}&= \prod_{\langle s_i s_j \rangle \in \bm{\partial} c} \frac{ \exp\left\{2\beta\cos(R(\alpha_i,\alpha_u) - \alpha_u)\cos(\alpha_j - \alpha_u)\right\}}{ \exp\left\{2\beta\cos(R(\alpha'_i,\alpha_u) - \alpha_u)\cos(\alpha'_j -\alpha_u)\right\}} = \\
   &= \prod_{\langle s_i s_j \rangle \in \bm{\partial} c} \frac{ \exp\left\{2\beta\cos(\alpha'_i - \alpha_u)\cos(\alpha'_j - \alpha_u)\right\}}{ \exp\left\{2\beta\cos(\alpha_i,\alpha_u) - \alpha_u)\cos(\alpha_j -\alpha_u)\right\}} = \\
-  &= \frac{\rho(X')}{\rho(X)}.
+  &= \frac{\rho(X')}{\rho(X)},
 \end{align}
+and so, detailed balance is satisfied.
 
