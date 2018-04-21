@@ -3,7 +3,6 @@
 #include "Ising3D/Ising3Dlattice.h"
 #include "clusterStruct.h"
 #include "randStruct.h"
-
 #include <string>
 namespace Ising3D{
 	void warmup(LatticeIsing3D& lat,long double N);

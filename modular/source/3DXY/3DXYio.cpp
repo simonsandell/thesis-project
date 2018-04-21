@@ -5,7 +5,6 @@
 #include <iostream>
 #include <fstream>
 #include <unistd.h>
-#include <limits.h>
 
 #include "3DXYio.h"
 #include "3DXYlattice.h"

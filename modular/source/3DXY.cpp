@@ -91,7 +91,7 @@ void _3DXY::teqJob(long double L,bool cold,std::string maxepath,std::string warm
 	long double Nsamp = 2;
 	wolffHistRun3DXY(lat,Nsamp,Trange,Ntemps);
 	wolffHistRun3DXY(lat,Nsamp,Trange,Ntemps);
-	for (int i = 0; i< 9; ++i){
+	for (int i = 0; i< 10; ++i){
 		Nsamp *= 2.0L;
 		wolffHistRun3DXY(lat,Nsamp,Trange,Ntemps);
 	}

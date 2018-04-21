@@ -79,11 +79,13 @@ void Ising3D::teqJob(long double L,bool cold,std::string maxepath,std::string wa
 	long double Nsamp = 2.0L;
 	wolffHistRunIsing3D(lat,Nsamp,Trange,Ntemps);
 	wolffHistRunIsing3D(lat,Nsamp,Trange,Ntemps);
-	for (int i = 0; i< 9; ++i){
+	for (int i = 0; i< 10; ++i){
 		Nsamp *= 2.0L;
 		wolffHistRunIsing3D(lat,Nsamp,Trange,Ntemps);
 	}
-	lat.oPer.printData(0);
+	if (lat.oPer.outputLines.size() > 0 ){
+		lat.oPer.printData(0);
+	}
 }
 
 void Ising3D::warmupJob(long double L, std::string maxepath,std::string warmlatpath){
