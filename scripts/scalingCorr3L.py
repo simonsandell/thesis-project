@@ -4,11 +4,11 @@ import math
 import jackknife
 
 def openFiles(directory):
-    o1file = open(directory+"/omega1.dat","w")
-    o2file = open(directory+"/omega2.dat","w")
-    o3file = open(directory+"/omega3.dat","w")
-    o4file = open(directory+"/omega4.dat","w")
-    return [o1file,o2file,o3file,o4file];
+    o1file = open(directory+"/omega_4.dat","a")
+    o2file = open(directory+"/omega_8.dat","a")
+    o3file = open(directory+"/omega_16.dat","a")
+    o4file = open(directory+"/omega_32.dat","a")
+    return {4:o1file,8:o2file,16:o3file,32:o4file};
 
     
 
@@ -21,7 +21,9 @@ def calculate(mat,i,istart,FileList,function,lind):
     scalingcorrs = [];
     deltas = [];
     Tmat = mat[istart:i,:]; 
+    L_list = [];
     for x in range(N_corrs):
+        L_list.append(Tmat[lind[x],0]);
         submat3L = Tmat[lind[x]:lind[x+3],:];
         scalingcorrs.append(function(submat3L));
         deltas.append(jackknife.getJackDelta(submat3L,function,1000));
@@ -29,7 +31,7 @@ def calculate(mat,i,istart,FileList,function,lind):
     fstr= "{:30.30f}";
     for x in range(len(scalingcorrs)):
 
-        FileList[x].write(fstr.format(T) + "    " + fstr.format(scalingcorrs[x][0]) + "    " + fstr.format(deltas[x][0]) + " \n"); 
+        FileList[L_list[x]].write(fstr.format(T) + "    " + fstr.format(scalingcorrs[x][0]) + "    " + fstr.format(deltas[x][0]) + " \n"); 
 
 
 

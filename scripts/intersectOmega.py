@@ -15,7 +15,7 @@ def writeToFile(data,fullpath):
     outfile = open(fullpath,"w");
     fstr = "{:30.30f}";
     for ls in data:
-        outfile.write(fstr.format(ls[0]) + "    " + fstr.format(ls[1]) +"    " + "0.0"+ "\n");
+        outfile.write(fstr.format(ls[0]) + "    " + fstr.format(ls[1]) +"    " + "0.0"+"    "+ fstr.format(ls[2]) +  "\n");
 
 def sgn(x):
     return x/abs(x);
@@ -160,7 +160,7 @@ def sigmaIntersect(directory,skipsmallest,tcguess):
             plot_lines(data,l_inds,intersections);
 
         if (len(intersections) > 1):
-            measures.append([omega,findDist(intersections)]);
+            measures.append([omega,findDist(intersections),len(intersections)]);
 
     fullpath= getDirName(directory);
     filename = os.path.join(fullpath,"std.dat");

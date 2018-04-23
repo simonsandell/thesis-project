@@ -15,7 +15,7 @@ def writeLine(mat,avgN):
 #now we have data for only interesting temp, separete N_sweeps and print
 def oneTemp(mat,nfac,z,betanu):
 
-    print(np.log(1/mat[-1,9])/np.log(mat[0,0]))
+    #print(np.log(1/mat[-1,9])/np.log(mat[0,0]))
     #first, rescale mag and N
     for i in range(mat.shape[0]):
         mat[i,4] = mat[i,4]*pow(mat[i,0],-z);
@@ -98,6 +98,14 @@ def chisquare(params,x,y):
 def findteq(mat,temp,betanu,path,drop_smallest,p):
     ind = np.lexsort((mat[:,4],mat[:,1],mat[:,0]));
     mat = mat[ind];
+    #delrows = []
+    #for i in range(mat.shape[0]):
+    #    if (mat[i,4] > 1000.0 or mat[i,4] < 8):
+    #        delrows.append(i);
+    #mat = np.delete(mat,delrows,axis=0);
+    #print(mat.shape)
+
+        
     f = open(path,"w");
     z = 0.0;
     dz = 0.05;
