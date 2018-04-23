@@ -1,8 +1,8 @@
+#import matplotlib.pyplot as plt
 import os
 import numpy as np
 import math
 
-import matplotlib.pyplot as plt
 
 def getDirName(directory):
     b =os.path.dirname(directory);
