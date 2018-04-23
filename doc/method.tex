@@ -8,7 +8,7 @@ In statistical physics, predictions come from thermal averages calculated from
 \begin{equation}
   \langle A\rangle = \frac{1}{Z}\trm{Tr} e^{-H/T} = \sum_x A(x) P(x)
 \end{equation}
-where  $P(x) = (1/Z)\trm{exp}(-H(x))$ is the Boltzmann distribution.
+where  $P(x) = (1/Z)\trm{exp}(-H(x))$ is the Boltzmann distribution, and the sum is a sum over all possible states of the system.
 Models of physical systems are described by writing down the mathematical expression for the Hamiltonian. However, an expression for the partition function $Z$ can in most cases not be found. So using the first representation to calculate averages is for most models not possible. The other form shows another way to calculate the averages, at least approximatesly, by simulation. 
 Monte Carlo averages have the form 
 \begin{equation}
@@ -16,11 +16,11 @@ Monte Carlo averages have the form
 \end{equation}
 where the states $x$ are Boltzmann distributed.
 
-The Boltzmann distribution may be unsuitable for some systems/configurations we want to study. In practice, we can use any distribution we want, if we introduce the proper normalization.
-\begin{equation}
-  \langle A \rangle = \frac{\frac{1}{N}\sum_y \frac{A(y) e^{-H(x)/T}}{P'(y)}}{\frac{1}{N}\sum_y \frac{e^{-H(y)/T}}{P'(y)}}  
-\end{equation}
- where the states $y$ are distributed according to $P'(y)$.
+%The Boltzmann distribution may be unsuitable for some systems/configurations we want to study. In practice, we can use any distribution we want, if we introduce the proper normalization.
+%\begin{equation}
+ % \langle A \rangle = \frac{\frac{1}{N}\sum_y \frac{A(y) e^{-H(x)/T}}{P'(y)}}{\frac{1}{N}\sum_y \frac{e^{-H(y)/T}}{P'(y)}}  
+%\end{equation}
+ %where the states $y$ are distributed according to $P'(y)$.
 
 %Importance sampling is a way of reducing the error in the Monte Carlo estimate. Instead of choosing sample points distributed uniformly, one can try to choose the most probable states. Since thermal systems are Boltzmann-distributed, we want a way to randomly generate states distributed according to the Boltzmann distribution.
 
@@ -49,7 +49,7 @@ as loss in precision will occur when the exponential factor becomes large. To mi
   \label{}
 \end{equation}
 This technique can extend the range of temperate, but fluctuations in energy grow with the system size, so for high enough system sizes, extrapolation becomes fruitless.
-
+The data gathered at the extrapolated temperature will be worse and worse the further we go, since we generate states that are probable for actual running temperature, but these states will likely become more and more unimportant for the extrapolated temperature.
 \section{Wolff Algorithm}
 The Wolff algorithm is a non-local update method, and is an improvement upon the Swendsen-Wang method in which spin bonds are scanned and either deleted or frozen. This will divide the lattice into clusters, which are then flipped/updated with certain probabilites. In the Wolff algorithm only a single cluster is generated, with the starting spin uniformly random. That way of initializing the cluster, one can expect to hit large clusters with higher probability, since probability of hitting a cluster should depend on its size.
 Thus one can avoid the many single spin clusters usually generated in the Swendsen-Wang method.
