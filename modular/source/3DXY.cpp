@@ -37,10 +37,10 @@ long double * getTrange(long double start, long double end, int N){
 
 void _3DXY::wolffHistJob(long double L,std::string maxepath,std::string warmlatpath){
 
-	long double runTemp = 2.20200000000000L;
+	long double runTemp = 2.20184000000000L;
 
-	long double	startT=			2.20100L;
-	long double	endT=			2.20350L;
+	long double	startT=			2.20140L;
+	long double	endT=			2.20210L;
 	int 		Ntemps=			101;
 	long double* Trange;
 	if (Ntemps < 2) {
