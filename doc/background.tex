@@ -24,12 +24,11 @@
 % where the states $y$ are distributed according to $P'(y)$.
 
 \section{Model}
-There are many different models in the same universality class as the normal-superfluid Helimu-4 transition, for example the $\phi^4$-model, the ddXY model etc.
-In this thesis we have chosen the simulate the 3DXY-model. This is convenient because of the relative simplicity of the model, and that it is well known and studied.
-The numerical method used to calculate thermodynamic averages is a Wolff algorithm.
-To achieve good statistics in a reasonable amount of time, it is necessary to utilize a global update algorithm, since the model experiences so called critical slowing down near the transition temperature. 
-Near the transition temperature, the correlation length diverges, so thermal fluctuations propagate very long distances, and so the system takes a very long time to equilibrate to the equilibrum value.
-
+There are many different models in the universality class of the normal-superfluid Helimu-4 transition, the O(2)-symmetry group in three dimensions. Some examples are the $\phi^4$-model, the ddXY model etc.
+In this thesis we have chosen the simulate the classical 3DXY-model. This is convenient because of the relative simplicity of the model, and that it is well known and studied.
+The numerical method we used to perform the Monte-Carlo simulations was a Wolff algorithm written in C++. Since both the 3DXY-model and the 3D Ising model suffer from critcal slowing down, i.e. the equilibration time tends to infinity at the critical temperature, 
+Both the 3DXY-model and the 3D Ising-model suffer from a phenomenon called critical slowing down. Near the transition temperature, the correlation length diverges, so thermal fluctuations propagate very long distances, and so the system takes a very long time to equilibrate to the equilibrum value.
+One can wastly improve the quality-data versus cpu-time ratio by utilizing a global update algorithm such as the Wolff algorithm. 
 \begin{equation}
   H_{\trm{3DXY}} = -K\sum\limits_{\langle i,j\rangle} \bm{s_i}\cdot\bm{s_j} = -K\sum\limits_{\langle i,j\rangle} \cos(\alpha_i - \alpha_j)
 \end{equation}
@@ -72,29 +71,53 @@ Close to a fixed point of the RG, we can write this equation in terms of right e
   \label{}
 \end{equation}
 It is evident that the inverse size of the system is in fact a relevant eigenvector with eigenvalue $y_L = 1$, and finite size effects needs to be considered. 
-The models we study in this paper have the external field set to zero, we can then write the scaling form of the free energy as
+The models we study in this paper have the external field set to zero, if we let $l = L$ we can then write the scaling form of the free energy as
 \begin{equation}
-  f_s(t,L^{-1}) = |t|^{2-\alpha}F_{f}^{\pm}(L^{-1}|t|^{-1/y_t})
+  f_s(t,L^{-1}) = L^{-d} F^{\pm}(t L^{1/\nu})
   \label{}
 \end{equation}
-
+where we used $\nu = 1/y_t$ and the scaling law $2 -\alpha = d\nu$.
+The $\pm$ indicate different form function above and below the critical temperature.
+From this equation we can derive the finite size scaling behaviour of any physical quantities by utilizing their relation to the free energy. For example, the specific heat scales as
+\begin{equation}
+  c_V = -T\frac{\partial ^2 f_s}{\partial T^2} \sim L^{-d +2/\nu}F^{\pm}(tL^{1/\nu}) = L^{\alpha/\nu} F^{\pm}(tL^{1/\nu})
+  \label{<++>}
+\end{equation}
+The susceptibility is related to the free energy by 
+\begin{equation}
+  \chi = \frac{\partial^2 f}{\partial h^2}
+  \label{<++>}
+\end{equation}
+and therefore it's finite size scaling is 
+\begin{equation}
+  \chi \sim L^{-d +2y_h}F^{\pm}(tL^{1/\nu}) = L^{2-\eta}F^{\pm}(tL^{1/\nu})
+  \label{}
+\end{equation}
+where we used that $ 2(d-y_h) = d -2 +\eta$.
+The magnetization goes as
+\begin{equation}
+  M = \frac{\partial f}{\partial h} \sim L^{-d + y_h} = L^{-\beta/\nu}
+  \label{<++>}
+\end{equation}
 \section{Scaling laws}
 \begin{align}
-  	y_t &= \nu\\
-	2 &= \alpha + 2\beta + \gamma \\
-	\gamma &= \beta(\delta -1)\\
-	d\nu &= 2 - \alpha
+  y_t &= \frac{1}{\nu}\\
+  y_h &= \frac{2-\eta +d}{2}\\
+  \Delta &= y_h/y_t\\
+	2 - \eta &= \frac{\gamma}{\nu} = d\frac{\delta -1}{\delta+1}\\
+	\nu d &= 2-\alpha = 2\beta + \gamma = \beta(\delta+1) = \gamma\frac{\delta +1}{\delta -1}
 \end{align}
 \section{Definitions of critical exponents}
+For $h=0$,
 \begin{align}
-  \beta &= \frac{1}{k_B T} \\
-  F &= -\beta \log Z\\
+  C &\sim t^{-\alpha}\\
   M &\sim (-t)^{\beta}\\
   \chi &\sim |t|^{-\gamma}\\
-  \xi &\sim |t|^{-\nu}
+  \xi &\sim |t|^{-\nu}\\
 \end{align}  
-\section{Binder cumulant}
-The quantity $b =\frac{\langle M^4 \rangle}{\langle M^2\rangle^2}$ is useful as it approaches a constant as $t\rightarrow 0 $, as,  disregarding scaling corrections,
-\begin{equation}
-  \langle M^4 \rangle \sim t^{}
-\end{equation}
+For $t =0$,
+\begin{align}
+  h &\sim m^{\delta}\\
+  \langle m(r)m(0)\rangle &\sim r^{-d +2 -\eta}
+  \label{}
+\end{align}
