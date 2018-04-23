@@ -66,12 +66,12 @@ void _3DXY::wolffHistJob(long double L,std::string maxepath,std::string warmlatp
 
 }
 void _3DXY::warmupJob(long double L, std::string maxepath,std::string warmlatpath){
-	long double runTemp = 2.202000000000000L;
+	long double runTemp = 2.201840000000000L;
 	bool cold = true;
 	Cluster c(L);
 	RandStruct r;
 	Lattice3DXY lat(L,runTemp,cold,r,c,maxepath,warmlatpath);
-	lat.loadLattice();
+	//lat.loadLattice();
 	long double Neq = 1000.0L;
 	while (lat.NTotSweeps < 100000.0L){
 		warmup(lat,Neq);
