@@ -144,3 +144,37 @@ We get
 \end{align}
 and so, detailed balance is satisfied.
 
+\section{New scaling approach}
+From the chaper of finite size scaling, we have that
+
+\begin{align}
+  b'(L) \equiv B(2L,t=0) - B(L,t=0) &= b_1(2^{-\omega} -1)L^{-\omega}\\
+  b''(L)\equiv \frac{b'(2L)}{b'(L)} &= 2^{-\omega}\\
+  \omega &= -\frac{\ln(b''(L))}{\ln(2)}.
+\end{align}
+Note that this only holds at the critical temperature, the $\textit{constants}$ $b_0, b_2$ are functions of temperature. Thus if we plot this function using at least four different system sizes, we can get several graphs that intersect at the critical temperature, and from that the scaling correction $\omega$ can be read of without the need for any form of parameter fitting. This depends on the assumption that the higher order corrections are sufficiently small, which they might not in fact be for the lowest system size we have simulated, $L=4$. This method also fails when $b'(L)$ and $b'(2L)$ differ in sign, since then $log(b''(l)$ will be undefined.
+For such cases one can resort to methods of parameter fitting.
+Consider the Superfluid density, which scales as 
+\begin{align}
+  r(L)&\equiv \rho_s(L,t=0) \cdot L = r_0 + r_1L^{-\omega_\rho}\\
+  r(2L) - r(L) &= r_1(2^{-\omega_\rho} -1)L^{-\omega_\rho}
+\end{align}
+
+
+For the method using 2 system sizes, one can check by visual inspeciton each different value of omega to see for which omega the graphs intersect mostly at one point. One can also make a numerical check, by finding the intersecitons of all curves, and calculating  and plotting the standard deviation of the intersections for each omega.
+The files containing the $L^{\omega}*(2L\rho_x(2L) - L\rho_x(L))$ vs $T$ is separately loaded for each calculated value of $\omega$, then intersections of these 3-5 lines are found. 
+The intersection finder finds all intersections, 3 in the case of 3 lines, 6 for 4 lines 10 for 5 lines etc, and then calulates the average position of these intersections. The mean of the euclidean distances are then used as a measure of how close the intersections are. This value is then printed together with the value of omega, and finally plotted vs omega.
+Hopefully the graph will have a clear minimum where the intersections are closest, thus determining the scaling correction omega. For low systemsizes higher order corections can distort the found value, thus we visually inspect the graphs to judge how small system sizes should be included. 
+
+\subsection{Parallell programming}
+Simulating time required grows roughly as $L^3$ with system size, one way to speed up data gathering is to parallellize the simulations. For the problems at hand, we chose to implement the trivial version of parallellization; run many simulations serially on many cores. The Wolff algorithm can in fact be parallellized \cite{Kaupuzs2010}, but this did not come to our knowledge before a lot of code had been written, so we chose not to implement it. 
+
+The main part of computations/simulations were performed on resources provided by the Swedish National Infrastructure for Computing (SNIC) at the PDC Center for High Performance Computing.reache
+Some less demanding computations were performed on the Octopus-cluster at the Department of Theoretical Physics at KTH.
+
+The parallellization was implemented using MPI, having a master process handling data output while the children ran simulatiions. A process that is relatively slow to perform for a computer is to write data to disk. 
+The startup cost of a file write is quite high, so if output is not printed as produced, but rather stored up in memory and then printed in larger chunks, cpu time can be saved. 
+In effect, the larger the chucks the more efficent the program runs, but one is limited by the available amount of RAM when deciding chunk size. Depending on computer system, the program may slow considerably or even crash should the available RAM be depleted during a run.
+\subsection{Data analysis}
+The analysis of the data from simulations are handled separately. The implementations were written in Python, utilizing the NumPy and SciPy libraries. 
+The figures where produced using the open source program Grace available at ``plasma-gate.weizmann.ac.il/Grace/''.

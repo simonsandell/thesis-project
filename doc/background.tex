@@ -70,34 +70,37 @@ Close to a fixed point of the RG, we can write this equation in terms of right e
   f_s(t,h,K_3,\cdots,L^{-1}) = l^{-d}f_s(tl^{y_t},hl^{y_h},K_3 l^{y_3},\cdots,lL^{-1}).
   \label{}
 \end{equation}
-It is evident that the inverse size of the system is in fact a relevant eigenvector with eigenvalue $y_L = 1$, and finite size effects needs to be considered. 
+It is evident that the inverse size of the system is in fact a relevant eigenvector with eigenvalue $y_L = 1$, and only becomes irrelevant in the thermodynamic limit $L^{-1}\rightarrow 0$.
 The models we study in this paper have the external field set to zero, if we let $l = L$ we can then write the scaling form of the free energy as
 \begin{equation}
-  f_s(t,L^{-1}) = L^{-d} F^{\pm}(t L^{1/\nu})
+  f_s(t,L^{-1}) = L^{-d} F_f(t L^{1/\nu})
   \label{}
 \end{equation}
-where we used $\nu = 1/y_t$ and the scaling law $2 -\alpha = d\nu$.
-The $\pm$ indicate different form function above and below the critical temperature.
-From this equation we can derive the finite size scaling behaviour of any physical quantities by utilizing their relation to the free energy. For example, the specific heat scales as
+where we used $\nu = 1/y_t$ and the scaling law $2 -\alpha = d\nu$.$F_f(tL^{1/\nu})$ is the form function for the free energy.
+From this equation we can derive the finite size scaling behaviour of any physical quantities by utilizing their relation to the free energy. 
+For example, we can find the scaling form of the specific heat as
 \begin{equation}
-  c_V = -T\frac{\partial ^2 f_s}{\partial T^2} \sim L^{-d +2/\nu}F^{\pm}(tL^{1/\nu}) = L^{\alpha/\nu} F^{\pm}(tL^{1/\nu})
-  \label{<++>}
+  c_V = \frac{\partial ^2 f_s}{\partial t^2} \sim L^{-d +2/\nu}F_{c}(tL^{1/\nu}) = L^{\alpha/\nu} F_{c}(tL^{1/\nu}).
+  \label{}
 \end{equation}
-The susceptibility is related to the free energy by 
+The infinite scaling form would diverge at $t=0$, 
+This form function will have a maximum at some shifted value of $T$, 
 \begin{equation}
+  T_c(L) = T_c + \lambda L^{-1/\nu}( 1 + bL^{-\omega}).
+  \label{}
+\end{equation}
+Higher order corrections can be included as well.
+Similarly for the susceptibility,
+\begin{align}
   \chi = \frac{\partial^2 f}{\partial h^2}
-  \label{<++>}
-\end{equation}
-and therefore it's finite size scaling is 
-\begin{equation}
-  \chi \sim L^{-d +2y_h}F^{\pm}(tL^{1/\nu}) = L^{2-\eta}F^{\pm}(tL^{1/\nu})
+  \sim L^{-d +2y_h}F_{\chi}(tL^{1/\nu}) = L^{2-\eta}F_{\chi}(tL^{1/\nu})
   \label{}
-\end{equation}
+\end{align}
 where we used that $ 2(d-y_h) = d -2 +\eta$.
 The magnetization goes as
 \begin{equation}
   M = \frac{\partial f}{\partial h} \sim L^{-d + y_h} = L^{-\beta/\nu}
-  \label{<++>}
+  \label{}
 \end{equation}
 \section{Scaling laws}
 \begin{align}
@@ -110,6 +113,7 @@ The magnetization goes as
 \section{Definitions of critical exponents}
 For $h=0$,
 \begin{align}
+  f &\sim l^{-d}f(tl^{y_t},hl^{y_h},K_3l^{y_3},\cdots,L^{-1}l)\\
   C &\sim t^{-\alpha}\\
   M &\sim (-t)^{\beta}\\
   \chi &\sim |t|^{-\gamma}\\
