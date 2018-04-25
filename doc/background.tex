@@ -2,26 +2,122 @@
 %     Created: mån feb 12 01:00  2018 C
 % Last Change: mån feb 12 01:00  2018 C
 %
-This is the background.
+%\section{Monte Carlo}
+%In statistical physics averages are calculated from 
+%\begin{equation}
+%  \langle A\rangle = \frac{1}{Z}\trm{Tr} e^{-H/T} = \sum_x A(x) P(x)
+%  \label{}
+%\end{equation}
+%where  $P(x) = (1/Z)exp(-H(x))$ is the Boltzmann distribution.
+%The practical and convievable way to evaluate these averages using Monte Carlo is to use importance sampling, i.e. do not form averages from uniformly random system configurations, but instead generate configurations that are Boltzmann distributed.   
+%Thus thermal Monte Carlo averages have the form 
+%\begin{equation}
+%  \langle A \rangle = \frac{1}{N} \sum_x A(x) \pm \frac{\sigma	}{\sqrt N}
+%  \label{}
+%\end{equation}
+%where the states $x$ are Boltzmann distributed.
+%However, the Boltzmann distribution may be unsuitable for some systems/configurations we want to study, so we can use any other distribution as 
+%\begin{equation}
+%  \langle A \rangle = \frac{\frac{1}{N}\sum_y \frac{A(y) e^{-H(x)/T}}{P'(y)}}{\frac{1}{N}\sum_y \frac{e^{-H(y)/T}}{P'(y)}}  
+%  \label{}
+%\end{equation}
+% where the states $y$ are distributed according to $P'(y)$.
 
-\section{Monte Carlo}
-In statistical physics averages are calculated from 
+\section{Model}
+There are many different models in the universality class of the normal-superfluid Helimu-4 transition, the O(2)-symmetry group in three dimensions. Some examples are the $\phi^4$-model, the ddXY model etc.
+In this thesis we have chosen the simulate the classical 3DXY-model. This is convenient because of the relative simplicity of the model, and that it is well known and studied.
+The numerical method we used to perform the Monte-Carlo simulations was a Wolff algorithm written in C++. Since both the 3DXY-model and the 3D Ising model suffer from critcal slowing down, i.e. the equilibration time tends to infinity at the critical temperature, 
+Both the 3DXY-model and the 3D Ising-model suffer from a phenomenon called critical slowing down. Near the transition temperature, the correlation length diverges, so thermal fluctuations propagate very long distances, and so the system takes a very long time to equilibrate to the equilibrum value.
+One can wastly improve the quality-data versus cpu-time ratio by utilizing a global update algorithm such as the Wolff algorithm. 
 \begin{equation}
-  \langle A\rangle = \frac{1}{Z}\trm{Tr} e^{-H/T} = \sum_x A(x) P(x)
+  H_{\trm{3DXY}} = -K\sum\limits_{\langle i,j\rangle} \bm{s_i}\cdot\bm{s_j} = -K\sum\limits_{\langle i,j\rangle} \cos(\alpha_i - \alpha_j)
+\end{equation}
+We set $K=1$.
+\begin{equation}
+  Z = \trm{Tr} \exp\left[-\beta \left( H_\Omega - \int d^d \bm{r} H(\bm{r})\eta(\bm{r})\right)\right]
+\end{equation}
+\begin{equation}
   \label{}
 \end{equation}
-where  $P(x) = (1/Z)exp(-H(x))$ is the Boltzmann distribution.
-The practical and convievable way to evaluate these averages using Monte Carlo is to use importance sampling, i.e. do not form averages from uniformly random system configurations, but instead generate configurations that are Boltzmann distributed.   
-Thus thermal Monte Carlo averages have the form 
-\begin{equation}
-  \langle A \rangle = \frac{1}{N} \sum_x A(x) \pm \frac{\sigma	}{\sqrt N}
-  \label{}
-\end{equation}
-where the states $x$ are Boltzmann distributed.
-However, the Boltzmann distribution may be unsuitable for some systems/configurations we want to study, so we can use any other distribution as 
-\begin{equation}
-  \langle A \rangle = \frac{\frac{1}{N}\sum_y \frac{A(y) e^{-H(x)/T}}{P'(y)}}{\frac{1}{N}\sum_y \frac{e^{-H(y)/T}}{P'(y)}}  
-  \label{}
-\end{equation}
- where the states $y$ are distributed according to $P'(y)$.
+\section{Scaling}
+Often in physics relations between different physical quantities are described by power-laws, $f = f(\chi)\cdot g^{x}$. So also in statistical physics, where such laws are fundamental to understanding phase transitions.
+In statistical physics, when studying a specific system, the fundamental quantity is some thermodynamic potential,  Gibbs, Helmholtz. From this potential, several other physical quantites are derived, such as the energy, magnetization, and other that may depend on the specifics. 
+If the system has a phasetransition, often, but not always, since what constitutes a phase transition is not trivial, physical quantites will diverege, and follow certain scaling laws as they do. 
+Using mean field theory to calculate these laws gives always a fractional exponent in the laws, but experiments had shown evidence of non-fractional exponents. 
+Kadanoff realized that a diverging correlation length implied that there was a relation between the lenght scale at which the order parameter was defined and the coupling constants of an effective Hamiltonian. Altough his block-spin approach does not enable one to compute the critical expoents, it was an important step.
+The full theory of Renormalization Group was put forth by Wilson.
+The core concept is the renormalization group transformations which takes a Hamiltonian and by some method/rule of coarse-graining clumps together short wave-length degrees of freedom, and defines a new effective hamiltonian describing the long-wavelength degrees of freedom with new coupling parameters for the new lenghtscale.
+The name renormalization group is not entirely appropriate, since these transformations are in general complicated and non-linear, thus not always having inverses. But the transformations do have the associative property of groups. Rescaling the system by some length $l_1$ and then rescaling again by some other length $l_2$ should be equivalent to performing the rescaling in the other order.
+But so far all we did was remove a finite number of degrees of freedom from out system, how can that explain the sigular behaviour at phase transitions? By repeating the transformations an infinite number of times, singular behaviour can be introduced.
+The partition function is what we really want to compute to know everything about a physical system, but that task is most often simply unachievable. The renormalization transformation are also not easy to compute, but the transformation of the coupling constants can be approximated.
+\section{Universality}
+The theromodynamics of any model; the phase diagram, correlation functions, other quantites etc, may depend on the specific values of coupling parameters in the hamiltonian, symmetries, dimensionality, type of lattice, etc. 
+But it turns out that the critical phenomena (phase transitions) only depend on three things, the symmetries of the hamiltonian, the dimensionality and the range of interations ( type of critical point ).
 
+We can study the critical behaviour of say Helium-4, which we know is in the $O(2)$ universality class, by calculation themodynamical averages directly by using Monte-Carlo method on the simulated 3DXY-model, which should have the exact same critical exponents. 
+One inconvenience is that one cannot simulate the infinite size 3DXY-model due to computer memory finite-ness, thus one simulates instead finite-size versions of the 3DXY-model. The theory of how finite size systems relate to the infinite size models is called finite size scaling. The normal power-laws aquire correction terms, which needs to be accounted for.
+
+
+\section{Finite size scaling}
+Consider a system with coupling constants $K$ and linear finite size $L$. 
+The singular part of the free energy scales as
+\begin{equation}
+  f_s([K],L^{-1}) = l^{-d}f_s([K],lL^{-1}).
+  \label{}
+\end{equation}
+Close to a fixed point of the RG, we can write this equation in terms of right eigenvectors of the linearized RG-transform,
+\begin{equation}
+  f_s(t,h,K_3,\cdots,L^{-1}) = l^{-d}f_s(tl^{y_t},hl^{y_h},K_3 l^{y_3},\cdots,lL^{-1}).
+  \label{}
+\end{equation}
+It is evident that the inverse size of the system is in fact a relevant eigenvector with eigenvalue $y_L = 1$, and finite size effects needs to be considered. 
+The models we study in this paper have the external field set to zero, if we let $l = L$ we can then write the scaling form of the free energy as
+\begin{equation}
+  f_s(t,L^{-1}) = L^{-d} F^{\pm}(t L^{1/\nu})
+  \label{}
+\end{equation}
+where we used $\nu = 1/y_t$ and the scaling law $2 -\alpha = d\nu$.
+The $\pm$ indicate different form function above and below the critical temperature.
+From this equation we can derive the finite size scaling behaviour of any physical quantities by utilizing their relation to the free energy. For example, the specific heat scales as
+\begin{equation}
+  c_V = -T\frac{\partial ^2 f_s}{\partial T^2} \sim L^{-d +2/\nu}F^{\pm}(tL^{1/\nu}) = L^{\alpha/\nu} F^{\pm}(tL^{1/\nu})
+  \label{<++>}
+\end{equation}
+The susceptibility is related to the free energy by 
+\begin{equation}
+  \chi = \frac{\partial^2 f}{\partial h^2}
+  \label{<++>}
+\end{equation}
+and therefore it's finite size scaling is 
+\begin{equation}
+  \chi \sim L^{-d +2y_h}F^{\pm}(tL^{1/\nu}) = L^{2-\eta}F^{\pm}(tL^{1/\nu})
+  \label{}
+\end{equation}
+where we used that $ 2(d-y_h) = d -2 +\eta$.
+The magnetization goes as
+\begin{equation}
+  M = \frac{\partial f}{\partial h} \sim L^{-d + y_h} = L^{-\beta/\nu}
+  \label{<++>}
+\end{equation}
+\section{Scaling laws}
+\begin{align}
+  y_t &= \frac{1}{\nu}\\
+  y_h &= \frac{2-\eta +d}{2}\\
+  \Delta &= y_h/y_t\\
+	2 - \eta &= \frac{\gamma}{\nu} = d\frac{\delta -1}{\delta+1}\\
+	\nu d &= 2-\alpha = 2\beta + \gamma = \beta(\delta+1) = \gamma\frac{\delta +1}{\delta -1}
+\end{align}
+\section{Definitions of critical exponents}
+For $h=0$,
+\begin{align}
+  C &\sim t^{-\alpha}\\
+  M &\sim (-t)^{\beta}\\
+  \chi &\sim |t|^{-\gamma}\\
+  \xi &\sim |t|^{-\nu}\\
+\end{align}  
+For $t =0$,
+\begin{align}
+  h &\sim m^{\delta}\\
+  \langle m(r)m(0)\rangle &\sim r^{-d +2 -\eta}
+  \label{}
+\end{align}

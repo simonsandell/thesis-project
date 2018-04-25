@@ -43,15 +43,24 @@ Thumbs.db
 *.ps
 *.pdf
 *.dvi
+*.bbl
+*.toc
+*.blg
 
+*.pyc
 # Directories 
 #################################################
 output/
 teqoutput/
-foutput/
-saved_output/
+old_output/
 test/
-warmLattice/
-# ocotpus cluster output files
+lattices/
+__pycache__/
+# octpus cluster output files
 ##############################
 run*.o*
+# figure files
+*.eps
+*.dat
+*.gif
+*.png

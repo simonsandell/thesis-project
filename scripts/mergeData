@@ -1,4 +1,0 @@
-#!/bin/bash
-for filename in $PWD/output/parruns/$1*; do
-	cat $filename >> $PWD/output/$2;
-done;

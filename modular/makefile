@@ -1,2 +1,2 @@
-main: ./source/*.cpp 
-	g++ -pthread -Wall -Wextra -O3 -std=c++11 -o main.exe ./source/*.cpp 
+main: ./source/*.cpp ./source/3DXY/*.cpp ./source/Ising3D/*.cpp
+	mpic++ -DNDEBUG -O3 -Wall -Wextra -std=c++11 -o main.exe ./source/*.cpp ./source/3DXY/*.cpp ./source/Ising3D/*.cpp
