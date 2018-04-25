@@ -39,8 +39,8 @@ void _3DXY::wolffHistJob(long double L,std::string maxepath,std::string warmlatp
 
 	long double runTemp = 2.20184000000000L;
 
-	long double	startT=			2.20140L;
-	long double	endT=			2.20210L;
+	long double	startT=			2.20160L;
+	long double	endT=			2.20200L;
 	int 		Ntemps=			101;
 	long double* Trange;
 	if (Ntemps < 2) {
@@ -52,18 +52,22 @@ void _3DXY::wolffHistJob(long double L,std::string maxepath,std::string warmlatp
 	}
 	long double 	Neq=			1000.0L;
 	bool 		cold=			true;
-	long double	Nsamp=			100000.0L;
+	long double	Nsamp=			1000.0L;
 	long double 	Nbetw=			100.0L;
 	Cluster c(L);
 	RandStruct r;
 	Lattice3DXY lat(L,runTemp,cold,r,c,maxepath,warmlatpath);
 	lat.loadLattice();
 	warmup(lat,Neq);
-	for (int i = 0; i < 1000; ++i){
+	int k = 9;
+	for (int i = 0; i<1000;++i){
 		wolffHistRun3DXY(lat,Nsamp,Trange,Ntemps);
 		warmup(lat,Nbetw);
+		if (i > k){
+			lat.saveLattice();
+			k = k+10;
+		}
 	}
-
 }
 void _3DXY::warmupJob(long double L, std::string maxepath,std::string warmlatpath){
 	long double runTemp = 2.201840000000000L;

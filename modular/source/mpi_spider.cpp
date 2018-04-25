@@ -30,30 +30,15 @@ int main(){
 	std::string o_pwd = "/home/simsan/exjobb/modular/"; 
 	
 	std::string env = b_pwd;
-	std::string model = "Ising3D/";
+	std::string model = "3DXY/";
 		  
 	std::string mep= env + "maxE/" + model; 
 	std::string wlp= env + "warmLattice/" + model; 
 
+	if (world_rank != 0){
+		_3DXY::wolffHistJob(128.0L,mep,wlp);
+	}
 	if (world_rank == 0){
-		Ising3D::warmupJob(128.0L,mep,wlp);
-	}
-	if (world_rank == 1){
-		Ising3D::warmupJob(64.0L,mep,wlp);
-	}
-	if (world_rank == 2){
-		Ising3D::warmupJob(32.0L,mep,wlp);
-	}
-	if (world_rank == 3){
-		Ising3D::warmupJob(16.0L,mep,wlp);
-	}
-	if (world_rank == 4){
-		Ising3D::warmupJob(8.0L,mep,wlp);
-	}
-	if (world_rank == 5){
-		Ising3D::warmupJob(4.0L,mep,wlp);
-	}
-	if (world_rank == -1){
 		int N_finished = 0;
 		while (true){
 			int char_amount;

@@ -7,7 +7,7 @@
 #include "ioHandle.h"
 void outPutter::addLine(std::string ln){
 	outputLines.emplace_back(ln);
-	if (outputLines.size() > 9){
+	if (outputLines.size() > 4){
 		printData(0);
 	}
 }

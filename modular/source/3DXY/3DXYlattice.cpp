@@ -293,11 +293,6 @@ void Lattice3DXY::saveLatticeAs(std::string name){
 	//
 	//dont save energy,mag, etc, call updateQuants() instead on load
 	//
-	//check that oPer.outputLines has no lines
-	if (oPer.outputLines.size() >0){
-		std::cout << "loading failed, outPutter has lines" << std::endl;
-		exit(1);
-	}
 	std::ostringstream fpath;
 	fpath << warmLatPath << L << "_" << name << "_.lat";
 	std::ofstream ofs(fpath.str().c_str(),std::ios::binary);
@@ -406,8 +401,6 @@ void Lattice3DXY::loadLattice(){
 		updateQuants();
 		//maxE shouldnt have been saved..
 		maxE = getMaxE(maxEPath,L);
-
-
 	}
 
 }
