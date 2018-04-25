@@ -51,7 +51,7 @@ def graceDirPlot(directory,title, xaxis ,yaxis,xlog,ylog, doPrint):
     syscall.append("-noask");
     syscall.append("-free");
     if (doPrint):
-        if (xlog and ylog):
+        if (xlog or ylog):
             writeToBat(bfile,"LEGEND off");
         writeToBat(bfile,"PRINT TO \"" + title + ".eps\"");
         writeToBat(bfile,"HARDCOPY DEVICE \"EPS\"");

@@ -3,6 +3,43 @@
 % Last Change: mån feb 12 01:00  2018 C
 %
 \section{Results}
+\section{Previous results}
+\begin{table}[!htpb]
+\begin{center}
+\begin{tabular}{l l l l }
+  Quantity 	& Hasenbusch 	& pseudo-$\varepsilon$ 	& Space	\\
+  $T_c$		& 2.20184(6)	& N/A		&	\\
+  $\alpha $	& -0.0151(3)	& -0.00117(31)	&-0.0127(3)\\
+  $\nu	  $     & 0.6717(1) 	& 0.6706(10)	&	\\
+  $\eta   $     & 0.0381(2) 	& 0.0376(28) 	&	\\
+  $\gamma $	& 1.3178(2) 	& 1.3159(8)	&	\\
+  $\beta  $     & 0.3486(1) 	& 0.3479(16)	&	\\
+  $\delta $	& 4.780(1) 	& 		&	\\
+  $\omega $     & 0.785(20) 	& N/A			&	\\
+  $\omega_2$ 	& 1.8(2) 	& N/A			&	\\
+\end{tabular}
+\end{center}
+\caption{3DXY-model }
+\end{table}
+Sokolov did pesudo-$\varepsilon$ expasion on 3dxy.\cite{Sokolov2016}
+\begin{table}[!htpb]
+\begin{center}
+\begin{tabular}{l l l l}
+  Quantity  & Hasenbusch & Conformal bootstrap& Our\\
+  $T_c$	    & 4.511523(3)& N/A		& N/A\\
+  $\alpha $ & N/A        & N/A		& N/A\\
+  $\nu	  $ & 0.63002(10)& 0.629(1)	& N/A\\
+  $\eta   $ & 0.03627(10)& 0.0341(5)	& N/A\\
+  $\gamma $ & N/A        & N/A		& N/A\\
+  $\delta $ & N/A        & N/A		& N/A\\
+  $\beta  $ & N/A        & N/A		& N/A\\
+  $\omega $ & N/A        & 0.80(1)	& N/A\\
+  $\omega_2$& N/A        & N/A		& N/A\\
+\end{tabular}
+\end{center}
+\caption{3D Ising-model }
+\end{table}
+Gliozzo used conformal bootstrap method on ising 3d.\cite{Gliozzi2014}
 \subsection{Data Analysis}
 The simulation program outputs raw data ordered in lines. Data from one ``simulation'' is contained in $N_{temperatures} \cdot N_{averages per simulation} \cdot N_{simulations}$.
 To calculate quantities of interest from this raw data, a python script has been written, utilizing the numpy library. All available raw data is loaded into a numpy ndarray, and sorted by system size and temperature. Then for each block of data with one temperature and one system size, combined averages are calculated and from these, further functions of the averages are calculated, such as the Binder Parameter, it's derivative, Susceptibility, Superfluid density, etc. To estimate the statistical error in these estimations, we utilize a resampling method usually refered to as the jackknife method. For each block used in calculating the estimations, a jackknife function is called, which calculates the quantities again, but with a subblock of data omitted.
@@ -16,7 +53,6 @@ Thus the number of clusters and sweeps performed as warmup varies slightly betwe
 After the warmup, cluster updates are performed for 100k more sweeps, and the thermodynamic quantities are collected after each update. Then, averages are calculated and printed. Then 100 sweeps are performed to take the lattice to a state not correlated, and another 100k sample sweeps are performed. This is repeated 100 times. The system sizes simulated are 4, 8, 16, 32, 64 and 128. 
 The number of simulations currently used to calculate $U_4, \rho_s, \chi $ etc. for the system sizes 4
 
-The critical exponets X was
 
 \begin{table}[htpb]
 \begin{center}
@@ -45,14 +81,14 @@ The critical exponets X was
   128 & 1.15  & $115^{*}$ \\
 \end{tabular}
 \end{center}
-\caption{Number of simulations performed on the Ising3D-model  \textsuperscript{*The simulation of 128 is not doing so well, as evident in the plots}}
+\caption{Number of simulations performed on the 3D Ising-model}
 \end{table}
-\subsection{Ising3D model}
-The same general formula is used when simulating the Ising3D model, however, the temperature range is changed to capture the phase transition, $T_{\trm{run}} = 4.50, ~ T_{\trm{range}} = 4.486-4.515$.
+\subsection{3D Ising-model}
+The same general formula is used when simulating the 3D Ising-model, however, the temperature range is changed to capture the phase transition, $T_{\trm{run}} = 4.50, ~ T_{\trm{range}} = 4.486-4.515$.
 
 
 
-\input{figures.tex}
+%\input{figures.tex}
 
 
 

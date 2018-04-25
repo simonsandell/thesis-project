@@ -1,4 +1,4 @@
-#import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 import cmath
 import numpy as np
 import scipy.stats as sps
@@ -19,8 +19,7 @@ def oneTemp(mat,nfac,z,betanu):
     #first, rescale mag and N
     for i in range(mat.shape[0]):
         mat[i,4] = mat[i,4]*pow(mat[i,0],-z);
-        mat[i,9] = mat[i,9]*pow(mat[i,0],betanu);
-        #mat[i,9] = mat[i,9]/mat[-1,9];
+        #mat[i,9] = mat[i,9]*pow(mat[i,0],betanu);
     result =[];
     startI = 0;
     high_N=4.0*nfac;
@@ -36,6 +35,8 @@ def oneTemp(mat,nfac,z,betanu):
     avgCurr = np.mean(mat[startI:,4]);
     result.append(writeLine(mat[startI:,:],0.5*(avgCurr + avgPrev)));
     result = np.array(result);
+    for i in range(result.shape[0]):
+        result[i,1] = result[i,1]/result[-1,1];
     return result;
 
 
@@ -73,21 +74,23 @@ def analyze(tmat,temp,betanu,z):
 def writeToFile(f,x,y):
     fstr= "{:30.30f}";
     f.write(fstr.format(x) + "    " + fstr.format(y) + "    0.0\n");
-    
+ 
 def fit(params,X):
     X = np.array(X);
     a = params[0]
     b = params[1]
     return   a*(1 -np.exp(b*X));
 
-def plot_comp(params,x,y):
+def plot_comp(params,xl,yl,Z):
     #plt.gca().set_xscale('log');
-    plt.scatter(x,y);
+    for i in range(len(xl)):
+        plt.plot(xl[i],yl[i]);
     #X = np.geomspace(pow(10,-3),x[-1],100.0);
     X = np.linspace(0,100,100.0);
     Y = fit(params,X);
     plt.plot(X,Y,linewidth=2.0);
-    plt.gca().set_xlim(left=-5.0,right=100.0);
+    rlim = 100.0*pow(4.0,-Z);
+    plt.gca().set_xlim(left=-5.0,right=rlim);
 
 def chisquare(params,x,y):
     Y = fit(params,x);
@@ -117,15 +120,19 @@ def findteq(mat,temp,betanu,path,drop_smallest,p):
         if (drop_smallest):
             del rescaled[0];
             del rescaled[0];
-        res = [];
-        res[:] = [];
-        
         x = [];
         y = [];
         x[:] = [];
         y[:] = [];
 
+        xl = [];
+        yl = [];
+        xl[:] = [];
+        yl[:] = [];
+
         for j in range(len(rescaled)):
+            xl.append(rescaled[j][:,0]);
+            yl.append(rescaled[j][:,1]);
             x.extend(rescaled[j][:,0]);
             y.extend(rescaled[j][:,1]);
         #fit to exp func
@@ -134,13 +141,12 @@ def findteq(mat,temp,betanu,path,drop_smallest,p):
         #plotting
 
         goodness = chisquare(params,x,y);
-        res = np.array(res);
         writeToFile(f,z,goodness);
         z = z+ dz;
         
         if (doPlot == "Y"):
             plt.gca().set_title("z = " + str(z));
-            plot_comp(params,x,y);
+            plot_comp(params,xl,yl,z-dz);
             plt.show();
 
 
