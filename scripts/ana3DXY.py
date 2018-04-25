@@ -74,14 +74,14 @@ def ana(fName,doT,doL,doSC2,doSC3,doTeq,doAnalyze,doPlot,doPrint):
             tp.analyze(dataMatrix,"./foutput/3DXY/vsN/"+fName,2.20200000);
             print("Teq done");
             paramguess = [1.0,-0.1, +1.1,-.01];
-            fteq.findteq(dataMatrix,2.202000000,0.51891688,outdir + "teq/sigma_vs_z.dat",False,paramguess);
-            fteq.findteq(dataMatrix,2.202000000,0.51891688,outdir + "teq/sigma_vs_z_drop4.dat",True,paramguess);
+            fteq.findteq(dataMatrix,fName,2.202000000,0.51891688,outdir + "teq/",False,paramguess);
+            fteq.findteq(dataMatrix,fName,2.202000000,0.51891688,outdir + "teq/",True,paramguess);
             print("find_teq done")
     if (doPlot):
-        intersectOmega.sigmaIntersect(outdir+"scalingCorr/omegaBin2L",False,2.202);
-        intersectOmega.sigmaIntersect(outdir+"scalingCorr/omegaBin2L",True,2.202);
-        intersectOmega.sigmaIntersect(outdir+"scalingCorr/omegaRS2L",False,2.202);
-        intersectOmega.sigmaIntersect(outdir+"scalingCorr/omegaRS2L",True,2.202);
+        #intersectOmega.sigmaIntersect(outdir+"scalingCorr/omegaBin2L",False,2.202);
+        #intersectOmega.sigmaIntersect(outdir+"scalingCorr/omegaBin2L",True,2.202);
+        #intersectOmega.sigmaIntersect(outdir+"scalingCorr/omegaRS2L",False,2.202);
+        #intersectOmega.sigmaIntersect(outdir+"scalingCorr/omegaRS2L",True,2.202);
 
         if (doT):
             vstdir = outdir + "vsT/"

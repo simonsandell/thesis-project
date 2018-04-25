@@ -66,8 +66,8 @@ def ana(fName,doT,doL,doSC2,doSC3,doTeq,doAnalyze,doPlot,doPrint):
             print("teq done");
             paramguess = [1.0,-0.1, +1.1,-.01];
             betanu = 0.51814925;
-            fteq.findteq(dataMatrix,4.510000000,betanu,outdir + "teq/sigma_vs_z.dat",False,paramguess);
-            fteq.findteq(dataMatrix,4.510000000,betanu,outdir + "teq/sigma_vs_z_drop4.dat",True,paramguess);
+            fteq.findteq(dataMatrix,fName,4.510000000,betanu,outdir + "teq/",False,paramguess);
+            fteq.findteq(dataMatrix,fName,4.510000000,betanu,outdir + "teq/",True,paramguess);
             print("find_teq done")
     if (doPlot):
         intersectOmega.sigmaIntersect(scalingDir + "/omegaBin2L",False,4.510);

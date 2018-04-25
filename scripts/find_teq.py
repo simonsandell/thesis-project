@@ -98,7 +98,7 @@ def chisquare(params,x,y):
 
     return cs[0];
 
-def findteq(mat,temp,betanu,path,drop_smallest,p):
+def findteq(mat,fName,temp,betanu,path,drop_smallest,p):
     ind = np.lexsort((mat[:,4],mat[:,1],mat[:,0]));
     mat = mat[ind];
     #delrows = []
@@ -108,8 +108,9 @@ def findteq(mat,temp,betanu,path,drop_smallest,p):
     #mat = np.delete(mat,delrows,axis=0);
     #print(mat.shape)
 
-        
-    f = open(path,"w");
+    if (drop_smallest):
+        fName = fName = "_drop_smallest";
+    f = open(path+fName+".dat","w");
     z = 0.0;
     dz = 0.05;
     doPlot = input("Plot fit?");
