@@ -12,10 +12,10 @@ def calcSC3(tdict,model):
                 Llist3 = Llist[2:];
 
                 for L1,L2,L3 in zip(Llist1,Llist2,Llist3):
+                    print([L1,L2,L3])
                     if (not L1*2 == L2 or not L2*2==L3):
                         print('calcSC3: L not powers of 2');
-                        print([L1,L2,L3])
-                    omegaBin = np.log((ldict[L3].Bin - ldict[L2].Bin)/(ldict[L2].Bin - ldict[L1].Bin))/np.log(2);
+                    omegaBin = - np.log((ldict[L3].Bin - ldict[L2].Bin)/(ldict[L2].Bin - ldict[L1].Bin))/np.log(2);
                     if L1 not in omDictBin:
                         omDictBin[L1] = [[T,omegaBin]];
                     else:
