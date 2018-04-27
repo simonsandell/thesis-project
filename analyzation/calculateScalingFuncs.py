@@ -5,42 +5,28 @@ def calcSC3(tdict,model):
         omDictRs = {};
         for T,ldict in sorted(tdict.items()):
             Llist = sorted(list(ldict.keys()));
-            Llist1 = Llist[:len(Llist)-2];
-            Llist2 = Llist[1:len(Llist)-1];
-            Llist3 = Llist[2:];
+            print(Llist);
+            if (len(Llist)>2):
+                Llist1 = Llist[:len(Llist)-2];
+                Llist2 = Llist[1:len(Llist)-1];
+                Llist3 = Llist[2:];
 
-            for L1,L2,L3 in zip(Llist1,Llist2,Llist3):
-                omegaBin = np.log((ldict[L3].Bin - ldict[L2].Bin)/(ldict[L2].Bin - ldict[L1].Bin))/np.log(2);
-                if L1 not in omDictBin:
-                    omDictBin[L1] = [[T,omegaBin]];
-                else:
-
-                    omDictBin[L1].append([T,omegaBin]);
-                
-                omegaRs = np.log((ldict[L3].Rs - ldict[L2].Rs)/(ldict[L2].Rs - ldict[L1].Rs))/np.log(2);
-                if L1 not in omDictRs:
-                    omDictRs[L1] = [[T,omegaRs]];
-                else:
-                    omDictRs[L1].append([T,omegaRs]);
-                '''
-                try:
+                for L1,L2,L3 in zip(Llist1,Llist2,Llist3):
+                    if (not L1*2 == L2 or not L2*2==L3):
+                        print('calcSC3: L not powers of 2');
+                        print([L1,L2,L3])
                     omegaBin = np.log((ldict[L3].Bin - ldict[L2].Bin)/(ldict[L2].Bin - ldict[L1].Bin))/np.log(2);
                     if L1 not in omDictBin:
-                        omDictBin[L1] = [T,omegaBin];
+                        omDictBin[L1] = [[T,omegaBin]];
                     else:
 
                         omDictBin[L1].append([T,omegaBin]);
-                except:
-                    print('log error, bin, T = ' + str(T));
-                try:
-                    omegaRs = log((ldict[L3].Rs - ldict[L2].Rs)/(ldict[L2].Rs - ldict[L1].Rs))/log(2);
+                    
+                    omegaRs = np.log((ldict[L3].Rs - ldict[L2].Rs)/(ldict[L2].Rs - ldict[L1].Rs))/np.log(2);
                     if L1 not in omDictRs:
-                        omDictRs[L1] = [T,omegaRs];
+                        omDictRs[L1] = [[T,omegaRs]];
                     else:
                         omDictRs[L1].append([T,omegaRs]);
-                except:
-                    print('log error, rs, T = ' + str(T));
-                    '''
         return [omDictBin,omDictRs];
 
 def calcSC2(tdict,model):

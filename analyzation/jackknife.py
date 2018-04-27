@@ -1,47 +1,35 @@
 import numpy as np
-
-def getJackDelta(mat,calcMeans,blocks):
+import random
+def getJackDelta(mat,function,blocknumber):
     N = len(mat);
-    if(N < blocks*10):
-        blocksize = 1;
-    else:
-        blocksize =int(N/blocks);
-    i = 0;
-    i2 = i + blocksize;
-    cont = True;
-    javgs = [];
-    N_blocks = 0;
-    while (cont):
-        N_blocks = N_blocks +1;
-        remblock = mat[:i]
-        remblock.extend(mat[i2:]);
-        javgs.append(calcMeans(remblock));
-        if ((N-i2)< (2*blocksize)):
-            N_blocks = N_blocks +1;
-            i = i + blocksize;
-            i2 = N-1;
-            remblock = mat[:i]
-            remblock.extend(mat[i2:]);
-            javgs.append(calcMeans(remblock));
-            cont = False;
-        else:
-            i = i+blocksize;
-            i2 = i2+blocksize;
-    javgs = np.array(javgs);
-    deltas = [];
-    sqrN = pow(N_blocks,0.5);
-    if (javgs.ndim > 1):
-        for x in range(javgs.shape[1]):
-            deltas.append(sqrN*np.std(javgs[:,x]));
-    else:
-        deltas.append(sqrN*np.std(javgs));
+    random.seed();#seeds with best available?
+    random.shuffle(mat);
 
+    blocksize = int(N/blocknumber);
+    if (blocksize < 1):
+        blocksize  = 1;
+    ind = [0];
+    i = 0;
+    while (i < N):
+        i += blocksize;
+        if (i > N or i ==(N-1)):
+            i = N;
+        ind.append(i);
+    N_blocks = 0;
+    result =[];
+    for i in range(len(ind)-1):
+        N_blocks +=1;
+        tempmat = mat[:];
+        tempmat[ind[i]:ind[i+1]] = [];
+        result.append(function(tempmat));
+
+    result = np.array(result);
+    sqrtN=pow(N_blocks,0.5); 
+    deltas = [];
+    if (len(result[0]) >1):
+        for x in range(result.shape[1]):
+            deltas.append(sqrtN*np.std(result[:,x]));
+    else:
+        deltas.append(sqrtN*std(result));
     return deltas;
 
-
-        
-
-
-        
-        
-        
