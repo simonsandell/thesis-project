@@ -2,13 +2,14 @@ import os
 import time
 import subprocess
 import sys
+from tempfile import NamedTemporaryFile
+
 def fileNotEmpty(fullpath):
     return (os.stat(fullpath).st_size != 0);
 def initBat():
-    subprocess.call(["rm","-f","/tmp/setup.batch"]);
-    bf = open("/tmp/setup.batch","a")
-    bf.write("#obligatory comment\n");
-    return bf;
+    t = NamedTemporaryFile("w",delete=False);
+    t.write("#obligatory comment\n");
+    return t;
 def writeToBat(bfile,line):
     bfile.write(line + "\n");
 def addFile(bfile,path,n):
@@ -46,7 +47,7 @@ def graceDirPlot(directory,title, xaxis ,yaxis,xlog,ylog, doPrint):
     writeToBat(bfile,"AUTOSCALE");
     writeToBat(bfile,"AUTOTICKS");
     syscall.append("-batch");
-    syscall.append("/tmp/setup.batch");
+    syscall.append(bfile.name);
     syscall.append("-nosafe");
     syscall.append("-noask");
     syscall.append("-free");
@@ -129,7 +130,7 @@ def graceAnimation(directory,aniname,xaxis,yaxis):
             writeToBat(bfile,"PAGE SIZE 1920,1024");
             writeToBat(bfile,"DEVICE \"PNG\" FONT ANTIALIASING on");
             writeToBat(bfile,"PRINT");
-            subprocess.call(["gracebat","-batch","/tmp/setup.batch","-nosafe","-noask","-free"]);
+            subprocess.call(["gracebat","-batch",bfile.name,"-nosafe","-noask","-free"]);
 
     subprocess.call(['convert -delay 100 /tmp/temppng/*.png gif:./foutput/animations/'+aniname+'.gif'],shell=True);
     subprocess.Popen(['eog','./foutput/animations/'+aniname+'.gif']);
