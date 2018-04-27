@@ -7,6 +7,7 @@ import calculateAverages
 import calculateScalingFuncs
 import writeFoutput
 
+
 fName = sys.argv[1];
 model = sys.argv[2];
 if (model == "3DXY"):
@@ -32,17 +33,13 @@ L_dict_avg = {4:T_avg_4,
           64:T_avg_64,
           128:T_avg_128
           };
-
 for L,Tdict in L_dict.items():
     for T,avglist in Tdict.items():
        L_dict_avg[L][T] = calculateAverages.calcAvg(L_dict[L][T],L,T,model); 
 
-print("calcAvg done");
 T_dict_avg = writeFoutput.getTdict(L_dict_avg);
 omegaDictsSC2 = calculateScalingFuncs.calcSC2(T_dict_avg,model);
-print("calcSC2 done");
 omegaDictsSC3 = calculateScalingFuncs.calcSC3(T_dict_avg,model);
-print("calcSC3 done");
 
 writeFoutput.writeSC2(omegaDictsSC2,fName,model);
 writeFoutput.writeSC3(omegaDictsSC3,fName,model);

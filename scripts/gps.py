@@ -29,6 +29,7 @@ def graceDirPlot(directory,title, xaxis ,yaxis,xlog,ylog, doPrint):
     writeToBat(bfile,"YAXIS LABEL \"" + yaxis +"\"");
     n = 0;
     for filename in sorted(os.listdir(directory)):
+        print(filename);
         if (os.stat(os.path.join(directory,filename)).st_size != 0):
             if (doPrint):
                 if (".dat" in filename):
@@ -60,12 +61,13 @@ def graceDirPlot(directory,title, xaxis ,yaxis,xlog,ylog, doPrint):
         writeToBat(bfile,"DEVICE \"EPS\" FONT ANTIALIASING on");
         writeToBat(bfile,"PRINT");
         syscall = ["gracebat"] + syscall;
+        bfile.flush();
         subprocess.call(syscall);
         del syscall[0];
     syscall = ["xmgrace"] + syscall;
-    bfile.close();
+    bfile.flush();
     subprocess.Popen(syscall);
-    time.sleep(1.5);
+    time.sleep(0.5);
 
 def initAnim():
     subprocess.call(['rm','-r','/tmp/temppng'])

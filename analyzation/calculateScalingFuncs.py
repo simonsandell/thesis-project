@@ -1,4 +1,5 @@
 import numpy as np
+import math
 def calcSC3(tdict,model):
     if (model == "3DXY"):
         omDictBin = {};
@@ -22,11 +23,13 @@ def calcSC3(tdict,model):
 
                         omDictBin[L1].append([T,omegaBin]);
                     
-                    omegaRs = np.log((ldict[L3].Rs - ldict[L2].Rs)/(ldict[L2].Rs - ldict[L1].Rs))/np.log(2);
+                    omegaRs = -np.log((ldict[L3].Rs - ldict[L2].Rs)/(ldict[L2].Rs - ldict[L1].Rs))/np.log(2);
                     if L1 not in omDictRs:
-                        omDictRs[L1] = [[T,omegaRs]];
+                        if not (math.isnan(T)):
+                            omDictRs[L1] = [[T,omegaRs]];
                     else:
-                        omDictRs[L1].append([T,omegaRs]);
+                        if not (math.isnan(T)):
+                            omDictRs[L1].append([T,omegaRs]);
         return [omDictBin,omDictRs];
 
 def calcSC2(tdict,model):
