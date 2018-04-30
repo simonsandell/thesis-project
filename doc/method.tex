@@ -2,7 +2,7 @@
 %     Created: mån feb 12 01:00  2018 C
 % Last Change: mån feb 12 01:00  2018 C
 %
-
+% TODO: expand on monte carlo method. write about necessity of quality RNG's  
 \section{Monte Carlo}
 In statistical physics, predictions come from thermal averages calculated from 
 \begin{equation}
@@ -179,21 +179,7 @@ In effect, the larger the chucks the more efficent the program runs, but one is 
 The analysis of the data from simulations are handled separately. The implementations were written in Python, utilizing the NumPy and SciPy libraries. 
 The figures where produced using the open source program Grace available at ``plasma-gate.weizmann.ac.il/Grace/''.
 
-\section{Model}
-The XY-model and the Ising-model are both parth of the class of symmetry groups called $O(n)$, with $n=2,1$ respectively.
-There are many different models in the universality class of the normal-superfluid Helimu-4 transition, the O(2)-symmetry group in three dimensions. Some examples are the $\phi^4$-model, the ddXY model etc.
-In this thesis we have chosen the simulate the classical 3DXY-model. This is convenient because of the relative simplicity of the model, and that it is well known and studied.
-
+\section{Implementation}
 The numerical method we used to perform the Monte-Carlo simulations was a Wolff algorithm written in C++. Since both the 3DXY-model and the 3D Ising model suffer from critcal slowing down, i.e. the equilibration time tends to infinity at the critical temperature, 
 Both the 3DXY-model and the 3D Ising-model suffer from a phenomenon called critical slowing down. Near the transition temperature, the correlation length diverges, so thermal fluctuations propagate very long distances, and so the system takes a very long time to equilibrate to the equilibrum value.
 One can wastly improve the quality-data versus cpu-time ratio by utilizing a global update algorithm such as the Wolff algorithm. 
-\begin{equation}
-  H_{\trm{3DXY}} = -K\sum\limits_{\langle i,j\rangle} \bm{s_i}\cdot\bm{s_j} = -K\sum\limits_{\langle i,j\rangle} \cos(\alpha_i - \alpha_j)
-\end{equation}
-We set $K=1$.
-\begin{equation}
-  Z = \trm{Tr} \exp\left[-\beta \left( H_\Omega - \int d^d \bm{r} H(\bm{r})\eta(\bm{r})\right)\right]
-\end{equation}
-\begin{equation}
-  \label{}
-\end{equation}

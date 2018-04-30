@@ -2,26 +2,9 @@
 %     Created: mån feb 12 01:00  2018 C
 % Last Change: mån feb 12 01:00  2018 C
 %
-%\section{Monte Carlo}
-%In statistical physics averages are calculated from 
-%\begin{equation}
-%  \langle A\rangle = \frac{1}{Z}\trm{Tr} e^{-H/T} = \sum_x A(x) P(x)
-%  \label{}
-%\end{equation}
-%where  $P(x) = (1/Z)exp(-H(x))$ is the Boltzmann distribution.
-%The practical and convievable way to evaluate these averages using Monte Carlo is to use importance sampling, i.e. do not form averages from uniformly random system configurations, but instead generate configurations that are Boltzmann distributed.   
-%Thus thermal Monte Carlo averages have the form 
-%\begin{equation}
-%  \langle A \rangle = \frac{1}{N} \sum_x A(x) \pm \frac{\sigma	}{\sqrt N}
-%  \label{}
-%\end{equation}
-%where the states $x$ are Boltzmann distributed.
-%However, the Boltzmann distribution may be unsuitable for some systems/configurations we want to study, so we can use any other distribution as 
-%\begin{equation}
-%  \langle A \rangle = \frac{\frac{1}{N}\sum_y \frac{A(y) e^{-H(x)/T}}{P'(y)}}{\frac{1}{N}\sum_y \frac{e^{-H(y)/T}}{P'(y)}}  
-%  \label{}
-%\end{equation}
-% where the states $y$ are distributed according to $P'(y)$.
+% TODO: Scaling and universality: more equations.
+% scaling laws and definitions of critical exponents, maybe remove? maybe write some text. move to appendix or other place?
+% There should be some parts about xy model and ising3d model here.
 
 \section{Scaling}
 Often in physics relations between different physical quantities are described by power-laws, $f = f(\chi)\cdot g^{x}$. So also in statistical physics, where such laws are fundamental to understanding phase transitions.
@@ -109,3 +92,15 @@ For $t =0$,
   \langle m(r)m(0)\rangle &\sim r^{-d +2 -\eta}
   \label{}
 \end{align}
+\section{Models} % define equations, define quantities.
+The XY-model and the Ising-model are both parth of the class of symmetry groups called $O(n)$, with $n=2,1$ respectively.
+There are many different models in the universality class of the normal-superfluid Helimu-4 transition, the O(2)-symmetry group in three dimensions. Some examples are the $\phi^4$-model, the ddXY model etc.
+In this thesis we have chosen the simulate the classical 3DXY-model. This is convenient because of the relative simplicity of the model, and that it is well known and studied.
+
+\begin{equation}
+  H_{\trm{3DXY}} = -K\sum\limits_{\langle i,j\rangle} \bm{s_i}\cdot\bm{s_j} = -K\sum\limits_{\langle i,j\rangle} \cos(\alpha_i - \alpha_j)
+\end{equation}
+We set $K=1$.
+\begin{equation}
+  Z = \trm{Tr} \exp\left[-\beta \left( H_\Omega - \int d^d \bm{r} H(\bm{r})\eta(\bm{r})\right)\right]
+\end{equation}
