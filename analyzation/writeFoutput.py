@@ -1,47 +1,59 @@
-
+import conf
 
 fs= "{:30.30f}";
-def getTdict(ldict):
-    tdict = {};
-    for L,td in ldict.items():
-        for T,af in td.items():
-            if T not in tdict:
-                tdict[T] = {L:af};
-            else:
-                tdict[T][L] = af;
-    return tdict;
 
 
-def writeSC3(omdicts,fName,model):
-    omdictBin = omdicts[0];
-    omdictRs = omdicts[1];
-    for L,omlist in sorted(omdictBin.items()):
-        f = open("./foutput/3DXY/scalingCorr/omegaBin3L/" + str(L) + "_"+str(fName)+".dat","w");
-        for vals in omlist:
-            f.write(fs.format(vals[0])+" "+fs.format(vals[1])+" 0.0 \n");
-    for L,omlist in sorted(omdictRs.items()):
-        f = open("./foutput/3DXY/scalingCorr/omegaRS3L/" + str(L) + "_"+str(fName)+".dat","w");
-        for vals in omlist:
-            f.write(fs.format(vals[0])+" "+fs.format(vals[1])+" 0.0 \n");
+def writeSC3(omdicts,fName):
+    filedictBin ={};
+    filedictRs ={};
+    for T,omstruct in omdicts.items():
+        for L,val in omstruct.Bin.items():
+            if not L in filedictBin:
+                filedictBin[L] = open(
+                        './foutput/3DXY/scalingCorr/omegaBin3L/'+str(L)
+                        +'_'+fName+'.dat','w');
+            filedictBin[L].write(fs.format(val[0])
+                    +" "+fs.format(val[1])+" "+fs.format(val[2])
+                    +" "+fs.format(val[3])+" "+fs.format(val[4])
+                    +" "+fs.format(val[5])+" "+fs.format(val[6])+" \n");
+        if (conf.model == '3DXY'):
+            for L,val in omstruct.Rs.items():
+                if not L in filedictRs:
+                    filedictRs[L] = open(
+                            './foutput/3DXY/scalingCorr/omegaRS3L/'+str(L)
+                            +'_'+fName+'.dat','w');
+                filedictRs[L].write(fs.format(val[0])
+                        +" "+fs.format(val[1])+" "+fs.format(val[2])
+                        +" "+fs.format(val[3])+" "+fs.format(val[4])
+                        +" "+fs.format(val[5])+" "+fs.format(val[6])+" \n");
 
-def writeSC2(omDict,fName,model):
-    if (model == "3DXY"):
-        omDictRS = omDict[0];
-        omDictBin = omDict[1];
-        for omega,sLdict in sorted(omDictRS.items()):
-            for L,tlist in sorted(sLdict.items()):
-                f = open("./foutput/3DXY/scalingCorr/omegaRS2L/"+str(omega)+"_"+str(L)+".dat","w");
-                for vals in tlist:
-                    f.write(fs.format(vals[0]) + " " + fs.format(vals[1]) + " " + fs.format(vals[2]) +" \n");
-        for omega,sLdict in sorted(omDictBin.items()):
-            for L,tlist in sorted(sLdict.items()):
-                f = open("./foutput/3DXY/scalingCorr/omegaBin2L/"+str(omega)+"_"+str(L)+".dat","w");
-                for vals in tlist:
-                    f.write(fs.format(vals[0]) + " " + fs.format(vals[1]) + " " + fs.format(vals[2]) +" \n");
+def writeSC2(tlist,fName):
+    filedictBin ={};
+    filedictRs ={};
+    for omstruct in tlist:
+        for omega,ldict in omstruct.Bin.items():
+            for L,vlist in ldict.items():
+                if not L in filedictBin:
+                    filedictBin[L] = open('./foutput/3DXY/scalingCorr/omegaBin2L/'
+                            +str(omega)+"_"+str(L)+".dat","w");
+                filedictBin.write(fs.format(vlist[0])+" "
+                        +fs.format(vlist[1])+" "+fs.format(vlist[2])+" "
+                        +fs.format(vlist[3])+" "+fs.format(vlist[4])+" "
+                        +fs.format(vlist[5])+" \n");
+        if (conf.model == "3DXY"):
+            for omega,ldict in omstruct.Rs.items():
+                for L,vlist in ldict.items():
+                    if not L in filedictRs:
+                        filedictRs[L] = open('./foutput/3DXY/scalingCorr/omegaRS2L/'
+                                +str(omega)+"_"+str(L)+".dat","w");
+                    filedictRs.write(fs.format(vlist[0])+" "
+                            +fs.format(vlist[1])+" "+fs.format(vlist[2])+" "
+                            +fs.format(vlist[3])+" "+fs.format(vlist[4])+" "
+                            +fs.format(vlist[5])+" "+fs.format(vlist[6])+" \n");
 
 
-def writeVsT(ldict,fName,model):
-    if (model == "3DXY"):
+def writeVsT(ldict,fName):
+    if (conf.model == "3DXY"):
         for L,tdict in sorted(ldict.items()):
             ef = open('./foutput/3DXY/vsT/en/'+str(L)+'_'+fName+'.dat','w');
             mf = open('./foutput/3DXY/vsT/mag/'+str(L)+'_'+fName+'.dat','w');
@@ -57,10 +69,10 @@ def writeVsT(ldict,fName,model):
                 cf.write(fs.format(T)+" "+fs.format(af.Chi)+ " "+fs.format(af.dChi)+" \n");
                 rf.write(fs.format(T)+" "+fs.format(af.Rs)+" "+fs.format(af.dRs)+" \n");
 
-def writeVsL(ldict,fName,model):
+def writeVsL(ldict,fName):
     #reverse order of dicts
     tdict = getTdict(ldict);
-    if (model == "3DXY"):
+    if (conf.model == "3DXY"):
         for T,ld in sorted(tdict.items()):
             ef = open('./foutput/3DXY/vsL/en/'+str(T)+'_'+fName+'.dat','w');
             mf = open('./foutput/3DXY/vsL/mag/'+str(T)+'_'+fName+'.dat','w');
@@ -69,9 +81,9 @@ def writeVsL(ldict,fName,model):
             cf = open('./foutput/3DXY/vsL/xi/'+str(T)+'_'+fName+'.dat','w');
             rf = open('./foutput/3DXY/vsL/rs/'+str(T)+'_'+fName+'.dat','w');
             for L,af in sorted(ld.items()):
-                ef.write(fs.format(L)+" "+fs.format(abs(af.E))+ " "+fs.format(af.dE)+" \n");
-                mf.write(fs.format(L)+" "+fs.format(abs(af.M))+ " "+fs.format(af.dM)+" \n");
-                bf.write(fs.format(L)+" "+fs.format(abs(af.Bin))+ " "+fs.format(af.dBin)+" \n");
-                df.write(fs.format(L)+" "+fs.format(abs(af.dBdT))+ " "+fs.format(af.ddBdT)+" \n")
-                cf.write(fs.format(L)+" "+fs.format(abs(af.Chi))+ " "+fs.format(af.dChi)+" \n");
+                ef.write(fs.format(L)+" "+fs.format(abs(af.E))+" "+fs.format(af.dE)+" \n");
+                mf.write(fs.format(L)+" "+fs.format(abs(af.M))+" "+fs.format(af.dM)+" \n");
+                bf.write(fs.format(L)+" "+fs.format(abs(af.Bin))+" "+fs.format(af.dBin)+" \n");
+                df.write(fs.format(L)+" "+fs.format(abs(af.dBdT))+" "+fs.format(af.ddBdT)+" \n")
+                cf.write(fs.format(L)+" "+fs.format(abs(af.Chi))+" "+fs.format(af.dChi)+" \n");
                 rf.write(fs.format(L)+" "+fs.format(abs(af.Rs))+" "+fs.format(af.dRs)+" \n");

@@ -1,3 +1,4 @@
+import conf
 import pickle
 import sys
 import numpy as np
@@ -7,43 +8,52 @@ import calculateAverages
 import calculateScalingFuncs
 import writeFoutput
 
+def getTdict(ldict):
+    tdict = {};
+    for L,td in ldict.items():
+        for T,af in td.items():
+            if T not in tdict:
+                tdict[T] = {};
+            tdict[T][L] = af;
+    return tdict;
 
 fName = sys.argv[1];
-model = sys.argv[2];
-if (model == "3DXY"):
+conf.setModel(sys.argv[2]);
+if (conf.model == "3DXY"):
     avgF = collections.namedtuple('avgF',['E','M','Bin','dBdT','Chi','Rs','dE',  'dM','dBin','ddBdT','dChi','dRs']);
-    MCAvg = collections.namedtuple('MCAvg',[
+    MCAvg = collections.namedtuple('MCAvg',['L','T',
     'Neqsw','Neqcl','NTotsw','NTotcl','cold',
     'e','e2','m','m2','m4','m2e','m4e','s2x','s2y','s2z',
     'bin','dbdt','chi','rs','expFac']);
 
 L_dict = pickler.loadData(fName);
-print("load done");
+print("loading done");
+T_dict = getTdict(L_dict);
 
-T_avg_4 = {};
-T_avg_8 = {};
-T_avg_16 = {};
-T_avg_32 = {};
-T_avg_64 = {};
-T_avg_128 = {};
-L_dict_avg = {4:T_avg_4,
-          8:T_avg_8,
-          16:T_avg_16,
-          32:T_avg_32,
-          64:T_avg_64,
-          128:T_avg_128
-          };
+#calculate easy averages
+L_dict_avg = {};
 for L,Tdict in L_dict.items():
     for T,avglist in Tdict.items():
-       L_dict_avg[L][T] = calculateAverages.calcAvg(L_dict[L][T],L,T,model); 
+        if not(L in L_dict_avg):
+            L_dict_avg[L] ={};
+        L_dict_avg[L][T] = calculateAverages.calcAvg(L_dict[L][T],L,T); 
 
-T_dict_avg = writeFoutput.getTdict(L_dict_avg);
-omegaDictsSC2 = calculateScalingFuncs.calcSC2(T_dict_avg,model);
-omegaDictsSC3 = calculateScalingFuncs.calcSC3(T_dict_avg,model);
+#calculate tricky averages
+T_omega_dict = {};
+T_sc2quant_list=[];
+for T,Ldict in sorted(T_dict.items()):
+    T_omega_dict[T] = calculateScalingFuncs.calcSC3(Ldict,L_dict_avg);
+    T_sc2quant_list.append(calculateScalingFuncs.calcSC2(Ldict,L_dict_avg));
 
-writeFoutput.writeSC2(omegaDictsSC2,fName,model);
-writeFoutput.writeSC3(omegaDictsSC3,fName,model);
-writeFoutput.writeVsT(L_dict_avg,fName,model);
-writeFoutput.writeVsL(L_dict_avg,fName,model);
+# intersection
+sigmavsomega = intersection.findBestIntersection(T_sc2quant_list);
 
-    
+
+
+
+writeFoutput.writeSC3(T_omega_dict,fName);
+writeFoutput.writeSC2(T_sc2quant_list,fName);
+
+
+writeFoutput.writeVsT(L_dict_avg,fName);
+writeFoutput.writeVsL(L_dict_avg,fName);

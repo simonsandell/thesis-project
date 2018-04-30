@@ -51,12 +51,12 @@ def jf3DXY(avglist,L,T):
     Rs = Rs/(3.0*avg_expFac);
     return [E,M,Bin,dBdT,Chi,Rs];
 
-def calcAvg(MCAvgList,L,T,model):
+def calcAvg(MCAvgList,L,T):
     if (model == "3DXY"):
         jackfunc = jf3DXY;
     func_avg = jackfunc(MCAvgList,L,T);
-    #delta_func = jackknife.getJackDelta(MCAvgList,lambda x: jackfunc(x,L,T),10);
-    delta_func = [0,0,0,0,0,0];
+    delta_func = jackknife.getJackDelta(MCAvgList,lambda x: jackfunc(x,L,T),10);
+    #delta_func = [0,0,0,0,0,0];
     f = func_avg;
     f.extend(delta_func);
     result = avgF(*f);
