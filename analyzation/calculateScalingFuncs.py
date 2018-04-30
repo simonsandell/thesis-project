@@ -99,8 +99,10 @@ def calcSC3(ldict,ldict_avg,temp):
     ret = omegaStruct(omegaBinderRes,omegaRsRes);
     return ret;
 
-def calcSC2Quant(q,q2,omega,L):
-    ret =  pow(L,omega)*(q2 - q);
+def calcSC2Quant(q,q2,omegaList,L):
+    ret =[];
+    for omega in omegaList:
+        ret.append(pow(L,omegaList)*(q2 - q));
     return ret;
 
 def jf_SC2(Lcomb,omega,L):
@@ -112,42 +114,32 @@ def jf_SC2(Lcomb,omega,L):
     bQuant = calcSC2Quant(b,b2,omega,L[0]);
     rQuant = calcSC2Quant(r,r2,omega,L[0]);
 
-    return [bQuant,rQuant];
+    return bQuant+rQuant;
 
 
-def calcSC2(ldict,ldict_avg,temp):
-        omDictRS = {}
-        omDictBin = {}
-        O = 0;
-        dO = 0.05;
-        orange = [];
-        while (O < (1.5+dO)):
-            orange.append(O);
-            omDictRS[O] = {};
-            omDictBin[O] = {};
-            O = O+dO;
-        Llist = sorted(list(ldict.keys()));
-        Llist1 = Llist[:len(Llist)-1];
-        Llist2 = Llist[1:];
-        for L1,L2 in zip(Llist1,Llist2):
-            for omega in orange:
-                quantBin = calcSC2Quant(ldict_avg[L1][temp].Bin,ldict_avg[L2][temp].Bin,
-                        omega,L1);
-                quantRs = calcSC2Quant(ldict_avg[L1][temp].Rs,ldict_avg[L2][temp].Rs,
-                        omega,L1);
+def calcSC2(ldict,ldict_avg,temp,omegaList):
+     Llist = sorted(list(ldict.keys()));
+     Llist1 = Llist[:len(Llist)-1];
+     Llist2 = Llist[1:];
+     for L1,L2 in zip(Llist1,Llist2):
+         for omega in orange:
+             quantBin = calcSC2Quant(ldict_avg[L1][temp].Bin,ldict_avg[L2][temp].Bin,
+                     omega,L1);
+             quantRs = calcSC2Quant(ldict_avg[L1][temp].Rs,ldict_avg[L2][temp].Rs,
+                     omega,L1);
 
-                # combine lists for jackknifing
-                Lcomb = ldict[L1] + ldict[L2];
-                N = len(Lcomb);
-                deltaQuant = jackknife.getJackDelta(Lcomb,
-                        lambda x: jf_SC2(x,omega,[L1,L2,0]), 100);
+             # combine lists for jackknifing
+             Lcomb = ldict[L1] + ldict[L2];
+             N = len(Lcomb);
+             deltaQuant = jackknife.getJackDelta(Lcomb,
+                     lambda x: jf_SC2(x,omega,[L1,L2,0]), 100);
 
-                if not L1 in omDictBin[omega]:
-                    omDictBin[omega][L1] = [];
-                omDictBin[omega][L1].append([temp,quantBin,deltaQuant[0],omega,L1,L2,N]);
-                if not L1 in omDictRs[omega]:
-                    omDictRs[omega][L1] = [];
-                omDictRs[omega][L1].append([temp,quantRs,deltaQuant[1],omega,L1,L2,N]);
+             if not L1 in omDictBin[omega]:
+                 omDictBin[omega][L1] = [];
+             omDictBin[omega][L1].append([temp,quantBin,deltaQuant[0],omega,L1,L2,N]);
+             if not L1 in omDictRs[omega]:
+                 omDictRs[omega][L1] = [];
+             omDictRs[omega][L1].append([temp,quantRs,deltaQuant[1],omega,L1,L2,N]);
     sc2QuantStruct = collections.namedtuple('sc2QuantStruct',['Bin','Rs']);
     return sc2QuantStruct(omDictBin,omDictRs);
 
