@@ -27,24 +27,24 @@ L_dict = {4:T_dict_4,
           };
 i = 0;
 for ln in datafile:
+    i = i+1;
     strlist = ln.rsplit(" ");
     strlist = [x for x in strlist if not (x== "\n")];
-    try:
-        fllist = [float(x) for x in strlist];
-        if (len(fllist) != 22):
+    if not (strlist[0] == "#"):
+        try:
+            fllist = [float(x) for x in strlist];
+            if (len(fllist) != 22):
+                print('bad line at row ' + str(1 + i));
+            a = MCAvg(*(fllist[2:]));
+            ln_L = int(fllist[0] +0.1);
+            if fllist[1] in L_dict[ln_L]:
+                L_dict[ln_L][fllist[1]].append(a);
+            else:
+                L_dict[ln_L][fllist[1]] = [a];
+        except:
             print('bad line at row ' + str(1 + i));
-        a = MCAvg(*(fllist[2:]));
-        ln_L = int(fllist[0] +0.1);
-        if fllist[1] in L_dict[ln_L]:
-            L_dict[ln_L][fllist[1]].append(a);
-        else:
-            L_dict[ln_L][fllist[1]] = [a];
-    except:
-        print('bad line at row ' + str(1 + i));
-        load_failed = True;
-    i = i+1;
-
+            load_failed = True;
 if (load_failed):
-    exit(-1);
-pickler.saveData(L_dict,fName);
-
+    pickler.saveData(L_dict,fName+"somebadrows");
+else:
+    pickler.saveData(L_dict,fName);
