@@ -1,6 +1,7 @@
 import numpy as np
 import jackknife
 import collections
+import conf
 
 avgF = collections.namedtuple('avgF',['E','M','Bin','dBdT','Chi','Rs','dE',  'dM','dBin','ddBdT','dChi','dRs']);
 
@@ -52,7 +53,7 @@ def jf3DXY(avglist,L,T):
     return [E,M,Bin,dBdT,Chi,Rs];
 
 def calcAvg(MCAvgList,L,T):
-    if (model == "3DXY"):
+    if (conf.model == "3DXY"):
         jackfunc = jf3DXY;
     func_avg = jackfunc(MCAvgList,L,T);
     delta_func = jackknife.getJackDelta(MCAvgList,lambda x: jackfunc(x,L,T),10);

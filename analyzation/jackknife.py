@@ -26,10 +26,10 @@ def getJackDelta(mat,function,blocknumber):
     result = np.array(result);
     sqrtN=pow(N_blocks,0.5); 
     deltas = [];
-    if (len(result[0]) >1):
+    if (result.ndim >1):
         for x in range(result.shape[1]):
             deltas.append(sqrtN*np.std(result[:,x]));
     else:
-        deltas.append(sqrtN*std(result));
+        deltas.append(sqrtN*np.std(result));
     return deltas;
 

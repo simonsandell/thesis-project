@@ -1,12 +1,13 @@
 import conf
+import math
 
 fs= "{:30.30f}";
 def writeSigmaVsOmega(sigmalist,fName):
     fb = open('./foutput/3DXY/scalingCorr/std_omegaBin2L/sigmaVsOmega_'+fName+".dat",'w');
     fr = open('./foutput/3DXY/scalingCorr/std_omegaRS2L/sigmaVsOmega_'+fName+".dat",'w');
-    for ln in sigmaIntersect.Bin:
+    for ln in sigmalist.Bin:
         fb.write(fs.format(ln[0]) + " " + fs.format(ln[1]) + " \n");
-    for ln in sigmaIntersect.Rs:
+    for ln in sigmalist.Rs:
         fr.write(fs.format(ln[0]) + " " + fs.format(ln[1]) + " \n");
 
 
@@ -19,44 +20,46 @@ def writeSC3(omdicts,fName):
                 filedictBin[L] = open(
                         './foutput/3DXY/scalingCorr/omegaBin3L/'+str(L)
                         +'_'+fName+'.dat','w');
-            filedictBin[L].write(fs.format(val[0])
-                    +" "+fs.format(val[1])+" "+fs.format(val[2])
-                    +" "+fs.format(val[3])+" "+fs.format(val[4])
-                    +" "+fs.format(val[5])+" "+fs.format(val[6])+" \n");
+            if not (math.isnan(val[1])):
+                filedictBin[L].write(fs.format(val[0])
+                        +" "+fs.format(val[1])+" "+fs.format(val[2])
+                        +" "+fs.format(val[3])+" "+fs.format(val[4])
+                        +" "+fs.format(val[5])+" "+fs.format(val[6])+" \n");
         if (conf.model == '3DXY'):
             for L,val in omstruct.Rs.items():
                 if not L in filedictRs:
                     filedictRs[L] = open(
                             './foutput/3DXY/scalingCorr/omegaRS3L/'+str(L)
                             +'_'+fName+'.dat','w');
-                filedictRs[L].write(fs.format(val[0])
-                        +" "+fs.format(val[1])+" "+fs.format(val[2])
-                        +" "+fs.format(val[3])+" "+fs.format(val[4])
-                        +" "+fs.format(val[5])+" "+fs.format(val[6])+" \n");
+                if not (math.isnan(val[1])):
+                    filedictRs[L].write(fs.format(val[0])
+                            +" "+fs.format(val[1])+" "+fs.format(val[2])
+                            +" "+fs.format(val[3])+" "+fs.format(val[4])
+                            +" "+fs.format(val[5])+" "+fs.format(val[6])+" \n");
 
 def writeSC2(tlist,fName):
     filedictBin ={};
     filedictRs ={};
     for omstruct in tlist:
-        for omega,ldict in omstruct.Bin.items():
-            for L,vlist in ldict.items():
-                if not L in filedictBin:
-                    filedictBin[L] = open('./foutput/3DXY/scalingCorr/omegaBin2L/'
+        for omega,vlist in omstruct.Bin.items():
+            L = vlist[4];
+            if not L in filedictBin:
+                filedictBin[L] = open('./foutput/3DXY/scalingCorr/omegaBin2L/'
+                        +str(omega)+"_"+str(L)+".dat","w");
+            filedictBin[L].write(fs.format(vlist[0])+" "
+                    +fs.format(vlist[1])+" "+fs.format(vlist[2])+" "
+                    +fs.format(vlist[3])+" "+fs.format(vlist[4])+" "
+                    +fs.format(vlist[5])+" \n");
+        if (conf.model == "3DXY"):
+            for omega,vlist in omstruct.Rs.items():
+                L = vlist[4];
+                if not L in filedictRs:
+                    filedictRs[L] = open('./foutput/3DXY/scalingCorr/omegaRS2L/'
                             +str(omega)+"_"+str(L)+".dat","w");
-                filedictBin.write(fs.format(vlist[0])+" "
+                filedictRs[L].write(fs.format(vlist[0])+" "
                         +fs.format(vlist[1])+" "+fs.format(vlist[2])+" "
                         +fs.format(vlist[3])+" "+fs.format(vlist[4])+" "
                         +fs.format(vlist[5])+" \n");
-        if (conf.model == "3DXY"):
-            for omega,ldict in omstruct.Rs.items():
-                for L,vlist in ldict.items():
-                    if not L in filedictRs:
-                        filedictRs[L] = open('./foutput/3DXY/scalingCorr/omegaRS2L/'
-                                +str(omega)+"_"+str(L)+".dat","w");
-                    filedictRs.write(fs.format(vlist[0])+" "
-                            +fs.format(vlist[1])+" "+fs.format(vlist[2])+" "
-                            +fs.format(vlist[3])+" "+fs.format(vlist[4])+" "
-                            +fs.format(vlist[5])+" "+fs.format(vlist[6])+" \n");
 
 
 def writeVsT(ldict,fName):
@@ -76,9 +79,8 @@ def writeVsT(ldict,fName):
                 cf.write(fs.format(T)+" "+fs.format(af.Chi)+ " "+fs.format(af.dChi)+" \n");
                 rf.write(fs.format(T)+" "+fs.format(af.Rs)+" "+fs.format(af.dRs)+" \n");
 
-def writeVsL(ldict,fName):
+def writeVsL(tdict,fName):
     #reverse order of dicts
-    tdict = getTdict(ldict);
     if (conf.model == "3DXY"):
         for T,ld in sorted(tdict.items()):
             ef = open('./foutput/3DXY/vsL/en/'+str(T)+'_'+fName+'.dat','w');

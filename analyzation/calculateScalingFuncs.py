@@ -17,7 +17,7 @@ def splitL(Llist,Lval):
     return [L1list,L2list,L4list];
 
 def calcOmega(q,q2,q4):
-    omega = -(1.0/np.log(2))*(np.log(q4-q2) - np.log(q2-q));
+    omega = -(1.0/np.log(2))*(np.log((q4-q2)/(q2-q)));
     return omega;
 
 def calcB(llist):
@@ -44,7 +44,7 @@ def calcRS(llist):
     avgs2z = 0.0;
     avgEF = 0.0;
     for item in llist:
-        avgE += item.E;
+        avgE += item.e;
         avgs2x += item.s2x;
         avgs2y += item.s2y;
         avgs2z += item.s2z;
@@ -89,12 +89,8 @@ def calcSC3(ldict,ldict_avg,temp):
             Lcombined = ldict[L1] + ldict[L2] + ldict[L3];
             N = len(Lcombined);
             deltaOmega = jackknife.getJackDelta(Lcombined,lambda x: jf_SC3(x,[L1,L2,L3]),100);
-            if not L1 in omegaBinderRes:
-                omegaBinderRes[L1] = [];
-            omegaBinderRes[L1].append([temp,omegaB,deltaOmega[0],L1,L2,L3,N]);
-            if not L1 in omegaRsRes:
-                omegaRsRes[L1] = [];
-            omegaRsRes[L1].append([temp,omegaRS,deltaOmega[1],L1,L2,L3,N]);
+            omegaBinderRes[L1]= [temp,omegaB,deltaOmega[0],L1,L2,L3,N];
+            omegaRsRes[L1] = [temp,omegaRS,deltaOmega[1],L1,L2,L3,N];
     omegaStruct = collections.namedtuple('omegaStruct',['Bin','Rs']); 
     ret = omegaStruct(omegaBinderRes,omegaRsRes);
     return ret;
@@ -103,7 +99,7 @@ def calcSC2Quant(q,q2,L):
     return (q2 - q);
 
 def jf_SC2(Lcomb,L):
-    [Llist,L2list,] = splitL(Lcomb,L);
+    Llist,L2list,asdf = splitL(Lcomb,L);
     b = calcB(Llist);
     b2 = calcB(L2list);
     r = calcRS(Llist);
@@ -131,5 +127,5 @@ def calcSC2(ldict,ldict_avg,temp):
         retBin[L1] = [temp,quantBin,deltaQuant[0],N,L1,L2];
         retRS[L1] = [temp,quantRs,deltaQuant[0],N,L1,L2];
 
-   return sc2Struct(retBin,retRS);
+    return sc2Struct(retBin,retRS);
 

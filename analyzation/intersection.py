@@ -1,4 +1,5 @@
-import config
+import numpy as np
+import conf
 import collections
 
 def calcIntersection(y1,y2,y3,y4,dT):
@@ -22,6 +23,7 @@ def checkIntersection(LdictT1,LdictT2):
                         LdictT1[L],LdictT1[L2],LdictT2[L],LdictT2[L2]);
                 if (doesInt):
                     res.append([ix,iy]);
+    return res;
 
 def getDist(xy,xy2):
     d = pow(pow(xy[0]-xy2[0],2) + pow(xy[1]-xy2[1],2),0.5);
@@ -29,9 +31,9 @@ def getDist(xy,xy2):
 
 def calcANN(ints):
     nnd =[]
-    for i in len(ints):
+    for i in range(len(ints)):
         nnd.append(1000000.0);
-        for j in len(ints):
+        for j in range(len(ints)):
             if not (i==j):
                 d = getDist(ints[i],ints[j]);
                 if (d < nnd[i]):
@@ -39,7 +41,27 @@ def calcANN(ints):
     avgnnd = np.mean(nnd);
     return avgnnd;
 
-def fintBestIntersection(T_list,omegaList):
+scalingStruct = collections.namedtuple('scalingStruct',['Bin','Rs']);
+def rescale(Tlist,omega):
+    rTlist =[];
+    rBindict = {};
+    rRsdict = {};
+    for struct in Tlist:
+        for L,vals in struct.Bin.items():
+            newVals = vals[:];
+            newVals[1] = vals[1]*pow(L,omega);
+            newVals[2] = vals[2]*pow(L,omega);
+            rBindict[L] = newVals;
+        for L,vals in struct.Rs.items():
+            newVals = vals[:];
+            newVals[1] = vals[1]*pow(L,omega);
+            newVals[2] = vals[2]*pow(L,omega);
+            rRsdict[L] = newVals;
+        newStruct = scalingStruct(rBindict,rRsdict);
+        rTlist.append(newStruct);
+    return rTlist;
+
+def findBestIntersection(T_list,omegaList):
     intersections = [];
     Binres = [];
     Rsres = [];

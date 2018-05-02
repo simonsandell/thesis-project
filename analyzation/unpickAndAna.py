@@ -7,6 +7,7 @@ import pickler
 import calculateAverages
 import calculateScalingFuncs
 import writeFoutput
+import intersection
 
 def getTdict(ldict):
     tdict = {};
@@ -52,8 +53,8 @@ for L,Tdict in L_dict.items():
 T_omega_dict = {};
 T_sc2quant_list=[];
 for T,Ldict in sorted(T_dict.items()):
-    T_omega_dict[T] = calculateScalingFuncs.calcSC3(Ldict,L_dict_avg);
-    T_sc2quant_list.append(calculateScalingFuncs.calcSC2(Ldict,L_dict_avg));
+    T_omega_dict[T] = calculateScalingFuncs.calcSC3(Ldict,L_dict_avg,T);
+    T_sc2quant_list.append(calculateScalingFuncs.calcSC2(Ldict,L_dict_avg,T));
 
 # intersection
 omegaList= getOmegaList();
@@ -65,4 +66,5 @@ writeFoutput.writeSigmaVsOmega(sigmaVsOmega,fName);
 
 
 writeFoutput.writeVsT(L_dict_avg,fName);
-writeFoutput.writeVsL(L_dict_avg,fName);
+T_dict_avg = getTdict(L_dict_avg);
+writeFoutput.writeVsL(T_dict_avg,fName);
