@@ -16,26 +16,28 @@ def writeSC3(omdicts,fName):
     filedictRs ={};
     for T,omstruct in omdicts.items():
         for L,val in omstruct.Bin.items():
-            if not L in filedictBin:
-                filedictBin[L] = open(
-                        './foutput/3DXY/scalingCorr/omegaBin3L/'+str(L)
-                        +'_'+fName+'.dat','w');
             if not (math.isnan(val[1])):
-                filedictBin[L].write(fs.format(val[0])
-                        +" "+fs.format(val[1])+" "+fs.format(val[2])
-                        +" "+fs.format(val[3])+" "+fs.format(val[4])
-                        +" "+fs.format(val[5])+" "+fs.format(val[6])+" \n");
-        if (conf.model == '3DXY'):
-            for L,val in omstruct.Rs.items():
-                if not L in filedictRs:
-                    filedictRs[L] = open(
-                            './foutput/3DXY/scalingCorr/omegaRS3L/'+str(L)
+                if not L in filedictBin:
+                    filedictBin[L] = open(
+                            './foutput/3DXY/scalingCorr/omegaBin3L/'+str(L)
                             +'_'+fName+'.dat','w');
                 if not (math.isnan(val[1])):
-                    filedictRs[L].write(fs.format(val[0])
+                    filedictBin[L].write(fs.format(val[0])
                             +" "+fs.format(val[1])+" "+fs.format(val[2])
                             +" "+fs.format(val[3])+" "+fs.format(val[4])
                             +" "+fs.format(val[5])+" "+fs.format(val[6])+" \n");
+        if (conf.model == '3DXY'):
+            for L,val in omstruct.Rs.items():
+                if not (math.isnan(val[1])):
+                    if not L in filedictRs:
+                        filedictRs[L] = open(
+                                './foutput/3DXY/scalingCorr/omegaRS3L/'+str(L)
+                                +'_'+fName+'.dat','w');
+                    if not (math.isnan(val[1])):
+                        filedictRs[L].write(fs.format(val[0])
+                                +" "+fs.format(val[1])+" "+fs.format(val[2])
+                                +" "+fs.format(val[3])+" "+fs.format(val[4])
+                                +" "+fs.format(val[5])+" "+fs.format(val[6])+" \n");
 
 def writeSC2(tlist,fName):
     filedictBin ={};
