@@ -26,10 +26,13 @@ for ln in datafile:
                 print('bad line at row ' + str(1 + i));
 
             a = MCAvg(*fllist);
+            if not a.L in L_dict:
+                L_dict[a.L] = {};
             if not a.T in L_dict[a.L]:
                 L_dict[a.L][a.T] = [];
             L_dict[a.L][a.T].append(a);
         except:
+            print(len(strlist));
             print('bad line at row ' + str(1 + i));
             load_failed = True;
 if (load_failed):
