@@ -1,6 +1,13 @@
 import conf
 
 fs= "{:30.30f}";
+def writeSigmaVsOmega(sigmalist,fName):
+    fb = open('./foutput/3DXY/scalingCorr/std_omegaBin2L/sigmaVsOmega_'+fName+".dat",'w');
+    fr = open('./foutput/3DXY/scalingCorr/std_omegaRS2L/sigmaVsOmega_'+fName+".dat",'w');
+    for ln in sigmaIntersect.Bin:
+        fb.write(fs.format(ln[0]) + " " + fs.format(ln[1]) + " \n");
+    for ln in sigmaIntersect.Rs:
+        fr.write(fs.format(ln[0]) + " " + fs.format(ln[1]) + " \n");
 
 
 def writeSC3(omdicts,fName):

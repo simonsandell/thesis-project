@@ -16,6 +16,16 @@ def getTdict(ldict):
                 tdict[T] = {};
             tdict[T][L] = af;
     return tdict;
+def getOmegaList():
+    o = 0;
+    oend = 2.0;
+    dO = 0.05;
+    ret = [];
+    while (o< (oend+dO)):
+        ret.append(o);
+        o = o+dO;
+    return ret;
+
 
 fName = sys.argv[1];
 conf.setModel(sys.argv[2]);
@@ -46,13 +56,12 @@ for T,Ldict in sorted(T_dict.items()):
     T_sc2quant_list.append(calculateScalingFuncs.calcSC2(Ldict,L_dict_avg));
 
 # intersection
-sigmavsomega = intersection.findBestIntersection(T_sc2quant_list);
-
-
-
+omegaList= getOmegaList();
+sigmaVsOmega = intersection.findBestIntersection(T_sc2quant_list,omegaList);
 
 writeFoutput.writeSC3(T_omega_dict,fName);
 writeFoutput.writeSC2(T_sc2quant_list,fName);
+writeFoutput.writeSigmaVsOmega(sigmaVsOmega,fName);
 
 
 writeFoutput.writeVsT(L_dict_avg,fName);
