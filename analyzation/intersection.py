@@ -37,40 +37,43 @@ def calcANN(ints):
             if not (i==j):
                 d = getDist(ints[i],ints[j]);
                 if (d < nnd[i]):
-                    nnd[1] = d;
+                    nnd[i] = d;
     avgnnd = np.mean(nnd);
     return avgnnd;
 
-scalingStruct = collections.namedtuple('scalingStruct',['Bin','Rs']);
+quantStruct = collections.namedtuple('quantStruct',['Bin','Rs']);
+
 def rescale(Tlist,omega):
-    rTlist =[];
-    rBindict = {};
-    rRsdict = {};
-    for struct in Tlist:
-        for L,vals in struct.Bin.items():
-            newVals = vals[:];
-            newVals[1] = vals[1]*pow(L,omega);
-            newVals[2] = vals[2]*pow(L,omega);
-            rBindict[L] = newVals;
-        for L,vals in struct.Rs.items():
-            newVals = vals[:];
-            newVals[1] = vals[1]*pow(L,omega);
-            newVals[2] = vals[2]*pow(L,omega);
-            rRsdict[L] = newVals;
-        newStruct = scalingStruct(rBindict,rRsdict);
-        rTlist.append(newStruct);
-    return rTlist;
+    newTlist = [];
+    for item in Tlist:
+        newBinLdict = {};
+        newRsLdict = {};
+        for L,vallist in item.Bin.items():
+            newBinList = vallist.copy();
+            newBinList[1] = pow(newBinList[4],omega)*newBinList[1];
+            newBinList[2] = pow(newBinList[4],omega)*newBinList[2];
+            newBinLdict[L] = newBinList;
+        for L,vallist in item.Rs.items():
+            newRSList = vallist.copy();
+            newRSList[1] = pow(newRSList[4],omega)*newRSList[1];
+            newRSList[2] = pow(newRSList[4],omega)*newRSList[2];
+            newRsLdict[L] = newRSList;
+        newTlist.append(quantStruct(newBinLdict,newRsLdict));
+    return newTlist;
+
+
 
 def findBestIntersection(T_list,omegaList):
     intersections = [];
     Binres = [];
     Rsres = [];
-    sigmaStruct = collections.namedtuple('sigmaStruct',['Bin','Rs']);
     for omega in omegaList:
         T_list_resc = rescale(T_list,omega);
         intersections[:] = [];
         for struct1,struct2 in zip(T_list_resc[:-1],T_list_resc[1:]):
             intersections.extend(checkIntersection(struct1.Bin,struct2.Bin));
+        print(len(intersections));
+        input()
         avgNND = calcANN(intersections);
         Binres.append([omega,avgNND]);
 
@@ -81,6 +84,6 @@ def findBestIntersection(T_list,omegaList):
             intersections.extend(checkIntersection(struct1.Rs,struct2.Rs));
         avgNND = calcANN(intersections);
         Rsres.append([omega,avgNND]);
-    result = sigmaStruct(Binres,Rsres);
+    result = quantStruct(Binres,Rsres);
     return result;
 

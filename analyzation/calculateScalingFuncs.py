@@ -91,10 +91,10 @@ def calcSC3(ldict,ldict_avg,temp):
             deltaOmega = jackknife.getJackDelta(Lcombined,lambda x: jf_SC3(x,[L1,L2,L3]),100);
             omegaBinderRes[L1]= [temp,omegaB,deltaOmega[0],L1,L2,L3,N];
             omegaRsRes[L1] = [temp,omegaRS,deltaOmega[1],L1,L2,L3,N];
-    omegaStruct = collections.namedtuple('omegaStruct',['Bin','Rs']); 
-    ret = omegaStruct(omegaBinderRes,omegaRsRes);
+    ret = quantStruct(omegaBinderRes,omegaRsRes);
     return ret;
 
+quantStruct = collections.namedtuple('quantStruct',['Bin','Rs']); 
 def calcSC2Quant(q,q2,L):
     return (q2 - q);
 
@@ -109,7 +109,6 @@ def jf_SC2(Lcomb,L):
     return bQuant+rQuant;
 
 
-sc2Struct = collections.namedtuple('sc2Struct',['Bin','Rs']);
 def calcSC2(ldict,ldict_avg,temp):
     retBin ={};
     retRS ={};
@@ -127,5 +126,5 @@ def calcSC2(ldict,ldict_avg,temp):
         retBin[L1] = [temp,quantBin,deltaQuant[0],N,L1,L2];
         retRS[L1] = [temp,quantRs,deltaQuant[0],N,L1,L2];
 
-    return sc2Struct(retBin,retRS);
+    return quantStruct(retBin,retRS);
 

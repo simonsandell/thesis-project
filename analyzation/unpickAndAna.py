@@ -56,6 +56,10 @@ for T,Ldict in sorted(T_dict.items()):
     T_omega_dict[T] = calculateScalingFuncs.calcSC3(Ldict,L_dict_avg,T);
     T_sc2quant_list.append(calculateScalingFuncs.calcSC2(Ldict,L_dict_avg,T));
 
+##
+#pickler.saveData(T_sc2quant_list,fName+"sc2quant");
+#T_sc2quant_list = pickler.loadData(fName+"sc2quant");
+
 # intersection
 omegaList= getOmegaList();
 sigmaVsOmega = intersection.findBestIntersection(T_sc2quant_list,omegaList);
