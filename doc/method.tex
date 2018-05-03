@@ -4,17 +4,26 @@
 %
 % TODO: expand on monte carlo method. write about necessity of quality RNG's  
 \section{Monte Carlo}
-In statistical physics, predictions come from thermal averages calculated from 
+In the theoretical framework of statistical physics, predictions come from thermal averages, calculated from 
 \begin{equation}
   \langle A\rangle = \frac{1}{Z}\trm{Tr} e^{-H/T} = \sum_x A(x) P(x)
+  \label{MC:eq:avg}
 \end{equation}
-where  $P(x) = (1/Z)\trm{exp}(-H(x))$ is the Boltzmann distribution, and the sum is a sum over all possible states of the system.
-Models of physical systems are described by writing down the mathematical expression for the Hamiltonian. However, an expression for the partition function $Z$ can in most cases not be found. So using the first representation to calculate averages is for most models not possible. The other form shows another way to calculate the averages, at least approximatesly, by simulation. 
-Monte Carlo averages have the form 
-\begin{equation}
-  \langle A \rangle = \frac{1}{N} \sum_x A(x) \pm \frac{\sigma	}{\sqrt N}
-\end{equation}
-where the states $x$ are Boltzmann distributed.
+where  $P(x) = (1/Z)\trm{exp}(-H(x))$ is the Boltzmann distribution, and the sum is a sum over all possible states of the system. 
+Models of physical systems are described by writing down the mathematical expression for the Hamiltonian.
+An expression for the partition funciton $Z$ can often be written down, but for most models, the number of states are infinite or at least impractically large, so the first formula above can seldom be used in practice.
+Estimation of such very large integrals can be done in several ways.
+One way is to calculate the value of the function to be integrated at equidistant points inside the integration area and extrapolating to obtain a measure of the full integral.
+This method can be biased, if you do not know your function with full detail, you may select points that are somehow correlated or otherwise introduces an unnecessary error.
+A better and safer way to obtain an estimate of the integral is to use randomly distributed points.
+This will remove potential bias and will often yeild a better estimate when using the same number of points.
+
+In the field of statistical physics, one wants to select states that are the most probable, as they will contribute mostly to the thermal average. By simulating a model, and updating the state of the model randomly, but with such rules so that it's states are Boltzmann-distributed, one can estimate the thermal averages by calculating the corresponding quantity of the simulated model at different 'time-steps'.
+
+When implementing such an algorithm, it is convenient to use a pseudo-random number generator (pRNG) to produce random numbers.
+The quality of the pRNG is very important when implementing a Monte Carlo-method.
+Since one often wants to generate a large number of random numbers, it is important that the generator produces numbers that are not correlated to the previous ones, as this could lead to bias. 
+In this work we use a pRNG implemented in the standard library of C++, the mt_19937_64.
 
 %The Boltzmann distribution may be unsuitable for some systems/configurations we want to study. In practice, we can use any distribution we want, if we introduce the proper normalization.
 %\begin{equation}
@@ -183,3 +192,43 @@ The figures where produced using the open source program Grace available at ``pl
 The numerical method we used to perform the Monte-Carlo simulations was a Wolff algorithm written in C++. Since both the 3DXY-model and the 3D Ising model suffer from critcal slowing down, i.e. the equilibration time tends to infinity at the critical temperature, 
 Both the 3DXY-model and the 3D Ising-model suffer from a phenomenon called critical slowing down. Near the transition temperature, the correlation length diverges, so thermal fluctuations propagate very long distances, and so the system takes a very long time to equilibrate to the equilibrum value.
 One can wastly improve the quality-data versus cpu-time ratio by utilizing a global update algorithm such as the Wolff algorithm. 
+\section{Error in estimation}
+The Monte-Carlo method gives estimations of thermal averages,
+\begin{equation}
+  \langle A \rangle = \frac{1}{N}\sum_i A_i +\delta A.
+  \label{}
+\end{equation}
+If the estimations $A_i$ are stochastically independent, the error can be estimated by
+\begin{equation}
+  \delta A \approx \frac{\sigma_A}{N-1}.
+  \label{}
+\end{equation}
+This method works nicely for simple averages, no bias can arise and computation of the standard deviation is straight-forward and not computationally intense.
+In our analysis we want to calculate functions of averages, such as the binder cumulant, heatcapacity, etc.
+A way to do is to compute
+$f(A) \approx \frac{1}{N}\sum_i f(A_i)$, and use the same method as above for error estimation.
+But that is a bad way.
+Functions of averages can produce bias, take for instance the fuction $f(X) = X^2$. Using an estimate  we get $ f(\bar{X} + \delta X) = (\bar{X})^2 + \bar{X}\delta X + (\delta X)^2$ where the last term introduces a positive bias.
+To mitigate these biases one wants to first calculate the estimations of the averages as precisely as possible to minimize the error, as otherwise it can build up.
+The above method of calculating the error estimate works as well, but a nicer way to do it is by using the jackknife-method.
+One of it's nice features is that it can produce error-bars for functions of averages without having to calculate averages of functions of averages.
+The method is a resampling method, one divides the data set into blocks, $x_\{i\}$, and then calculate the jackknife-average, defined as 
+\begin{equation}
+  x_i^J = \frac{1}{N-1}\sum_{j\neq i}x_j.
+\end{equation}
+The jackknife estimate of any function of averages is then defined as 
+\begin{equation}
+  f(X)\approx \bar{f^J}\equiv \frac{1}{N}\sum_{i=1}^{N} f(x_i^J).
+  \label{}
+\end{equation}
+and the uncertainty in this estimate is defined as 
+\begin{equation}
+  \sigma_{f(\bar{X})} \equiv \sqrt{N-1}\sigma_{f^J}
+\end{equation}
+where
+\begin{equation}
+  \sigma^2_{f^J} = \bar{(f^J)^2} - (\bar{f^J})^2.
+  \label{}
+\end{equation}
+The size of blocks can be chosen freely, but the result will depend on it. Chosing a smaller blocksize will increase the runtime of the algorithm.
+
