@@ -1,6 +1,4 @@
-
 import intersection
-
 
 def binderIntersection(Ldictavg):
     Llist = sorted(list(Ldictavg.keys()));
@@ -31,7 +29,4 @@ def densityIntersection(Ldictavg):
                 break;
 
     return intersections;
-
-def quantMinusConst(qlist,A):
-    for ln in qlist:
 
