@@ -1,5 +1,5 @@
 
-import intersection.checkcheckIntersection as checkInter
+import intersection
 
 
 def binderIntersection(Ldictavg):
@@ -8,7 +8,7 @@ def binderIntersection(Ldictavg):
     intersections = [];
     for L,L2 in zip(Llist[:-1],Llist[1:]):
         for T,T2 in zip(Tlist[:-1],Tlist[1:]):
-            [doesInt,ix,iy] = checkInter(Ldictavg[L][T].Bin,Ldictavg[L][T2].Bin,Ldictavg[L2][T].Bin,Ldictavg[L2][T2].Bin);
+            [doesInt,ix,iy] = intersection.checkcheckIntersection(Ldictavg[L][T].Bin,Ldictavg[L][T2].Bin,Ldictavg[L2][T].Bin,Ldictavg[L2][T2].Bin);
             if doesInt:
                 ax = ix + T;
                 ay = Ldictavg[L][T]
@@ -23,7 +23,7 @@ def densityIntersection(Ldictavg):
     intersections = [];
     for L,L2 in zip(Llist[:-1],Llist[1:]):
         for T,T2 in zip(Tlist[:-1],Tlist[1:]):
-            [doesInt,ix,iy] = checkInter(Ldictavg[L][T].Rs,Ldictavg[L][T2].Rs,Ldictavg[L2][T].Rs,Ldictavg[L2][T2].Rs);
+            [doesInt,ix,iy] = intersection.checkcheckIntersection(Ldictavg[L][T].Rs,Ldictavg[L][T2].Rs,Ldictavg[L2][T].Rs,Ldictavg[L2][T2].Rs);
             if doesInt:
                 ax = ix + T;
                 ay = Ldictavg[L][T]
@@ -31,3 +31,7 @@ def densityIntersection(Ldictavg):
                 break;
 
     return intersections;
+
+def quantMinusConst(qlist,A):
+    for ln in qlist:
+
