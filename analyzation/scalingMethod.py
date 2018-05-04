@@ -27,12 +27,7 @@ def densityIntersection(Ldictavg):
             if doesInt:
                 ax = ix + T;
                 ay = Ldictavg[L][T]
-                intersections.append([T+ix,iy]);
+                intersections.append([1/L2,T+ix,iy]);
                 break;
 
     return intersections;
-
-
-
-
-

@@ -8,6 +8,7 @@ import calculateAverages
 import calculateScalingFuncs
 import writeFoutput
 import intersection
+import scalingMethod
 
 def getTdict(ldict):
     tdict = {};
@@ -32,7 +33,7 @@ fName = sys.argv[1];
 conf.setModel(sys.argv[2]);
 conf.setJackknifeBlock(int(sys.argv[3]))
 if (conf.model == "3DXY"):
-    avgF = collections.namedtuple('avgF',['E','M','Bin','dBdT','Chi','Rs','dE',  'dM','dBin','ddBdT','dChi','dRs']);
+    avgF = collections.namedtuple('avgF',['E','M','Bin','dBdT','Chi','Rs','C','dE',  'dM','dBin','ddBdT','dChi','dRs','dC']);
     MCAvg = collections.namedtuple('MCAvg',['L','T',
     'Neqsw','Neqcl','NTotsw','NTotcl','cold',
     'e','e2','m','m2','m4','m2e','m4e','s2x','s2y','s2z',
@@ -49,7 +50,9 @@ for L,Tdict in L_dict.items():
         if not(L in L_dict_avg):
             L_dict_avg[L] ={};
         L_dict_avg[L][T] = calculateAverages.calcAvg(L_dict[L][T],L,T); 
-
+#find intersection in binder and density
+bInts = scalingMethod.binderIntersection(L_dict_avg);
+rInts = scalingMethod.densityIntersection(L_dict_avg);
 #calculate tricky averages
 T_omega_dict = {};
 T_sc2quant_list=[];
@@ -69,6 +72,8 @@ writeFoutput.writeSC3(T_omega_dict,fName);
 writeFoutput.writeSC2(T_sc2quant_list,fName);
 writeFoutput.writeSigmaVsOmega(sigmaVsOmega,fName);
 
+writeFoutput.writeBinInt(bInts,fName);
+writeFoutput.writeDenInts(rInts,fName);
 
 writeFoutput.writeVsT(L_dict_avg,fName);
 T_dict_avg = getTdict(L_dict_avg);

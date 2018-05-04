@@ -2,13 +2,23 @@ import conf
 import math
 
 fs= "{:30.30f}";
+def writeBinInt(blist,fName):
+    fb = open('./foutput/3DXY/intersections/bin/T_int_vs_reciL' +fName +'.dat',"w");
+    for ln in blist:
+        fb.write(fs.format(ln[0])+" "+fs.format(ln[1])+" 0.0 "+fs.format(ln[2])+" \n");
+def writeDenInt(dlist,fName):
+    fr = open('./foutput/3DXY/intersections/rs/T_int_vs_reciL' +fName +'.dat',"w");
+    for ln in dlist:
+        fr.write(fs.format(ln[0])+" "+fs.format(ln[1])+" 0.0 "+fs.format(ln[2])+" \n");
+
+
 def writeSigmaVsOmega(sigmalist,fName):
     fb = open('./foutput/3DXY/scalingCorr/std_omegaBin2L/sigmaVsOmega_'+fName+".dat",'w');
     fr = open('./foutput/3DXY/scalingCorr/std_omegaRS2L/sigmaVsOmega_'+fName+".dat",'w');
     for ln in sigmalist.Bin:
-        fb.write(fs.format(ln[0]) + " " + fs.format(ln[1]) + " \n");
+        fb.write(fs.format(ln[0]) + " " + fs.format(ln[1]) +" 0.0 " + fs.format(ln[2])+ " \n");
     for ln in sigmalist.Rs:
-        fr.write(fs.format(ln[0]) + " " + fs.format(ln[1]) + " \n");
+        fr.write(fs.format(ln[0]) + " " + fs.format(ln[1]) +" 0.0 " + fs.format(ln[2])+ " \n");
 
 
 def writeSC3(omdicts,fName):

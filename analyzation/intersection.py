@@ -18,7 +18,7 @@ def checkIntersection(LdictT1,LdictT2):
     res = [];
     for L in LdictT1.keys():
         for L2 in LdictT1.keys():
-            if not (L == L2):
+            if ((L*2) == L2):
                 doesInt,ix,iy = checkcheckIntersection(
                         LdictT1[L],LdictT1[L2],LdictT2[L],LdictT2[L2]);
                 if (doesInt):
@@ -61,8 +61,6 @@ def rescale(Tlist,omega):
         newTlist.append(quantStruct(newBinLdict,newRsLdict));
     return newTlist;
 
-
-
 def findBestIntersection(T_list,omegaList):
     intersections = [];
     Binres = [];
@@ -82,7 +80,7 @@ def findBestIntersection(T_list,omegaList):
         for struct1,struct2 in zip(T_list_resc[:-1],T_list_resc[1:]):
             intersections.extend(checkIntersection(struct1.Rs,struct2.Rs));
         avgNND = calcANN(intersections);
-        Rsres.append([omega,avgNND]);
+        Rsres.append([omega,avgNND,len(intersections)]);
     result = quantStruct(Binres,Rsres);
     return result;
 

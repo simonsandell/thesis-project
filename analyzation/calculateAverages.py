@@ -50,7 +50,8 @@ def jf3DXY(avglist,L,T):
     Chi = (Nspins/T)*(avg_m2/avg_expFac - pow(avg_m,2)/(pow(avg_expFac,2)));
     Rs = -L*avg_e - (pow(L,4)/T)*(avg_s2x + avg_s2y + avg_s2z);
     Rs = Rs/(3.0*avg_expFac);
-    return [E,M,Bin,dBdT,Chi,Rs];
+    C = (avg_e2 - (pow(avg_e,2)/avg_expFac)/(T*T*avg_expFac));
+    return [E,M,Bin,dBdT,Chi,Rs,C];
 
 def calcAvg(MCAvgList,L,T):
     if (conf.model == "3DXY"):
@@ -59,7 +60,7 @@ def calcAvg(MCAvgList,L,T):
     if (conf.jackknife_on):
         delta_func = jackknife.getJackDelta(MCAvgList,lambda x: jackfunc(x,L,T),conf.jackknife_blocks);
     else:
-        delta_func = [0,0,0,0,0,0];
+        delta_func = [0,0,0,0,0,0,0];
     f = func_avg;
     f.extend(delta_func);
     result = avgF(*f);
