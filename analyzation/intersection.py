@@ -41,7 +41,6 @@ def calcANN(ints):
     avgnnd = np.mean(nnd);
     return avgnnd;
 
-quantStruct = collections.namedtuple('quantStruct',['Bin','Rs']);
 
 def rescale(Tlist,omega):
     newTlist = [];
@@ -58,7 +57,7 @@ def rescale(Tlist,omega):
             newRSList[1] = pow(newRSList[4],omega)*newRSList[1];
             newRSList[2] = pow(newRSList[4],omega)*newRSList[2];
             newRsLdict[L] = newRSList;
-        newTlist.append(quantStruct(newBinLdict,newRsLdict));
+        newTlist.append(conf.quantStruct(newBinLdict,newRsLdict));
     return newTlist;
 
 def findBestIntersection(T_list,omegaList):
@@ -81,6 +80,6 @@ def findBestIntersection(T_list,omegaList):
             intersections.extend(checkIntersection(struct1.Rs,struct2.Rs));
         avgNND = calcANN(intersections);
         Rsres.append([omega,avgNND,len(intersections)]);
-    result = quantStruct(Binres,Rsres);
+    result = conf.quantStruct(Binres,Rsres);
     return result;
 

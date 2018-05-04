@@ -95,10 +95,9 @@ def calcSC3(ldict,ldict_avg,temp):
                 deltaOmega = [0.0,0.0];
             omegaBinderRes[L1]= [temp,omegaB,deltaOmega[0],L1,L2,L3,N];
             omegaRsRes[L1] = [temp,omegaRS,deltaOmega[1],L1,L2,L3,N];
-    ret = quantStruct(omegaBinderRes,omegaRsRes);
+    ret = conf.quantStruct(omegaBinderRes,omegaRsRes);
     return ret;
 
-quantStruct = collections.namedtuple('quantStruct',['Bin','Rs']); 
 def calcSC2Quant(q,q2,L):
     return (q2 - q);
 
@@ -132,5 +131,5 @@ def calcSC2(ldict,ldict_avg,temp):
         retBin[L1] = [temp,quantBin,deltaQuant[0],N,L1,L2];
         retRS[L1] = [temp,quantRs,deltaQuant[0],N,L1,L2];
 
-    return quantStruct(retBin,retRS);
+    return conf.quantStruct(retBin,retRS);
 

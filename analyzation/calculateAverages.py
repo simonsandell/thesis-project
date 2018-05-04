@@ -3,7 +3,6 @@ import jackknife
 import collections
 import conf
 
-avgF = collections.namedtuple('avgF',['E','M','Bin','dBdT','Chi','Rs','dE',  'dM','dBin','ddBdT','dChi','dRs']);
 
 def jf3DXY(avglist,L,T):
     N = len(avglist);

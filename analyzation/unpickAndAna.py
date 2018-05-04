@@ -32,12 +32,7 @@ def getOmegaList():
 fName = sys.argv[1];
 conf.setModel(sys.argv[2]);
 conf.setJackknifeBlock(int(sys.argv[3]))
-if (conf.model == "3DXY"):
-    avgF = collections.namedtuple('avgF',['E','M','Bin','dBdT','Chi','Rs','C','dE',  'dM','dBin','ddBdT','dChi','dRs','dC']);
-    MCAvg = collections.namedtuple('MCAvg',['L','T',
-    'Neqsw','Neqcl','NTotsw','NTotcl','cold',
-    'e','e2','m','m2','m4','m2e','m4e','s2x','s2y','s2z',
-    'bin','dbdt','chi','rs','expFac']);
+conf.initNT();
 
 L_dict = pickler.loadData(fName);
 print("loading done");

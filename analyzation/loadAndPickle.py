@@ -3,15 +3,14 @@ import collections
 import os
 import sys
 import pickler
+import conf
+
+conf.initNT("3DXY");
 
 fName = sys.argv[1];
 load_failed = False;
 indir = "./output/3DXY/";
 datafile = open(indir+fName,"r");
-MCAvg = collections.namedtuple('MCAvg',['L','T',
-    'Neqsw','Neqcl','NTotsw','NTotcl','cold',
-    'e','e2','m','m2','m4','m2e','m4e','s2x','s2y','s2z',
-    'bin','dbdt','chi','rs','expFac']);
 
 L_dict = {};
 i = 0;
@@ -24,8 +23,7 @@ for ln in datafile:
             fllist = [float(x) for x in strlist];
             if (len(fllist) != 22):
                 print('bad line at row ' + str(1 + i));
-
-            a = MCAvg(*fllist);
+            a = conf.MCAvg(*fllist);
             if not a.L in L_dict:
                 L_dict[a.L] = {};
             if not a.T in L_dict[a.L]:
