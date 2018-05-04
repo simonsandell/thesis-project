@@ -2,6 +2,7 @@ import numpy as np
 import collections
 import math
 import jackknife
+import conf
 
 def splitL(Llist,Lval):
     L1list =[];
@@ -88,7 +89,10 @@ def calcSC3(ldict,ldict_avg,temp):
             # combine into single list
             Lcombined = ldict[L1] + ldict[L2] + ldict[L3];
             N = len(Lcombined);
-            deltaOmega = jackknife.getJackDelta(Lcombined,lambda x: jf_SC3(x,[L1,L2,L3]),1000);
+            if (conf.jackknife_on):
+                deltaOmega = jackknife.getJackDelta(Lcombined,lambda x: jf_SC3(x,[L1,L2,L3]),conf.jackknife_blocks);
+            else:
+                deltaOmega = [0.0,0.0];
             omegaBinderRes[L1]= [temp,omegaB,deltaOmega[0],L1,L2,L3,N];
             omegaRsRes[L1] = [temp,omegaRS,deltaOmega[1],L1,L2,L3,N];
     ret = quantStruct(omegaBinderRes,omegaRsRes);
@@ -108,7 +112,6 @@ def jf_SC2(Lcomb,L):
     rQuant = calcSC2Quant(r,r2,L[0]);
     return bQuant+rQuant;
 
-
 def calcSC2(ldict,ldict_avg,temp):
     retBin ={};
     retRS ={};
@@ -121,8 +124,11 @@ def calcSC2(ldict,ldict_avg,temp):
         # combine lists for jackknifing
         Lcomb = ldict[L1] + ldict[L2];
         N = len(Lcomb);
-        deltaQuant = jackknife.getJackDelta(Lcomb,
-                lambda x: jf_SC2(x,[L1,L2,0]), 1000);
+        if (conf.jackknife_on):
+            deltaQuant = jackknife.getJackDelta(Lcomb,
+                lambda x: jf_SC2(x,[L1,L2,0]),conf.jackknife_blocks );
+        else:
+            deltaQuant = [0.0];
         retBin[L1] = [temp,quantBin,deltaQuant[0],N,L1,L2];
         retRS[L1] = [temp,quantRs,deltaQuant[0],N,L1,L2];
 

@@ -56,8 +56,10 @@ def calcAvg(MCAvgList,L,T):
     if (conf.model == "3DXY"):
         jackfunc = jf3DXY;
     func_avg = jackfunc(MCAvgList,L,T);
-    delta_func = jackknife.getJackDelta(MCAvgList,lambda x: jackfunc(x,L,T),1000);
-    #delta_func = [0,0,0,0,0,0];
+    if (conf.jackknife_on):
+        delta_func = jackknife.getJackDelta(MCAvgList,lambda x: jackfunc(x,L,T),conf.jackknife_blocks);
+    else:
+        delta_func = [0,0,0,0,0,0];
     f = func_avg;
     f.extend(delta_func);
     result = avgF(*f);

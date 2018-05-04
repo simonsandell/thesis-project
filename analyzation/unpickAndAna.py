@@ -30,6 +30,7 @@ def getOmegaList():
 
 fName = sys.argv[1];
 conf.setModel(sys.argv[2]);
+conf.setJackknifeBlock(int(sys.argv[3]))
 if (conf.model == "3DXY"):
     avgF = collections.namedtuple('avgF',['E','M','Bin','dBdT','Chi','Rs','dE',  'dM','dBin','ddBdT','dChi','dRs']);
     MCAvg = collections.namedtuple('MCAvg',['L','T',

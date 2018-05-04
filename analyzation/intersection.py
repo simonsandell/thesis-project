@@ -73,7 +73,6 @@ def findBestIntersection(T_list,omegaList):
         for struct1,struct2 in zip(T_list_resc[:-1],T_list_resc[1:]):
             intersections.extend(checkIntersection(struct1.Bin,struct2.Bin));
         print(len(intersections));
-        input()
         avgNND = calcANN(intersections);
         Binres.append([omega,avgNND]);
 
