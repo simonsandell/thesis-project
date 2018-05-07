@@ -5,7 +5,7 @@ import sys
 import pickler
 import conf
 
-conf.initNT("3DXY");
+conf.initNT();
 
 fName = sys.argv[1];
 load_failed = False;

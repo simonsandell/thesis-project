@@ -7,12 +7,12 @@ def calcIntersection(y1,y2,y3,y4,dT):
     py = (y1*(y3 -y4) - y3*(y1-y2))/(y3 -y4 -y1 +y2);
     return [px,py];
 
-def checkcheckIntersection(L1_T1,L2_T1,L1_T2,L2_T2):
-    if ((L1_T1[1] -L2_T1[1])*(L1_T2[1] - L2_T2[1]) >0.0):
+def checkcheckIntersection(L1_T1,L2_T1,L1_T2,L2_T2,dT):
+    if ((L1_T1 -L2_T1)*(L1_T2 - L2_T2) >0.0):
         return [False,0,0];
     else:
-        [ix,iy] =calcIntersection(L1_T1[1],L1_T2[1],L2_T1[1],L2_T2[1],L1_T2[0] - L1_T1[0]);
-        return [True,ix+L1_T1[0],iy];
+        [ix,iy] =calcIntersection(L1_T1,L1_T2,L2_T1,L2_T2,dT);
+        return [True,ix,iy];
 
 def checkIntersection(LdictT1,LdictT2):
     res = [];
@@ -20,9 +20,9 @@ def checkIntersection(LdictT1,LdictT2):
         for L2 in LdictT1.keys():
             if ((L*2) == L2):
                 doesInt,ix,iy = checkcheckIntersection(
-                        LdictT1[L],LdictT1[L2],LdictT2[L],LdictT2[L2]);
+                        LdictT1[L][1],LdictT1[L2][1],LdictT2[L][1],LdictT2[L2][1],LdictT2[L][0] -LdictT1[L][0]);
                 if (doesInt):
-                    res.append([ix,iy]);
+                    res.append([LdictT1[L][0] + ix,iy]);
     return res;
 
 def getDist(xy,xy2):
@@ -71,7 +71,7 @@ def findBestIntersection(T_list,omegaList):
             intersections.extend(checkIntersection(struct1.Bin,struct2.Bin));
         print(len(intersections));
         avgNND = calcANN(intersections);
-        Binres.append([omega,avgNND]);
+        Binres.append([omega,avgNND,len(intersections)]);
 
     for omega in omegaList:
         T_list_resc = rescale(T_list,omega);

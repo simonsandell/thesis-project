@@ -68,7 +68,7 @@ writeFoutput.writeSC2(T_sc2quant_list,fName);
 writeFoutput.writeSigmaVsOmega(sigmaVsOmega,fName);
 
 writeFoutput.writeBinInt(bInts,fName);
-writeFoutput.writeDenInts(rInts,fName);
+writeFoutput.writeDenInt(rInts,fName);
 
 writeFoutput.writeVsT(L_dict_avg,fName);
 T_dict_avg = getTdict(L_dict_avg);

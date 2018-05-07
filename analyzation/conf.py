@@ -28,6 +28,6 @@ def initNT():
     global quantStruct;
     if (model == "3DXY"):
         quantStruct = collections.namedtuple('quantStruct',['Bin','Rs']); 
-        avgF = collections.namedtuple('avgF',['E','M','Bin','dBdT','Chi','Rs','dE',  'dM','dBin','ddBdT','dChi','dRs']);
+        avgF = collections.namedtuple('avgF',['E','M','Bin','dBdT','Chi','Rs','C','dE',  'dM','dBin','ddBdT','dChi','dRs','dC']);
         MCAvg = collections.namedtuple('MCAvg',['L','T','Neqsw','Neqcl','NTotsw','NTotcl','cold','e','e2','m','m2','m4','m2e','m4e','s2x','s2y','s2z','bin','dbdt','chi','rs','expFac']);
 

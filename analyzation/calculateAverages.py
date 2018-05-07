@@ -62,7 +62,7 @@ def calcAvg(MCAvgList,L,T):
         delta_func = [0,0,0,0,0,0,0];
     f = func_avg;
     f.extend(delta_func);
-    result = avgF(*f);
+    result = conf.avgF(*f);
     return result;
     
 

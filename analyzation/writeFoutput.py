@@ -16,6 +16,7 @@ def writeSigmaVsOmega(sigmalist,fName):
     fb = open('./foutput/3DXY/scalingCorr/std_omegaBin2L/sigmaVsOmega_'+fName+".dat",'w');
     fr = open('./foutput/3DXY/scalingCorr/std_omegaRS2L/sigmaVsOmega_'+fName+".dat",'w');
     for ln in sigmalist.Bin:
+        print(ln)
         fb.write(fs.format(ln[0]) + " " + fs.format(ln[1]) +" 0.0 " + fs.format(ln[2])+ " \n");
     for ln in sigmalist.Rs:
         fr.write(fs.format(ln[0]) + " " + fs.format(ln[1]) +" 0.0 " + fs.format(ln[2])+ " \n");
