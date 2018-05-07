@@ -35,6 +35,6 @@ for fName in os.listdir(dirname):
                     print('bad line at row ' + str(1 + i));
                     load_failed = True;
 if (load_failed):
-    pickler.saveData(L_dict,fName+".somebadrows");
+    pickler.saveData(L_dict,dirname+".somebadrows");
 else:
-    pickler.saveData(L_dict,fName);
+    pickler.saveData(L_dict,dirname);
