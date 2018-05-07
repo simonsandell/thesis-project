@@ -73,3 +73,4 @@ writeFoutput.writeDenInt(rInts,fName);
 writeFoutput.writeVsT(L_dict_avg,fName);
 T_dict_avg = getTdict(L_dict_avg);
 writeFoutput.writeVsL(T_dict_avg,fName);
+exit(0)
