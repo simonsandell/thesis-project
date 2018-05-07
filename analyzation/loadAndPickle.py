@@ -9,11 +9,13 @@ conf.initNT();
 
 L_dict = {};
 dirname = sys.argv[1];
+savename = sys.argv[2];
+load_failed = False;
 for fName in os.listdir(dirname):
     if not (os.path.isdir(os.path.join(dirname,fName))):
-        load_failed = False;
         datafile = open(os.path.join(dirname,fName),"r");
         i = 0;
+        print("now loading " + os.path.join(dirname,fName));
         for ln in datafile:
             i = i+1;
             if not (('#' in ln) or ('WORLD' in ln) or ('SEED' in ln) or ('aprun' in ln)):
@@ -35,6 +37,7 @@ for fName in os.listdir(dirname):
                     print('bad line at row ' + str(1 + i));
                     load_failed = True;
 if (load_failed):
-    pickler.saveData(L_dict,dirname+".somebadrows");
+    pickler.saveData(L_dict,savename+".somebadrows");
 else:
-    pickler.saveData(L_dict,dirname);
+    pickler.saveData(L_dict,savename);
+exit(0)
