@@ -1,6 +1,7 @@
 import numpy as np
 import conf
 import collections
+import matplotlib.pyplot as plt
 
 def calcIntersection(y1,y2,y3,y4,dT):
     px = dT*((y3-y1)/(y1 -y2 +y3 -y4));
@@ -40,6 +41,21 @@ def calcANN(ints):
                     nnd[i] = d;
     avgnnd = np.mean(nnd);
     return avgnnd;
+def calcADTAP(ints):
+    avgx = 0.0;
+    avgy = 0.0;
+    for xy in ints:
+        avgx+=xy[0];
+        avgy+=xy[1];
+    avgx/=len(ints);
+    avgy/=len(ints);
+    ret = 0.0;
+    for i in range(len(ints)):
+        ret += getDist(ints[i],[avgx,avgy])
+    ret /=len(ints);
+    return ret;
+
+
 
 
 def rescale(Tlist,omega):
@@ -69,17 +85,18 @@ def findBestIntersection(T_list,omegaList):
         intersections[:] = [];
         for struct1,struct2 in zip(T_list_resc[:-1],T_list_resc[1:]):
             intersections.extend(checkIntersection(struct1.Bin,struct2.Bin));
-        print(len(intersections));
-        avgNND = calcANN(intersections);
-        Binres.append([omega,avgNND,len(intersections)]);
+        #clustMeasure = calcANN(intersections);
+        clustMeasure = calcADTAP(intersections);
+        Binres.append([omega,clustMeasure,len(intersections)]);
 
     for omega in omegaList:
         T_list_resc = rescale(T_list,omega);
         intersections[:] = [];
         for struct1,struct2 in zip(T_list_resc[:-1],T_list_resc[1:]):
             intersections.extend(checkIntersection(struct1.Rs,struct2.Rs));
-        avgNND = calcANN(intersections);
-        Rsres.append([omega,avgNND,len(intersections)]);
+        #clustMeasure = calcANN(intersections);
+        clustMeasure = calcADTAP(intersections);
+        Rsres.append([omega,clustMeasure,len(intersections)]);
     result = conf.quantStruct(Binres,Rsres);
     return result;
 
