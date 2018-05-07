@@ -16,9 +16,9 @@ for fName in os.listdir(dirname):
         i = 0;
         for ln in datafile:
             i = i+1;
-            strlist = ln.rsplit(" ");
-            strlist = [x for x in strlist if not (x== "\n")];
-            if not (strlist[0] == "#"):
+            if not (('#' in ln) or ('WORLD' in ln) or ('SEED' in ln) or ('aprun' in ln)):
+                strlist = ln.rsplit(" ");
+                strlist = [x for x in strlist if not (x== "\n")];
                 try:
                     fllist = [float(x) for x in strlist];
                     if (len(fllist) != 22):
