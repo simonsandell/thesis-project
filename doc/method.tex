@@ -18,7 +18,7 @@ This method can be biased, if you do not know your function with full detail, yo
 A better and safer way to obtain an estimate of the integral is to use randomly distributed points.
 This will remove potential bias and will often yeild a better estimate when using the same number of points.
 
-In the field of statistical physics, one wants to select states that are the most probable, as they will contribute mostly to the thermal average. By simulating a model, and updating the state of the model randomly, but with such rules so that it's states are Boltzmann-distributed, one can estimate the thermal averages by calculating the corresponding quantity of the simulated model at different 'time-steps'.
+In the field of statistical physics, . By simulating a model, and updating the state of the model randomly, but with such rules so that it's states are Boltzmann-distributed, one can estimate the thermal averages by calculating the corresponding quantity of the simulated model at different 'time-steps'.
 
 When implementing such an algorithm, it is convenient to use a pseudo-random number generator (pRNG) to produce random numbers.
 The quality of the pRNG is very important when implementing a Monte Carlo-method.
@@ -46,11 +46,11 @@ The averages are calculated as
   \langle A \rangle_{\beta_0} =  \frac{\sum_{x}A_x e^{-\beta_0 H_x}}{\sum_{x}e^{-\beta_0 H_x}}
 \end{equation}
 To get the average of A at some different temperature, say $\beta_1$, we can do
-\begin{align}
-  \langle A\rangle_{\beta_1} =  \frac{\sum_{x}A_x e^{-\beta_1 H_x}}{\sum_{x}e^{-\beta_1 H_x}} = \\
+\begin{equation}
+  \langle A \rangle_{\beta_1} =  \frac{\sum_{x}A_x e^{-\beta_1 H_x}}{\sum_{x}e^{- \beta_1 H_x}} = \\
   = \frac{\sum_x A_x e^{-(\beta_1 - \beta_0)H_x} e^{-\beta_0 H_x}}{\sum_x e^{-(\beta_1 - \beta_0)H_x}e^{-\beta_0 H_x}} = \\
   = \frac{\langle A e^{-(\beta_1 - \beta_0)H}\rangle_{\beta_0}}{\langle e^{-(\beta_1 - \beta_0)H}\rangle_{\beta_0}}.
-\end{align}
+\end{equation}
 The range of temperatures to which extrapolation is viable will decrease with system size,
 as loss in precision will occur when the exponential factor becomes large. To minimize the exponential factor, one can shift the energy of the system by a constant, which we call $H_{max}$. A constant shift in energy does not affect the values, 
 \begin{equation}
