@@ -64,7 +64,36 @@ def calcAvg(MCAvgList,L,T):
     f.extend(delta_func);
     result = conf.avgF(*f);
     return result;
+
+def jf3DXYalt(avglist,L,T):
+    N = len(avglist);
+    Nspins = pow(L,3);
+    avg_bin=0.0 ;
+    avg_dbdt=0.0;
+    avg_chi=0.0 ;
+    avg_rs =0.0 ;
+    for mcavg in avglist:
+        avg_bin += mcavg.bin;
+        avg_dbdt += mcavg.dbdt;
+        avg_chi += mcavg.chi;
+        avg_rs += mcavg.rs;
+    avg_bin /= N   
+    avg_dbdt /= N 
+    avg_chi /= N 
+    avg_rs /= N 
+
+    return [0,0,avg_bin,avg_dbdt,avg_chi,avg_rs,0];
+
+def calcAvgAlt(MCAvgList,L,T):
+    if (conf.model == "3DXY"):
+        jackfunc = jf3DXY;
+    func_avg = jackfunc(MCAvgList,L,T);
+    if (conf.jackknife_on):
+        delta_func = jackknife.getJackDelta(MCAvgList,lambda x: jackfunc(x,L,T),conf.jackknife_blocks);
+    else:
+        delta_func = [0,0,0,0,0,0,0];
+    f = func_avg;
+    f.extend(delta_func);
+    result = conf.avgF(*f);
+    return result;
     
-
-
-     

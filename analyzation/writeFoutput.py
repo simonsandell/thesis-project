@@ -109,3 +109,30 @@ def writeVsL(tdict,fName):
                 df.write(fs.format(L)+" "+fs.format(abs(af.dBdT))+" "+fs.format(af.ddBdT)+" \n")
                 cf.write(fs.format(L)+" "+fs.format(abs(af.Chi))+" "+fs.format(af.dChi)+" \n");
                 rf.write(fs.format(L)+" "+fs.format(abs(af.Rs))+" "+fs.format(af.dRs)+" \n");
+
+def writeVsTAlt(ldict,fName):
+    if (conf.model == "3DXY"):
+        for L,tdict in sorted(ldict.items()):
+            bf = open('./foutput/3DXY/vsT/bin/'+str(L)+'_'+fName+'.dat','w');
+            df = open('./foutput/3DXY/vsT/dbdt/'+str(L)+'_'+fName+'.dat','w');
+            cf = open('./foutput/3DXY/vsT/xi/'+str(L)+'_'+fName+'.dat','w');
+            rf = open('./foutput/3DXY/vsT/rs/'+str(L)+'_'+fName+'.dat','w');
+            for T,af in sorted(tdict.items()):
+                bf.write(fs.format(T)+" "+fs.format(af.Bin)+ " "+fs.format(af.dBin)+" \n");
+                df.write(fs.format(T)+" "+fs.format(af.dBdT)+ " "+fs.format(af.ddBdT)+" \n")
+                cf.write(fs.format(T)+" "+fs.format(af.Chi)+ " "+fs.format(af.dChi)+" \n");
+                rf.write(fs.format(T)+" "+fs.format(af.Rs)+" "+fs.format(af.dRs)+" \n");
+
+def writeVsLAlt(tdict,fName):
+    #reverse order of dicts
+    if (conf.model == "3DXY"):
+        for T,ld in sorted(tdict.items()):
+            bf = open('./foutput/3DXY/vsL/bin/'+str(T)+'_'+fName+'.dat','w');
+            df = open('./foutput/3DXY/vsL/dbdt/'+str(T)+'_'+fName+'.dat','w');
+            cf = open('./foutput/3DXY/vsL/xi/'+str(T)+'_'+fName+'.dat','w');
+            rf = open('./foutput/3DXY/vsL/rs/'+str(T)+'_'+fName+'.dat','w');
+            for L,af in sorted(ld.items()):
+                bf.write(fs.format(L)+" "+fs.format(abs(af.Bin))+" "+fs.format(af.dBin)+" \n");
+                df.write(fs.format(L)+" "+fs.format(abs(af.dBdT))+" "+fs.format(af.ddBdT)+" \n")
+                cf.write(fs.format(L)+" "+fs.format(abs(af.Chi))+" "+fs.format(af.dChi)+" \n");
+                rf.write(fs.format(L)+" "+fs.format(abs(af.Rs))+" "+fs.format(af.dRs)+" \n");
