@@ -1,7 +1,9 @@
 import os
+import time
 import sys
 import numpy as np
 import pickler
+from multiprocessing import Pool
 
 # N_vals = 22 for 3DXY, 19 for Ising3D
 def loadData(path,N_vals):
@@ -33,15 +35,28 @@ if (sys.argv[2] == "3DXY"):
 else:
     nvals = 19;
 
-arrarr = [];
-i = 0;
-nfils = len(os.listdir(path));
-for filename in os.listdir(path):
-    i+=1;
-    print("("+str(i)+"/"+str(nfils)+") - "+filename);
+poolres = [];
+res = [];
+filenames = os.listdir(path);
+filenames = [x for x in filenames if "mpirunner" in x];
+def func(filename):
     if (os.path.isfile(os.path.join(path,filename))):
-        arrarr.extend(loadData(os.path.join(path,filename),nvals));
-npmat = np.array(arrarr);
+        print(filename);
+        return loadData(os.path.join(path,filename),nvals);
+"""
+for filename in filenames:
+    res.extend(func(filename));
+
+"""
+pool = Pool(processes=32);
+poolres= pool.map(func,filenames);
+pool.close()
+pool.join()
+for x in poolres:
+    res.extend(x);
+npmat = np.array(res);
+print(npmat.shape)
 ind = np.lexsort((npmat[:,1],npmat[:,0]));
 npmat = npmat[ind];
 pickler.saveData(npmat,sys.argv[2]+saveName);
+print(time.process_time())
