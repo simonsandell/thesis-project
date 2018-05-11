@@ -27,7 +27,7 @@ long double clusterIsing3D(LatticeIsing3D& lat){
 	long double spinAfter = -spinBefore;
 	//reflect spin and mark as part of cluster
 	lat.theLattice[s1][s2][s3] = spinAfter;
-	lat.clust.theCluster[s1][s2][s3] = true;
+	lat.clust.addToCl(s1,s2,s3);
 	//update energy, mag etc..
 	long double enAfter = lat.siteEnergy(s1,s2,s3);
 	updateVals(lat,
@@ -66,7 +66,7 @@ long double clusterIsing3D(LatticeIsing3D& lat){
 		perimeter.pop_back();
 		n -= 1;
 		//test that it is not already part of cluster
-		if (!lat.clust.theCluster[std::get<0>(current)][std::get<1>(current)][std::get<2>(current)]){
+		if (!lat.clust.checkSpin(current)){
 
 			//increase time for every tested spin
 			//
@@ -89,7 +89,7 @@ long double clusterIsing3D(LatticeIsing3D& lat){
 
 					//reflect and mark as added to cluster
 					lat.theLattice[std::get<0>(current)][std::get<1>(current)][std::get<2>(current)] = spinAfter;
-					lat.clust.theCluster[std::get<0>(current)][std::get<1>(current)][std::get<2>(current)] = true;
+					lat.clust.addToCl(std::get<0>(current),std::get<1>(current),std::get<2>(current));
 
 					//update energy and magnetization
 					enAfter = lat.siteEnergy(std::get<0>(current),std::get<1>(current),std::get<2>(current));
@@ -128,27 +128,27 @@ long double clusterIsing3D(LatticeIsing3D& lat){
 							(std::get<2>(current) + lat.int_L - 1)%lat.int_L,
 							spinAfter);
 					//if a neighbour is not already part of the cluster, add it to perimeter list
-					if (!lat.clust.theCluster[std::get<0>(neig1)][std::get<1>(neig1)][std::get<2>(neig1)] ){
+					if (!lat.clust.checkSpin(neig1)){
 						perimeter.push_back(neig1);
 						n = n + 1;
 					}
-					if (!lat.clust.theCluster[std::get<0>(neig2)][std::get<1>(neig2)][std::get<2>(neig2)] ){
+					if (!lat.clust.checkSpin(neig2)){
 						perimeter.push_back(neig2);
 						n = n + 1;
 					}
-					if (!lat.clust.theCluster[std::get<0>(neig3)][std::get<1>(neig3)][std::get<2>(neig3)] ){
+					if (!lat.clust.checkSpin(neig3)){
 						perimeter.push_back(neig3);
 						n = n + 1;
 					}
-					if (!lat.clust.theCluster[std::get<0>(neig4)][std::get<1>(neig4)][std::get<2>(neig4)] ){
+					if (!lat.clust.checkSpin(neig4)){
 						perimeter.push_back(neig4);
 						n = n + 1;
 					}
-					if (!lat.clust.theCluster[std::get<0>(neig5)][std::get<1>(neig5)][std::get<2>(neig5)] ){
+					if (!lat.clust.checkSpin(neig5)){
 						perimeter.push_back(neig5);
 						n = n + 1;
 					}
-					if (!lat.clust.theCluster[std::get<0>(neig6)][std::get<1>(neig6)][std::get<2>(neig6)] ){
+					if (!lat.clust.checkSpin(neig6)){
 						perimeter.push_back(neig6);
 						n = n + 1;
 					}

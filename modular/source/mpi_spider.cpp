@@ -29,14 +29,17 @@ int main(){
         std::string h_pwd = "/home/simon/exjobb/modular/"; 
 	std::string o_pwd = "/home/simsan/exjobb/modular/"; 
 	
-	std::string env = b_pwd;
+	std::string env = h_pwd;
 	std::string model = "3DXY/";
 		  
 	std::string mep= env + "maxE/" + model; 
 	std::string wlp= env + "warmLattice/" + model; 
 
 	if (world_rank != 0){
-		_3DXY::wolffHistJob(128.0L,mep,wlp);
+		_3DXY::wolffHistJob(8.0L,mep,wlp);
+		std::string bigstr = "sdf\n";
+		int tag = 1;
+		MPI_Send(bigstr.c_str(),bigstr.size(),MPI_CHAR,0,tag,MPI_COMM_WORLD);
 	}
 	if (world_rank == 0){
 		int N_finished = 0;

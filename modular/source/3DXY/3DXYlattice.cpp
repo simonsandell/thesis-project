@@ -7,10 +7,29 @@
 #include <fstream>
 #include <cstring>
 #include <cerrno>
+#include <tuple>
 
 #include "3DXYlattice.h"
 #include "3DXYio.h"
 #include "../maxEHandle.h"
+
+long unsigned int xyzToK( int x, int y , int z,long double L){
+	long unsigned int ret = 0;
+	ret += (long unsigned int) x;
+	ret += (long unsigned int) (y*L);
+	ret += (long unsigned int) (z*L*L);
+	return ret;
+}
+std::tuple<int,int,int> kToXYZ(long unsigned int K,long double L){
+	int intel = int( L+0.1L);
+	int x = K % intel;
+	int yL = (K-x)%(intel*intel);
+	int zLL = (K-x-yL);
+	int y = int((yL+0.1)/intel);
+	int z = int((zLL+0.1)/(intel*intel));
+	std::tuple<int,int,int> ret = std::make_tuple(x,y,z);
+	return ret;
+}
 
 long double Lattice3DXY::siteEnergy( int &s1, int &s2, int &s3){
 	long double sum = 0.0L;
@@ -21,12 +40,12 @@ long double Lattice3DXY::siteEnergy( int &s1, int &s2, int &s3){
 	int n2p = (s2 +1 + int_L )%int_L;
 	int n3m = (s3 -1 + int_L )%int_L;
 	int n3p = (s3 +1 + int_L )%int_L;
-	sum -= cos(theLattice[s1][s2][s3]-theLattice[n1m][s2][s3]);
-	sum -= cos(theLattice[s1][s2][s3]-theLattice[n1p][s2][s3]);
-	sum -= cos(theLattice[s1][s2][s3]-theLattice[s1][n2m][s3]);
-	sum -= cos(theLattice[s1][s2][s3]-theLattice[s1][n2p][s3]);
-	sum -= cos(theLattice[s1][s2][s3]-theLattice[s1][s2][n3m]);
-	sum -= cos(theLattice[s1][s2][s3]-theLattice[s1][s2][n3p]);
+	sum -= cos(theLattice[xyzToK(s1,s2,s3,L)]-theLattice[xyzToK(n1m,s2,s3,L)]);
+	sum -= cos(theLattice[xyzToK(s1,s2,s3,L)]-theLattice[xyzToK(n1p,s2,s3,L)]);
+	sum -= cos(theLattice[xyzToK(s1,s2,s3,L)]-theLattice[xyzToK(s1,n2m,s3,L)]);
+	sum -= cos(theLattice[xyzToK(s1,s2,s3,L)]-theLattice[xyzToK(s1,n2p,s3,L)]);
+	sum -= cos(theLattice[xyzToK(s1,s2,s3,L)]-theLattice[xyzToK(s1,s2,n3m,L)]);
+	sum -= cos(theLattice[xyzToK(s1,s2,s3,L)]-theLattice[xyzToK(s1,s2,n3p,L)]);
 	return sum;
 }
 //calculate sin(theta - theta_x) upwards +, downward -
@@ -34,85 +53,85 @@ long double Lattice3DXY::sinX(int &s1, int &s2, int &s3,long double &angle){
 	int np = (s1 + 1) %int_L;
 	int nm = (s1 -1 + int_L) % int_L;	
 	long double ret = 0.0L;
-	ret = sin(theLattice[nm][s2][s3] - angle) + sin(angle - theLattice[np][s2][s3]);
+	ret = sin(theLattice[xyzToK(nm,s2,s3,L)] - angle) + sin(angle - theLattice[xyzToK(np,s2,s3,L)]);
 	return ret;
 }
 long double Lattice3DXY::sinY(int &s1, int &s2, int &s3,long double &angle){
 	int np = (s2 + 1) %int_L;
 	int nm = (s2 -1 + int_L) % int_L;	
 	long double ret = 0.0L;
-	ret = sin(theLattice[s1][nm][s3] - angle) + sin(angle - theLattice[s1][np][s3]);
+	ret = sin(theLattice[xyzToK(s1,nm,s3,L)] - angle) + sin(angle - theLattice[xyzToK(s1,np,s3,L)]);
 	return ret;
 }
 long double Lattice3DXY::sinZ(int &s1, int &s2, int &s3,long double &angle){
 	int np = (s3 + 1) %int_L;
 	int nm = (s3 -1 + int_L) % int_L;	
 	long double ret = 0.0L;
-	ret = sin(theLattice[s1][s2][nm] - angle) + sin(angle - theLattice[s1][s2][np]);
+	ret = sin(theLattice[xyzToK(s1,s2,nm,L)] - angle) + sin(angle - theLattice[xyzToK(s1,s2,np,L)]);
 	return ret;
 }
 ;
-long double calcSinX(long double ***lattice,long double  L){
+long double calcSinX(long double *lattice,long double  L){
 	long double sum = 0.0L;
 	int intel = (int)(L+0.5L);
 	for (int i =0; i< L; ++i){
 		for (int j =0; j< L ; ++j){
 			for (int k = 0; k<L; ++k){
-				sum += sin(lattice[i][j][k] - lattice[(i+1)%intel][j][k]);
+				sum += sin(lattice[xyzToK(i,j,k,L)] - lattice[xyzToK((i+1)%intel,j,k,L)]);
 			}
 		}
 	}
 	return sum;
 }
-long double calcSinY(long double ***lattice,long double  L){
+long double calcSinY(long double *lattice,long double  L){
 	long double sum = 0.0L;
 	int intel = (int)(L+0.5L);
 	for (int i =0; i< L; ++i){
 		for (int j =0; j< L ; ++j){
 			for (int k = 0; k<L; ++k){
-				sum += sin(lattice[i][j][k] - lattice[i][(j+1)%intel][k]);
+				sum += sin(lattice[xyzToK(i,j,k,L)] - lattice[xyzToK(i,(j+1)%intel,k,L)]);
 			}
 		}
 	}
 	return sum;
 }
-long double calcSinZ(long double ***lattice,long double  L){
+long double calcSinZ(long double *lattice,long double  L){
 	long double sum = 0.0L;
 	int intel = (int)(L+0.5L);
 	for (int i =0; i< L; ++i){
 		for (int j =0; j< L ; ++j){
 			for (int k = 0; k<L; ++k){
-				sum += sin(lattice[i][j][k] - lattice[i][j][(k+1)%intel]);
+				sum += sin(lattice[xyzToK(i,j,k,L)] - lattice[xyzToK(i,j,(k+1)%intel,L)]);
 			}
 		}
 	}
 	return sum;
 }
 
-long double calcXMag(long double ***lattice,long double L){
+long double calcXMag(long double *lattice,long double L){
 	long double ret = 0.0L;
 	for (int i = 0; i<L; ++i){
 		for (int j = 0; j<L; ++j){
 			for (int k = 0; k<L; ++k){
-				ret += cos(lattice[i][j][k]);
+				ret += cos(lattice[xyzToK(i,j,k,L)]);
 			}
 		}
 	}
 	return ret;
 }
-long double calcYMag(long double ***lattice,long double L){
+long double calcYMag(long double *lattice,long double L){
 	long double ret = 0.0L;
 	for (int i = 0; i<L; ++i){
 		for (int j = 0; j<L; ++j){
 			for (int k = 0; k<L; ++k){
-				ret += sin(lattice[i][j][k]);
+				ret += sin(lattice[xyzToK(i,j,k,L)]);
 			}
 		}
 	}
 	return ret;
 }
 
-long double calcMag(long double ***lattice,long double L){
+long double calcMag(long double *lattice,long double L){
 	long double mag = sqrt(pow(calcXMag(lattice,L),2) + pow(calcYMag(lattice,L),2));
 	return mag;
 }	
@@ -129,34 +148,19 @@ long double calcEn(Lattice3DXY* lat){
 	en = 0.5L*en;
 	return en;
 }
-long double*** Lattice3DXY::newLattice(long double L,bool cold){
+long double* Lattice3DXY::newLattice(long double L,bool cold){
+	long unsigned int nspins = (long unsigned int)(L*L*L+0.1L);
+	long double* lattice;
+	lattice = new long double[nspins];
 	//make new lattice
-	long double ***lattice;
-	int intel = (int)(L+0.5L);
-	lattice = new long double **[intel];
-	for (int i = 0; i< L;++i){
-		lattice[i] = new long double *[intel];
-		for (int j =0;j<L;++j){
-			lattice[i][j] = new long double[intel];
-		}
-	}
-
 	if (cold) {
-		for (int i = 0; i<L;++i){
-			for (int j=0; j<L;++j){
-				for (int k = 0; k<L; ++k){
-					lattice[i][j][k] = 0.0L;
-				}
-			}
+		for (unsigned int i = 0; i<nspins;++i){
+			lattice[i] = 0.0L;
 		}
 	}
 	else {
-		for (int i = 0; i<L;++i){
-			for (int j=0; j<L;++j){
-				for (int k = 0; k<L; ++k){
-					lattice[i][j][k] = rand.rnd()*2.0L*M_PI;
-				}
-			}
+		for (unsigned int i = 0; i<nspins;++i){
+			lattice[i] = rand.rnd()*2.0L*M_PI;
 		}
 	}
 	return lattice;
@@ -247,16 +251,18 @@ void Lattice3DXY::testConsistent(){
 	//new test of magnetization
 	long double sitemag;
 	long double accum = 0.0L;
+	std::cout << "Magnetization at sites: " << std::endl;
 	for (int i = 0; i< L; ++i){
 		for (int j = 0; j< L; ++j){
 			for (int k = 0; k<L; ++k){	
-				sitemag = std::pow(sin(theLattice[i][j][k]),2.0L) + 
-					std::pow(cos(theLattice[i][j][k]),2.0L);
+				sitemag = std::pow(sin(theLattice[xyzToK(i,j,k,L)]),2.0L) + 
+					std::pow(cos(theLattice[xyzToK(i,j,k,L)]),2.0L);
 				std::cout << std::fixed << sitemag << std::endl;
 				accum += std::abs(sitemag - 1.0L);
 			}
 		}
 	}
+	std::cout << "Accumulated error: ";
 	std::cout << std::fixed << accum << std::endl;
 }
 
@@ -303,8 +309,8 @@ void Lattice3DXY::saveLatticeAs(std::string name){
 			for (int j = 0; j< L;++j){
 				for (int k = 0; k< L;++k){
 					ofs.write(
-					reinterpret_cast<char *>(&theLattice[i][j][k]),
-					sizeof(theLattice[i][j][k])
+					reinterpret_cast<char *>(&theLattice[xyzToK(i,j,k,L)]),
+					sizeof(theLattice[xyzToK(i,j,k,L)])
 					);
 				}
 			}
@@ -352,7 +358,7 @@ void Lattice3DXY::loadLattice(){
 			for (int j = 0; j < L; ++j){
 				for (int k = 0; k < L; ++k){
 					ifs.read(reinterpret_cast<char*>(&ld_read),sizeof(ld_read));
-					theLattice[i][j][k] = ld_read;
+					theLattice[xyzToK(i,j,k,L)] = ld_read;
 				}
 			}
 		}
@@ -404,6 +410,15 @@ void Lattice3DXY::loadLattice(){
 	}
 
 }
+long double Lattice3DXY::getAngle(int s1,int s2,int s3){
+	long unsigned int k = xyzToK(s1,s2,s3,L);
+	return theLattice[k];
+}
+void Lattice3DXY::setAngle(int s1,int s2,int s3,long double newAng){
+	long unsigned int k = xyzToK(s1,s2,s3,L);
+	theLattice[k] = newAng;
+}
+
 
 void Lattice3DXY::printVals(){
 	std::cout << "runTemp L, NTotSweeps,NTotClusts, coldstart, warmLatPath ,maxEPath, maxE, energy " << std::endl <<

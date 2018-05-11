@@ -52,22 +52,21 @@ void _3DXY::wolffHistJob(long double L,std::string maxepath,std::string warmlatp
 	}
 	long double 	Neq=			1000.0L;
 	bool 		cold=			true;
-	long double	Nsamp=			1000.0L;
+	long double	Nsamp=			100000.0L;
 	long double 	Nbetw=			100.0L;
 	Cluster c(L);
 	RandStruct r;
 	Lattice3DXY lat(L,runTemp,cold,r,c,maxepath,warmlatpath);
 	lat.loadLattice();
+	lat.testConsistent();
+	lat.printVals();
+	/*
 	warmup(lat,Neq);
-	int k = 9;
-	for (int i = 0; i<1000;++i){
+	for (int i = 0; i<1;++i){
 		wolffHistRun3DXY(lat,Nsamp,Trange,Ntemps);
 		warmup(lat,Nbetw);
-		if (i > k){
-			lat.saveLattice();
-			k = k+10;
-		}
 	}
+	*/
 }
 void _3DXY::warmupJob(long double L, std::string maxepath,std::string warmlatpath){
 	long double runTemp = 2.201840000000000L;
@@ -79,12 +78,12 @@ void _3DXY::warmupJob(long double L, std::string maxepath,std::string warmlatpat
 	long double Neq = 1000.0L;
 	while (lat.NTotSweeps < 100000.0L){
 		warmup(lat,Neq);
-		lat.saveLatticeAs("latest");
+		lat.saveLatticeAs("t_220184");
 	}
 }
 	
 void _3DXY::teqJob(long double L,bool cold,std::string maxepath,std::string warmlatpath){
-	long double runTemp = 2.201850000000000L;
+	long double runTemp = 2.201840000000000L;
 	Cluster c(L);
 	RandStruct r;
 	Lattice3DXY lat(L,runTemp,cold,r,c,maxepath,warmlatpath);
@@ -103,8 +102,8 @@ void _3DXY::teqJob(long double L,bool cold,std::string maxepath,std::string warm
 		lat.oPer.printData(0);
 	}
 }
-void _3DXY::loadandPrint(long double L,std::string maxepath,std::string warmlatpath){
-	long double runTemp = 2.2020000000000L;
+void _3DXY::loadAndPrint(long double L,std::string maxepath,std::string warmlatpath){
+	long double runTemp = 2.2018400000000L;
 	Cluster c(L);
 	RandStruct r;
 	Lattice3DXY lat(L,runTemp,true,r,c,maxepath,warmlatpath);

@@ -46,16 +46,16 @@ void metrosweep3DXY(Lattice3DXY& lat,long double beta,RandStruct randgen){
 		s3 = lat.L*randgen.rnd();
 		//calculate energy difference and probability of flipping
 		//and try to flip
-		angleBefore = lat.theLattice[s1][s2][s3];
+		angleBefore = lat.getAngle(s1,s2,s3);
 		angleAfter = angleBefore + u;
 		enBefore = lat.siteEnergy(s1,s2,s3);
-		lat.theLattice[s1][s2][s3] = angleAfter;
+		lat.setAngle(s1,s2,s3,angleAfter);
 		enAfter = lat.siteEnergy(s1,s2,s3);
-		lat.theLattice[s1][s2][s3] = angleBefore;
+		lat.setAngle(s1,s2,s3,angleBefore);
 		prob = exp(-beta*(enAfter - enBefore));
 		if (randgen.rnd() < prob){
 			//flip spin
-			lat.theLattice[s1][s2][s3] = angleAfter;
+			lat.setAngle(s1,s2,s3,angleAfter);
 			sxBef =	 lat.sinX(s1,s2,s3,angleBefore);
 			sxAft= lat.sinX(s1,s2,s3,angleAfter);
 			syBef= lat.sinY(s1,s2,s3,angleBefore);
