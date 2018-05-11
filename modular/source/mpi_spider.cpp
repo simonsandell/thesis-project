@@ -36,7 +36,7 @@ int main(){
 	std::string wlp= env + "warmLattice/" + model; 
 
 	if (world_rank != 0){
-		_3DXY::wolffHistJob(128.0L,mep,wlp);
+		_3DXY::wolffHistJob(8.0L,mep,wlp);
 	}
 	if (world_rank == 0){
 		int N_finished = 0;
