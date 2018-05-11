@@ -10,7 +10,7 @@
 struct Lattice3DXY{
 	RandStruct rand;
 	Cluster clust;
-	long double *** theLattice;
+	long double* theLattice;
 	long double runTemp,beta;
 	long double L,Nspins,Neqsweeps,NTotSweeps;
 	long int Neqclusts,NTotClusts,int_L;
@@ -21,7 +21,7 @@ struct Lattice3DXY{
 
 	long double energy,xmag,ymag,sinx,siny,sinz;
 
-	long double*** newLattice(long double L,bool cold);
+	long double* newLattice(long double L,bool cold);
 	Lattice3DXY(int L,long double rT, bool cold,RandStruct r, Cluster c,std::string pathMaxE,std::string warmLatPath);
 	Lattice3DXY();
 
@@ -31,6 +31,9 @@ struct Lattice3DXY{
 	long double sinX( int &s1, int &s2, int &s3,long double &angle);
 	long double sinY( int &s1, int &s2, int &s3,long double &angle);
 	long double sinZ( int &s1, int &s2, int &s3,long double &angle);
+
+	long double getAngle(int s1,int s2,int s3);
+	void setAngle(int s1,int s2,int s3,long double newAng);
 
 	void testConsistent();
 
