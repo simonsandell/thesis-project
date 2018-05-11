@@ -1,24 +1,18 @@
 from multiprocessing import Pool
 import numpy as np
+import pandas as pd
 import sys
-import pickler
-import collections
 import time
+
 import fileWriter
+import pickler
 
 
 
-ind_tuple = collections.namedtuple('ind_tuple',['L','T','Neqsw','Neqcl','Ntotsw','Ntotcl','cold','e','e2','m','m2','m4','m2e','m4e','s2x','s2y','s2z','b','dbdt','chi','rs','c','expFac']);
 fName = sys.argv[1];
 model = sys.argv[2];
 
 data = pickler.loadData(model+fName);
-if (model == "3DXY"):
-    ind = ind_tuple(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,"c",21);
-
-if (model == "Ising3D"):
-    ind = ind_tuple(0,1,2,3,4,5,6,7,8,9,10,11,12,13,"s2x","s2y","s2z",14,15,16,"rs",17,18);
-
 
 def calcForOneLOneT(index):
     view = data[index[0]:index[1],:];
