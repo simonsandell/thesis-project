@@ -59,7 +59,7 @@ void _3DXY::wolffHistJob(long double L,std::string maxepath,std::string warmlatp
 	Lattice3DXY lat(L,runTemp,cold,r,c,maxepath,warmlatpath);
 	lat.loadLattice();
 	lat.testConsistent();
-	lat.printvals();
+	lat.printVals();
 	/*
 	warmup(lat,Neq);
 	int k = 9;

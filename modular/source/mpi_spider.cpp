@@ -29,7 +29,7 @@ int main(){
         std::string h_pwd = "/home/simon/exjobb/modular/"; 
 	std::string o_pwd = "/home/simsan/exjobb/modular/"; 
 	
-	std::string env = b_pwd;
+	std::string env = h_pwd;
 	std::string model = "3DXY/";
 		  
 	std::string mep= env + "maxE/" + model; 
