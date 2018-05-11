@@ -58,10 +58,9 @@ void _3DXY::wolffHistJob(long double L,std::string maxepath,std::string warmlatp
 	RandStruct r;
 	Lattice3DXY lat(L,runTemp,cold,r,c,maxepath,warmlatpath);
 	lat.loadLattice();
-	lat.testConsistent();
+	warmup(lat,10000.0L);
 	lat.printVals();
 	/*
-	warmup(lat,Neq);
 	int k = 9;
 	for (int i = 0; i<1000;++i){
 		wolffHistRun3DXY(lat,Nsamp,Trange,Ntemps);
