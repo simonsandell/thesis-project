@@ -1,15 +1,15 @@
 import pickle
 import numpy as np
 
-def saveData(data, fName="graph"):
+def saveData(data,cName, fName):
     n_bytes = data.size * data.dtype.itemsize; 
     max_bytes = 2**31 -1;
     bytes_out = pickle.dumps(data);
-    with open("./averages/{filename}.pickle".format(filename=fName), "wb") as f:
+    with open("./pickles/{collection}/{filename}.pickle".format(collection = cName,filename=fName), "wb") as f:
         for idx in range(0,n_bytes,max_bytes):
             f.write(bytes_out[idx:idx+max_bytes]);
 def loadData(fName="graph"):
-    filepath = "./averages/{filename}.pickle".format(filename=fName);
+    filepath = "./pickles/{collection}/{filename}.pickle".format(collection = cName,filename=fName);
     bytes_in = bytearray(0);
     input_size = os.path.getsize(filepath);
     max_bytes = 2**32 -1;

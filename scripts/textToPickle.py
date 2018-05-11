@@ -27,9 +27,9 @@ def loadData(path,N_vals):
                 print('bad line at row ' + str(1 + i));
     return data;
 
-path = sys.argv[1];
+dirpath = sys.argv[1];
 model = sys.argv[2];
-saveName = sys.argv[3];
+collecitonName = sys.argv[3];
 if (sys.argv[2] == "3DXY"):
     nvals = 22;
 else:
