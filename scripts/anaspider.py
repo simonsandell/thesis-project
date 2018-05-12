@@ -31,4 +31,5 @@ else    :
             model = xy3d;
         elif(sys.argv[2] == "Ising3D"):
             model = i3d;
-        ans = [True,True,True,True,False,True,False,False];
+        ans = [fName,True,True,True,True,False,True,False,False];
+        model.ana(*ans);

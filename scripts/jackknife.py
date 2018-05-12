@@ -9,10 +9,7 @@ def jackknife(mat,func,blocks=100):
     indBlocks= np.array_split(indices,blocksize);
     res = 0.0;
     for x in indBlocks:
-        res += (func(mat[[x for x in indices if x not in x],:])/float(len(indices)));
-
-
-
+        res += (func(mat[[x for x in indices if x not in x],:])/float(N));
 
 
 
@@ -20,7 +17,6 @@ def jackknife(mat,func,blocks=100):
 def jackknife_delta(mat,func,blocks=100):
     # mat = numpy array
     # bin the indices into 100 blocks
-
     i = 0;
     while (i < N):
         i += blocksize;

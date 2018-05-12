@@ -18,6 +18,26 @@ import intersectOmega
 import anaFuncs
 import gps
 
+def load3DXY(path):
+    data = [];
+    datafile = open(path,"r");
+    i = 0;
+    for ln in datafile:
+        i = i+1;
+        if not (('#' in ln) or ('WORLD' in ln) or ('SEED' in ln) or ('aprun' in ln)):
+            strlist = ln.rsplit(" ");
+            strlist = [x for x in strlist if not (x== "\n")];
+            try:
+                fllist = [float(x) for x in strlist];
+                if (len(fllist) != 22):
+                    print('bad line at row ' + str(1 + i));
+                data.append(fllist);
+            except:
+                print(fName);
+                print(len(strlist));
+                print('bad line at row ' + str(1 + i));
+                load_failed = True;
+    return data;
 
 def ana(fName,doT,doL,doSC2,doSC3,doTeq,doAnalyze,doPlot,doPrint):
     print(fName);
@@ -29,23 +49,7 @@ def ana(fName,doT,doL,doSC2,doSC3,doTeq,doAnalyze,doPlot,doPrint):
     scalingDir = outdir + 'scalingCorr';
     
     if (doAnalyze):
-        load_failed = False;
-        datafile = open(indir+fName,"r");
-        data = [];
-        for ln in datafile:
-            strlist = ln.rsplit(" ");
-            strlist = [x for x in strlist if not (x== "\n")];
-            try:
-                fllist = [float(x) for x in strlist];
-                if (len(fllist) != 22):
-                    print('bad line at row ' + str(1 + len(data)));
-                data.append(fllist);
-            except:
-                print('bad data at row  ' + str(1 + len(data)));
-                data.append(strlist);
-                load_failed = True;
-        if (load_failed):
-            exit(-1);
+        data = load3DXY(indir+fName);
         dataMatrix = np.array(data);
         print("loading done");
         if (doT):

@@ -1,9 +1,9 @@
 from multiprocessing import Pool
 import numpy as np
-import pandas as pd
 import sys
 import time
 
+import jackknife
 import fileWriter
 import pickler
 
