@@ -29,7 +29,7 @@ def loadData(path,N_vals):
 
 dirpath = sys.argv[1];
 model = sys.argv[2];
-collectionName = sys.argv[3];
+saveName = sys.argv[3];
 if (sys.argv[2] == "3DXY"):
     nvals = 22;
 else:
@@ -37,26 +37,23 @@ else:
 
 poolres = [];
 res = [];
-filenames = sorted(os.listdir(path));
+filenames = sorted(os.listdir(dirpath));
 N_files = len(filenames);
-I = 0;j
 def func(filename):
-    I +=1;
-    print(str(I)+"/"+str(N_files))
-    if (os.path.isfile(os.path.join(path,filename))):
-        print(filename);
-        ret = loadData(os.path.join(path,filename),nvals);
-        print(len(ret));
+    print(filename)
+    if (os.path.isfile(os.path.join(dirpath,filename))):
+        ret = loadData(os.path.join(dirpath,filename),nvals);
         return ret;
-pool = Pool(processes=3,maxtasksperchild=1);
+pool = Pool(processes=12,maxtasksperchild=1);
 poolres= pool.map(func,filenames);
 pool.close()
 pool.join()
 for x in poolres:
+    print(len(x))
     res.extend(x);
 npmat = np.array(res);
 npmat = npmat.squeeze();
-ind = np.lexsort(npmat[:,1],npmat[:,0]);
+ind = np.lexsort((npmat[:,1],npmat[:,0]));
 npmat = npmat[ind];
 print(npmat.shape);
 np.save("./pickles/"+model+saveName,npmat);
