@@ -21,7 +21,8 @@ def loadData(path,N_vals):
                     print(path)
                     print(len(strlist));
                     print('bad line at row ' + str(1 + i));
-                data.append(fllist);
+                else:
+                    data.append(fllist);
             except:
                 print(path);
                 print('bad line at row ' + str(1 + i));
@@ -44,7 +45,7 @@ def func(filename):
     if (os.path.isfile(os.path.join(dirpath,filename))):
         ret = loadData(os.path.join(dirpath,filename),nvals);
         return ret;
-pool = Pool(processes=12,maxtasksperchild=1);
+pool = Pool(processes=6,maxtasksperchild=1);
 poolres= pool.map(func,filenames);
 pool.close()
 pool.join()
@@ -53,7 +54,10 @@ for x in poolres:
     res.extend(x);
 npmat = np.array(res);
 npmat = npmat.squeeze();
+print(npmat.shape)
+print(npmat[0]);
 ind = np.lexsort((npmat[:,1],npmat[:,0]));
+
 npmat = npmat[ind];
 print(npmat.shape);
 np.save("./pickles/"+model+saveName,npmat);

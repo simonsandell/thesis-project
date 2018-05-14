@@ -14,7 +14,6 @@ def writeDataTable(fName,model,array):
     openfile.write("# fName: " +fName +"\n");
     for ln in array:
         string = stringBuilder(ln);
-        print(string)
         openfile.write(string);
     openfile.close();
 
