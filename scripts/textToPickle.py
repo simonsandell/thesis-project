@@ -19,17 +19,17 @@ def loadData(path,N_vals):
                 fllist = [float(x) for x in strlist];
                 if (len(fllist) != N_vals):
                     print(path)
+                    print(len(strlist));
                     print('bad line at row ' + str(1 + i));
                 data.append(fllist);
             except:
                 print(path);
-                print(len(strlist));
                 print('bad line at row ' + str(1 + i));
     return data;
 
 dirpath = sys.argv[1];
 model = sys.argv[2];
-collecitonName = sys.argv[3];
+collectionName = sys.argv[3];
 if (sys.argv[2] == "3DXY"):
     nvals = 22;
 else:
@@ -38,28 +38,26 @@ else:
 poolres = [];
 res = [];
 filenames = sorted(os.listdir(path));
+N_files = len(filenames);
+I = 0;j
 def func(filename):
+    I +=1;
+    print(str(I)+"/"+str(N_files))
     if (os.path.isfile(os.path.join(path,filename))):
         print(filename);
         ret = loadData(os.path.join(path,filename),nvals);
         print(len(ret));
         return ret;
-"""
-for filename in filenames:
-    res.extend(func(filename));
-
-"""
-pool = Pool(processes=32,maxtasksperchild=1);
+pool = Pool(processes=3,maxtasksperchild=1);
 poolres= pool.map(func,filenames);
 pool.close()
 pool.join()
 for x in poolres:
-    print(len(x));
     res.extend(x);
 npmat = np.array(res);
 npmat = npmat.squeeze();
+ind = np.lexsort(npmat[:,1],npmat[:,0]);
+npmat = npmat[ind];
 print(npmat.shape);
-#ind = np.lexsort((npmat[:,1],npmat[:,0]));
-#npmat = npmat[ind];
-pickler.saveData(npmat,sys.argv[2]+saveName);
+np.save("./pickles/"+model+saveName,npmat);
 print(time.process_time())
