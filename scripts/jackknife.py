@@ -1,11 +1,11 @@
 import numpy as np
 
-def jackknife(mat,func,blocks=100):
+def jackknife(mat,func,result_size,blocks=100):
     N = mat.shape[0];
     indices = np.arange(N);
     indBlocks= np.array_split(indices,blocks);
     N_blocks = len(indBlocks);
-    res = np.zeros((N_blocks,mat.shape[1]));
+    res = np.zeros((N_blocks,result_size));
     for i in range(N_blocks):
         xstart = indBlocks[i][0];
         xend =indBlocks[i][-1]+1;
