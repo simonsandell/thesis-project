@@ -19,15 +19,15 @@ def avgF(x):
     for i in range(x.shape[1]):
         res[i]= (np.mean(x[:,i]));
     return res;
-def stdF(x):
-    res=[];
-    for i in range(x.shape[1]):
-        res.append(
+
 def calcForOneLOneT(view):
     avg = avgF(view);
-    javg = jackknife.jackknife(view,avgF);
-    for 
-    avg.append(view.shape[0]);
+    j_est = jackknife.jackknife(view,avgF);
+    j_avg = np.mean(j_est,axis=0);
+    j_std = np.std(j_est,axis=0);
+    avg =np.append(avg,view.shape[0]);
+    j_delta = j_std*np.sqrt(j_est.shape[0]-1);
+    avg = np.append(avg,j_delta);
     return avg;
 
 # find indices
@@ -40,7 +40,7 @@ for l1,l2 in zip(Li[:-1],Li[1:]):
     for t1,t2 in zip(Ti[:-1],Ti[1:]):
         args.append(data[(l1+t1):(l1+t2),:]);
 res = []
-pool = Pool(processes=1);
+pool = Pool(processes=4);
 res.append(pool.map(calcForOneLOneT,args));
 pool.close()
 pool.join()
@@ -49,5 +49,6 @@ res = res.squeeze();
 print(time.process_time());
 
 fileWriter.writeDataTable(fName,model,res);
+np.save("./pickles/datatable_"+fName+model,res);
 #fileWriter.writeVsT(fName,model,res);
 
