@@ -3,7 +3,8 @@ import os
 import anaFuncs
 
 def plot3DXY():
-    doPrint = input("save figures to eps?");
+    filt = input("filter? ");
+    doPrint = input("save figures to eps? ");
     if (doPrint == "y" or doPrint == "Y"):
         doPrint = True;
     else:
@@ -18,5 +19,6 @@ def plot3DXY():
     for targetdir in dirlist:
         for dirname in  os.listdir(targetdir):
             fullpath = os.path.join(targetdir,dirname);
-            parameters = anaFuncs.getParams(dirname,fullpath,doPrint);
-            gps.graceDirPlot(*parameters);
+            if (filt in fullpath):
+                parameters = anaFuncs.getParams(dirname,fullpath,doPrint);
+                gps.graceDirPlot(*parameters);

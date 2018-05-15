@@ -17,13 +17,15 @@ model = sys.argv[2];
 #data = pickler.loadData(model+fName);
 data = np.load("./pickles/"+model+fName+".npy");
 def modelAvgs(avgs,mod=model):
-    res = np.zeros(5);
+    res = np.zeros(7);
     if (mod == "3DXY"):
         res[0] = ma.getBin(avgs[10],avgs[11],avgs[21])
-        res[1] = ma.getdBdT(avgs[10],avgs[11],avgs[12],avgs[13],avgs[7],avgs[21],avgs[1],math.pow(avgs[0],3));
-        res[2] = ma.getRs(avgs[7],avgs[14],avgs[15],avgs[16],avgs[21],avgs[0],avgs[1]);
-        res[3] = ma.getChi(avgs[9],avgs[10],avgs[21],avgs[1],math.pow(avgs[0],3));
-        res[4] = ma.getC(avgs[7],avgs[8],avgs[21],avgs[1],math.pow(avgs[0],3));
+        res[1] = ma.getC(avgs[7],avgs[8],avgs[21],avgs[1],math.pow(avgs[0],3));
+        res[2] = ma.getChi(avgs[9],avgs[10],avgs[21],avgs[1],math.pow(avgs[0],3));
+        res[3] = ma.getdBdT(avgs[10],avgs[11],avgs[12],avgs[13],avgs[7],avgs[21],avgs[1],math.pow(avgs[0],3));
+        res[4] = ma.getRs(avgs[7],avgs[14],avgs[15],avgs[16],avgs[21],avgs[0],avgs[1]);
+        res[5] = avgs[7]/avgs[21];
+        res[6] = avgs[9]/avgs[21];
     return res;
 
 def avgF(x):
@@ -64,5 +66,7 @@ print(time.process_time());
 
 fileWriter.writeDataTable(fName,model,res);
 np.save("./pickles/datatable_"+fName+model,res);
-#fileWriter.writeVsT(fName,model,res);
+fileWriter.writeVsT(fName,model,res);#assumes only one systemsize
+#fileWriter.writeVsL(fName,model,res);#assumes only one temp
+
 

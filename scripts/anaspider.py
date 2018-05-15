@@ -13,6 +13,7 @@ if (len(sys.argv) < 3):
     else:
 
         fName = input("filename? ");
+        filt = input("filter? ");
         inputs = ["model  ? ","doTemp ? ", "doL    ? ","doSC2  ? ","doSC3  ? ","doTeq  ? ","doAna  ? ","doPlot ? ","doPrint? "]
         for ln in inputs:
             a = input(ln);
