@@ -1,9 +1,10 @@
 import os
-import time
+import timeit
 import sys
 import numpy as np
 import pickler
 from multiprocessing import Pool
+inittime = timeit.default_timer();
 
 # N_vals = 22 for 3DXY, 19 for Ising3D
 def loadData(path,N_vals):
@@ -61,4 +62,4 @@ ind = np.lexsort((npmat[:,1],npmat[:,0]));
 npmat = npmat[ind];
 print(npmat.shape);
 np.save("./pickles/"+model+saveName,npmat);
-print(time.process_time())
+print(timeit.default_timer() - inittime)

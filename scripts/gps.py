@@ -23,21 +23,24 @@ def addFile(bfile,path,n):
     writeToBat(bfile,"KILL BLOCK")
 
 def graceDirPlot(directory,title, xaxis ,yaxis,xlog,ylog, doPrint):
+    filefilter = input("in dir " + directory + ", filter?");
     syscall = [];
     bfile = initBat();
     writeToBat(bfile,"XAXIS LABEL \"" + xaxis +"\"");
     writeToBat(bfile,"YAXIS LABEL \"" + yaxis +"\"");
     n = 0;
     for filename in sorted(os.listdir(directory)):
-        print(filename);
-        if (os.stat(os.path.join(directory,filename)).st_size != 0):
-            if (doPrint):
-                if (".dat" in filename):
-                    addFile(bfile,os.path.join(directory,filename),n)
+        if (filefilter in filename):
+            print(filename);
+
+            if (os.stat(os.path.join(directory,filename)).st_size != 0):
+                if (doPrint):
+                    if (".dat" in filename):
+                        addFile(bfile,os.path.join(directory,filename),n)
+                        n = n+1;
+                else:
+                    addFile(bfile,os.path.join(directory,filename),n);
                     n = n+1;
-            else:
-                addFile(bfile,os.path.join(directory,filename),n);
-                n = n+1;
     if (xlog):
         writeToBat(bfile,"XAXES SCALE LOGARITHMIC");
         syscall.append( "-param");

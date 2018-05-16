@@ -1,14 +1,14 @@
 from multiprocessing import Pool
 import numpy as np
 import sys
-import time
+import timeit
 import math
 
 import jackknife
 import fileWriter
 import modelAvgs as ma
 #import pickler
-
+inittime = timeit.default_timer();
 
 
 fName = sys.argv[1];
@@ -56,13 +56,13 @@ for l1,l2 in zip(Li[:-1],Li[1:]):
     for t1,t2 in zip(Ti[:-1],Ti[1:]):
         args.append(data[(l1+t1):(l1+t2),:]);
 res = []
-pool = Pool(processes=4);
+pool = Pool(processes=1);
 res.append(pool.map(calcForOneLOneT,args));
 pool.close()
 pool.join()
 res = np.array(res);
 res = res.squeeze();
-print(time.process_time());
+print(timeit.default_timer()-inittime);
 
 fileWriter.writeDataTable(fName,model,res);
 np.save("./pickles/datatable_"+fName+model,res);

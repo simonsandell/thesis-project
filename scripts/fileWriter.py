@@ -8,10 +8,8 @@ def stringBuilder(line):
     res += "\n";
     return res;
 
-
-
 def writeDataTable(fName,model,array):
-    openfile = open("./foutput/"+model+"/data_table_"+fName+"_.txt","w");
+    openfile = open("./foutput/"+model+"/datatable_"+fName+"_.txt","w");
     openfile.write("# fName: " +fName +"\n");
     for ln in array:
         string = stringBuilder(ln);
@@ -47,3 +45,13 @@ def writeVsL(fName,model,array):
             dirname = idx[key][1];
             path = "./foutput/"+model+"/vsL/"+dirname+"/"+repr(T)+"_"+fName+".dat";
             writeQuant(path,array,inds);
+
+def write2LData(f1,f2,model,data):
+    if (model == "3DXY"):
+        u = "_";
+        of = open("./foutput/3DXY/2LDT"+u+model+u+f1+u+f2+".txt","w");
+        of.write("# L L2 T Bin Rs NL NL2 dBin dRs \n");
+        for ln in data:
+            of.write(stringBuilder(ln));
+
+
