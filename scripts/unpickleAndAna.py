@@ -15,7 +15,7 @@ fName = sys.argv[1];
 model = sys.argv[2];
 
 #data = pickler.loadData(model+fName);
-data = np.load("./pickles/"+model+fName+".npy");
+data = np.load(fName);
 def modelAvgs(avgs,mod=model):
     res = np.zeros(7);
     if (mod == "3DXY"):

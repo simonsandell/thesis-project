@@ -1,10 +1,12 @@
 import numpy as np
 import sys
 import os
+import timeit
 from multiprocessing import Pool
 
 import textToFloats
 
+inittime = timeit.default_timer();
 
 
 
@@ -29,7 +31,7 @@ def func(filename):
         path = textToFloats.getSavepath(ret,model,filename);
         np.save(path,ret);
 
-pool = Pool(processes=4,maxtasksperchild=1);
+pool = Pool(processes=1,maxtasksperchild=1);
 poolres= pool.map(func,filenames);
 pool.close()
 pool.join()
