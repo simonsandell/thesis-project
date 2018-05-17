@@ -1,4 +1,4 @@
-
+import numpy as np
 # N_vals = 22 for 3DXY, 19 for Ising3D
 def loadData(path,N_vals):
     data = [];
@@ -21,3 +21,25 @@ def loadData(path,N_vals):
                 print(path);
                 print('bad line at row ' + str(1 + i));
     return data;
+
+u= "_";
+s="/";
+
+def getSavepath(view,model,filename):
+    str_i="";
+    lval = np.unique(view[:,0]);
+    for l in lval:
+        str_i += str(l)+u;
+    tval = np.unique(view[:,1]);
+    str_i = "";
+    str_i += str(view[0,0])+u;
+    tmax = str(tval.max());
+    tmin = str(tval.min());
+    str_i += tmax+u+tmin+u;
+    path = "./pickles/"+model+s+tmax+s;
+    if len(lval) == 1:
+        path+= str(int(lval[0])) +s;
+    else:
+        path+= "mixed/";
+    path = path+model+u+filename+u+str_i
+    return path;
