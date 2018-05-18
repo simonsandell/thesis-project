@@ -1,6 +1,8 @@
 import gps
 import os
 import anaFuncs
+import settings
+
 
 def plot3DXY():
     filt = input("filter? ");
@@ -9,7 +11,7 @@ def plot3DXY():
         doPrint = True;
     else:
         doPrint = False;
-    outdir = "./foutput/3DXY/";
+    outdir = settings.foutput_path+"3DXY/";
     vstdir = outdir + "vsT/"
     vsldir = outdir + "vsL/"
     vsNdir = outdir+"vsN/";

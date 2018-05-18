@@ -1,8 +1,10 @@
 from multiprocessing import Pool
 import numpy as np
 import sys
+import os
 import timeit
 import math
+import settings
 
 import jackknife
 import fileWriter
@@ -11,11 +13,18 @@ import modelAvgs as ma
 inittime = timeit.default_timer();
 
 
-fName = sys.argv[1];
+filepath = sys.argv[1];
+fName = os.path.basename(filepath).rstrip(".npy");
 model = sys.argv[2];
 
-#data = pickler.loadData(model+fName);
-data = np.load(fName);
+#data = pickler.loadData(model+filepath);
+data = np.load(filepath);
+#sort data
+
+ind= np.lexsort((data[:,1],data[:,0]));
+data = data[ind];
+
+
 def modelAvgs(avgs,mod=model):
     res = np.zeros(7);
     if (mod == "3DXY"):
@@ -54,9 +63,11 @@ for l1,l2 in zip(Li[:-1],Li[1:]):
     Tv,Ti = np.unique(data[l1:l2,1],return_index=True);
     Ti = np.append(Ti,(l2-l1));
     for t1,t2 in zip(Ti[:-1],Ti[1:]):
+        print((t2-t1))
         args.append(data[(l1+t1):(l1+t2),:]);
+print("unique T's: " + str(len(args)));
 res = []
-pool = Pool(processes=1);
+pool = Pool(processes=6);
 res.append(pool.map(calcForOneLOneT,args));
 pool.close()
 pool.join()
@@ -67,6 +78,6 @@ print(timeit.default_timer()-inittime);
 fileWriter.writeDataTable(fName,model,res);
 np.save("./pickles/datatable_"+fName+model,res);
 fileWriter.writeVsT(fName,model,res);#assumes only one systemsize
-#fileWriter.writeVsL(fName,model,res);#assumes only one temp
+fileWriter.writeVsL(filepath,model,res);#assumes only one temp
 
 

@@ -1,3 +1,4 @@
+import multiprocessing
 import numpy as np
 
 def jackknife(mat,func,result_size,blocks=100):
@@ -7,9 +8,11 @@ def jackknife(mat,func,result_size,blocks=100):
     try:
         a = indBlocks[-1][0];
     except:
-        print(mat);
+        print(mat[0,:]);
+        print(N);
         print("not enough mcavgs");
-        exit(1);
+        multiprocessing.exit()
+        exit();
     N_blocks = len(indBlocks);
     res = np.zeros((N_blocks,result_size));
     for i in range(N_blocks):
