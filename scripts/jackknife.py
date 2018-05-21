@@ -1,5 +1,6 @@
 import multiprocessing
 import numpy as np
+import sys
 
 def jackknife(mat,func,result_size,blocks=100):
     N = mat.shape[0];
@@ -35,7 +36,7 @@ def jackknife_2(mat1,mat2,func,result_size,blocks=100):
     except:
         print(indBlocks1);
         print(indBlocks2);
-        exit(1);
+        sys.exit(1);
 
     if (len(indBlocks1) != len(indBlocks2)):
         print(indBlocks1);

@@ -42,6 +42,7 @@ npmat = npmat[ind];
 print(npmat.shape);
 lval = np.unique(npmat[:,0]);
 u="_";
+strL=""
 for v in lval:
     strL += str(v)+u;
 tval = np.unique(npmat[:,1]);

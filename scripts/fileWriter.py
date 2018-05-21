@@ -55,4 +55,8 @@ def write2LData(f1,f2,model,data):
         for ln in data:
             of.write(stringBuilder(ln));
 
-
+def writeOmegaVsClose(savename,model,data):
+    of = open(settings.foutput_path+model+s+"vsO/"+model+savename+".dat","w");
+    for line in data:
+        of.write(stringBuilder(line));
+    
