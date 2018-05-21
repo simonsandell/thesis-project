@@ -65,7 +65,7 @@ if (ti1.shape[0] != ti2.shape[0]):
                                # 2 L's, one T, 2 results, 2 Nmcavg, 2 deltas = 9
 result = np.zeros((ti1.shape[0]-1,2+1+2+2+2));
 for i in range(ti1.shape[0] -1):
-    view1= data1[ti1[i]:ti2[(i+1)],:];
+    view1= data1[ti1[i]:ti1[(i+1)],:];
     view2 = data2[ti2[i]:ti2[(i+1)],:];
     b_res,r_res = scalingMethod(view1,view2,model);
     jackres = jackknife.jackknife_2(view1,view2,scalingMethod,2);
