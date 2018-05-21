@@ -3,8 +3,6 @@ root_path = "/home/simon/exjobb/";
 foutput_path = "/home/simon/exjobb/modular/foutput/";
 scripts_path = "/home/simon/exjobb/scripts/";
 pickles_path = "/home/simon/exjobb/modular/pickles/";
-scripts_path = "~/exjobb/scripts/";
-pickles_path = "~/exjobb/modular/pickles/";
 
 def writeSelf(vals):
     with open("./settings.py","r") as fname:
@@ -17,11 +15,11 @@ def writeSelf(vals):
         fname.writelines(data);
 
 def set_values():
-    root_path = input("path to exjobb dir");
-    foutput_path = input("path to foutput");
-    scripts_path = input("path to scripts");
-    pickles_path = input("path to pickles");
-    vals = [root_path,foutput_path,scripts_path,pickles_path];
+    r_path = input("path to exjobb dir");
+    f_path = input("path to foutput");
+    s_path = input("path to scripts");
+    p_path = input("path to pickles");
+    vals = [r_path,f_path,s_path,p_path];
     vals = [os.path.expanduser(x) for x in vals];
     writeSelf(vals);
 if (__name__ == "__main__"):
