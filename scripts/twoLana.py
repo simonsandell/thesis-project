@@ -74,5 +74,5 @@ for i in range(ti1.shape[0] -1):
     b_delta = (np.std(b_jack))*np.sqrt(b_jack.shape[0]-1);
     r_delta = (np.std(r_jack))*np.sqrt(r_jack.shape[0]-1);
     result[i,:] = [L1,L2,view1[0,1],b_res,r_res,view1.shape[0],view2.shape[0],b_delta,r_delta];
-
+np.save(settings.pickles_path+str(L1)+"_"+str(L2)+"_2Lquant",result);
 fileWriter.write2LData(file1,file2,model,result);
