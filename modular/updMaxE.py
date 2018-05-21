@@ -15,7 +15,7 @@ lists = { 4:list4,
         128:list128
         }
 
-directory = "/home/simsan/exjobb/modular/maxE/3DXY/";
+directory = "/home/simon/exjobb/modular/maxE/3DXY/";
 for filename in os.listdir(directory):
     strL = filename.rsplit("_")
     L = int(strL[0]);
