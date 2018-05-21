@@ -58,14 +58,16 @@ def calcForOneLOneT(view):
 # find indices
 args = [];
 Lv,Li = np.unique(data[:,0],return_index=True);
+print(Lv)
 Li = np.append(Li,data.shape[0]);
 for l1,l2 in zip(Li[:-1],Li[1:]):
     Tv,Ti = np.unique(data[l1:l2,1],return_index=True);
+    print(Tv)
+    print(len(Tv));
     Ti = np.append(Ti,(l2-l1));
     for t1,t2 in zip(Ti[:-1],Ti[1:]):
-        print((t2-t1))
         args.append(data[(l1+t1):(l1+t2),:]);
-print("unique T's: " + str(len(args)));
+print("number of jobs: " + str(len(args)));
 res = []
 pool = Pool(processes=6);
 res.append(pool.map(calcForOneLOneT,args));
@@ -78,6 +80,6 @@ print(timeit.default_timer()-inittime);
 fileWriter.writeDataTable(fName,model,res);
 np.save(settings.pickles_path+"datatable_"+fName+model,res);
 fileWriter.writeVsT(fName,model,res);#assumes only one systemsize
-fileWriter.writeVsL(filepath,model,res);#assumes only one temp
+#fileWriter.writeVsL(filepath,model,res);#assumes only one temp
 
 

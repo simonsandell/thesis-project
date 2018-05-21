@@ -4,6 +4,7 @@ import sys
 import jackknife
 import modelAvgs
 import fileWriter
+import settings
 
 #calculates the L^{w} ( Q(2L) - Q(L)) quantity
 #for a single temperature
@@ -38,8 +39,8 @@ file1 = sys.argv[1];
 file2 = sys.argv[2];
 model = sys.argv[3];
 
-data1 = np.load("./pickles/"+model+file1+".npy");
-data2 = np.load("./pickles/"+model+file2+".npy");
+data1 = np.load(settings.pickles_path+model+file1+".npy");
+data2 = np.load(settings.pickles_path+model+file2+".npy");
 
 ind1 = np.lexsort((data1[:,4],data1[:,1]),axis=0);
 ind2 = np.lexsort((data2[:,4],data2[:,1]),axis=0);
