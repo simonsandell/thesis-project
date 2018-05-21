@@ -1,4 +1,5 @@
 import anaFuncs
+import settings
 fs= "{:30.30f}";
 
 def stringBuilder(line):
@@ -9,7 +10,7 @@ def stringBuilder(line):
     return res;
 
 def writeDataTable(fName,model,array):
-    openfile = open("./foutput/"+model+"/datatable_"+fName+"_.txt","w");
+    openfile = open(settings.foutput_path+model+"/datatable_"+fName+"_.txt","w");
     openfile.write("# fName: " +fName +"\n");
     for ln in array:
         string = stringBuilder(ln);
@@ -32,7 +33,7 @@ def writeVsT(fName,model,array):
         for key in keys:
             inds = [idx["T"],idx[key][0],idx[key][0] + idx["last"],idx["Nmcavg"]];
             dirname = idx[key][1];
-            path = "./foutput/"+model+"/vsT/"+dirname+"/"+repr(L)+"_"+fName+"_"+key+".dat";
+            path = settings.foutput_path+model+"/vsT/"+dirname+"/"+repr(L)+"_"+fName+"_"+key+".dat";
             writeQuant(path,array,inds);
 
 def writeVsL(fName,model,array):
@@ -43,13 +44,13 @@ def writeVsL(fName,model,array):
         for key in keys:
             inds = [idx["L"],idx[key][0],idx[key][0] + idx["last"],idx["Nmcavg"]];
             dirname = idx[key][1];
-            path = "./foutput/"+model+"/vsL/"+dirname+"/"+repr(T)+"_"+fName+".dat";
+            path = settings.foutput_path+model+"/vsL/"+dirname+"/"+repr(T)+"_"+fName+".dat";
             writeQuant(path,array,inds);
 
 def write2LData(f1,f2,model,data):
     if (model == "3DXY"):
         u = "_";
-        of = open("./foutput/3DXY/2LDT"+u+model+u+f1+u+f2+".txt","w");
+        of = open(settings.foutput_path+"3DXY/2LDT"+u+model+u+f1+u+f2+".txt","w");
         of.write("# L L2 T Bin Rs NL NL2 dBin dRs \n");
         for ln in data:
             of.write(stringBuilder(ln));

@@ -1,3 +1,4 @@
+import os
 root_path = "/home/simon/exjobb/";
 foutput_path = "/home/simon/exjobb/modular/foutput/";
 scripts_path = "/home/simon/exjobb/scripts/";
@@ -8,10 +9,10 @@ pickles_path = "~/exjobb/modular/pickles/";
 def writeSelf(vals):
     with open("./settings.py","r") as fname:
         data = fname.readlines();
-    data[0] = 'root_path = "'+vals[0]+'";\n';
-    data[1] = 'foutput_path = "'+vals[1]+'";\n';
-    data[2] = 'scripts_path = "'+vals[2]+'";\n';
-    data[3] = 'pickles_path = "'+vals[3]+'";\n';
+    data[1] = 'root_path = "'+vals[0]+'";\n';
+    data[2] = 'foutput_path = "'+vals[1]+'";\n';
+    data[3] = 'scripts_path = "'+vals[2]+'";\n';
+    data[4] = 'pickles_path = "'+vals[3]+'";\n';
     with open("./settings.py","w") as fname:
         fname.writelines(data);
 
