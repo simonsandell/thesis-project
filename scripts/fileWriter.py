@@ -1,6 +1,8 @@
 import anaFuncs
 import settings
 fs= "{:30.30f}";
+s = "/"
+u = "_"
 
 def stringBuilder(line):
     res = "";
@@ -47,10 +49,10 @@ def writeVsL(fName,model,array):
             path = settings.foutput_path+model+"/vsL/"+dirname+"/"+repr(T)+"_"+fName+".dat";
             writeQuant(path,array,inds);
 
-def write2LData(f1,f2,model,data):
+def write2LData(savename,model,data):
     if (model == "3DXY"):
         u = "_";
-        of = open(settings.foutput_path+"3DXY/2LDT"+u+model+u+f1+u+f2+".txt","w");
+        of = open(settings.foutput_path+"3DXY/2LDT"+u+model+u+savename+".txt","w");
         of.write("# L L2 T Bin Rs NL NL2 dBin dRs \n");
         for ln in data:
             of.write(stringBuilder(ln));

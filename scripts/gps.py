@@ -22,8 +22,7 @@ def addFile(bfile,path,n):
     writeToBat(bfile,"s" + str(n) + " legend \"" + os.path.basename(path) + "\"");
     writeToBat(bfile,"KILL BLOCK")
 
-def graceDirPlot(directory,title, xaxis ,yaxis,xlog,ylog, doPrint):
-    filefilter = input("in dir " + directory + ", filter?");
+def graceDirPlot(directory,title, xaxis ,yaxis,xlog,ylog, doPrint,filefilter):
     syscall = [];
     bfile = initBat();
     writeToBat(bfile,"XAXIS LABEL \"" + xaxis +"\"");
