@@ -1,13 +1,4 @@
 
-def getOmegaRange(ostart,oend,step):
-    omegarange = [];
-    omega = ostart;
-    omegarange.append(ostart);
-    while (omega < oend):
-        omega = omega + step;
-        omegarange.append(omega);
-    return omegarange;
-
 def dirToXaxis(fullpath):
     if ('vsT' in fullpath):
         return "Temperature";
@@ -19,6 +10,8 @@ def dirToXaxis(fullpath):
         return "z";
     if ('scalingCorr' in fullpath):
         return "Temperature";
+    else:
+        return "unknown"
 
 def dirToYaxis(dirname):
     dirLex = { 'en':r'e Energy per spin',
@@ -39,7 +32,10 @@ def dirToYaxis(dirname):
             'std_omegaRS2L':r'\xs\0\sRS2L\N',
             'sigmaVsZ':r'\xc\0\S2\N'};
 
-    return dirLex[dirname];
+    if dirname in dirLex:
+        return dirLex[dirname];
+    else:
+        return "unknown"
             
 def dirToTitle(dirname):
     dirLex = { 'en':'Energy',
@@ -59,7 +55,10 @@ def dirToTitle(dirname):
             'std_omegaRS2L':'std_intersect_RS_vs_omega',
             'sigmaVsZ':'find_teq_scaling',
             'teq':'Equilibration_study'};
-    return dirLex[dirname];
+    if dirname in dirLex:
+        return dirLex[dirname];
+    else:
+        return "unknown"
 
 def dirToLogPlot(fullpath):
     if ('vsT' in fullpath):

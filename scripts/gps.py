@@ -30,7 +30,6 @@ def graceDirPlot(directory,title, xaxis ,yaxis,xlog,ylog, doPrint,filefilter):
     n = 0;
     for filename in sorted(os.listdir(directory)):
         if (filefilter in filename):
-            print(filename);
 
             if (os.stat(os.path.join(directory,filename)).st_size != 0):
                 if (doPrint):

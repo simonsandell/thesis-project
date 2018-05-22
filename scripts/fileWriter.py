@@ -61,4 +61,21 @@ def writeOmegaVsClose(savename,model,data):
     of = open(settings.foutput_path+model+s+"vsO/"+model+savename+".dat","w");
     for line in data:
         of.write(stringBuilder(line));
-    
+
+#produce [T, omegabin, omegarho, L1,L2,L3,N1,N2,N3,domegabin,domegarho,]
+def writeThreeLMethod(savename,model,result):
+    if (model =="3DXY"):
+        binof = open(settings.foutput_path+model+s+"threeL/bin/"+savename+".dat","w");
+        rhoof = open(settings.foutput_path+model+s+"threeL/rs/"+savename+".dat","w");
+        for ln in result:
+            bln = [ln[0],ln[1],ln[9],*ln[3:9]];
+            rln = [ln[0],ln[2],ln[10],*ln[3:9]];
+            fbl = stringBuilder(bln);
+            frl = stringBuilder(rln);
+            if not "nan" in fbl:
+                binof.write(fbl);
+            if not "nan" in fbl:
+                rhoof.write(frl);
+
+
+

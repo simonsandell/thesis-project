@@ -19,7 +19,8 @@ def plot3DXY():
     vsNdir = outdir+"vsN/";
     teqdir = outdir + "findZ/";
     scalingDir = outdir + "scalingCorr/";
-    dirlist = [vstdir,vsldir,vsNdir,scalingDir,teqdir];
+    threeLdir= outdir + "threeL/";
+    dirlist = [vstdir,vsldir,vsNdir,scalingDir,teqdir,threeLdir];
     for targetdir in dirlist:
         for dirname in  os.listdir(targetdir):
             fullpath = os.path.join(targetdir,dirname);
