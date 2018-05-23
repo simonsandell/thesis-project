@@ -69,7 +69,9 @@ for l1,l2 in zip(Li[:-1],Li[1:]):
         args.append(data[(l1+t1):(l1+t2),:]);
 print("number of jobs: " + str(len(args)));
 res = []
-pool = Pool(processes=6,maxtasksperchild=1);
+nproc = 6;
+print("nproc="+str(nproc));
+pool = Pool(processes=nproc,maxtasksperchild=1);
 res.append(pool.map(calcForOneLOneT,args));
 pool.close()
 pool.join()

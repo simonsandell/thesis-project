@@ -82,7 +82,9 @@ def twoLomega(data1,data2,model,savename):
         view1= data1[ti1[i]:ti1[(i+1)],:];
         view2 = data2[ti2[i]:ti2[(i+1)],:];
         arglist.append([view1,view2]);
-    pool = Pool(processes=6,maxtasksperchild=1);
+    nproc = 6;
+    print("nproc="+str(nproc));
+    pool = Pool(processes=nproc,maxtasksperchild=1);
     result.append(pool.map(mpfunction,arglist));
     result = np.array(result[0]);
     result = result[result[:,2].argsort()];

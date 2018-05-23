@@ -68,7 +68,9 @@ def threeLmethod(data1,data2,data3,model,savename):
 
     for v1,v2,v3 in zip(dat1views,dat2views,dat3views):
         funcargs.append([v1,v2,v3]);
-    pool = Pool(processes=6,maxtasksperchild=1)
+    nproc = 6;
+    print("nproc="+str(nproc));
+    pool = Pool(processes=nproc,maxtasksperchild=1);
     result =pool.map(produceResults,funcargs);
     pool.close()
     pool.join();
