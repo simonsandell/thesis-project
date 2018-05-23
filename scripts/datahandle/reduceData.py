@@ -9,7 +9,7 @@ def reduce(path):
             dat = np.load(fp);
             print(dat.shape);
             np.random.shuffle(dat);
-            n_rows = 101*500;
+            n_rows = 101*500;# keep 500 mcavgs per temperature
             red = dat[:n_rows,:];
             ind = np.lexsort((red[:,1],red[:,0]));
             red = red[ind];
