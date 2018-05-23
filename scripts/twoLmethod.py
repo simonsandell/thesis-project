@@ -4,8 +4,10 @@ import settings
 import numpy as np
 
 
-model = "3DXY"
-savename = "ts";
+
+savename = input("savename: ");
+model = input("model: ");
+
 datafiles = [
 settings.pickles_path+"4combined_reduced.npy",
 settings.pickles_path+"8combined_reduced.npy",
@@ -23,7 +25,7 @@ for q1,q2 in zip(twoLquant[:-1],twoLquant[1:]):
     bres.append(bothres[0]);
     rres.append(bothres[1]);
 
-twoLomegaVsGood.twoLintersectionCloseness(bres,model,"bind_good");
-twoLomegaVsGood.twoLintersectionCloseness(rres,model,"rho_good");
+twoLomegaVsGood.twoLintersectionCloseness(bres,model,savename+"bind_good");
+twoLomegaVsGood.twoLintersectionCloseness(rres,model,savename+"rho_good");
 
 

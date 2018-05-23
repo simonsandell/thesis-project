@@ -2,8 +2,8 @@ import numpy as np
 import settings
 import threeL
 
-savename = "ts";
-model = "3DXY";
+savename = input("savename: ");
+model = input("model: ");
 
 datafiles = [
 settings.pickles_path+"4combined_reduced.npy",
@@ -12,6 +12,7 @@ settings.pickles_path+"16combined_reduced.npy",
 settings.pickles_path+"32combined_reduced.npy",
 settings.pickles_path+"64combined_reduced.npy",
 settings.pickles_path+"128combined_reduced.npy"];
+
 for i,f in enumerate(datafiles):
     datafiles[i] = np.load(f);
 
