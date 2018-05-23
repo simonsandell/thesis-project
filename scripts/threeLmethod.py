@@ -1,6 +1,6 @@
 import numpy as np
 import settings
-import threeL
+from analysis import threeL
 
 savename = input("savename: ");
 model = input("model: ");

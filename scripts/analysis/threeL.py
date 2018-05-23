@@ -2,8 +2,8 @@ from multiprocessing import Pool
 import math
 import numpy as np
 import settings
-import jackknife
-import fileWriter
+from analysis import jackknife
+from plotting import fileWriter
 
 def getBin(M2,M4,Exp):
     return M4*Exp/(M2*M2);

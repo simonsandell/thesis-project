@@ -74,7 +74,7 @@ def writeThreeLMethod(savename,model,result):
             frl = stringBuilder(rln);
             if not "nan" in fbl:
                 binof.write(fbl);
-            if not "nan" in fbl:
+            if not "nan" in frl:
                 rhoof.write(frl);
 
 
