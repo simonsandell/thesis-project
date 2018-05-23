@@ -6,12 +6,13 @@ import numpy as np
 
 model = "3DXY"
 savename = "ts";
-datafiles = [settings.pickles_path+model+"ts_4.npy",
-settings.pickles_path+model+"ts_8.npy",
-settings.pickles_path+model+"ts_16.npy",
-settings.pickles_path+model+"ts_32.npy",
-settings.pickles_path+model+"ts_64.npy",
-settings.pickles_path+model+"ts_128.npy"];
+datafiles = [
+settings.pickles_path+"4combined_reduced.npy",
+settings.pickles_path+"8combined_reduced.npy",
+settings.pickles_path+"16combined_reduced.npy",
+settings.pickles_path+"32combined_reduced.npy",
+settings.pickles_path+"64combined_reduced.npy",
+settings.pickles_path+"128combined_reduced.npy"];
 
 twoLquant = []
 for data1,data2 in zip(datafiles[:-1],datafiles[1:]):

@@ -7,10 +7,11 @@ np.set_printoptions(precision=13)
 #load all datatables in one folder, combine, then do vsT and vsL plots
 folderName= sys.argv[1];
 model = sys.argv[2];
+savename = sys.argv[3];
 allDT = np.empty((0,59));
 for filename in os.listdir(folderName):
     datatable = np.load(os.path.join(folderName,filename));
-    fileWriter.writeVsT(filename,model,datatable)
+    fileWriter.writeVsT(savename,model,datatable)
     allDT = np.append(allDT,datatable,axis=0);
 
 ind = np.lexsort((allDT[:,0],allDT[:,1]));
@@ -25,6 +26,6 @@ Ti = np.append(Ti,allDT.shape[0]);
 for ind in range(Ti.shape[0]-1):
     tview = allDT[Ti[ind]:Ti[ind+1],:];
     tview = tview[tview[:,0].argsort()];
-    fileWriter.writeVsL(str(Tv[ind]),model,tview);
+    fileWriter.writeVsL(savename,model,tview);
     
 

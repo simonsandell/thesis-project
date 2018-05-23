@@ -74,7 +74,6 @@ def dirToLogPlot(fullpath):
     return [False,False];
 
 def getParams(dirname,fullpath,doPrint):
-    print(dirname)
     title = dirToTitle(dirname);
     xaxis = dirToXaxis(fullpath);
     yaxis = dirToYaxis(dirname);
