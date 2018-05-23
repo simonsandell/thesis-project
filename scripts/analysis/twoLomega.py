@@ -124,7 +124,16 @@ def twoLfindIntersection(dat1,dat2,model):
         for i in range(N_omegas):
             update(i);
     bresult = np.array(bresult);
-    rresult = np.array(bresult);
+    rresult = np.array(rresult);
     np.save(settings.pickles_path+"2LomegaIntBin"+str(L1)+"_"+str(L2),bresult);
     np.save(settings.pickles_path+"2LomegaIntRho"+str(L1)+"_"+str(L2),rresult);
     return [bresult,rresult];
+
+
+def removeSmallestSize(Fres):
+    Fres = Fres[Fres[:,3].argsort()];
+    lval,lind = np.unique(Fres[:,3],return_index=True);
+    res = Fres[:lind[1],:];
+    res = res[res[:,0].argsort()];
+    return res;
+

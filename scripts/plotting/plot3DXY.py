@@ -19,7 +19,7 @@ def plot3DXY():
         for f in files:
             if ".dat" in f:
                 dop = True;
-        if (not direc in called_dirs) and dop:
+        if (not direc in called_dirs) and dop and (dirfilt in direc):
             called_dirs.add(direc)
             print(direc)
             parameters = anaFuncs.getParams(os.path.basename(direc),direc,doPrint);
