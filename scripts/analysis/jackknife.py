@@ -4,7 +4,7 @@ import sys
 import settings
 
 #returns the jackknife estimations of the given func
-def jackknife(mat,func,result_size,blocks=1000):
+def jackknife(mat,func,result_size,blocks=100):
     N = mat.shape[0];
     indices = np.arange(N);
     indBlocks= np.array_split(indices,blocks);
@@ -26,7 +26,7 @@ def jackknife(mat,func,result_size,blocks=1000):
     return res;
 
 #returns the jackknife estimations of the given func(mat1,mat2)
-def jackknife_2(mat1,mat2,func,result_size,blocks=1000):
+def jackknife_2(mat1,mat2,func,result_size,blocks=100):
     N1 = mat1.shape[0];
     N2 = mat2.shape[0];
     ind1 = np.arange(N1);
@@ -59,7 +59,7 @@ def jackknife_2(mat1,mat2,func,result_size,blocks=1000):
     return res;
 
 #returns the jackknife estimations of the given func(mat1,mat2,mat3)
-def jackknife_3(mat1,mat2,mat3,func,result_size,blocks=1000):
+def jackknife_3(mat1,mat2,mat3,func,result_size,blocks=100):
     N1 = mat1.shape[0];
     N2 = mat2.shape[0];
     N3 = mat3.shape[0];

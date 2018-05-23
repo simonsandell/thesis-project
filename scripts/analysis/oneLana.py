@@ -6,9 +6,9 @@ import timeit
 import math
 import settings
 
-import jackknife
-import fileWriter
-import modelAvgs as ma
+from analysis import jackknife
+from plotting import fileWriter
+from analysis import modelAvgs as ma
 #import pickler
 inittime = timeit.default_timer();
 
@@ -69,7 +69,7 @@ for l1,l2 in zip(Li[:-1],Li[1:]):
         args.append(data[(l1+t1):(l1+t2),:]);
 print("number of jobs: " + str(len(args)));
 res = []
-pool = Pool(processes=6);
+pool = Pool(processes=6,maxtasksperchild=1);
 res.append(pool.map(calcForOneLOneT,args));
 pool.close()
 pool.join()

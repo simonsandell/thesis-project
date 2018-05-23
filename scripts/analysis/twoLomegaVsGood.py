@@ -1,7 +1,7 @@
 import numpy as np
 import os
 import sys
-import fileWriter
+from plotting import fileWriter
 import settings
 
 def getIntersections(view):

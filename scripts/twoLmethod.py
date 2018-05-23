@@ -1,4 +1,4 @@
-from twoLomega import twoLana,twoLomega,twoLomegaVsGood
+from analysis import twoLana,twoLomega,twoLomegaVsGood
 import sys
 import settings
 import numpy as np

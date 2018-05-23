@@ -3,7 +3,7 @@ import sys
 import math
 import numpy as np
 import settings
-import testIntersection
+from analysis import testIntersection
 #import matplotlib.pyplot as plt
 #import matplotlib.animation as animation
 

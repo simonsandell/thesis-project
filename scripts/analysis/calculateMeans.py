@@ -1,7 +1,7 @@
 import sys
 import os
 import numpy as np
-import jackknife
+from analysis import jackknife
 
 
 fName = sys.argv[1]

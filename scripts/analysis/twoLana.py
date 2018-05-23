@@ -1,10 +1,13 @@
 import numpy as np
 import sys
+import time
 
-import jackknife
-import modelAvgs
-import fileWriter
+from analysis import jackknife
+from analysis import modelAvgs
+from plotting import fileWriter
 import settings
+from multiprocessing import Pool
+
 
 #calculates the L^{w} ( Q(2L) - Q(L)) quantity
 #for a single temperature
@@ -35,6 +38,17 @@ def scalingMethod(view1,view2,model="3DXY"):
         result[1] = r2 -r1;
         return result;
 
+def mpfunction(views):
+    view1,view2 = views;
+    b_res,r_res = scalingMethod(view1,view2);
+    jackres = jackknife.jackknife_2(view1,view2,scalingMethod,2);
+    b_jack = jackres[:,0]; 
+    r_jack = jackres[:,1];
+    b_delta = (np.std(b_jack))*np.sqrt(b_jack.shape[0]-1);
+    r_delta = (np.std(r_jack))*np.sqrt(r_jack.shape[0]-1);
+    return [view1[0,0],view2[0,0],view1[0,1],b_res,r_res,view1.shape[0],view2.shape[0],b_delta,r_delta];
+
+
 # take two datasets for 2 L's, calculates a structure containing L^omega(Q[2L] - Q[L])    
 # saves to .npy in pickles folder
 # writes to txt file
@@ -61,17 +75,17 @@ def twoLomega(data1,data2,model,savename):
         print("not equal number of temps");
         exit(1);
                                    # 2 L's, one T, 2 results, 2 Nmcavg, 2 deltas = 9
-    result = np.zeros((ti1.shape[0]-1,2+1+2+2+2));
+    #result = np.zeros((ti1.shape[0]-1,2+1+2+2+2));
+    result = [];
+    arglist =[]
     for i in range(ti1.shape[0] -1):
         view1= data1[ti1[i]:ti1[(i+1)],:];
         view2 = data2[ti2[i]:ti2[(i+1)],:];
-        b_res,r_res = scalingMethod(view1,view2,model);
-        jackres = jackknife.jackknife_2(view1,view2,scalingMethod,2);
-        b_jack = jackres[:,0]; 
-        r_jack = jackres[:,1];
-        b_delta = (np.std(b_jack))*np.sqrt(b_jack.shape[0]-1);
-        r_delta = (np.std(r_jack))*np.sqrt(r_jack.shape[0]-1);
-        result[i,:] = [L1,L2,view1[0,1],b_res,r_res,view1.shape[0],view2.shape[0],b_delta,r_delta];
+        arglist.append([view1,view2]);
+    pool = Pool(processes=6,maxtasksperchild=1);
+    result.append(pool.map(mpfunction,arglist));
+    result = np.array(result[0]);
+    result = result[result[:,2].argsort()];
     np.save(settings.pickles_path+str(L1)+"_"+str(L2)+"_2Lquant",result);
     fileWriter.write2LData(savename,model,result);
     return result;
