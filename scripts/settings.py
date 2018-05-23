@@ -15,11 +15,11 @@ def writeSelf(vals):
         fname.writelines(data);
 
 def set_values():
-    r_path = input("path to exjobb dir");
-    f_path = input("path to foutput");
-    s_path = input("path to scripts");
-    p_path = input("path to pickles");
-    vals = [r_path,f_path,s_path,p_path];
+    r_path = input("path to root");
+    f_path = input("relpath to foutput");
+    s_path = input("relpath to scripts");
+    p_path = input("relpath to pickles");
+    vals = [r_path,r_path+f_path,r_path+s_path,r_path+p_path];
     vals = [os.path.expanduser(x) for x in vals];
     writeSelf(vals);
 if (__name__ == "__main__"):
