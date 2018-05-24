@@ -39,8 +39,5 @@ def twoLintersectionCloseness(dat,model,savename):
     
         if (ints.shape[0]>2):
             closeness = getCloseness(ints);
-            result.append([ov[i],closeness,0.0]);
-    np.save(settings.pickles_path+savename,result);
-    fileWriter.writeOmegaVsClose(savename,model,result);
-    
-    
+            result.append([ov[i],closeness,1.0/float(ints.shape[0])]);
+    fileWriter.writeOmegaVsClose(savename,result);

@@ -79,9 +79,9 @@ res = np.array(res);
 res = res.squeeze();
 print(timeit.default_timer()-inittime);
 
-fileWriter.writeDataTable(fName,model,res);
+fileWriter.writeDataTable(fName,res);
 np.save(settings.pickles_path+"datatable_"+fName+model,res);
-fileWriter.writeVsT(fName,model,res);#assumes only one systemsize
+fileWriter.writeVsT(fName,res);#assumes only one systemsize
 #fileWriter.writeVsL(filepath,model,res);#assumes only one temp
 
 

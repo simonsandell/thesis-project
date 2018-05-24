@@ -74,5 +74,5 @@ def threeLmethod(data1,data2,data3,model,savename):
     result =pool.map(produceResults,funcargs);
     pool.close()
     pool.join();
-    fileWriter.writeThreeLMethod(savename+str(l1)+"_"+str(l2)+"_"+str(l3),model,result);
+    fileWriter.writeThreeLMethod(savename+str(l1)+"_"+str(l2)+"_"+str(l3),result);
     return result;
