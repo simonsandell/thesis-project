@@ -1,4 +1,5 @@
 #include <mpi.h>
+#include <stdio.h>
 #include <string>
 #include <iostream>
 #include <limits>
@@ -8,6 +9,7 @@
 
 #include "Ising3D.h"
 #include "3DXY.h"
+
 long double argToL(const char* l){
 	if(strcmp(l,"4")==0){
 		return 4.0L;
