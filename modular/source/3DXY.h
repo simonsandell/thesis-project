@@ -5,8 +5,9 @@
 #include "randStruct.h"
 #include <string>
 namespace _3DXY {
+	void printSettings(long double rT,long double sT,long double eT,int nT,long double nEQ,bool cold,long double nSamp,long double nBetw,long double L);
 	void warmup(Lattice3DXY& lat,long double N);
-	void wolffHistJob(long double L,std::string maxepath,std::string warmlatpath);
+	void wolffHistJob(long double L,std::string maxepath,std::string warmlatpath,bool printSettings);
 	void warmupJob(long double L,std::string maxepath,std::string warmlatpath);
 	void teqJob(long double L,bool cold,std::string maxepath,std::string warmlatpath);
 	void loadandPrint(long double L,std::string maxepath,std::string warmlatpath);
