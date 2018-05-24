@@ -23,8 +23,8 @@ for dat1,dat2 in zip(datalist[:-1],datalist[1:]):
     for rint in riscs:
         rresult.append([(1.0/float(dat1[0,0])),rint[1],0.0]);
 
-fileWriter.writeQuantInt(savename+"_bin",model,bresult);
-fileWriter.writeQuantInt(savename+"_rho",model,rresult);
+fileWriter.writeQuantInt(savename+"_bin",bresult);
+fileWriter.writeQuantInt(savename+"_rho",rresult);
 
     
 

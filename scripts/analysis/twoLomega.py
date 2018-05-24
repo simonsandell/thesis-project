@@ -28,8 +28,9 @@ def findIntersections(rdat1,rdat2):
             if len(bres)==0:
                 bres = intersection;
             else:
-                print(intersection);
-                print("bin: too many intersections found");
+                pass
+                #print(intersection);
+                #print("bin: too many intersections found");
         p1= np.array([rdat1[i1,2], rdat1[i1,4]])
         p2= np.array([rdat1[i2,2], rdat1[i2,4]])
         q1= np.array([rdat2[i1,2], rdat2[i1,4]])
@@ -39,8 +40,9 @@ def findIntersections(rdat1,rdat2):
             if len(rres)==0:
                 rres = intersection;
             else:
-                print(intersection);
-                print("rho: too many intersections found");
+                pass
+                #print(intersection);
+                #print("rho: too many intersections found");
     if len(bres)==0:
         bres = [np.nan,np.nan];
     if len(rres)==0:
@@ -131,9 +133,7 @@ def twoLfindIntersection(dat1,dat2,model):
 
 
 def removeSmallestSize(Fres):
-    Fres = Fres[Fres[:,3].argsort()];
-    lval,lind = np.unique(Fres[:,3],return_index=True);
-    res = Fres[:lind[1],:];
-    res = res[res[:,0].argsort()];
+    lmin = min(Fres[:,3]);
+    res = Fres[Fres[:,3]!=lmin];
     return res;
 

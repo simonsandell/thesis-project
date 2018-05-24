@@ -1,4 +1,6 @@
-from analysis import twoLana,twoLomega,twoLomegaVsGood
+from analysis import twoLana
+from analysis import twoLomega
+from analysis import twoLomegaVsGood
 import sys
 import settings
 import numpy as np
@@ -23,22 +25,26 @@ for data1,data2 in zip(datafiles[:-1],datafiles[1:]):
 
 
 # for range of omega, rescale and find intersection
-bres,rres = [],[];
+bres,rres = np.empty((0,5)),np.empty((0,5));
 for q1,q2 in zip(twoLquant[:-1],twoLquant[1:]):
     bothres = twoLomega.twoLfindIntersection(q1,q2,model);
-    bres.append(bothres[0]);
-    rres.append(bothres[1]);
+    bres=np.append(bres,bothres[0],axis=0);
+    rres=np.append(rres,bothres[1],axis=0);
+    print(bres.shape)
+    print(rres.shape)
 # result format:
-# [omega,intx,inty,L1,L2]
+# bres = [[omega,intx,inty,L1,L2],...]
+print(bres.shape);
+print(rres.shape);
 
 # calculate how close intersections are for each omega and save to xmgrace file
-twoLomegaVsGood.twoLintersectionCloseness(bres,model,savename+"bind_good");
-twoLomegaVsGood.twoLintersectionCloseness(rres,model,savename+"rho_good");
+twoLomegaVsGood.twoLintersectionCloseness(bres,"bin",savename+"bind_good");
+twoLomegaVsGood.twoLintersectionCloseness(rres,"rs",savename+"rho_good");
 # skipping smallest, do it again
 bres_ds = twoLomega.removeSmallestSize(bres);
 rres_ds = twoLomega.removeSmallestSize(rres);
-twoLomegaVsGood.twoLintersectionCloseness(bres_ds,model,savename+"_ds_bind_good");
-twoLomegaVsGood.twoLintersectionCloseness(rres_ds,model,savename+"_ds_rho_good");
+twoLomegaVsGood.twoLintersectionCloseness(bres_ds,"bin",savename+"_ds_bind_good");
+twoLomegaVsGood.twoLintersectionCloseness(rres_ds,"rs",savename+"_ds_rho_good");
 
 
 
