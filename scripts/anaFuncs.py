@@ -4,12 +4,16 @@ def dirToXaxis(fullpath):
         return "Temperature";
     if ('vsL' in fullpath):
         return "L";
+    if ('vsO' in fullpath):
+        return "Omega";
     if ('vsN' in fullpath):
         return r"N\ssweeps\S";
     if ('findZ' in fullpath):
         return "z";
     if ('scalingCorr' in fullpath):
         return "Temperature";
+    if ('intersections' in fullpath):
+        return "1/L";
     else:
         return "unknown"
 

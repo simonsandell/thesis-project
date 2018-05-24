@@ -76,6 +76,16 @@ def writeThreeLMethod(savename,model,result):
                 binof.write(fbl);
             if not "nan" in frl:
                 rhoof.write(frl);
+def writeQuantInt(savename,model,data):
+    if (model == "3DXY"):
+        if ("bin" in savename):
+            of = open(settings.foutput_path+model+"/intersections/bin/"+savename+".dat","w");
+        if ("rho" in savename):
+            of = open(settings.foutput_path+model+"/intersections/rs/"+savename+".dat","w");
+        for ln in data:
+            of.write(stringBuilder(ln));
+
+
 
 
 
