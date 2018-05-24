@@ -89,5 +89,5 @@ def twoLomega(data1,data2,model,savename):
     result = np.array(result[0]);
     result = result[result[:,2].argsort()];
     np.save(settings.pickles_path+str(L1)+"_"+str(L2)+"_2Lquant",result);
-    fileWriter.write2LData(savename,model,result);
+    fileWriter.write2LData(savename,result);
     return result;

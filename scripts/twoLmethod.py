@@ -8,7 +8,7 @@ import numpy as np
 
 
 savename = input("savename: ");
-model = input("model: ");
+model = settings.model;
 
 datafiles = [
 settings.pickles_path+"4combined_reduced.npy",
@@ -24,18 +24,14 @@ for data1,data2 in zip(datafiles[:-1],datafiles[1:]):
     twoLquant.append(twoLana.twoLomega(np.load(data1),np.load(data2),model,savename));
 
 
-# for range of omega, rescale and find intersection
+# for range of omega, rescale and find intersection between sequentially larger system sizes
 bres,rres = np.empty((0,5)),np.empty((0,5));
 for q1,q2 in zip(twoLquant[:-1],twoLquant[1:]):
     bothres = twoLomega.twoLfindIntersection(q1,q2,model);
     bres=np.append(bres,bothres[0],axis=0);
     rres=np.append(rres,bothres[1],axis=0);
-    print(bres.shape)
-    print(rres.shape)
 # result format:
 # bres = [[omega,intx,inty,L1,L2],...]
-print(bres.shape);
-print(rres.shape);
 
 # calculate how close intersections are for each omega and save to xmgrace file
 twoLomegaVsGood.twoLintersectionCloseness(bres,"bin",savename+"bind_good");

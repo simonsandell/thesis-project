@@ -26,7 +26,7 @@ def getCloseness(ints):
 #     0     1     2   3   4
 # takes a group of intersectionfiles and compares closeness for each value of omega,
 # then prints to file in foutput/model/vsO/
-def twoLintersectionCloseness(dat,model,savename):
+def twoLintersectionCloseness(dat,dirname,savename):
     dat = dat[dat[:,0].argsort()];
     
     ov,oi = np.unique(dat[:,0],return_index=True);
@@ -40,4 +40,4 @@ def twoLintersectionCloseness(dat,model,savename):
         if (ints.shape[0]>2):
             closeness = getCloseness(ints);
             result.append([ov[i],closeness,1.0/float(ints.shape[0])]);
-    fileWriter.writeOmegaVsClose(savename,result);
+    fileWriter.writeOmegaVsClose(savename,dirname,result);
