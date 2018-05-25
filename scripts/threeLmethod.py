@@ -2,16 +2,16 @@ import numpy as np
 import settings
 from analysis import threeL
 
-savename = input("savename: ");
-model = input("model: ");
+model = settings.model;
+savename = "combined_reduced";
 
 datafiles = [
-settings.pickles_path+"4combined_reduced.npy",
-settings.pickles_path+"8combined_reduced.npy",
-settings.pickles_path+"16combined_reduced.npy",
-settings.pickles_path+"32combined_reduced.npy",
-settings.pickles_path+"64combined_reduced.npy",
-settings.pickles_path+"128combined_reduced.npy"];
+settings.pickles_path+"4"+savename+".npy",
+settings.pickles_path+"8"+savename+".npy",
+settings.pickles_path+"16"+savename+".npy",
+settings.pickles_path+"32"+savename+".npy",
+settings.pickles_path+"64"+savename+".npy",
+settings.pickles_path+"128"+savename+".npy"];
 
 for i,f in enumerate(datafiles):
     datafiles[i] = np.load(f);
