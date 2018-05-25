@@ -15,5 +15,5 @@ def getRs(e,sx,sy,sz,exp,L,T):
 def getC(e,e2,exp,T,Nspins):
     c = e2/exp - e*e/(exp*exp);
     c = c/(T*T);
-    c = c*Nspins*Nspins;
+    c = c*Nspins;
     return c;

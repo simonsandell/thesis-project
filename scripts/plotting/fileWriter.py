@@ -43,10 +43,12 @@ def writeVsL(fName,array):
     if (settings.model =="3DXY"):
         idx = anaFuncs.get3DXYIndex();
         keys = ["b","rs","chi","dbdt","B","RS","CHI","C","DBDT","EN","MAG"];
+        array[:,idx["EN"]] = -array[:,idx["EN"]];
         for key in keys:
             inds = [idx["L"],idx[key][0],idx[key][0] + idx["last"],idx["Nmcavg"]];
             dirname = idx[key][1];
             path = settings.foutput_path+settings.model+"/vsL/"+dirname+"/"+repr(T)+"_"+fName+".dat";
+
             writeQuant(path,array,inds);
 
 def write2LData(savename,data):
