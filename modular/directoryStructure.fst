@@ -1,3 +1,5 @@
+./foutput/3DXY/subtraction/rs
+./foutput/3DXY/subtraction/bin
 ./foutput/3DXY/vsT/en
 ./foutput/3DXY/vsT/dbdt
 ./foutput/3DXY/vsT/c
@@ -6,18 +8,14 @@
 ./foutput/3DXY/vsT/rs
 ./foutput/3DXY/vsT/bin
 ./foutput/3DXY/vsN/teq
+./foutput/3DXY/twoL/rs
+./foutput/3DXY/twoL/bin
 ./foutput/3DXY/vsO/rs
 ./foutput/3DXY/vsO/bin
 ./foutput/3DXY/intersections/rs
 ./foutput/3DXY/intersections/bin
 ./foutput/3DXY/threeL/rs
 ./foutput/3DXY/threeL/bin
-./foutput/3DXY/scalingCorr/omegaBin2L
-./foutput/3DXY/scalingCorr/omegaRS3L
-./foutput/3DXY/scalingCorr/omegaBin3L
-./foutput/3DXY/scalingCorr/omegaRS2L
-./foutput/3DXY/scalingCorr/std_omegaRS2L
-./foutput/3DXY/scalingCorr/std_omegaBin2L
 ./foutput/3DXY/vsL/en
 ./foutput/3DXY/vsL/dbdt
 ./foutput/3DXY/vsL/c
