@@ -37,7 +37,7 @@ def twoLintersectionCloseness(dat,dirname,savename):
         omview = dat[i1:i2,:];
         ints = getIntersections(omview);
     
-        if (ints.shape[0]>2):
+        if (ints.shape[0]>1):
             closeness = getCloseness(ints);
             result.append([ov[i],closeness,1.0/float(ints.shape[0])]);
     fileWriter.writeOmegaVsClose(savename,dirname,result);
