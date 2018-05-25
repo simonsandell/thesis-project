@@ -50,12 +50,18 @@ def writeVsL(fName,array):
             writeQuant(path,array,inds);
 
 def write2LData(savename,data):
-    if (settings.model == "3DXY"):
-        u = "_";
-        of = open(settings.foutput_path+"3DXY/2LDT"+u+settings.model+u+savename+".txt","w");
-        of.write("# L L2 T Bin Rs NL NL2 dBin dRs \n");
-        for ln in data:
-            of.write(stringBuilder(ln));
+    u = "_";
+    of = open(settings.foutput_path+"/"+settings.model+"/twoL/"+savename+".txt","w");
+    of.write("# L L2 T Bin Rs NL NL2 dBin dRs \n");
+    bf = open(settings.foutput_path+s+settings.model+s+"twoL/bin/"+savename+".dat","w");
+    rf = open(settings.foutput_path+s+settings.model+s+"twoL/rs/"+savename+".dat","w");
+    for ln in data:
+        of.write(stringBuilder(ln));
+        bf.write(stringBuilder([ln[2],ln[3],ln[7],ln[5],ln[6]]));
+        rf.write(stringBuilder([ln[2],ln[4],ln[8],ln[5],ln[6]]));
+
+
+    
 
 def writeOmegaVsClose(savename,dirname,data):
     of = open(settings.foutput_path+settings.model+s+"vsO/"+dirname+s+savename+".dat","w");
@@ -84,7 +90,10 @@ def writeQuantInt(savename,data):
             of = open(settings.foutput_path+settings.model+"/intersections/rs/"+savename+".dat","w");
         for ln in data:
             of.write(stringBuilder(ln));
-
+def writeSubtractedQuants(savename,dirname,data):
+    of = open(settings.foutput_path+settings.model+"/subtraction/"+dirname+"/"+savename+".dat","w");
+    for ln in data:
+        of.write(stringBuilder(ln));
 
 
 

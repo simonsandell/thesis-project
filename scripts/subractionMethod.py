@@ -1,5 +1,9 @@
 import numpy as np
 import settings
+from plotting import fileWriter
+from scipy.optimize import curve_fit
+import matplotlib.pyplot as plt
+
 # load datatables, select temperature closest to T_L.
 # for range of A, plot ln(quant - A) vs ln(L)
 # determine A by slope, should be a constant function with slope equal to omega.
@@ -10,7 +14,23 @@ import settings
 
 # for sequential L, calculate ln(y(2L)/y(L) = -omega*ln(2)
 
+def func(x,a,b):
+    return (a*np.e**(x*b));
+
+
+def getTvalues(dt,T):
+    Tv = np.unique(dt[:,1]);
+    minDT = 10;
+    closestT = 0;
+    for t in Tv:
+        if (abs(T-t) < minDT):
+            minDT=abs(T-t);
+            closestT = t;
+    return dt[dt[:,1]==closestT];
+
+savename = input("savename: ");
 path  = settings.root_path+"modular/datatables/combined/";
+# sorted by temp
 datalist = [
         np.load(path +"datatable_4combined3DXY.npy"),
         np.load(path +"datatable_8combined3DXY.npy"),
@@ -26,17 +46,54 @@ T_L = (T_L_B+T_L_R)/(2.0);
 #
 A_r_guess = 1.115775;
 A_b_guess = 1.24805;
+for i,dt in enumerate(datalist):
+    datalist[i] = getTvalues(dt,T_L);
 
-for factor in np.arange(0.9,1.1,30):
+residualvsAb = [];
+residualvsAr = [];
+bin_vals =[];
+rho_vals =[];
+for factor in np.linspace(0.99,1.01,10):
     A_b = factor*A_b_guess;
     A_r = factor*A_r_guess;
-    for dt1,dt2 in zip(datalist[:-1],datalist[1:]):
-        sub_dt1 = dt1.copy();
-        sub_dt2 = dt2.copy();
-        sub_dt1[:,binder] = sub_dt1[:,binder] - A_b;
-        sub_dt2[:,binder] = sub_dt2[:,binder] - A_b;
-        sub_dt1[:,rho] = sub_dt1[:,rho] - A_r;
-        sub_dt2[:,rho] = sub_dt2[:,rho] - A_r;
+    print(A_b)
+    print(A_r)
+    combined = np.empty((0,datalist[0].shape[1]));
+    for dt in datalist:
+        sub_dt = dt.copy();
+        sub_dt[:,22] = sub_dt[:,22]-A_b; # B == 22
+        sub_dt[:,26] = sub_dt[:,26]-A_r; # RS == 26
+        combined = np.append(combined,sub_dt,axis=0);
+    combined = combined[combined[:,0].argsort()];
+    for i in range(combined.shape[0]):
+        bin_vals.append([combined[i,0],combined[i,22],combined[i,22+30],A_b]);
+        rho_vals.append([combined[i,0],combined[i,26],combined[i,26+30],A_r]);
+    fileWriter.writeSubtractedQuants(savename+str(A_b),"bin",bin_vals);
+    fileWriter.writeSubtractedQuants(savename+str(A_r),"rs",rho_vals);
+    a,res,b,c,d = np.polyfit(np.log(combined[:,0]),np.log(-combined[:,22]),1,full=True);
+    a,resr,b,c,d = np.polyfit(np.log(combined[:,0]),np.log(-combined[:,26]),1,full=True);
+
+    cfb = curve_fit(func,combined[:,0],combined[:,22],full_output=1);
+    cfr = curve_fit(func,combined[:,0],combined[:,26],full_output=1);
+    print(cfb)
+
+    residualvsAb.append([A_b,res]);
+    residualvsAr.append([A_r,resr]);
+
+    bin_vals[:] = [];
+    rho_vals[:] = [];
+fig = plt.figure()
+axb = plt.subplot(211);
+axr = plt.subplot(212);
+resb = np.array(residualvsAb)
+resr = np.array(residualvsAr)
+print(resb)
+print(resr)
+axb.plot(resb[:,0],resb[:,1]);
+axr.plot(resr[:,0],resr[:,1]);
+plt.show();
 
 
-#Then, compare closeness of intersection points vs A in a plot.
+
+
+

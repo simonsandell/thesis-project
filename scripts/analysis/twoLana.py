@@ -50,6 +50,7 @@ def mpfunction(views):
 
 
 # take two datasets for 2 L's, calculates a structure containing L^omega(Q[2L] - Q[L])    
+# format L1 L2 T bin rho NL1 NL2 bindel rhodel
 # saves to .npy in pickles folder
 # writes to txt file
 def twoLomega(data1,data2,model,savename):
@@ -88,6 +89,7 @@ def twoLomega(data1,data2,model,savename):
     result.append(pool.map(mpfunction,arglist));
     result = np.array(result[0]);
     result = result[result[:,2].argsort()];
-    np.save(settings.pickles_path+str(L1)+"_"+str(L2)+"_2Lquant",result);
+    savename = savename +"_"+str(L1)+"_"+str(L2);
+    np.save(settings.pickles_path+"2Lquant_"+savename,result);
     fileWriter.write2LData(savename,result);
     return result;

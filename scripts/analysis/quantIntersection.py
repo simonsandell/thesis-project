@@ -2,11 +2,12 @@ import numpy as np
 import sys
 
 from analysis import testIntersection
+import settings
 import anaFuncs
 
 # takes datatable as input, i.e. already calculated averages.
-def findIntersection(dt1,dt2,model="3DXY"):
-    if (model == "3DXY"):
+def findIntersection(dt1,dt2):
+    if (settings.model == "3DXY"):
         idx = anaFuncs.get3DXYIndex();
         b_result = [];
         r_result = [];

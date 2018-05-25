@@ -14,6 +14,8 @@ def dirToXaxis(fullpath):
         return "Temperature";
     if ('intersections' in fullpath):
         return "1/L";
+    if ('subtraction' in fullpath):
+        return "L";
     else:
         return "unknown"
 
@@ -75,6 +77,8 @@ def dirToLogPlot(fullpath):
         return [False,False];
     if ('scalingCorr' in fullpath):
         return [False,False];
+    if ('subtraction' in fullpath):
+        return [True,True];
     return [False,False];
 
 def getParams(dirname,fullpath,doPrint):
@@ -84,6 +88,9 @@ def getParams(dirname,fullpath,doPrint):
     [xlog,ylog] = dirToLogPlot(fullpath);
     return [fullpath,title,xaxis,yaxis,xlog,ylog,doPrint];
 
+
+# datatable indices, boldface quants are good
+# add "last" to get delta
 def get3DXYIndex():
     res = {"L":0   ,
            "T":1    ,
