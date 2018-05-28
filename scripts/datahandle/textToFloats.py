@@ -1,4 +1,5 @@
 import numpy as np
+import settings
 # N_vals = 22 for 3DXY, 19 for Ising3D
 def loadData(path,N_vals):
     data = [];

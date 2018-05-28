@@ -1,0 +1,6 @@
+#!/bin/bash
+for dirname in ./pickles/3DXY/2.202/*; do
+	for file in $dirname/*; do
+		python3 ~/exjobb/scripts/unpickleAndAna.py $file 3DXY 
+	done
+done

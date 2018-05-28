@@ -1,18 +1,14 @@
 import numpy as np
-import sys
 import os
-import timeit
+import settings
 from multiprocessing import Pool
 
-import textToFloats
+from datahandle import textToFloats
 
-inittime = timeit.default_timer();
-
-
-
-dirpath = sys.argv[1];
-model = sys.argv[2];
-if (sys.argv[2] == "3DXY"):
+dirpath = input("convert files in: "+settings.root_path);
+dirpath = settings.root_path + dirpath;
+model = settings.model
+if (model == "3DXY"):
     nvals = 22;
 else:
     nvals = 19;
@@ -28,12 +24,9 @@ def func(filename):
         ret = ret.squeeze();
         ind = np.lexsort((ret[:,1],ret[:,0]));
         ret = ret[ind];
-        path = textToFloats.getSavepath(ret,model,filename);
-        np.save(path,ret);
+        np.save(os.path.join(dirpath,filename),ret);
 
 pool = Pool(processes=1,maxtasksperchild=1);
 poolres= pool.map(func,filenames);
 pool.close()
 pool.join()
-
-print(timeit.default_timer() - inittime)
