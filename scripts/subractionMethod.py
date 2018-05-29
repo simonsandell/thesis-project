@@ -53,7 +53,7 @@ residualvsAb = [];
 residualvsAr = [];
 bin_vals =[];
 rho_vals =[];
-for factor in np.linspace(0.99,1.01,10):
+for factor in np.linspace(0.9,1.1,50):
     A_b = factor*A_b_guess;
     A_r = factor*A_r_guess;
     print(A_b)
