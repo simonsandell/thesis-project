@@ -1,31 +1,30 @@
 
-def getOmegaRange(ostart,oend,step):
-    omegarange = [];
-    omega = ostart;
-    omegarange.append(ostart);
-    while (omega < oend):
-        omega = omega + step;
-        omegarange.append(omega);
-    return omegarange;
-
 def dirToXaxis(fullpath):
     if ('vsT' in fullpath):
         return "Temperature";
     if ('vsL' in fullpath):
         return "L";
+    if ('vsO' in fullpath):
+        return "Omega";
     if ('vsN' in fullpath):
         return r"N\ssweeps\S";
     if ('findZ' in fullpath):
         return "z";
     if ('scalingCorr' in fullpath):
         return "Temperature";
+    if ('intersections' in fullpath):
+        return "1/L";
+    if ('subtraction' in fullpath):
+        return "L";
+    else:
+        return "unknown"
 
 def dirToYaxis(dirname):
     dirLex = { 'en':r'e Energy per spin',
             'mag':r'm Magnetization per spin',
             'bin':r'B = M\S4\N/M\S2\N',
             'dbdt':r'dB/dT',
-            'xi':r'\xc\0 Susceptibility',
+            'chi':r'\xc\0 Susceptibility',
             'rs':r'L\xr\0\ss\N Superfluid density',
             'm2':r'm\S2\N',
             'm4':r'm\S4\N',
@@ -39,14 +38,17 @@ def dirToYaxis(dirname):
             'std_omegaRS2L':r'\xs\0\sRS2L\N',
             'sigmaVsZ':r'\xc\0\S2\N'};
 
-    return dirLex[dirname];
+    if dirname in dirLex:
+        return dirLex[dirname];
+    else:
+        return "unknown"
             
 def dirToTitle(dirname):
     dirLex = { 'en':'Energy',
             'mag':'Magnetization',
             'bin':'BinderCumulant',
             'dbdt':'dBdT',
-            'xi':'Susceptibility',
+            'chi':'Susceptibility',
             'rs':'SuperfluidDensity',
             'm2':'M2',
             'm4':'M4',
@@ -59,7 +61,10 @@ def dirToTitle(dirname):
             'std_omegaRS2L':'std_intersect_RS_vs_omega',
             'sigmaVsZ':'find_teq_scaling',
             'teq':'Equilibration_study'};
-    return dirLex[dirname];
+    if dirname in dirLex:
+        return dirLex[dirname];
+    else:
+        return "unknown"
 
 def dirToLogPlot(fullpath):
     if ('vsT' in fullpath):
@@ -72,13 +77,50 @@ def dirToLogPlot(fullpath):
         return [False,False];
     if ('scalingCorr' in fullpath):
         return [False,False];
+    if ('subtraction' in fullpath):
+        return [True,True];
     return [False,False];
 
 def getParams(dirname,fullpath,doPrint):
-    print(dirname)
     title = dirToTitle(dirname);
     xaxis = dirToXaxis(fullpath);
     yaxis = dirToYaxis(dirname);
     [xlog,ylog] = dirToLogPlot(fullpath);
     return [fullpath,title,xaxis,yaxis,xlog,ylog,doPrint];
 
+
+# datatable indices, boldface quants are good
+# add "last" to get delta
+def get3DXYIndex():
+    res = {"L":0   ,
+           "T":1    ,
+           "eqsw":2 ,
+           "eqcl":3 ,
+           "totsw":4,
+           "totcl":5,
+           "cold":6 ,
+           "e":7    ,
+           "e2":8   ,
+           "m":9    ,
+           "m2":10  ,
+           "m4":11  ,
+           "m2e":12 ,
+           "m4e":13 ,
+           "s2x":14 ,
+           "s2y":15 ,
+           "s2z":16 ,
+           "b":[17,"bin"],
+           "dbdt":[18,"dbdt"],
+           "chi":[19,"chi"] ,
+           "rs":[20,"rs"]  ,
+           "expF":21,
+           "B":[22,"bin"]   ,
+           "C":[23,"c"]   ,
+           "CHI":[24,"chi"] ,
+           "DBDT":[25,"dbdt"],
+           "RS":[26,"rs"]  ,
+           "EN":[27,"en"]  ,
+           "MAG":[28,"mag"] ,
+           "Nmcavg":29,
+           "last":30};
+    return res;

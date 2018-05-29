@@ -1,5 +1,6 @@
 #include <mpi.h>
-#include <string>
+#include <stdio.h>
+#include <string.h>
 #include <iostream>
 #include <limits>
 
@@ -9,8 +10,36 @@
 #include "Ising3D.h"
 #include "3DXY.h"
 
-int main(){
+long double argToL(const char* l){
+	if(strcmp(l,"4")==0){
+		return 4.0L;
+	}
+	if(strcmp(l,"8")==0){
+		return 8.0L;
+	}
+	if(strcmp(l,"16")==0){
+		return 16.0L;
+	}
+	if(strcmp(l,"32")==0){
+		return 32.0L;
+	}
+	if(strcmp(l,"64")==0){
+		return 64.0L;
+	}
+	if(strcmp(l,"128")==0){
+		return 128.0L;
+	}
+	exit(-1);
+	return -999999999999999999.0L;
+}
 
+
+int main(int argc,char* argv[]){
+	if(argc != 2){
+		std::cout << "# bad input"<< std::endl;
+		exit(-1);
+	}
+	long double L = argToL(argv[1]);
 	typedef std::numeric_limits<long double> dbl;
 	std::cout.precision(dbl::max_digits10 + 5);
 
@@ -25,19 +54,23 @@ int main(){
 	std::cout << "WORLD_SIZE " << world_size << std::endl;
 	std::cout << "WORLD_rank " << world_rank<< std::endl;
 
- 	std::string b_pwd = "/cfs/klemming/scratch/s/simsan/"; 
-        std::string h_pwd = "/home/simon/exjobb/modular/"; 
+	std::string b_pwd = "/cfs/klemming/scratch/s/simsan/"; 
+	std::string h_pwd = "/home/simon/exjobb/modular/"; 
 	std::string o_pwd = "/home/simsan/exjobb/modular/"; 
-	
+
 	std::string env = h_pwd;
 	std::string model = "3DXY/";
-		  
+
 	std::string mep= env + "maxE/" + model; 
 	std::string wlp= env + "warmLattice/" + model; 
+	bool doP = false;
 
 	if (world_rank != 0){
-		_3DXY::wolffHistJob(8.0L,mep,wlp);
-		std::string bigstr = "sdf\n";
+		if (world_rank == 1){
+			doP = true;
+		}
+		_3DXY::wolffHistJob(L,mep,wlp,doP);
+		std::string bigstr = "# finished\n";
 		int tag = 1;
 		MPI_Send(bigstr.c_str(),bigstr.size(),MPI_CHAR,0,tag,MPI_COMM_WORLD);
 	}

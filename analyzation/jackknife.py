@@ -1,10 +1,7 @@
 import numpy as np
-import random
+
 def getJackDelta(mat,function,blocknumber):
     N = len(mat);
-    random.seed();#seeds with best available?
-    random.shuffle(mat);
-
     blocksize = int(N/blocknumber);
     if (blocksize < 1):
         blocksize  = 1;

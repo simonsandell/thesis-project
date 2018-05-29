@@ -93,13 +93,13 @@ For $t =0$,
   \label{}
 \end{align}
 \section{Models} % define equations, define quantities.
-The XY-model and the Ising-model are both parth of the class of symmetry groups called $O(n)$, with $n=2,1$ respectively.
-There are many different models in the universality class of the normal-superfluid Helimu-4 transition, the O(2)-symmetry group in three dimensions. Some examples are the $\phi^4$-model, the ddXY model etc.
-In this thesis we have chosen the simulate the classical 3DXY-model. This is convenient because of the relative simplicity of the model, and that it is well known and studied.
+The XY-model and the Ising-model are both parth of the orthogonal symmetry group, written $O(n)$, with $n=2,1$ respectively. The two other properties which determine the universality class of a model is the physical dimensions and the range of interactions. For both models we employ physical dimension $d =3 $ and include only nearest neighbour interactions.
 
+For both models we use a cubic lattice. The hamiltonian of the 3DXY-model is
 \begin{equation}
   H_{\trm{3DXY}} = -K\sum\limits_{\langle i,j\rangle} \bm{s_i}\cdot\bm{s_j} = -K\sum\limits_{\langle i,j\rangle} \cos(\alpha_i - \alpha_j)
 \end{equation}
+where $K$ is the coupling constant, which we set to $K=1$. 
 We set $K=1$.
 \begin{equation}
   Z = \trm{Tr} \exp\left[-\beta \left( H_\Omega - \int d^d \bm{r} H(\bm{r})\eta(\bm{r})\right)\right]

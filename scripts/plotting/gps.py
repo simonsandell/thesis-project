@@ -3,6 +3,7 @@ import time
 import subprocess
 import sys
 from tempfile import NamedTemporaryFile
+import settings
 
 def fileNotEmpty(fullpath):
     return (os.stat(fullpath).st_size != 0);
@@ -22,26 +23,27 @@ def addFile(bfile,path,n):
     writeToBat(bfile,"s" + str(n) + " legend \"" + os.path.basename(path) + "\"");
     writeToBat(bfile,"KILL BLOCK")
 
-def graceDirPlot(directory,title, xaxis ,yaxis,xlog,ylog, doPrint):
+def graceDirPlot(directory,title, xaxis ,yaxis,xlog,ylog, doPrint,filefilter):
     syscall = [];
     bfile = initBat();
     writeToBat(bfile,"XAXIS LABEL \"" + xaxis +"\"");
     writeToBat(bfile,"YAXIS LABEL \"" + yaxis +"\"");
     n = 0;
     for filename in sorted(os.listdir(directory)):
-        print(filename);
-        if (os.stat(os.path.join(directory,filename)).st_size != 0):
-            if (doPrint):
-                if (".dat" in filename):
-                    addFile(bfile,os.path.join(directory,filename),n)
+        if (filefilter in filename):
+
+            if (os.stat(os.path.join(directory,filename)).st_size != 0):
+                if (doPrint):
+                    if (".dat" in filename):
+                        addFile(bfile,os.path.join(directory,filename),n)
+                        n = n+1;
+                else:
+                    addFile(bfile,os.path.join(directory,filename),n);
                     n = n+1;
-            else:
-                addFile(bfile,os.path.join(directory,filename),n);
-                n = n+1;
     if (xlog):
         writeToBat(bfile,"XAXES SCALE LOGARITHMIC");
         syscall.append( "-param");
-        syscall.append("../scripts/logparams.par");
+        syscall.append(settings.scripts_path+"/plotting/logparams.par");
     if (ylog):
         writeToBat(bfile,"YAXES SCALE LOGARITHMIC");
     writeToBat(bfile,"LEGEND LENGTH 0");
