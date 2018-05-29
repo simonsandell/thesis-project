@@ -81,15 +81,13 @@ void _3DXY::wolffHistJob(long double L,std::string maxepath,std::string warmlatp
 	Cluster c(L);
 	RandStruct r;
 	Lattice3DXY lat(L,runTemp,cold,r,c,maxepath,warmlatpath);
+	lat.testConsistent();
 	lat.loadLattice();
 	warmup(lat,10000.0L);
-	int k = 9;
 	for (int i = 0; i<1000;++i){
-	wolffHistRun3DXY(lat,Nsamp,Trange,Ntemps);
-	warmup(lat,Nbetw);
-	if (i > k){
-	lat.saveLattice();
-	k = k+10;
+		wolffHistRun3DXY(lat,Nsamp,Trange,Ntemps);
+		lat.testConsistent();
+		warmup(lat,Nbetw);
 	}
 }
 void _3DXY::warmupJob(long double L, std::string maxepath,std::string warmlatpath){

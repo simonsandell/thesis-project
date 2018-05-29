@@ -4,6 +4,7 @@
 #include "clusterStruct.h"
 #include "randStruct.h"
 #include <string>
+
 namespace _3DXY {
 	void printSettings(long double rT,long double sT,long double eT,int nT,long double nEQ,bool cold,long double nSamp,long double nBetw,long double L);
 	void warmup(Lattice3DXY& lat,long double N);

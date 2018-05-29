@@ -45,24 +45,22 @@ long double cluster3DXY(Lattice3DXY& lat){
 	long double time = 1.0L;
 	//select random plane and random staring spin
 	long double u = -(long double)M_PI + 2.0L*((long double)M_PI)*lat.rand.rnd();
-	int s1 = lat.L*lat.rand.rnd();
-	int s2 = lat.L*lat.rand.rnd();
-	int s3 = lat.L*lat.rand.rnd();
+	unsigned long int s1 = lat.Nspins*lat.rand.rnd();
 	// save angle and energy before flipping
-	long double angleBefore = lat.getAngle(s1,s2,s3);
-	long double enBefore = lat.siteEnergy(s1,s2,s3);
+	long double angleBefore = lat.theLattice[s1];
+	long double enBefore = lat.siteEnergy(s1);
 	long double angleAfter = (long double)M_PI + 2.0L*u - angleBefore;
 	//reflect spin and mark as part of cluster
-	lat.setAngle(s1,s2,s3,angleAfter);
-	lat.clust.addToCl(s1,s2,s3);
+	lat.theLattice[s1] = angleAfter;
+	lat.clust.theCluster[s1] = true;
 	//update energy, mag etc..
-	long double enAfter = lat.siteEnergy(s1,s2,s3);
-	long double sxBef = lat.sinX(s1,s2,s3,angleBefore);
-	long double sxAft = lat.sinX(s1,s2,s3,angleAfter);
-	long double syBef = lat.sinY(s1,s2,s3,angleBefore);
-	long double syAft = lat.sinY(s1,s2,s3,angleAfter);
-	long double szBef = lat.sinZ(s1,s2,s3,angleBefore);
-	long double szAft = lat.sinZ(s1,s2,s3,angleAfter);
+	long double enAfter = lat.siteEnergy(s1);
+	long double sxBef = lat.sinX(s1,angleBefore);
+	long double sxAft = lat.sinX(s1,angleAfter);
+	long double syBef = lat.sinY(s1,angleBefore);
+	long double syAft = lat.sinY(s1,angleAfter);
+	long double szBef = lat.sinZ(s1,angleBefore);
+	long double szAft = lat.sinZ(s1,angleAfter);
 	updateVals(lat,
 			enBefore,enAfter,
 			angleBefore,angleAfter,
@@ -70,31 +68,15 @@ long double cluster3DXY(Lattice3DXY& lat){
 			syBef,syAft,
 			szBef,szAft);
 	//find indices of nearest neighbours
-	int n1m = (s1 -1 + lat.int_L )%lat.int_L;
-	int n1p = (s1 +1 + lat.int_L )%lat.int_L;
-	int n2m = (s2 -1 + lat.int_L )%lat.int_L;
-	int n2p = (s2 +1 + lat.int_L )%lat.int_L;
-	int n3m = (s3 -1 + lat.int_L )%lat.int_L;
-	int n3p = (s3 +1 + lat.int_L )%lat.int_L;
-	std::tuple<int,int,int,long double> neig1 = std::make_tuple(n1m,s2,s3,angleAfter);
-	std::tuple<int,int,int,long double> neig2 = std::make_tuple(n1p,s2,s3,angleAfter);
-	std::tuple<int,int,int,long double> neig3 = std::make_tuple(s1,n2m,s3,angleAfter);
-	std::tuple<int,int,int,long double> neig4 = std::make_tuple(s1,n2p,s3,angleAfter);
-	std::tuple<int,int,int,long double> neig5 = std::make_tuple(s1,s2,n3m,angleAfter);
-	std::tuple<int,int,int,long double> neig6 = std::make_tuple(s1,s2,n3p,angleAfter);
-
 	//make a list for perimeter spins
-	std::vector<std::tuple<int,int,int,long double>> perimeter;
-	//add neighbours to list
-	perimeter.push_back(neig1);
-	perimeter.push_back(neig2);
-	perimeter.push_back(neig3);
-	perimeter.push_back(neig4);
-	perimeter.push_back(neig5);
-	perimeter.push_back(neig6);
-	int n = 6;
-
-	std::tuple<int,int,int,long double> current;
+	int n = 6;// number of neighbours, should add this as constant in Lattice3DXY...
+	std::vector<std::tuple<unsigned long int,long double>> perimeter;
+	std::tuple<unsigned long int,long double> neigh;
+	for (int i = 0; i < 6; ++i){
+		neigh = std::make_tuple(lat.Neighbours[s1][i],angleAfter);
+		perimeter.push_back(neigh);
+	}
+	std::tuple<unsigned long int,long double> current;
 	long double prob = 0.0L;
 	long double rand = 0.0L;
 	while (n > 0){
@@ -103,7 +85,7 @@ long double cluster3DXY(Lattice3DXY& lat){
 		perimeter.pop_back();
 		n -= 1;
 		//test that it is not already part of cluster
-		if (!lat.clust.checkSpin(current)){
+		if (!lat.clust.theCluster[std::get<0>(current)]){
 
 			//increase time for every tested spin
 			//
@@ -111,93 +93,45 @@ long double cluster3DXY(Lattice3DXY& lat){
 
 			//get its current angle;
 			//
-			angleBefore = lat.getAngle(std::get<0>(current),std::get<1>(current),std::get<2>(current));
-
+			angleBefore = lat.theLattice[std::get<0>(current)];
 
 			//calculate prob of freezing, == 1 -exp(2*beta( parent_spin * U)( this_spin*U)) 
-			prob = getProb(u,std::get<3>(current) ,angleBefore,lat.beta);
+			prob = getProb(u,std::get<1>(current) ,angleBefore,lat.beta);
 			rand = lat.rand.rnd();
 			if ( rand < prob) {
 				//get energy before reflecting
 				//
-				enBefore = lat.siteEnergy(std::get<0>(current),std::get<1>(current),std::get<2>(current));
+				enBefore = lat.siteEnergy(std::get<0>(current));
 
 				//get new angle
 				angleAfter = (long double)M_PI + 2.0L*u - angleBefore;
 
 				//reflect and mark as added to cluster
-				lat.setAngle(std::get<0>(current),std::get<1>(current),std::get<2>(current),angleAfter);
-				lat.clust.addToCl(std::get<0>(current),std::get<1>(current),std::get<2>(current));
+				lat.theLattice[std::get<0>(current)] =angleAfter;
+				lat.clust.theCluster[std::get<0>(current)] = true;
 
 				//update energy and magnetization
-				enAfter = lat.siteEnergy(std::get<0>(current),std::get<1>(current),std::get<2>(current));
-				sxBef = lat.sinX(std::get<0>(current),std::get<1>(current),std::get<2>(current),angleBefore);
-				sxAft = lat.sinX(std::get<0>(current),std::get<1>(current),std::get<2>(current),angleAfter);
-				syBef = lat.sinY(std::get<0>(current),std::get<1>(current),std::get<2>(current),angleBefore);
-				syAft = lat.sinY(std::get<0>(current),std::get<1>(current),std::get<2>(current),angleAfter);
-				szBef = lat.sinZ(std::get<0>(current),std::get<1>(current),std::get<2>(current),angleBefore);
-				szAft = lat.sinZ(std::get<0>(current),std::get<1>(current),std::get<2>(current),angleAfter);
+				enAfter = lat.siteEnergy(std::get<0>(current));
+				sxBef = lat.sinX(std::get<0>(current),angleBefore);
+				sxAft = lat.sinX(std::get<0>(current),angleAfter);
+				syBef = lat.sinY(std::get<0>(current),angleBefore);
+				syAft = lat.sinY(std::get<0>(current),angleAfter);
+				szBef = lat.sinZ(std::get<0>(current),angleBefore);
+				szAft = lat.sinZ(std::get<0>(current),angleAfter);
 				updateVals(lat,
 						enBefore,enAfter,
 						angleBefore,angleAfter,
 						sxBef,sxAft,
 						syBef,syAft,
 						szBef,szAft);
-				//find indices of neighbours
-				neig1 = std::make_tuple(
-						(std::get<0>(current) + 1) % lat.int_L, 
-						std::get<1>(current),
-						std::get<2>(current),
-						angleAfter);
-				neig2 = std::make_tuple(
-						(std::get<0>(current) + lat.int_L - 1) % lat.int_L,
-						std::get<1>(current),
-						std::get<2>(current),
-						angleAfter);
-				neig3 = std::make_tuple(
-						std::get<0>(current),
-						(std::get<1>(current) + 1) % lat.int_L,
-						std::get<2>(current),
-						angleAfter);
-				neig4 = std::make_tuple(
-						std::get<0>(current),
-						(std::get<1>(current) + lat.int_L - 1) % lat.int_L,
-						std::get<2>(current),
-						angleAfter);
-				neig5 = std::make_tuple(
-						std::get<0>(current),
-						std::get<1>(current),
-						(std::get<2>(current) + 1) % lat.int_L,
-						angleAfter);
-				neig6 = std::make_tuple(
-						std::get<0>(current),
-						std::get<1>(current),
-						(std::get<2>(current) + lat.int_L - 1)%lat.int_L,
-						angleAfter);
-				//if a neighbour is not already part of the cluster, add it to perimeter list
-				if (!lat.clust.checkSpin(neig1) ){
-					perimeter.push_back(neig1);
-					n = n + 1;
-				}
-				if (!lat.clust.checkSpin(neig2) ){
-					perimeter.push_back(neig2);
-					n = n + 1;
-				}
-				if (!lat.clust.checkSpin(neig3) ){
-					perimeter.push_back(neig3);
-					n = n + 1;
-				}
-				if (!lat.clust.checkSpin(neig4) ){
-					perimeter.push_back(neig4);
-					n = n + 1;
-				}
-				if (!lat.clust.checkSpin(neig5) ){
-					perimeter.push_back(neig5);
-					n = n + 1;
-				}
-				if (!lat.clust.checkSpin(neig6) ){
-					perimeter.push_back(neig6);
-					n = n + 1;
+				//go through neigbours of current
+				for (int i = 0; i < 6; ++i){
+					neigh = std::make_tuple(lat.Neighbours[std::get<0>(current)][i],angleAfter);
+					//if a neighbour is not already part of the cluster, add it to perimeter list
+					if (!lat.clust.theCluster[std::get<0>(neigh)] ){
+						perimeter.push_back(neigh);
+						n = n + 1;
+					}
 				}
 			}
 		}

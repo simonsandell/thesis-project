@@ -20,7 +20,8 @@ long unsigned int xyzToK( int x, int y , int z,long double L){
 	ret += (long unsigned int) (z*L*L);
 	return ret;
 }
-std::tuple<int,int,int> kToXYZ(long unsigned int K,long double L){
+
+std::tuple<int,int,int> kToXYZ(unsigned long int K,long double L){
 	int intel = int( L+0.1L);
 	int x = K % intel;
 	int yL = (K-x)%(intel*intel);
@@ -31,46 +32,27 @@ std::tuple<int,int,int> kToXYZ(long unsigned int K,long double L){
 	return ret;
 }
 
-long double Lattice3DXY::siteEnergy( int &s1, int &s2, int &s3){
+long double Lattice3DXY::siteEnergy( unsigned long int K){
 	long double sum = 0.0L;
-	//find indices of neighbours
-	int n1m = (s1 -1 + int_L )%int_L;
-	int n1p = (s1 +1 + int_L )%int_L;
-	int n2m = (s2 -1 + int_L )%int_L;
-	int n2p = (s2 +1 + int_L )%int_L;
-	int n3m = (s3 -1 + int_L )%int_L;
-	int n3p = (s3 +1 + int_L )%int_L;
-	sum -= cos(theLattice[xyzToK(s1,s2,s3,L)]-theLattice[xyzToK(n1m,s2,s3,L)]);
-	sum -= cos(theLattice[xyzToK(s1,s2,s3,L)]-theLattice[xyzToK(n1p,s2,s3,L)]);
-	sum -= cos(theLattice[xyzToK(s1,s2,s3,L)]-theLattice[xyzToK(s1,n2m,s3,L)]);
-	sum -= cos(theLattice[xyzToK(s1,s2,s3,L)]-theLattice[xyzToK(s1,n2p,s3,L)]);
-	sum -= cos(theLattice[xyzToK(s1,s2,s3,L)]-theLattice[xyzToK(s1,s2,n3m,L)]);
-	sum -= cos(theLattice[xyzToK(s1,s2,s3,L)]-theLattice[xyzToK(s1,s2,n3p,L)]);
+	for (long unsigned int n =0; n<6; ++n){
+		sum -= cos(theLattice[K]) - cos(theLattice[Neighbours[K][n]]);
+	}
 	return sum;
 }
 //calculate sin(theta - theta_x) upwards +, downward -
-long double Lattice3DXY::sinX(int &s1, int &s2, int &s3,long double &angle){
-	int np = (s1 + 1) %int_L;
-	int nm = (s1 -1 + int_L) % int_L;	
-	long double ret = 0.0L;
-	ret = sin(theLattice[xyzToK(nm,s2,s3,L)] - angle) + sin(angle - theLattice[xyzToK(np,s2,s3,L)]);
+long double Lattice3DXY::sinX(unsigned long int &K,long double &angle){
+	long double ret = sin(theLattice[Neighbours[K][1]] - angle) + sin(angle - theLattice[Neighbours[K][0]]);
 	return ret;
 }
-long double Lattice3DXY::sinY(int &s1, int &s2, int &s3,long double &angle){
-	int np = (s2 + 1) %int_L;
-	int nm = (s2 -1 + int_L) % int_L;	
-	long double ret = 0.0L;
-	ret = sin(theLattice[xyzToK(s1,nm,s3,L)] - angle) + sin(angle - theLattice[xyzToK(s1,np,s3,L)]);
+long double Lattice3DXY::sinY(unsigned long int &K,long double &angle){
+	long double ret = sin(theLattice[Neighbours[K][3]] - angle) + sin(angle - theLattice[Neighbours[K][2]]);
 	return ret;
 }
-long double Lattice3DXY::sinZ(int &s1, int &s2, int &s3,long double &angle){
-	int np = (s3 + 1) %int_L;
-	int nm = (s3 -1 + int_L) % int_L;	
-	long double ret = 0.0L;
-	ret = sin(theLattice[xyzToK(s1,s2,nm,L)] - angle) + sin(angle - theLattice[xyzToK(s1,s2,np,L)]);
+long double Lattice3DXY::sinZ(unsigned long int &K,long double &angle){
+	long double ret = sin(theLattice[Neighbours[K][5]] - angle) + sin(angle - theLattice[Neighbours[K][4]]);
 	return ret;
 }
-;
+
 long double calcSinX(long double *lattice,long double  L){
 	long double sum = 0.0L;
 	int intel = (int)(L+0.5L);
@@ -138,10 +120,11 @@ long double calcMag(long double *lattice,long double L){
 
 long double calcEn(Lattice3DXY* lat){
 	long double en = 0.0L;
+	long double ell = lat->L;
 	for (int i = 0; i< lat->L; ++i){
 		for (int j = 0; j< lat->L; ++j){
 			for (int k = 0; k<lat->L; ++k){	
-				en += lat->siteEnergy(i,j,k);
+				en += lat->siteEnergy(xyzToK(i,j,k,ell));
 			}
 		}
 	}
@@ -154,12 +137,12 @@ long double* Lattice3DXY::newLattice(long double L,bool cold){
 	lattice = new long double[nspins];
 	//make new lattice
 	if (cold) {
-		for (unsigned int i = 0; i<nspins;++i){
+		for (long unsigned int i = 0; i<nspins;++i){
 			lattice[i] = 0.0L;
 		}
 	}
 	else {
-		for (unsigned int i = 0; i<nspins;++i){
+		for (long unsigned int i = 0; i<nspins;++i){
 			lattice[i] = rand.rnd()*2.0L*M_PI;
 		}
 	}
@@ -174,6 +157,33 @@ void Lattice3DXY::updateQuants(){
 	siny = calcSinY(theLattice,L);
 	sinz = calcSinZ(theLattice,L);
 };
+unsigned long  int ** Lattice3DXY::generateNeighbours(int l){
+	std::tuple<int,int,int> xyz;
+	long unsigned int n1,n2,n3,n4,n5,n6;
+	int x,y,z;
+	int nspins = l*l*l;
+	unsigned long int **  result = new long unsigned int*[nspins];
+	for (int i = 0; i<nspins; ++i){
+		std::tuple<int,int,int> xyz = kToXYZ(i,l);
+		x = std::get<0>(xyz);
+		y = std::get<1>(xyz);
+		z = std::get<2>(xyz);
+		n1 = (x+l+1)%l;
+		n2 = (x+l-1)%l;
+		n3 = (y+l+1)%l;
+		n4 = (y+l-1)%l;
+		n5 = (z+l+1)%l;
+		n6 = (z+l-1)%l;
+		result[i]= new unsigned long int[6];
+		result[i][0]= n1;
+		result[i][1]= n2;
+		result[i][2]= n3;
+		result[i][3]= n4;
+		result[i][4]= n5;
+		result[i][5]= n6;
+	}
+	return result;
+}
 
 //initialize new lattice
 Lattice3DXY::Lattice3DXY(int l,long double rT, bool cold,RandStruct r,Cluster c,std::string pathMaxE,std::string pathWarmLat) 
@@ -181,6 +191,7 @@ Lattice3DXY::Lattice3DXY(int l,long double rT, bool cold,RandStruct r,Cluster c,
 
 {
 	theLattice = newLattice((long double)l,cold);
+	Neighbours = generateNeighbours(l);
 	runTemp = rT;
 	beta = 1.0L/rT;
 	L = (long double)l;
@@ -196,12 +207,6 @@ Lattice3DXY::Lattice3DXY(int l,long double rT, bool cold,RandStruct r,Cluster c,
 	warmLatPath = pathWarmLat;
 	maxEPath = pathMaxE;
 	maxE = getMaxE(pathMaxE,l);
-	
-
-
-
-
-
 
 	if (cold) {
 		energy = -3.0L*Nspins;
@@ -309,9 +314,9 @@ void Lattice3DXY::saveLatticeAs(std::string name){
 			for (int j = 0; j< L;++j){
 				for (int k = 0; k< L;++k){
 					ofs.write(
-					reinterpret_cast<char *>(&theLattice[xyzToK(i,j,k,L)]),
-					sizeof(theLattice[xyzToK(i,j,k,L)])
-					);
+							reinterpret_cast<char *>(&theLattice[xyzToK(i,j,k,L)]),
+							sizeof(theLattice[xyzToK(i,j,k,L)])
+						 );
 				}
 			}
 		}
@@ -399,7 +404,7 @@ void Lattice3DXY::loadLattice(){
 
 		//warmLatPath = str1;
 		//maxEPath = str2;
-		
+
 		//recreate other quants
 		Nspins = L*L*L;
 		beta = 1.0L/runTemp;
@@ -422,7 +427,7 @@ void Lattice3DXY::setAngle(int s1,int s2,int s3,long double newAng){
 
 void Lattice3DXY::printVals(){
 	std::cout << "runTemp L, NTotSweeps,NTotClusts, coldstart, warmLatPath ,maxEPath, maxE, energy " << std::endl <<
-	runTemp << " " << L << " " << NTotSweeps<< " " <<NTotClusts<< " " << coldstart<< " " << warmLatPath << " " <<maxEPath<< " " << maxE<< " " << energy << std::endl;
+		runTemp << " " << L << " " << NTotSweeps<< " " <<NTotClusts<< " " << coldstart<< " " << warmLatPath << " " <<maxEPath<< " " << maxE<< " " << energy << std::endl;
 
 }
 

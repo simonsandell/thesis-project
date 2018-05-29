@@ -1,1 +1,1 @@
-makefile_full_opt
+makefile_no_opt
