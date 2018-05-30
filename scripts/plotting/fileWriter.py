@@ -9,6 +9,8 @@ def stringBuilder(line):
     for word in line:
         res +=fs.format(word) +"    ";
     res += "\n";
+    res = res.replace("inf","0.0");
+    res = res.replace("nan","0.0");
     return res;
 
 def writeDataTable(fName,array):

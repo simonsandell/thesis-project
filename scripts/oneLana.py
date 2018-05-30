@@ -47,7 +47,7 @@ if (__name__=="__main__"):
         j_est = jackknife.jackknife(view,avgF,avg.shape[0]);
         j_avg = np.mean(j_est,axis=0);
         j_std = np.std(j_est,axis=0);
-        avg =np.append(avg,view.shape[0]);
+        avg = np.append(avg,view.shape[0]);# add number of mcavgs to result
         j_delta = j_std*np.sqrt(j_est.shape[0]-1);
         avg = np.append(avg,j_delta);
         return avg;

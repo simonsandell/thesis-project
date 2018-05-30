@@ -11,7 +11,23 @@ skip_n = int(sys.argv[2]);
 def fitfunc(L,nu,a,b):
     res = (L**(1.0/nu))*(a + b*(L**(-omega)));
     return res;
+def etafunc(L,eta,a,b):
+    res = (L**(2-eta))*(a +b*(L**(-omega)));
 
+def calculateNu(tview):
+    X = tview[:,0];
+    Y = tview[:,idx["DBDT"][0]];
+    params,covar = curve_fit(fitfunc,X,Y);
+    res = np.empty((1,4));
+    res[0,0] = tview[0,1];
+    res[0,1] = params[0];
+    res[0,2] = covar[0,0];
+    res[0,3] = np.sum(tview[:,29]);
+    return res;
+def calculateEta(tview):
+    X = tview[:,0];
+    Y = tview[:,idx["CHI"][0]];
+    params,covar
 
 dirpath = settings.root_path+"modular/datatables/combined/";
 savename = "combined_omega_"+str(omega)+"_skip_"+str(skip_n);
@@ -42,17 +58,12 @@ Ti = [x for x in Ti2 if not x == 0.0];
 Ti = np.append(Ti,all_tables.shape[0]);
 idx = anaFuncs.get3DXYIndex();
 result = np.empty((Ti.shape[0]-1,4));
+eta_result = np.empty((Ti.shape[0]-1,4));
 #result format : T nu deltanu N
 for ind in range(Ti.shape[0]-1):
     tview = all_tables[Ti[ind]:Ti[ind+1],:];
     tview = tview[tview[:,0].argsort()];
-    X = tview[:,0];
-    Y = tview[:,idx["DBDT"][0]];
-    params,covar = curve_fit(fitfunc,X,Y);
-    result[ind,0] = tview[0,1];
-    result[ind,1] = params[0];
-    result[ind,2] = covar[0,0];
-    result[ind,3] = np.sum(tview[:,29]);
+    result[ind,:] = calculateNu(tview);
 
 writePath = settings.foutput_path+settings.model+"/vsT/nu/"+savename+".dat";
 fileWriter.writeQuant(writePath,result,[0,1,2,3]);
