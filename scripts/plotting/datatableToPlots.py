@@ -3,16 +3,18 @@ import sys
 import os
 import settings
 from plotting import fileWriter
+import anaFuncs
 np.set_printoptions(precision=13)
 #load all datatables in one folder, combine, then do vsT and vsL plots
 def datatableToPlots(folderName,savename):
     model = settings.model;
-    allDT = np.empty((0,59));
+    allDT = np.empty((0,59));# all datatables
     for filename in os.listdir(folderName):
-        datatable = np.load(os.path.join(folderName,filename));
-        fileWriter.writeVsT(savename,datatable)
-        allDT = np.append(allDT,datatable,axis=0);
-    
+        if "datatable" in filename:
+            datatable = np.load(os.path.join(folderName,filename));
+            fileWriter.writeVsT(savename,datatable)
+            allDT = np.append(allDT,datatable,axis=0);
+    # sort by T, then L 
     ind = np.lexsort((allDT[:,0],allDT[:,1]));
     allDT = allDT[ind];
     Tv,Ti = np.unique(allDT[:,1],return_index=True);

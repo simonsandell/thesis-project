@@ -7,6 +7,7 @@ import settings
 
 from analysis import jackknife
 from plotting import fileWriter
+from plotting import datatableToPlots
 from analysis import modelAvgs as ma
 if (__name__=="__main__"):
     filepath = sys.argv[1];
@@ -46,7 +47,7 @@ if (__name__=="__main__"):
         j_est = jackknife.jackknife(view,avgF,avg.shape[0]);
         j_avg = np.mean(j_est,axis=0);
         j_std = np.std(j_est,axis=0);
-        avg =np.append(avg,view.shape[0]);
+        avg = np.append(avg,view.shape[0]);# add number of mcavgs to result
         j_delta = j_std*np.sqrt(j_est.shape[0]-1);
         avg = np.append(avg,j_delta);
         return avg;
@@ -75,7 +76,7 @@ if (__name__=="__main__"):
     res = res.squeeze();
     
     fileWriter.writeDataTable(fName,res);
-    np.save(settings.pickles_path+"datatable_"+fName+model,res);
-    fileWriter.writeVsT(fName,res);#assumes only one systemsize
+    np.save(settings.foutput_path+model+"/datatable_"+fName+model,res);
+    datatableToPlots(settings.foutput_path+model+"/",fName);
     
     
