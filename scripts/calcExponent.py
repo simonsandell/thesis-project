@@ -13,6 +13,7 @@ def fitfunc(L,nu,a,b):
     return res;
 def etafunc(L,eta,a,b):
     res = (L**(2-eta))*(a +b*(L**(-omega)));
+    return res;
 
 def calculateNu(tview):
     X = tview[:,0];
@@ -24,10 +25,17 @@ def calculateNu(tview):
     res[0,2] = covar[0,0];
     res[0,3] = np.sum(tview[:,29]);
     return res;
+
 def calculateEta(tview):
     X = tview[:,0];
     Y = tview[:,idx["CHI"][0]];
-    params,covar
+    params,covar = curve_fit(etafunc,X,Y);
+    res = np.empty((1,4));
+    res[0,0] = tview[0,1];
+    res[0,1] = params[0];
+    res[0,2] = covar[0,0];
+    res[0,3] = np.sum(tview[:,29]);
+    return res;
 
 dirpath = settings.root_path+"modular/datatables/combined/";
 savename = "combined_omega_"+str(omega)+"_skip_"+str(skip_n);
@@ -64,6 +72,9 @@ for ind in range(Ti.shape[0]-1):
     tview = all_tables[Ti[ind]:Ti[ind+1],:];
     tview = tview[tview[:,0].argsort()];
     result[ind,:] = calculateNu(tview);
+    eta_result[ind,:] = calculateEta(tview);
 
 writePath = settings.foutput_path+settings.model+"/vsT/nu/"+savename+".dat";
 fileWriter.writeQuant(writePath,result,[0,1,2,3]);
+eta_Path = settings.foutput_path+settings.model +"/vsT/eta/"+savename+".dat";
+fileWriter.writeQuant(eta_Path,eta_result,[0,1,2,3]);
