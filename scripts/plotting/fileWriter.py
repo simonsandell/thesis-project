@@ -19,7 +19,6 @@ def writeDataTable(fName,array):
         openfile.write(string);
     openfile.close();
 
-
 def writeQuant(path,array,inds):
     [x,y,dy,n] = inds;
     of = open(path,"w");
@@ -43,11 +42,11 @@ def writeVsL(fName,array):
     if (settings.model =="3DXY"):
         idx = anaFuncs.get3DXYIndex();
         keys = ["b","rs","chi","dbdt","B","RS","CHI","C","DBDT","EN","MAG"];
-        array[:,idx["EN"]] = -array[:,idx["EN"]];
+        array[:,idx["EN"][0]] = -array[:,idx["EN"][0]];
         for key in keys:
             inds = [idx["L"],idx[key][0],idx[key][0] + idx["last"],idx["Nmcavg"]];
             dirname = idx[key][1];
-            path = settings.foutput_path+settings.model+"/vsL/"+dirname+"/"+repr(T)+"_"+fName+".dat";
+            path = settings.foutput_path+settings.model+"/vsL/"+dirname+"/"+repr(T)+"_"+fName+u+key+".dat";
 
             writeQuant(path,array,inds);
 
