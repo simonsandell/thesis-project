@@ -73,7 +73,7 @@ void _3DXY::wolffHistJob(long double L,std::string maxepath,std::string warmlatp
 	}
 	long double 	Neq=			1000.0L;
 	bool 		cold=			true;
-	long double	Nsamp=			100000.0L;
+	long double	Nsamp=			1000.0L;
 	long double 	Nbetw=			100.0L;
 	if (doPrint){
 		printSettings( runTemp, startT, endT,Ntemps, Neq ,cold, Nsamp, Nbetw, L);
@@ -83,12 +83,12 @@ void _3DXY::wolffHistJob(long double L,std::string maxepath,std::string warmlatp
 	Lattice3DXY lat(L,runTemp,cold,r,c,maxepath,warmlatpath);
 	lat.testConsistent();
 	lat.loadLattice();
-	warmup(lat,10000.0L);
-	for (int i = 0; i<1000;++i){
+	warmup(lat,100.0L);
+	for (int i = 0; i<5;++i){
 		wolffHistRun3DXY(lat,Nsamp,Trange,Ntemps);
-		lat.testConsistent();
 		warmup(lat,Nbetw);
 	}
+	lat.testConsistent();
 }
 void _3DXY::warmupJob(long double L, std::string maxepath,std::string warmlatpath){
 	long double runTemp = 2.201840000000000L;

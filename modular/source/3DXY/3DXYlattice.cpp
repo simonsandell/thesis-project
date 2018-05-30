@@ -35,7 +35,7 @@ std::tuple<int,int,int> kToXYZ(unsigned long int K,long double L){
 long double Lattice3DXY::siteEnergy( unsigned long int K){
 	long double sum = 0.0L;
 	for (long unsigned int n =0; n<6; ++n){
-		sum -= cos(theLattice[K]) - cos(theLattice[Neighbours[K][n]]);
+		sum -= cos(theLattice[K] - theLattice[Neighbours[K][n]]);
 	}
 	return sum;
 }
@@ -160,20 +160,26 @@ void Lattice3DXY::updateQuants(){
 unsigned long  int ** Lattice3DXY::generateNeighbours(int l){
 	std::tuple<int,int,int> xyz;
 	long unsigned int n1,n2,n3,n4,n5,n6;
-	int x,y,z;
+	int x,y,z,xp,xm,yp,ym,zp,zm;
 	int nspins = l*l*l;
 	unsigned long int **  result = new long unsigned int*[nspins];
 	for (int i = 0; i<nspins; ++i){
-		std::tuple<int,int,int> xyz = kToXYZ(i,l);
+		xyz = kToXYZ(i,l);
 		x = std::get<0>(xyz);
 		y = std::get<1>(xyz);
 		z = std::get<2>(xyz);
-		n1 = (x+l+1)%l;
-		n2 = (x+l-1)%l;
-		n3 = (y+l+1)%l;
-		n4 = (y+l-1)%l;
-		n5 = (z+l+1)%l;
-		n6 = (z+l-1)%l;
+		xp = (x+l+1)%l;
+		xm = (x+l-1)%l;
+		yp = (y+l+1)%l;
+		ym = (y+l-1)%l;
+		zp = (z+l+1)%l;
+		zm = (z+l-1)%l;
+		n1 = xyzToK(xp,y,z,l);
+		n2 = xyzToK(xm,y,z,l);
+		n3 = xyzToK(x,yp,z,l);
+		n4 = xyzToK(x,ym,z,l);
+		n5 = xyzToK(x,y,zp,l);
+		n6 = xyzToK(x,y,zm,l);
 		result[i]= new unsigned long int[6];
 		result[i][0]= n1;
 		result[i][1]= n2;
