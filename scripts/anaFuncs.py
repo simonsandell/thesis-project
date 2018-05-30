@@ -36,7 +36,8 @@ def dirToYaxis(dirname):
             'omegaRS2L':r'L\S\xw\0\N\c7\C[2L\xr\0)(2L) - L\xr\0(L)]',
             'std_omegaBin2L':r'\xs\0\sBin2L\N',
             'std_omegaRS2L':r'\xs\0\sRS2L\N',
-            'sigmaVsZ':r'\xc\0\S2\N'};
+            'sigmaVsZ':r'\xc\0\S2\N',
+            'nu':r'\xn\0'};
 
     if dirname in dirLex:
         return dirLex[dirname];

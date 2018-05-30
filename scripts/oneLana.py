@@ -7,6 +7,7 @@ import settings
 
 from analysis import jackknife
 from plotting import fileWriter
+from plotting import datatableToPlots
 from analysis import modelAvgs as ma
 if (__name__=="__main__"):
     filepath = sys.argv[1];
@@ -75,7 +76,7 @@ if (__name__=="__main__"):
     res = res.squeeze();
     
     fileWriter.writeDataTable(fName,res);
-    np.save(settings.pickles_path+"datatable_"+fName+model,res);
-    fileWriter.writeVsT(fName,res);#assumes only one systemsize
+    np.save(settings.foutput_path+model+"/datatable_"+fName+model,res);
+    datatableToPlots(settings.foutput_path+model+"/",fName);
     
     
