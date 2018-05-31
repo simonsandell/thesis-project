@@ -21,6 +21,5 @@ def plot3DXY():
                 dop = True;
         if (not direc in called_dirs) and dop and (dirfilt in direc):
             called_dirs.add(direc)
-            print(direc)
             parameters = anaFuncs.getParams(os.path.basename(direc),direc,doPrint);
             gps.graceDirPlot(*parameters,filefilt);

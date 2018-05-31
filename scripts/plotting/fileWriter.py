@@ -20,12 +20,25 @@ def writeDataTable(fName,array):
         string = stringBuilder(ln);
         openfile.write(string);
     openfile.close();
+def writeQuantClean(path,array,inds):
+    [x,y,dy,n] = inds;
+    of = open(path,"w");
+    for i in range(array.shape[0]):
+        line = [array[i,x],array[i,y],array[i,dy],array[i,n]];
+        if (not ("inf" in line)) and (not ("nan" in line)):
+            of.write(stringBuilder(line));
 
 def writeQuant(path,array,inds):
     [x,y,dy,n] = inds;
     of = open(path,"w");
     for i in range(array.shape[0]):
         line = [array[i,x],array[i,y],array[i,dy],array[i,n]];
+        of.write(stringBuilder(line));
+def writeQuantNoDY(path,array,inds):
+    [x,y] = inds;
+    of = open(path,"w");
+    for i in range(array.shape[0]):
+        line = [array[i,x],array[i,y],0.0];
         of.write(stringBuilder(line));
 
 def writeVsT(fName,array):

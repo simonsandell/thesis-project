@@ -73,7 +73,7 @@ for ind in range(Ti.shape[0]-1):
     tview = tview[tview[:,0].argsort()];
     result[ind,:] = calculateNu(tview);
     eta_result[ind,:] = calculateEta(tview);
-
+# write to dat files for plotting
 writePath = settings.foutput_path+settings.model+"/vsT/nu/"+savename+".dat";
 fileWriter.writeQuant(writePath,result,[0,1,2,3]);
 eta_Path = settings.foutput_path+settings.model +"/vsT/eta/"+savename+".dat";

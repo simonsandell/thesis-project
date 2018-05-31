@@ -24,6 +24,7 @@ def addFile(bfile,path,n):
     writeToBat(bfile,"KILL BLOCK")
 
 def graceDirPlot(directory,title, xaxis ,yaxis,xlog,ylog, doPrint,filefilter):
+    nonEmpty = False;
     syscall = [];
     bfile = initBat();
     writeToBat(bfile,"XAXIS LABEL \"" + xaxis +"\"");
@@ -31,8 +32,8 @@ def graceDirPlot(directory,title, xaxis ,yaxis,xlog,ylog, doPrint,filefilter):
     n = 0;
     for filename in sorted(os.listdir(directory)):
         if (filefilter in filename):
-
             if (os.stat(os.path.join(directory,filename)).st_size != 0):
+                nonEmpty=True;
                 if (doPrint):
                     if (".dat" in filename):
                         addFile(bfile,os.path.join(directory,filename),n)
@@ -40,36 +41,38 @@ def graceDirPlot(directory,title, xaxis ,yaxis,xlog,ylog, doPrint,filefilter):
                 else:
                     addFile(bfile,os.path.join(directory,filename),n);
                     n = n+1;
-    if (xlog):
-        writeToBat(bfile,"XAXES SCALE LOGARITHMIC");
-        syscall.append( "-param");
-        syscall.append(settings.scripts_path+"/plotting/logparams.par");
-    if (ylog):
-        writeToBat(bfile,"YAXES SCALE LOGARITHMIC");
-    writeToBat(bfile,"LEGEND LENGTH 0");
-    writeToBat(bfile,"AUTOSCALE");
-    writeToBat(bfile,"AUTOTICKS");
-    syscall.append("-batch");
-    syscall.append(bfile.name);
-    syscall.append("-nosafe");
-    syscall.append("-noask");
-    syscall.append("-free");
-    if (doPrint):
-        if (xlog or ylog):
-            writeToBat(bfile,"LEGEND off");
-        writeToBat(bfile,"PRINT TO \"" + title + ".eps\"");
-        writeToBat(bfile,"HARDCOPY DEVICE \"EPS\"");
-        writeToBat(bfile,"PAGE RESIZE 1920,1024");
-        writeToBat(bfile,"DEVICE \"EPS\" FONT ANTIALIASING on");
-        writeToBat(bfile,"PRINT");
-        syscall = ["gracebat"] + syscall;
+    if (nonEmpty):
+        print(directory)
+        if (xlog):
+            writeToBat(bfile,"XAXES SCALE LOGARITHMIC");
+            syscall.append( "-param");
+            syscall.append(settings.scripts_path+"/plotting/logparams.par");
+        if (ylog):
+            writeToBat(bfile,"YAXES SCALE LOGARITHMIC");
+        writeToBat(bfile,"LEGEND LENGTH 0");
+        writeToBat(bfile,"AUTOSCALE");
+        writeToBat(bfile,"AUTOTICKS");
+        syscall.append("-batch");
+        syscall.append(bfile.name);
+        syscall.append("-nosafe");
+        syscall.append("-noask");
+        syscall.append("-free");
+        if (doPrint):
+            if (xlog or ylog):
+                writeToBat(bfile,"LEGEND off");
+            writeToBat(bfile,"PRINT TO \"" + title + ".eps\"");
+            writeToBat(bfile,"HARDCOPY DEVICE \"EPS\"");
+            writeToBat(bfile,"PAGE RESIZE 1920,1024");
+            writeToBat(bfile,"DEVICE \"EPS\" FONT ANTIALIASING on");
+            writeToBat(bfile,"PRINT");
+            syscall = ["gracebat"] + syscall;
+            bfile.flush();
+            subprocess.call(syscall);
+            del syscall[0];
+        syscall = ["xmgrace"] + syscall;
         bfile.flush();
-        subprocess.call(syscall);
-        del syscall[0];
-    syscall = ["xmgrace"] + syscall;
-    bfile.flush();
-    subprocess.Popen(syscall);
-    time.sleep(0.5);
+        subprocess.Popen(syscall);
+        time.sleep(0.5);
 
 def initAnim():
     subprocess.call(['rm','-r','/tmp/temppng'])

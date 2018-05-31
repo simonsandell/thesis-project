@@ -30,14 +30,15 @@ def dirToYaxis(dirname):
             'm4':r'm\S4\N',
             'c':'C - Heat Capacity',
             'teq':'Magnetization',
-            'omegaBin3L':r'\xw\0 = -ln(B(4L) - B(2L)/B(2L) - B(L))/ln(2)',
-            'omegaRS3L':r'\xw\0 = -ln(\xr\0\ss\N(4L) - \xr\0\ss\N(2L)/\xr\0\ss\N(2L) - \xr\0\ss\N(L))/ln(2)',
-            'omegaBin2L':r'L\S\xw\0\N\c7\C[B(2L) - B(L)]',
-            'omegaRS2L':r'L\S\xw\0\N\c7\C[2L\xr\0)(2L) - L\xr\0(L)]',
-            'std_omegaBin2L':r'\xs\0\sBin2L\N',
-            'std_omegaRS2L':r'\xs\0\sRS2L\N',
+            'threeL':r'\xw\0 = -ln(Q(4L) - Q(2L)/Q(2L) - Q(L))/ln(2)',
+            'twoL':r'L\S\xw\0\N\c7\C[Q(2L) - Q(L)]',
+            'vsO':r'\xs\0\sQ(2L)-Q(L)\N',
             'sigmaVsZ':r'\xc\0\S2\N',
+            'tc':r'T\sc\S',
+            'intersection':r'mean dist to mean point of intersections',
             'eta':r'\xh\0',
+            'omega':r'\xw\0',
+            'varomega':r'Var(\xw\0)',
             'nu':r'\xn\0'};
 
     if dirname in dirLex:

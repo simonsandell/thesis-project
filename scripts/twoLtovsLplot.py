@@ -18,7 +18,6 @@ for n in namelist:
     all_dt = np.append(all_dt,dt,axis=0);
 #sort by temp
 all_dt = all_dt[all_dt[:,2].argsort()];
-print(all_dt.shape)
 
 #pick out views of single T
 Tv,Ti = np.unique(all_dt[:,2],return_index=True);
@@ -28,11 +27,12 @@ for i in range(Ti.shape[0]-1):
         Ti2[i+1] = 0.0;
 Ti = [x for x in Ti2 if not x == 0.0];
 Ti = np.append(Ti,all_dt.shape[0]);
+
+
 for ind in range(Ti.shape[0]-1):
     tview = all_dt[Ti[ind]:Ti[ind+1],:];
 #sort view by L
     tview = tview[tview[:,0].argsort()];
-    print(tview.shape)
 #print to files
     x=0;
     yb = 3
@@ -44,5 +44,3 @@ for ind in range(Ti.shape[0]-1):
     rpath = settings.foutput_path+settings.model+"/vsL/2Lrs/"+str(tview[0,2])+"_rs2L-rsL.dat";
     fileWriter.writeQuant(bpath,tview,[x,yb,dyb,n])
     fileWriter.writeQuant(rpath,tview,[x,yr,dyr,n])
-    
-
