@@ -43,7 +43,8 @@ The models we study in this paper have the external field set to zero, if we let
   f_s(t,L^{-1}) = L^{-d} F_f(t L^{1/\nu})
   \label{}
 \end{equation}
-where we used $\nu = 1/y_t$ and the scaling law $2 -\alpha = d\nu$.$F_f(tL^{1/\nu})$ is the form function for the free energy.
+where we used $\nu = 1/y_t$ and the scaling law $2 -\alpha = d\nu$.
+$F_f(tL^{1/\nu})$ is the form function for the free energy.
 From this equation we can derive the finite size scaling behaviour of any physical quantities by utilizing their relation to the free energy. 
 For example, we can find the scaling form of the specific heat as
 \begin{equation}
@@ -53,9 +54,12 @@ For example, we can find the scaling form of the specific heat as
 The infinite scaling form would diverge at $t=0$, 
 This form function will have a maximum at some shifted value of $T$, 
 \begin{equation}
-  T_c(L) = T_c + \lambda L^{-1/\nu}( 1 + bL^{-\omega}).
+  T_c(L) = T_c +  a_0 L^{-1/\nu}.
   \label{}
 \end{equation}
+This kind of correction is necessary to go from quantities simulated on finite systems to the infinite lattice universal quantities.
+
+
 Higher order corrections can be included as well.
 Similarly for the susceptibility,
 \begin{align}
@@ -69,6 +73,18 @@ The magnetization goes as
   M = \frac{\partial f}{\partial h} \sim L^{-d + y_h} = L^{-\beta/\nu}
   \label{}
 \end{equation}
+The 4th order Binder cumulandt is in the thermodynamic limit constant at $T_c$, and thus scales as 
+\begin{equation}
+  B \sim a_B(1+L^{-\omega})
+  \label{}
+\end{equation}
+with our ansatz.
+The derivative of the 4th order Binder cumuland scales as
+\begin{equation}
+  \frac{\der B}{\der T}\sim L
+  \label{}
+\end{equation}
+
 \section{Scaling laws}
 \begin{align}
   y_t &= \frac{1}{\nu}\\

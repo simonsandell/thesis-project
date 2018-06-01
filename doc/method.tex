@@ -3,6 +3,7 @@
 % Last Change: mån feb 12 01:00  2018 C
 %
 % TODO: expand on monte carlo method. write about necessity of quality RNG's  
+
 \section{Monte Carlo}
 In the theoretical framework of statistical physics, physical predictions come from thermal averages, calculated from 
 \begin{equation}
@@ -195,19 +196,18 @@ From the scaling hypothesis,
 \end{align}
 
 This tells us that if we plot this new quantity $v_L$ on a log-log plot as a function of the system size $L$, it should be a constant functions with slope equal to negative omega.
-If we instead plot $-\frac{\ln\left(\frac{v_{2L}}{v_L}\right)}{\ln(2)} = \omega$ versus the temperature, and for many combinations of L, we should get an intersection at omega, at Tc.
+If we instead plot $-\frac{\ln\left(\frac{v_{2L}}{v_L}\right)}{\ln(2)} = \omega$ versus the temperature using different values for L, we should get an intersection at Tc, from which we can read off the value of omega, given that assumed form of the scaling correction is not too far from the truth.
 These methods requires that we know the constant $A$.
 We can get a good starting estimation for A by extrapolation,
 we plot the value of the binder parameter at the intersecion poins, versus the inverse of the system, and draw the line to $1/L = 0$.
 \section{Calculation of the exponents}
 A quantity we use to calculate the critical exponent $\nu$ is the derivative of the 4th order Binder-cumulant, which we obtain as 
 \begin{align}
-  \frac{\der B}{\der T} = \frac{\der \frac{\langle M^4\rangle}{\langle M^2 \rangle^2}{\der T} \\
-  \left\{\frac{\der \langle A\rangle }{\der T} = \frac{\langle A\cdotE\rangle  - \langle A\rangle \langle E\rangle }{T^2}\right\} \\
+  \frac{\der B}{\der T} = \frac{\der \frac{\langle M^4\rangle}{\langle M^2 \rangle^2}}{\der T} \\
+  \left\{\frac{\der \langle A\rangle }{\der T} = \frac{\langle A E\rangle  - \langle A\rangle \langle E\rangle }{T^2}\right\} \\
   \langle M^2\rangle _{\der T} \equiv \frac{\der \langle M^2\rangle }{\der T} = \frac{\langle M^2E\rangle  - \langle M^2\rangle \langle E\rangle }{T^2} \\
   \langle M^4\rangle _{\der T} \equiv \frac{\der \langle M^4\rangle }{\der T} = \frac{\langle M^4 E\rangle  - \langle M^4\rangle \langle E\rangle }{T^2} \\
-  \frac{\der B}{\der T} = \frac{\langle M^4\rangle _{\der T}\langle M^2\rangle ^2 - 2\langle M^4\rangle \langle M^2\rangle \langle M^2\rangle _{\der T}}{\langle M^2\rangle ^4} \\
-  = cancer =  \\
+  \frac{\der B}{\der T} = \frac{\langle M^4\rangle _{\der T}\langle M^2\rangle ^2 - 2\langle M^4\rangle \langle M^2\rangle \langle M^2\rangle _{\der T}}{\langle M^2\rangle } \\
   = \frac{1}{T^2 \langle M^2\rangle ^3}\left\{\langle M^4 E\rangle \langle M^2\rangle  + \langle M^4\rangle \langle M^2\rangle \langle E\rangle  - 2\langle M^4\rangle \langle M^2E\rangle \right\}
 \end{align}
 
@@ -230,10 +230,10 @@ The implementations were written in Python, utilizing the NumPy and SciPy librar
 The figures where produced using the open source program Grace available at ``plasma-gate.weizmann.ac.il/Grace/''.
 
 \section{Implementation}
-The numerical method we used to perform the Monte-Carlo simulations was a Wolff algorithm written in C++. Since both the 3DXY-model and the 3D Ising model suffer from critcal slowing down, i.e. the equilibration time tends to infinity at the critical temperature, 
+The numerical method we used to perform the Monte-Carlo simulations was a Wolff algorithm we wrote in C++. Since both the 3DXY-model and the 3D Ising model suffer from critcal slowing down, i.e. the equilibration time tends to infinity at the critical temperature, 
 Both the 3DXY-model and the 3D Ising-model suffer from a phenomenon called critical slowing down. Near the transition temperature, the correlation length diverges, so thermal fluctuations propagate very long distances, and so the system takes a very long time to equilibrate to the equilibrum value.
 One can wastly improve the quality-data versus cpu-time ratio by utilizing a global update algorithm such as the Wolff algorithm. 
-\section{Error in estimation}
+\section{Error in estimations and estimations of error in estimations}
 The Monte-Carlo method gives estimations of thermal averages,
 \begin{equation}
   \langle A \rangle = \frac{1}{N}\sum_i A_i +\delta A.
@@ -253,7 +253,8 @@ Functions of averages can produce bias, take for instance the fuction $f(X) = X^
 To mitigate these biases one wants to first calculate the estimations of the averages as precisely as possible to minimize the error, as otherwise it can build up.
 The above method of calculating the error estimate works as well, but a nicer way to do it is by using the jackknife-method.
 One of it's nice features is that it can produce error-bars for functions of averages without having to calculate averages of functions of averages.
-The method is a resampling method, one divides the data set into blocks, $x_\{i\}$, and then calculate the jackknife-average, defined as 
+\subsection{The jackknife method}
+The so called jackknife method is a resampling method, one divides the data set into blocks, $x_\{i\}$, and then calculate the jackknife-averages, defined as 
 \begin{equation}
   x_i^J = \frac{1}{N-1}\sum_{j\neq i}x_j.
 \end{equation}
@@ -272,4 +273,6 @@ where
   \label{}
 \end{equation}
 The size of blocks can be chosen freely, but the result will depend on it. Chosing a smaller blocksize will increase the runtime of the algorithm.
+This method is useful since it can in principle be used to estimate the error in any quantity derived from the dataset.
+The method will however increase the runtime of the analysis by a factor $\sim n_{blocks}$ plus some constant.
 
