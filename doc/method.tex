@@ -157,12 +157,24 @@ and so, detailed balance is satisfied.
 From the chapter of finite size scaling, we have that
 
 \begin{align}
-  b'(L) \equiv B(2L,t=0) - B(L,t=0) &= b_1(2^{-\omega} -1)L^{-\omega}\\
-  b''(L)\equiv \frac{b'(2L)}{b'(L)} &= 2^{-\omega}\\
-  \omega &= -\frac{\ln(b''(L))}{\ln(2)}.
+  b'(L) &\equiv B(2L,t=0) - B(L,t=0) = b_1(2^{-\omega} -1)L^{-\omega}\\
+  b''(L)&\equiv \frac{b'(2L)}{b'(L)} = 2^{-\omega}\\
+  \Rightarrow \omega &= -\frac{\ln(b''(L))}{\ln(2)}.
 \end{align}
-Note that this only holds at the critical temperature, the $\textit{constants}$ $b_0, b_2$ are functions of temperature. Thus if we plot this function using at least four different system sizes, we can get several graphs that intersect at the critical temperature, and from that the scaling correction $\omega$ can be read of without the need for any form of parameter fitting. This depends on the assumption that the higher order corrections are sufficiently small, which they might not in fact be for the lowest system size we have simulated, $L=4$. This method also fails when $b'(L)$ and $b'(2L)$ differ in sign, since then $log(b''(l)$ will be undefined.
+Note that this scaling relation only holds at the critical temperature, the $\textit{constants}$ $b_0, b_2$ are in fact functions of temperature. 
+Thus if we plot this function for systemsizes that are powers of 2, we can get several graphs that intersect at the critical temperature, and from that the scaling correction $\omega$ can be read of without the need for any form of parameter fitting. 
+However, this method relies on the assumption that higher order scaling corrections can be ignored, which might not be true for low enough systemsizes.
+It is therefore important to use other methods to gain confidence or find discrepancies.
+
+One such method we have used is non-linear leastsquare fitting of the quantity $b'(L) = b_1(2^{-\omega} -1)L^{\omega}$.
+A log-log plot of this quantity versus L will have a horn shape, only the line corresponding to the critical temperature will follow a straight line with slope equal to $-\omega$, and the deviations tends to be larger for larger systemsizes.
+Thus, we can estimate omega by fitting the quantity $b'(L)$ to the function $f(\omega,a) = a\cdot L^(-omega)$ for all different temperatures we have data for. Then we do the fit again, but emitt the smallest systemsize, to get another line of estimated omega vs T, which intersects the first line at $T_c$, from which wich the value of $\omega$ can be read off at the Y-axis.One can further omit smaller systemsizes until one only has two points left to get more lines, and then look at the average intersection point to get an estimation of omega and Tc.
+Another possibility is to plot the variance of the least-squares fit as a function of temperature for the different curves, which should be minimal at the critical temperature.
+
+This depends on the assumption that the higher order corrections are sufficiently small, which they might not in fact be for the lowest system size we have simulated, $L=4$.
+This method also fails when $b'(L)$ and $b'(2L)$ differ in sign, since then $log(b''(l)$ will be undefined.
 For such cases one can resort to methods of parameter fitting.
+
 Consider the Superfluid density, which scales as 
 \begin{align}
   r(L)&\equiv \rho_s(L,t=0) \cdot L = r_0 + r_1L^{-\omega_\rho}\\
@@ -171,7 +183,7 @@ Consider the Superfluid density, which scales as
 
 
 For the method using 2 system sizes, one can check by visual inspeciton each different value of omega to see for which omega the graphs intersect mostly at one point. One can also make a numerical check, by finding the intersecitons of all curves, and calculating  and plotting the standard deviation of the intersections for each omega.
-The files containing the $L^{\omega}*(2L\rho_x(2L) - L\rho_x(L))$ vs $T$ is separately loaded for each calculated value of $\omega$, then intersections of these 3-5 lines are found. 
+The files containing the $L^{\omega}\cdot (2L\rho_x(2L) - L\rho_x(L))$ vs $T$ is separately loaded for each calculated value of $\omega$, then intersections of these 3-5 lines are found. 
 The intersection finder finds all intersections, 3 in the case of 3 lines, 6 for 4 lines 10 for 5 lines etc, and then calulates the average position of these intersections. The mean of the euclidean distances are then used as a measure of how close the intersections are. This value is then printed together with the value of omega, and finally plotted vs omega.
 Hopefully the graph will have a clear minimum where the intersections are closest, thus determining the scaling correction omega.
 For low systemsizes higher order corections can distort the found value, thus we visually inspect the graphs to judge how small system sizes should be included. 
@@ -187,6 +199,17 @@ If we instead plot $-\frac{\ln\left(\frac{v_{2L}}{v_L}\right)}{\ln(2)} = \omega$
 These methods requires that we know the constant $A$.
 We can get a good starting estimation for A by extrapolation,
 we plot the value of the binder parameter at the intersecion poins, versus the inverse of the system, and draw the line to $1/L = 0$.
+\section{Calculation of the exponents}
+A quantity we use to calculate the critical exponent $\nu$ is the derivative of the 4th order Binder-cumulant, which we obtain as 
+\begin{align}
+  \frac{\der B}{\der T} = \frac{\der \frac{\langle M^4\rangle}{\langle M^2 \rangle^2}{\der T} \\
+  \left\{\frac{\der \langle A\rangle }{\der T} = \frac{\langle A\cdotE\rangle  - \langle A\rangle \langle E\rangle }{T^2}\right\} \\
+  \langle M^2\rangle _{\der T} \equiv \frac{\der \langle M^2\rangle }{\der T} = \frac{\langle M^2E\rangle  - \langle M^2\rangle \langle E\rangle }{T^2} \\
+  \langle M^4\rangle _{\der T} \equiv \frac{\der \langle M^4\rangle }{\der T} = \frac{\langle M^4 E\rangle  - \langle M^4\rangle \langle E\rangle }{T^2} \\
+  \frac{\der B}{\der T} = \frac{\langle M^4\rangle _{\der T}\langle M^2\rangle ^2 - 2\langle M^4\rangle \langle M^2\rangle \langle M^2\rangle _{\der T}}{\langle M^2\rangle ^4} \\
+  = cancer =  \\
+  = \frac{1}{T^2 \langle M^2\rangle ^3}\left\{\langle M^4 E\rangle \langle M^2\rangle  + \langle M^4\rangle \langle M^2\rangle \langle E\rangle  - 2\langle M^4\rangle \langle M^2E\rangle \right\}
+\end{align}
 
 \section{Parallell programming}
 Simulating time required grows roughly as $L^3$ with system size, one way to speed up data gathering is to parallellize the simulations.
@@ -194,7 +217,7 @@ For the problems at hand, we chose to implement the trivial version of parallell
 The Wolff algorithm can in fact be parallellized \cite{Kaupuzs2010}, but this did not come to our knowledge before a lot of code had been written, so we chose not to implement it. 
 
 The main part of computations/simulations were performed on resources provided by the Swedish National Infrastructure for Computing (SNIC) at the PDC Center for High Performance Computing.
-Some less demanding computations were performed on the Octopus-cluster at the Department of Theoretical Physics at KTH.
+A small part of the computations were performed on the Octopus-cluster at the Department of Theoretical Physics at KTH.
 
 The parallellization was implemented using MPI, having a master process handling data output while the children ran simulations.
 A process that is relatively slow to perform for a computer is to write data to disk. 
