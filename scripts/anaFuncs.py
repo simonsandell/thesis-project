@@ -1,9 +1,9 @@
 
 def dirToXaxis(fullpath):
     if ('vsT' in fullpath):
-        return "Temperature";
+        return "T - temperature";
     if ('vsL' in fullpath):
-        return "L";
+        return "L - systemsize";
     if ('vsO' in fullpath):
         return "Omega";
     if ('vsN' in fullpath):
@@ -15,14 +15,14 @@ def dirToXaxis(fullpath):
     if ('intersections' in fullpath):
         return "1/L";
     if ('subtraction' in fullpath):
-        return "L";
+        return "L - systemsize";
     else:
         return "unknown"
 
 def dirToYaxis(dirname):
     dirLex = { 'en':r'e Energy per spin',
             'mag':r'm Magnetization per spin',
-            'bin':r'B = M\S4\N/M\S2\N',
+            'bin':r'B = \x\ca\0\Cm\S4\N\x\cq\0\C/\x\ca\0\Cm\S2\N\x\cq\0\C\S2\N',
             'dbdt':r'dB/dT',
             'chi':r'\xc\0 Susceptibility',
             'rs':r'L\xr\0\ss\N Superfluid density',
@@ -36,10 +36,10 @@ def dirToYaxis(dirname):
             'sigmaVsZ':r'\xc\0\S2\N',
             'tc':r'T\sc\S',
             'intersection':r'mean dist to mean point of intersections',
-            'eta':r'\xh\0',
+            'eta':r'\xh\0 critical exponent',
             'omega':r'\xw\0',
             'varomega':r'Var(\xw\0)',
-            'nu':r'\xn\0'};
+            'nu':r'\xn\0 critical exponent'};
 
     if dirname in dirLex:
         return dirLex[dirname];

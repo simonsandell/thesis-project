@@ -112,7 +112,6 @@ for index,o in enumerate(orange):
     eta_close[index,:] = [o,eta_cl,avgEta,avgTeta];
 
 #write three plots, closeness vs omega, exponent vs omega, Tc vs omega
-
 close_path = settings.foutput_path+settings.model + "/vsO/intersection/";
 eta_path= settings.foutput_path+settings.model + "/vsO/eta/eta_vs_omega.dat";
 nu_path= settings.foutput_path+settings.model + "/vsO/nu/nu_vs_omega.dat";

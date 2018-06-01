@@ -8,6 +8,7 @@ import sys
 def fitfunc(L,omega,a):
     res = a*(L**(-omega));
     return res;
+
 skip_n = int(sys.argv[1])
 namelist = [
         settings.pickles_path+"4.0_8.0_2Lquant.npy",
