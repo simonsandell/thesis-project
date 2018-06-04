@@ -14,8 +14,7 @@ def jackknife(mat,func,result_size,blocks=100):
         print(mat[0,:]);
         print(N);
         print("not enough mcavgs");
-        multiprocessing.exit()
-        exit();
+        sys.exit(1);
     N_blocks = len(indBlocks);
     res = np.zeros((N_blocks,result_size));
     for i in range(N_blocks):
