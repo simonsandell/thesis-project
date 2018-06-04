@@ -75,8 +75,11 @@ if (__name__=="__main__"):
     res = np.array(res);
     res = res.squeeze();
     
+    # save text file for visual inspeciton
     fileWriter.writeDataTable(fName,res);
-    np.save(settings.foutput_path+model+"/datatable_"+fName+model,res);
-    datatableToPlots(settings.foutput_path+model+"/",fName);
+    # save npy file for further analysis
+    np.save(settings.datatables_path+"/datatable_"+fName+model,res);
+    # make plots from  the npy datatables
+    datatableToPlots.datatableToPlots(settings.datatables_path+"/",fName);
     
     

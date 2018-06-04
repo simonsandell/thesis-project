@@ -2,16 +2,18 @@ import os
 import timeit
 import sys
 import numpy as np
+import settings
 from multiprocessing import Pool
 
-import textToFloats
+from datahandle import textToFloats
 inittime = timeit.default_timer();
 
-
+# parallell script, loads all files in dir and converts to npy
+# saves in settings.picklepath
 dirpath = sys.argv[1];
-model = sys.argv[2];
-saveName = sys.argv[3];
-if (sys.argv[2] == "3DXY"):
+model = settings.model
+saveName = sys.argv[2];
+if (model == "3DXY"):
     nvals = 22;
 else:
     nvals = 19;
@@ -50,5 +52,5 @@ tmax = np.max(tval);
 tmin = np.min(tval);
 strL += str(tmin)+"-"+str(tmax);
 
-np.save("./pickles/"+model+saveName+u+strL,npmat);
+np.save(settings.pickles_path+model+saveName+u+strL,npmat);
 print(timeit.default_timer() - inittime)
