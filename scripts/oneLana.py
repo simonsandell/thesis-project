@@ -9,6 +9,7 @@ from analysis import jackknife
 from plotting import fileWriter
 from plotting import datatableToPlots
 from analysis import modelAvgs as ma
+
 if (__name__=="__main__"):
     filepath = sys.argv[1];
     fName = os.path.basename(filepath).rstrip(".npy");
@@ -33,7 +34,8 @@ if (__name__=="__main__"):
             res[5] = avgs[7]/avgs[21];
             res[6] = avgs[9]/avgs[21];
         return res;
-    
+    #calculate average of all columns, pass that to modelAvgs to obtain bin,dbdt,chi etc 
+    #return nparray [avg(columns), modelAvgs(avgs)]
     def avgF(x):
         res = np.zeros(x.shape[1]);
         for i in range(x.shape[1]):
@@ -41,10 +43,13 @@ if (__name__=="__main__"):
         modavgs = modelAvgs(res);
         res = np.append(res,modavgs);
         return res;
-    
+    #for a block with one T value 
     def calcForOneLOneT(view):
         avg = avgF(view);
         j_est = jackknife.jackknife(view,avgF,avg.shape[0]);
+        t = repr(view[0,1]);
+        l = repr(view[0,0]);
+        np.save(settings.datatables_path+"jackknife/j_est_" + l+"_"+t,j_est);
         j_avg = np.mean(j_est,axis=0);
         j_std = np.std(j_est,axis=0);
         avg = np.append(avg,view.shape[0]);# add number of mcavgs to result
@@ -61,6 +66,8 @@ if (__name__=="__main__"):
         Tv,Ti = np.unique(data[l1:l2,1],return_index=True);
         print(Tv)
         print(len(Tv));
+        if (len(Tv) != 101):
+            sys.exit(101);
         Ti = np.append(Ti,(l2-l1));
         for t1,t2 in zip(Ti[:-1],Ti[1:]):
             args.append(data[(l1+t1):(l1+t2),:]);
