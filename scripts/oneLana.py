@@ -4,6 +4,7 @@ import os
 import math
 import sys
 import settings
+import datetime
 
 from analysis import jackknife
 from plotting import fileWriter
@@ -73,7 +74,7 @@ if (__name__=="__main__"):
             args.append(data[(l1+t1):(l1+t2),:]);
     print("number of jobs: " + str(len(args)));
     res = []
-    nproc = 6;
+    nproc = 48;
     print("nproc="+str(nproc));
     pool = Pool(processes=nproc,maxtasksperchild=1);
     res.append(pool.map(calcForOneLOneT,args));
@@ -85,8 +86,10 @@ if (__name__=="__main__"):
     # save text file for visual inspeciton
     fileWriter.writeDataTable(fName,res);
     # save npy file for further analysis
+    foldername = datetime.date.today().strftime("%B_%d_%Y");
+    
+    if not os.path.exists(settings.datatables_path+foldername):
+        os.makedirs(settings.datatables_path+foldername);
     np.save(settings.datatables_path+"/datatable_"+fName+model,res);
     # make plots from  the npy datatables
-    datatableToPlots.datatableToPlots(settings.datatables_path+"/",fName);
-    
-    
+    datatableToPlots.datatableToPlots(settings.datatables_path+foldername,fName);
