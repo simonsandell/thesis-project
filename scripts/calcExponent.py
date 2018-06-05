@@ -4,6 +4,7 @@ import settings
 import sys
 from scipy.optimize import curve_fit
 from plotting import fileWriter
+
 def getTempIndices(arr):
     tval,tidx = np.unique(arr[:,1],return_index=True);
     tidx2 = tidx.copy();
@@ -123,3 +124,4 @@ writePath = settings.foutput_path+settings.model+"/vsT/nu/"+savename+".dat";
 fileWriter.writeQuant(writePath,result,[0,1,2,3]);
 eta_Path = settings.foutput_path+settings.model +"/vsT/eta/"+savename+".dat";
 fileWriter.writeQuant(eta_Path,eta_result,[0,1,2,3]);
+

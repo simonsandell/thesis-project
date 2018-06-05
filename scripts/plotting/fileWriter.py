@@ -20,6 +20,7 @@ def writeDataTable(fName,array):
         string = stringBuilder(ln);
         openfile.write(string);
     openfile.close();
+
 def writeQuantClean(path,array,inds):
     [x,y,dy,n] = inds;
     of = open(path,"w");
@@ -34,6 +35,7 @@ def writeQuant(path,array,inds):
     for i in range(array.shape[0]):
         line = [array[i,x],array[i,y],array[i,dy],array[i,n]];
         of.write(stringBuilder(line));
+
 def writeQuantNoDY(path,array,inds):
     [x,y] = inds;
     of = open(path,"w");
@@ -41,7 +43,7 @@ def writeQuantNoDY(path,array,inds):
         line = [array[i,x],array[i,y],0.0];
         of.write(stringBuilder(line));
 
-def writeVsT(fName,array):
+def writeVsT(savename,array):
     L = array[0,0];
     if (settings.model == "3DXY"):
         idx = anaFuncs.get3DXYIndex();
@@ -49,11 +51,10 @@ def writeVsT(fName,array):
         for key in keys:
             inds = [idx["T"],idx[key][0],idx[key][0] + idx["last"],idx["Nmcavg"]];
             dirname = idx[key][1];
-            path = settings.foutput_path+settings.model+"/vsT/"+dirname+"/"+repr(L)+"_"+fName+"_"+key+".dat";
+            path = settings.foutput_path+settings.model+"/vsT/"+dirname+"/"+savename+u+key+".dat";
             writeQuant(path,array,inds);
 
-def writeVsL(fName,array):
-    T = array[0,1];
+def writeVsL(savename,array):
     if (settings.model =="3DXY"):
         idx = anaFuncs.get3DXYIndex();
         keys = ["b","rs","chi","dbdt","B","RS","CHI","C","DBDT","EN","MAG"];
@@ -61,23 +62,9 @@ def writeVsL(fName,array):
         for key in keys:
             inds = [idx["L"],idx[key][0],idx[key][0] + idx["last"],idx["Nmcavg"]];
             dirname = idx[key][1];
-            path = settings.foutput_path+settings.model+"/vsL/"+dirname+"/"+repr(T)+"_"+fName+u+key+".dat";
+            path = settings.foutput_path+settings.model+"/vsL/"+dirname+"/"+savename+u+key+".dat";
 
             writeQuant(path,array,inds);
-
-def write2LData(savename,data):
-    u = "_";
-    of = open(settings.foutput_path+"/"+settings.model+"/twoL/"+savename+".txt","w");
-    of.write("# L L2 T Bin Rs NL NL2 dBin dRs \n");
-    bf = open(settings.foutput_path+s+settings.model+s+"twoL/bin/"+savename+".dat","w");
-    rf = open(settings.foutput_path+s+settings.model+s+"twoL/rs/"+savename+".dat","w");
-    for ln in data:
-        of.write(stringBuilder(ln));
-        bf.write(stringBuilder([ln[2],ln[3],ln[7],ln[5],ln[6]]));
-        rf.write(stringBuilder([ln[2],ln[4],ln[8],ln[5],ln[6]]));
-
-
-    
 
 def writeOmegaVsClose(savename,dirname,data):
     of = open(settings.foutput_path+settings.model+s+"vsO/"+dirname+s+savename+".dat","w");
@@ -110,7 +97,3 @@ def writeSubtractedQuants(savename,dirname,data):
     of = open(settings.foutput_path+settings.model+"/subtraction/"+dirname+"/"+savename+".dat","w");
     for ln in data:
         of.write(stringBuilder(ln));
-
-
-
-

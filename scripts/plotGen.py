@@ -3,9 +3,9 @@ import sys
 import settings
 
 
-dirpath = settings.root_path+"modular/datatables/combined/";
-savename = "combined";
-datatableToPlots.datatableToPlots(dirpath,savename);
+dirpath = settings.datatables_path+"jun_5_2018/";
+tag = "combined";
+datatableToPlots.datatableToPlots(dirpath,tag);
 
 
 

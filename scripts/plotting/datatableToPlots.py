@@ -6,13 +6,13 @@ from plotting import fileWriter
 import anaFuncs
 np.set_printoptions(precision=13)
 #load all datatables in one folder, combine, then do vsT and vsL plots
-def datatableToPlots(folderName,savename):
+def datatableToPlots(folderName,tag):
     model = settings.model;
     allDT = np.empty((0,59));# all datatables
     for filename in os.listdir(folderName):
         if "datatable" in filename:
             datatable = np.load(os.path.join(folderName,filename));
-            fileWriter.writeVsT(savename,datatable)
+            fileWriter.writeVsT(str(datatable[0,0])+"_"+tag,datatable)
             allDT = np.append(allDT,datatable,axis=0);
     # sort by T, then L 
     ind = np.lexsort((allDT[:,0],allDT[:,1]));
@@ -27,7 +27,7 @@ def datatableToPlots(folderName,savename):
     for ind in range(Ti.shape[0]-1):
         tview = allDT[Ti[ind]:Ti[ind+1],:];
         tview = tview[tview[:,0].argsort()];
-        fileWriter.writeVsL(savename,tview);
+        fileWriter.writeVsL(str(tview[0,1])+"_"+tag,tview);
     
 def twoLtoPlot(path,savename):
     data = np.load(path);
