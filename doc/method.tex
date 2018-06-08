@@ -1,4 +1,4 @@
-%        File: preface.tex
+        File: preface.tex
 %     Created: mån feb 12 01:00  2018 C
 % Last Change: mån feb 12 01:00  2018 C
 %
@@ -6,20 +6,19 @@
 
 \section{Monte Carlo}
 In the theoretical framework of statistical physics, physical predictions come from thermal averages, calculated from 
-\begin{equation}
-  \langle A\rangle = \frac{1}{Z}\trm{Tr} e^{-H/T} = \sum_x A(x) P(x)
-  \label{MC:eq:avg}
-\end{equation}
 where  $P(x) = (1/Z)\trm{exp}(-H(x))$ is the Boltzmann distribution, and the sum is a sum over all possible states of the system. 
+
 Models of physical systems are described by writing down the mathematical expression for the Hamiltonian.
-An expression for the partition funciton $Z$ can be written down, but for most models, the number of states are infinite or at least impractically large, so the first formula above can seldom be used in practice to calculate the averages.
+An expression for the partition funciton $Z$ can be written down, but for most models, the number of states are infinite or at least impractically large, so the first formula above can for most models not be used to calculate the averages.
 Estimation of such very large integrals can be done in several ways.
 One way is to calculate the value of the function to be integrated at equidistant points inside the integration area and extrapolating to obtain a measure of the full integral.
 This method can be biased, if you do not know your function with full detail, you may select points that are somehow correlated or otherwise introduces an unnecessary error.
 A better and safer way to obtain an estimate of the integral is to use randomly distributed points.
 This will remove potential bias and will often yeild a better estimate when using the same number of points.
 
-In the field of statistical physics, . By simulating a model, and updating the state of the model randomly, but with such rules so that it's states are Boltzmann-distributed, one can estimate the thermal averages by calculating the corresponding quantity of the simulated model at different 'time-steps'.
+By simulating a model, and updating the state of the model randomly, but with such rules so that it's states are Boltzmann-distributed, one can estimate the thermal averages by calculating the corresponding quantity of the simulated model for each state, and then averaging over these ``drawn'' states. 
+
+
 
 When implementing such an algorithm, it is convenient to use a pseudo-random number generator (pRNG) to produce random numbers.
 The quality of the pRNG is very important when implementing a Monte Carlo-method.
@@ -230,9 +229,11 @@ The implementations were written in Python, utilizing the NumPy and SciPy librar
 The figures where produced using the open source program Grace available at ``plasma-gate.weizmann.ac.il/Grace/''.
 
 \section{Implementation}
-The numerical method we used to perform the Monte-Carlo simulations was a Wolff algorithm we wrote in C++. Since both the 3DXY-model and the 3D Ising model suffer from critcal slowing down, i.e. the equilibration time tends to infinity at the critical temperature, 
-Both the 3DXY-model and the 3D Ising-model suffer from a phenomenon called critical slowing down. Near the transition temperature, the correlation length diverges, so thermal fluctuations propagate very long distances, and so the system takes a very long time to equilibrate to the equilibrum value.
-One can wastly improve the quality-data versus cpu-time ratio by utilizing a global update algorithm such as the Wolff algorithm. 
+The numerical method we used to perform the Monte-Carlo simulations was the Wolff algorithm implemented in C++.
+Since both the 3DXY-model and the 3D Ising model suffer from critcal slowing down, i.e. the equilibration time tends to infinity at the critical temperature, one can vastly improve the cputime needed by using a non-local update method.
+Both the 3DXY-model and the 3D Ising-model suffer from a phenomenon called critical slowing down.
+Near the transition temperature, the correlation length diverges, so thermal fluctuations propagate very long distances, and so the system takes a very long time to equilibrate.:
+
 \section{Error in estimations and estimations of error in estimations}
 The Monte-Carlo method gives estimations of thermal averages,
 \begin{equation}
@@ -272,7 +273,8 @@ where
   \sigma^2_{f^J} = \bar{(f^J)^2} - (\bar{f^J})^2.
   \label{}
 \end{equation}
-The size of blocks can be chosen freely, but the result will depend on it. Chosing a smaller blocksize will increase the runtime of the algorithm.
+The size of blocks can be chosen freely, but the result will depend on it.
+Chosing a smaller blocksize will increase the runtime of the algorithm.
 This method is useful since it can in principle be used to estimate the error in any quantity derived from the dataset.
 The method will however increase the runtime of the analysis by a factor $\sim n_{blocks}$ plus some constant.
 
