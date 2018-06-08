@@ -2,6 +2,8 @@
 #include <string>
 #include <sstream>
 #include <iostream>
+#include <time.h>
+
 #include "3DXY/3DXYio.h"
 #include "3DXY/3DXYlattice.h"
 #include "3DXY/3DXYrunMetro.h"
@@ -132,3 +134,29 @@ void _3DXY::loadAndPrint(long double L,std::string maxepath,std::string warmlatp
 	lat.loadLattice();
 	lat.printVals();
 }
+void _3DXY::cputime_vs_delta(std::string maxepath, std::string warmlatpath){
+	long double runTemp = 2.201840000000000L;
+	long double system_sizes[4] = {4.0L,8.0L,16.0L,32.0L};
+	long double Trange[1] = {runTemp};
+	int Ntemps = 1;
+	int Nsamp = 100000;
+	RandStruct r;
+	clock_t time;
+	clock_t passed;
+	for (unsigned int i = 0; i < 4; i++){
+		std::cout << system_sizes[i] << std::endl << i << std::endl;
+		Cluster c(system_sizes[i]);
+		Lattice3DXY lat(system_sizes[i], runTemp, true, r, c, maxepath, warmlatpath);
+		time = clock();
+		for (int j = 0; j < 10; j++){
+			wolffHistRun3DXY(lat, Nsamp, Trange, Ntemps);
+			warmup(lat, 100);
+		}
+		passed = clock() - time;
+		std::ostringstream ss;
+		ss << "passed time: " << passed << std::endl;
+		lat.oPer.addLine(ss.str());
+		lat.oPer.printData(0);
+	}
+}
+
