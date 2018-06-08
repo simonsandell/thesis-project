@@ -58,4 +58,3 @@ tmin = np.min(tval)
 strL += str(tmin) + "-" + str(tmax)
 
 np.save(settings.pickles_path + model + saveName + u + strL, npmat)
-print(timeit.default_timer() - inittime)

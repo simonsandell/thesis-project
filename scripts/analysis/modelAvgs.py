@@ -18,8 +18,8 @@ def getRs(e, sx, sy, sz, exp, L, T):
     return rs
 
 
-def getC(e, e2, exp, T, Nspins):
+def getC(e, e2, exp, T, n_spins):
     c = e2 / exp - e * e / (exp * exp)
     c = c / (T * T)
-    c = c * Nspins
+    c = c * n_spins
     return c
