@@ -1,7 +1,7 @@
 import anaFuncs
 import settings
 
-fs = "{:30.30f}"
+FRMT = "{:30.30f}"
 s = "/"
 u = "_"
 
@@ -9,7 +9,7 @@ u = "_"
 def stringBuilder(line):
     res = ""
     for word in line:
-        res += fs.format(word) + "    "
+        res += FRMT.format(word) + "    "
     res += "\n"
     res = res.replace("inf", "0.0")
     res = res.replace("nan", "0.0")

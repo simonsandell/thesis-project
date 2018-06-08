@@ -1,5 +1,5 @@
+import sys
 import numpy as np
-import settings
 
 
 def get_bin(mag2, mag4, exp):
@@ -14,94 +14,57 @@ def get_rho_s(e, sx, sy, sz, exp, L, T):
 
 
 def calc_omega_func(view1, view2, view3):
-    t = view1[0, 1]
-    l1 = view1[0, 0]
-    l2 = view2[0, 0]
-    l3 = view3[0, 0]
-    b1 = get_bin(np.mean(view1[:, 10]), np.mean(view1[:, 11]), np.mean(view1[:, 21]))
-    b2 = get_bin(np.mean(view2[:, 10]), np.mean(view2[:, 11]), np.mean(view2[:, 21]))
-    b3 = get_bin(np.mean(view3[:, 10]), np.mean(view3[:, 11]), np.mean(view3[:, 21]))
-    r1 = get_rho_s(
-        np.mean(view1[:, 7]),
-        np.mean(view1[:, 14]),
-        np.mean(view1[:, 15]),
-        np.mean(view1[:, 16]),
-        np.mean(view1[:, 21]),
-        l1,
-        t,
+    temp = view1[1]
+    size_1 = view1[0]
+    size_2 = view2[0]
+    size_3 = view3[0]
+    bin_1 = get_bin(view1[10], view1[11], view1[21])
+    bin_2 = get_bin(view2[10], view2[11], view2[21])
+    bin_3 = get_bin(view3[10], view3[11], view3[21])
+    rho_1 = get_rho_s(
+        view1[7], view1[14], view1[15], view1[16],
+        view1[21], size_1, temp
     )
-    r2 = get_rho_s(
-        np.mean(view2[:, 7]),
-        np.mean(view2[:, 14]),
-        np.mean(view2[:, 15]),
-        np.mean(view2[:, 16]),
-        np.mean(view2[:, 21]),
-        l2,
-        t,
+    rho_2 = get_rho_s(
+        view2[7], view2[14], view2[15], view2[16],
+        view2[21], size_2, temp
     )
-    r3 = get_rho_s(
-        np.mean(view3[:, 7]),
-        np.mean(view3[:, 14]),
-        np.mean(view3[:, 15]),
-        np.mean(view3[:, 16]),
-        np.mean(view3[:, 21]),
-        l3,
-        t,
+    rho_3 = get_rho_s(
+        view3[7], view3[14], view3[15], view3[16],
+        view3[21], size_3, temp
     )
 
-    omegabin = -np.log((b3 - b2) / (b2 - b1))
-    omegarho = -np.log((r3 - r2) / (r2 - r1))
+    omegabin = -np.log((bin_3 - bin_2) / (bin_2 - bin_1))
+    omegarho = -np.log((rho_3 - rho_2) / (rho_2 - rho_1))
 
     return [omegabin, omegarho]
 
 
-# produce [T, omegabin, omegarho, L1, L2, L3, N1, N2, N3, domegabin, domegarho, ]
-def produceResults(arg):
-    view1, view2, view3 = arg
+# produce [T, omegabin, omegarho, L1, L2, L3]
+def calculate_three_l_quant(view1, view2, view3):
     omegabin, omegarho = calc_omega_func(view1, view2, view3)
-    jomegas = jackknife.jackknife_3(view1, view2, view3, calc_omega_func, 2, 100)
-    t = view1[0, 1]
-    l1 = view1[0, 0]
-    l2 = view2[0, 0]
-    l3 = view3[0, 0]
-    n1 = view1.shape[0]
-    n2 = view2.shape[0]
-    n3 = view3.shape[0]
-    domegabin = np.sqrt(jomegas.shape[0] - 1) * np.std(jomegas[:, 0])
-    domegarho = np.sqrt(jomegas.shape[0] - 1) * np.std(jomegas[:, 1])
+    temp = view1[1]
+    size_1 = view1[0]
+    size_2 = view2[0]
+    size_3 = view3[0]
+    return [temp, omegabin, omegarho, size_1, size_2, size_3]
 
-    return [t, omegabin, omegarho, l1, l2, l3, n1, n2, n3, domegabin, domegarho]
-
-
-def getTviews(mat):
-    tv, ti = np.unique(mat[:, 1], return_index=True)
-    ti = np.append(ti, mat.shape[0])
-    res = []
-
-    for i, (tind1, tind2) in enumerate(zip(ti[:-1], ti[1:])):
-        res.append(mat[tind1:tind2, :])
-    return res
-
-
-def threeLmethod(data1, data2, data3, model, savename):
-    # datatables for 3 systemsizes
+# take datatables
+def threeLmethod(data1, data2, data3):
+    # sort by temperature
     data1 = data1[data1[:, 1].argsort()]
     data2 = data2[data2[:, 1].argsort()]
     data3 = data3[data3[:, 1].argsort()]
     l1, l2, l3 = data1[0, 0], data2[0, 0], data3[0, 0]
-    dat1views = getTviews(data1)
-    dat2views = getTviews(data2)
-    dat3views = getTviews(data3)
-    result = []
-    funcargs = []
 
-    for v1, v2, v3 in zip(dat1views, dat2views, dat3views):
-        funcargs.append([v1, v2, v3])
-    result = pool.map(produceResults, funcargs)
-    pool.close()
-    pool.join()
-    fileWriter.writeThreeLMethod(
-        savename + str(l1) + "_" + str(l2) + "_" + str(l3), result
-    )
+    if not ((l2 == 2*l1) and (l3 == 2*l2)):
+        print(l1, l2, l2)
+        print("not factors of 2")
+        sys.exit(1)
+
+    result = []
+
+    for i in range(data1.shape[0]):
+        result.append(calculate_three_l_quant(data1[i, :], data2[i, :], data3[i, :]))
 
     return result

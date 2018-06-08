@@ -1,5 +1,4 @@
 import os
-
 root_path = "/home/simon/exjobb/"
 foutput_path = "/home/simon/exjobb/modular/foutput/"
 scripts_path = "/home/simon/exjobb/scripts/"
