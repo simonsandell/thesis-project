@@ -37,10 +37,12 @@ def writeQuantClean(path, array, inds):
 
 
 def writeQuant(path, array, inds):
-    [x, y, dy, n] = inds
     of = open(path, "w")
     for i in range(array.shape[0]):
-        line = [array[i, x], array[i, y], array[i, dy], array[i, n]]
+        line = []
+        line[:] = []
+        for ind in inds:
+            line.append(array[i, ind])
         of.write(stringBuilder(line))
 
 
