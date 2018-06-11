@@ -6,21 +6,30 @@
 % scaling laws and definitions of critical exponents, maybe remove? maybe write some text. move to appendix or other place?
 % There should be some parts about xy model and ising3d model here.
 In this section we will describe the models we simulate using Monte Carlo, as well as establish some theoretical background to explain how physical information can be extracted from simulated systems with sizes $10^X$ times smaller than actual realizations of the transition studied in experiments.
-
-Throughout this chapter we set $k_B=1$.
 \section{Models} % define equations, define quantities.
-The principle of universality allows one to freely choose a model from the pool of models all coressponding to the same universality class, since all those models will have the same universal critical properties.
+The goal of this thesis is to estimate the critical exponents of the lambda phase transition (\lpt) in $^4$He by Monte Carlo (MC) simulation of a model. 
+The principle of Universality allows us to freely chose a model for our simulation as long as it is part of the same Universality Class as the \lpt, since all those models are guaranteed to have the exact same critical properties. 
 The three criteria that define universality classes are the symmetry group of the order parameter, the physical dimensions and the range of the interactions.
-The class of the lamba transition in $^4$He is represented by the symmetry group $O(2)$, short range interactions and $d=3$. With $d=2$ instead the class changes to that of the famous Kosterlitz-Thouless-transition.
+The class of the lamba transition in $^4$He is represented by the symmetry group $O(2)$, short range interactions and $d=3$. With $d=2$ instead the class changes to that of the famous topological Kosterlitz-Thouless transition.
 
 The model we use in our simulation is the so-called XY-model in 3 dimension and allowing only nearest neighbour interactions on a cubic lattice.
+We employ periodic boundary conditions, so that the nearest neighbours of any given lattice site $\bm{s} = (x,y,z)$ is defined as 
+\begin{align}
+    \bm{n_{1,2}} &= (\trm{mod}(L+x\pm1), &   &y,                    &    z)&\\
+    \bm{n_{3,4}} &= (x,                  &   &\trm{mod}(L+y\pm1),   &    z)&\\
+    \bm{n_{5,6}} &= (x,                  &   &y,                    &    \trm{mod}(L+z\pm1))&
+\end{align}
+where the lattice indices $(x,y,z)$ range from $[0,L-1]$.
 
-The hamiltonian of the 3DXY-model is
+The hamiltonian is written as 
 \begin{equation}
+  \label{xyham}
   H_{\trm{3DXY}} = -K\sum\limits_{\langle i,j\rangle} \bm{s_i}\cdot\bm{s_j} = -K\sum\limits_{\langle i,j\rangle} \cos(\alpha_i - \alpha_j)
 \end{equation}
-where $K$ is the coupling constant, which we set to $K=1$. 
+where $K$ is the coupling constant, which we during the rest of the thesis let $K=1$.
+In the XY-model, the spins are confined to a plane, so they can be parametrized by $ \bm{s_1} = (\cos(\alpha_i),\sin(\alpha_i)$, hence the second equality in \ref{xyham}.
 
+Next, we define some of the quantities which we calculate during simulation.
 We define the magnetization as 
 \begin{equation}
   M = \left| \sum_i \bm{s_i}\right|
@@ -43,7 +52,25 @@ To improve statistical results, we also compute
   L\rho_s = -\langle E\rangle - \frac{1}{T}\left\langle\left(\sum_i \sin(\alpha_i - \alpha_{i+(0,0,1)})\right)^2\right\rangle
   \label{}
 \end{align}
-In the regular liquid phase, the energy of the system is unaffected by uniform boundary motion. The superfluid stiffness is a quantity which measures the shift in energy due to a shift of the angles along a boundary, so this quantity is expected to 
+In the regular liquid phase, the energy of the system is unaffected by uniform boundary motion. The superfluid stiffness is a quantity which measures the shift in energy due to a shift of the angles along a boundary.
+It is interesting as it scales as 
+
+The helicity modulus $\Upsilon(T)$ is a measure of the system to a ``phase twisting'' field, for a superfluid system the helicity modulus is related to the superfluid density
+$\rho_s = (m/\hbar)^2 \Upsilon(T)$.
+Fischer et al showed in 1973 that this quantity can be calculated within the framework of equilibrium statistical mechanics, but one need to go beyond bulk properties.
+Operational definition for spherical model (1952 Barber Fischer) and ideal Bose gas (Barber 1977) under periodic and antiperiodic boundary conditions:
+\begin{equation}
+  \Upsilon(T) = \trm{lim}\limits_{L\rightarrow \infty} (2L^2/\pi^2) (F^{1/2} (T;L)-F^0(T;L)).
+  \label{}
+\end{equation}
+Rudnick Jasnow (1977) operational definition: 
+\begin{equation}
+  \Upsilon(T) =\left \frac{  \pa^2F(T;k_0)}{\pa k^2_0}\right|_{k_0 =0}
+  \label{}
+\end{equation}
+Thought: the boundary conditions induce a long wavelength twist of the wavenumber $k_0$ of the order parameter.
+Showed that Josephson relation ($\nu = 2\beta -\eta\nu = 2 - \alpha -2\nu = (d -2)\nu$) (1966) is exact using this definition and epsilon-expansion.
+
 \section{Scaling}
 Often in physics, relations between different quantities are described by so-called power-laws, expressions on the form $f = f(\xi)\cdot g^{x}$, where the physical quantity $f$ is said to scale with $x$ in relation to some other physical quantity $g$. $\xi$ represents variables that are deemed irrelevant for the scaling behaviour of $f$.
 
@@ -58,6 +85,7 @@ The core concept is the renormalization group transformations which takes a Hami
 The name renormalization group is not entirely appropriate, since these transformations are in general complicated and non-linear, thus not always having inverses. But the transformations do have the associative property of groups. Rescaling the system by some length $l_1$ and then rescaling again by some other length $l_2$ should be equivalent to performing the rescaling in the other order.
 But so far all we did was remove a finite number of degrees of freedom from out system, how can that explain the sigular behaviour at phase transitions? By repeating the transformations an infinite number of times, singular behaviour can be introduced.
 The partition function is what we really want to compute to know everything about a physical system, but that task is most often simply unachievable. The renormalization transformation are also not easy to compute, but the transformation of the coupling constants can be approximated.
+
 \section{Universality}
 The theromodynamics of any model; the phase diagram, correlation functions, other quantites etc, may depend on the specific values of coupling parameters in the hamiltonian, symmetries, dimensionality, type of lattice, etc. 
 But it turns out that the critical phenomena (phase transitions) only depend on three things, the symmetries of the hamiltonian, the dimensionality and the range of interations ( type of critical point ).
@@ -67,7 +95,7 @@ One inconvenience is that one cannot simulate the infinite size 3DXY-model due t
 
 
 \section{Finite size scaling}
-Consider a system with coupling constants $K$ and linear finite size $L$. 
+Consider a system with a set of coupling constants $[K]$ and linear finite size $L$. 
 The singular part of the free energy scales as
 \begin{equation}
   f_s([K],L^{-1}) = l^{-d}f_s([K],lL^{-1}).
