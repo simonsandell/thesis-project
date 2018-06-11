@@ -3,6 +3,7 @@ module docstring
 """
 from pylab import cm
 CMAP = cm.get_cmap('Dark2', 8)
+
 for i in range(CMAP.N):
     rgb = CMAP(i)[:3]
     r, g, b = rgb

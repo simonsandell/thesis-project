@@ -43,7 +43,7 @@ def dirToYaxis(dirname):
         "omega": r"\xw\0",
         "varomega": r"Var(\xw\0)",
         "nu": r"\xn\0 critical exponent",
-        "delta": r'\xD\0(\x\ca\0\Cm\x\cq\0\C) / t\scpu\S'
+        "delta": r'CPU hours /  \xD\0(\x\ca\0\Cm\x\cq\0\C)'
     }
 
     if dirname in dirLex:
