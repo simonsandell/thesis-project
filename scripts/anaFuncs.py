@@ -4,7 +4,7 @@ def dirToXaxis(fullpath):
     if "vsL" in fullpath:
         return "L - systemsize"
     if "vsO" in fullpath:
-        return "Omega"
+        return "Omega" 
     if "vsN" in fullpath:
         return r"N\ssweeps\S"
     if "findZ" in fullpath:
@@ -43,7 +43,7 @@ def dirToYaxis(dirname):
         "omega": r"\xw\0",
         "varomega": r"Var(\xw\0)",
         "nu": r"\xn\0 critical exponent",
-        "delta": r'CPU hours /  \xD\0(\x\ca\0\Cm\x\cq\0\C)'
+        "delta": r'CPU hours / N\sMCAvg\S'
     }
 
     if dirname in dirLex:

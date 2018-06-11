@@ -12,21 +12,15 @@ from analysis import twoLana
 
 MODEL = settings.model
 DTSET = "jun_5_2018"
-TAG = "combined"
+TAG = "jun_5"
 
 DATAFILES = [
     settings.datatables_path + DTSET + "/datatable_4combined3DXY.npy",
     settings.datatables_path + DTSET + "/datatable_8combined3DXY.npy",
     settings.datatables_path + DTSET + "/datatable_16combined3DXY.npy",
-    settings.datatables_path
-    + DTSET
-    + "/datatable_3DXYjun4_32_32.0_2.2016-2.2023DXY.npy",
-    settings.datatables_path
-    + DTSET
-    + "/datatable_3DXYjun4_64_64.0_2.2016-2.2023DXY.npy",
-    settings.datatables_path
-    + DTSET
-    + "/datatable_3DXYjun4_128_128.0_2.2016-2.2023DXY.npy",
+    settings.datatables_path + DTSET + "/datatable_32combined3DXY.npy",
+    settings.datatables_path + DTSET + "/datatable_64combined3DXY.npy",
+    settings.datatables_path + DTSET + "/datatable_128combined3DXY.npy",
 ]
 JACKFILES = [
     settings.datatables_path + DTSET + "/jackknife/4combined.npy",
