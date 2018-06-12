@@ -79,10 +79,8 @@ def dirToTitle(dirname):
 
 
 def dirToLogPlot(fullpath):
-    if "vsT" in fullpath:
-        return [False, False]
-    if "vsL" in fullpath:
-        return [True, True]
+    if "varomega" in fullpath:
+        return [False, True]
     if "vsN" in fullpath:
         return [True, False]
     if "teq" in fullpath:
@@ -91,8 +89,10 @@ def dirToLogPlot(fullpath):
         return [False, False]
     if "subtraction" in fullpath:
         return [True, True]
-    if "varomega" in fullpath:
-        return [False, True]
+    if "vsT" in fullpath:
+        return [False, False]
+    if "vsL" in fullpath:
+        return [True, True]
     return [False, False]
 
 

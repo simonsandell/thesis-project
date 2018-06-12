@@ -1,5 +1,4 @@
 import subprocess
-import numpy as np
 
 w_from_3LBin = 0.62
 w_from_exponent_fit = 0.782566

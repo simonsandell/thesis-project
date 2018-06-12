@@ -1,11 +1,11 @@
 import numpy as np
-import anaFuncs
-import settings
-import sys
 from scipy.optimize import curve_fit
 from plotting import fileWriter
 from analysis import intersectionFinder
+import anaFuncs
+import settings
 
+TAG = "jun_11"
 
 def calculateExponents(omega, skip_n):
     def fitfunc(L, nu, a, b):
@@ -38,15 +38,15 @@ def calculateExponents(omega, skip_n):
         res[0, 3] = np.sum(tview[:, 29])
         return res
 
-    dirpath = settings.root_path + "modular/datatables/combined/"
-    savename = "combined_omega_" + str(omega) + "_skip_" + str(skip_n)
+    dirpath = settings.datatables_path + "June_11_2018/"
+    savename = TAG + "_" + str(omega) + "_skip_" + str(skip_n)
     filelist = [
-        dirpath + "datatable_4combined3DXY.npy",
-        dirpath + "datatable_8combined3DXY.npy",
-        dirpath + "datatable_16combined3DXY.npy",
-        dirpath + "datatable_32combined3DXY.npy",
-        dirpath + "datatable_64combined3DXY.npy",
-        dirpath + "datatable_128combined3DXY.npy",
+        dirpath + "datatable_4.0jun113DXY.npy",
+        dirpath + "datatable_8.0jun113DXY.npy",
+        dirpath + "datatable_16.0jun113DXY.npy",
+        dirpath + "datatable_32.0jun113DXY.npy",
+        dirpath + "datatable_64.0jun113DXY.npy",
+        dirpath + "datatable_128.0jun113DXY.npy",
     ]
     filelist = filelist[skip_n:]
     asdf = np.load(filelist[0])
@@ -116,10 +116,10 @@ for index, o in enumerate(orange):
     eta_close[index, :] = [o, eta_cl, avgEta, avgTeta]
 
 # write three plots, closeness vs omega, exponent vs omega, Tc vs omega
-close_path = settings.foutput_path + settings.model + "/vsO/intersection/"
-eta_path = settings.foutput_path + settings.model + "/vsO/eta/eta_vs_omega.dat"
-nu_path = settings.foutput_path + settings.model + "/vsO/nu/nu_vs_omega.dat"
-tc_path = settings.foutput_path + settings.model + "/vsO/tc/tc_from_"
+close_path = settings.foutput_path + settings.model + "/vsO/intersection/" + TAG  
+eta_path = settings.foutput_path + settings.model + "/vsO/eta/" + TAG + "eta_vs_omega.dat"
+nu_path = settings.foutput_path + settings.model + "/vsO/nu/" + TAG + "nu_vs_omega.dat"
+tc_path = settings.foutput_path + settings.model + "/vsO/tc/" + TAG + "tc_from_"
 fileWriter.writeQuantNoDY(close_path + "closeness_nu.dat", nu_close, [0, 1])
 # closeness_nu vs omega
 fileWriter.writeQuantNoDY(close_path + "closeness_eta.dat", eta_close, [0, 1])

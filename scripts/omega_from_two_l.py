@@ -19,19 +19,20 @@ def fit_curve(x_val, y_val):
     return par, cov
 
 SKIP_N = int(sys.argv[1])
+TAG = "jun_11"
 NAMELIST = [
-    settings.pickles_path + "2Lquant/combined4_8.npy",
-    settings.pickles_path + "2Lquant/combined8_16.npy",
-    settings.pickles_path + "2Lquant/combined16_32.npy",
-    settings.pickles_path + "2Lquant/combined32_64.npy",
-    settings.pickles_path + "2Lquant/combined64_128.npy",
+    settings.pickles_path + "2Lquant/jun_114_8.npy",
+    settings.pickles_path + "2Lquant/jun_118_16.npy",
+    settings.pickles_path + "2Lquant/jun_1116_32.npy",
+    settings.pickles_path + "2Lquant/jun_1132_64.npy",
+    settings.pickles_path + "2Lquant/jun_1164_128.npy",
 ]
 JACKLIST = [
-    settings.pickles_path + "2Lquant/jackknife/jack_combined4_8.npy",
-    settings.pickles_path + "2Lquant/jackknife/jack_combined8_16.npy",
-    settings.pickles_path + "2Lquant/jackknife/jack_combined16_32.npy",
-    settings.pickles_path + "2Lquant/jackknife/jack_combined32_64.npy",
-    settings.pickles_path + "2Lquant/jackknife/jack_combined64_128.npy"
+    settings.pickles_path + "2Lquant/jackknife/jack_jun_114_8.npy",
+    settings.pickles_path + "2Lquant/jackknife/jack_jun_118_16.npy",
+    settings.pickles_path + "2Lquant/jackknife/jack_jun_1116_32.npy",
+    settings.pickles_path + "2Lquant/jackknife/jack_jun_1132_64.npy",
+    settings.pickles_path + "2Lquant/jackknife/jack_jun_1164_128.npy"
 ]
 # remove SKIP_N smallest sizes
 NAMELIST = NAMELIST[SKIP_N:]
@@ -111,12 +112,12 @@ for temp_ind in range(TI.shape[0] - 1):
 
 # plot both omega as func of T
 fileWriter.writeQuant(
-    settings.foutput_path + settings.model + "/vsT/omega/bin" + str(SKIP_N) + ".dat",
+    settings.foutput_path + settings.model + "/vsT/omega/bin" + str(SKIP_N) + TAG + ".dat",
     BIN_OMEGA,
     [0, 1, 3, 2]
 )
 fileWriter.writeQuant(
-    settings.foutput_path + settings.model + "/vsT/omega/rs" + str(SKIP_N) + ".dat",
+    settings.foutput_path + settings.model + "/vsT/omega/rs" + str(SKIP_N) + TAG + ".dat",
     RS_OMEGA,
     [0, 1, 3, 2]
 )
@@ -126,6 +127,7 @@ fileWriter.writeQuant(
     + settings.model
     + "/vsT/varomega/var_bin"
     + str(SKIP_N)
+    + TAG
     + ".dat",
     BIN_OMEGA,
     [0, 2, 3, 1]
@@ -135,6 +137,7 @@ fileWriter.writeQuant(
     + settings.model
     + "/vsT/varomega/var_rs"
     + str(SKIP_N)
+    + TAG
     + ".dat",
     RS_OMEGA,
     [0, 2, 3, 1]

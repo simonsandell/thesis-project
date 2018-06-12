@@ -59,16 +59,17 @@ def calculateEta(tview):
 
 
 #  define some variables, path to datatables
-dirpath = settings.root_path + "modular/datatables/combined/"
-savename = "combined_omega_" + str(omega) + "_skip_" + str(skip_n)
-jackpath = settings.datatables_path + "jackknife/"
+dirpath = settings.datatables_path+ "June_11_2018/"
+TAG = "jun_11"
+savename = TAG + "_" + str(omega) + "_skip_" + str(skip_n)
+jackpath = dirpath + "/jackknife/"
 filelist = [
-    dirpath + "datatable_4combined3DXY.npy",
-    dirpath + "datatable_8combined3DXY.npy",
-    dirpath + "datatable_16combined3DXY.npy",
-    dirpath + "datatable_32combined3DXY.npy",
-    dirpath + "datatable_64combined3DXY.npy",
-    dirpath + "datatable_128combined3DXY.npy",
+    dirpath + "datatable_4.0jun113DXY.npy",
+    dirpath + "datatable_8.0jun113DXY.npy",
+    dirpath + "datatable_16.0jun113DXY.npy",
+    dirpath + "datatable_32.0jun113DXY.npy",
+    dirpath + "datatable_64.0jun113DXY.npy",
+    dirpath + "datatable_128.0jun113DXY.npy",
 ]
 jackknife_list = [
     jackpath + "4combined.npy",
