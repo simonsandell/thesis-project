@@ -1,4 +1,3 @@
-        File: preface.tex
 %     Created: mån feb 12 01:00  2018 C
 % Last Change: mån feb 12 01:00  2018 C
 %
@@ -23,7 +22,9 @@ By simulating a model, and updating the state of the model randomly, but with su
 When implementing such an algorithm, it is convenient to use a pseudo-random number generator (pRNG) to produce random numbers.
 The quality of the pRNG is very important when implementing a Monte Carlo-method.
 Since one often wants to generate a large number of random numbers, it is important that the generator produces numbers that are not correlated to the previous ones, as this could lead to bias. 
-In this work we use a pRNG implemented in the standard library of C++, the mt\_19937\_64.
+In this work we use the Mersenne Twister mt\_19937\_64  pRNG implemented in the standard library of C++.
+This is generator has a period length of $2^{19937}$ and perform very good in various quality tests. Add reference?
+
 
 %The Boltzmann distribution may be unsuitable for some systems/configurations we want to study. In practice, we can use any distribution we want, if we introduce the proper normalization.
 %\begin{equation}
@@ -59,15 +60,19 @@ as loss in precision will occur when the exponential factor becomes large. To mi
 \end{equation}
 This technique can extend the range of temperate, but fluctuations in energy grow with the system size, so for high enough system sizes, extrapolation becomes fruitless.
 The data gathered at the extrapolated temperature will be worse and worse the further we go, since we generate states that are probable for actual running temperature, but these states will likely become more and more unimportant for the extrapolated temperature.
+
+
+
 \section{Wolff Algorithm}
-The Wolff algorithm is a non-local update method, and is an improvement upon the Swendsen-Wang method in which spin bonds are scanned and either deleted or frozen. This will divide the lattice into clusters, which are then flipped/updated with certain probabilites. In the Wolff algorithm only a single cluster is generated, with the starting spin uniformly random. That way of initializing the cluster, one can expect to hit large clusters with higher probability, since probability of hitting a cluster should depend on its size.
+The Wolff algorithm is a non-local update method, and is an improvement upon the Swendsen-Wang method in which spin bonds are scanned and either deleted or frozen. This will divide the lattice into clusters, which are then flipped/updated with certain probabilites. In the Wolff algorithm only a single cluster is generated, with the starting spin uniformly random. That way of initializing the cluster, one can expect to hit large clusters with higher probability, since the probability of a certain cluster will depend on the size of that cluster.
 Thus one can avoid the many single spin clusters usually generated in the Swendsen-Wang method.
-For a markovian update method to give a chain of system configurations with distribution according to the Boltzmann-factor, it must satisfy two conditions, 
+For a markovian update method to give a chain of system configurations which are Boltzmann-distributed, it must satisfy two conditions, 
 
 (i) for any given state of the simulated system, any other state must be reachable in a finite number of steps.
 
 (ii) Non-periodicity, it should not be possible to return to a preivous state immediatley, only after a number of steps, $t =nk,~ n = 1,2,3\dots$.
-This hold for the Wolff method, since a valid cluster consists of just shifting a single spin with a random angle, thus any configuration can be reached in $N \leq N_{\trm{spins}}$ steps. Also, since the first spin selected is always flipped, the condition of Non-periodicity is also fulfilled.
+This hold for the Wolff method, since a valid cluster consists of just shifting a single spin with a random angle, thus any configuration can be reached in $N \leq N_{\trm{spins}}$ steps.
+Also, since the first spin selected is always flipped, the condition of Non-periodicity is also fulfilled.
 The algorithm must also have a transition probability configured so that after a long time, the desired stationary distribution is reached, in our case the Boltzmann-distribution.
 Call the desired staionary distribution $\rho(X)$, the transition probability $T(X \rightarrow X')$ and the probability of state $X$ at markov timestep t $\rho(X,t)$.
 Then the master equaion is 
@@ -153,22 +158,45 @@ We get
 \end{align}
 and so, detailed balance is satisfied.
 
-\section{Techniques to correct for scaling}
-From the chapter of finite size scaling, we have that
+\section{Correction for finite size scaling}
+Three basic assumptions of finite size scaling
+\begin{enumerate}[(i)]
+  \item $1/L$ is an exact scaling field without corrections proportional to $1/L^2,~1/L^3, \dots$.
+  \item The non-linear scaling fields ($y_t$, $y_h$, $y_3$ \dots) have coefficients that are not dependent on $L$
+  \item The analytic background in the free energy depends on L through exponentially small terms.
 
+
+\end{enumerate}
+Sokal and Salas
+
+\begin{equation}
+  O(L)= o_0 L^{p_O}(1 + o_1 L^{-\omega} + \dots)
+  \label{}
+\end{equation}
+
+where $p_O$ is the critical exponent related to the quantity $O$, and $\Delta$ a correction stemming from the leading irrelevant variable.
+
+FT perturbative expansions give 
+
+$\omega = 0.802(18)$ $ \varepsilon$-expansion
+
+$\omega = 0.789(11)$ $ d=3$ expansion
+
+Note that this scaling relation only holds at the critical temperature, the constants $o_0, o_1$ are in fact functions of temperature. 
+We can use this ansatz to define a new quantity $b'(L)$, from which we can estimate $\omega$;
 \begin{align}
   b'(L) &\equiv B(2L,t=0) - B(L,t=0) = b_1(2^{-\omega} -1)L^{-\omega}\\
   b''(L)&\equiv \frac{b'(2L)}{b'(L)} = 2^{-\omega}\\
   \Rightarrow \omega &= -\frac{\ln(b''(L))}{\ln(2)}.
 \end{align}
-Note that this scaling relation only holds at the critical temperature, the $\textit{constants}$ $b_0, b_2$ are in fact functions of temperature. 
-Thus if we plot this function for systemsizes that are powers of 2, we can get several graphs that intersect at the critical temperature, and from that the scaling correction $\omega$ can be read of without the need for any form of parameter fitting. 
+
+If we plot this function for systemsizes that are powers of 2, we can get several graphs that intersect at the critical temperature, and from that the scaling correction $\omega$ can be read of without the need for any form of parameter fitting. 
 However, this method relies on the assumption that higher order scaling corrections can be ignored, which might not be true for low enough systemsizes.
 It is therefore important to use other methods to gain confidence or find discrepancies.
 
 One such method we have used is non-linear leastsquare fitting of the quantity $b'(L) = b_1(2^{-\omega} -1)L^{\omega}$.
 A log-log plot of this quantity versus L will have a horn shape, only the line corresponding to the critical temperature will follow a straight line with slope equal to $-\omega$, and the deviations tends to be larger for larger systemsizes.
-Thus, we can estimate omega by fitting the quantity $b'(L)$ to the function $f(\omega,a) = a\cdot L^(-omega)$ for all different temperatures we have data for. Then we do the fit again, but emitt the smallest systemsize, to get another line of estimated omega vs T, which intersects the first line at $T_c$, from which wich the value of $\omega$ can be read off at the Y-axis.One can further omit smaller systemsizes until one only has two points left to get more lines, and then look at the average intersection point to get an estimation of omega and Tc.
+Thus, we can estimate $\omega$ by fitting the quantity $b'(L)$ to the function $f(\omega,a) = a\cdot L^(-\omega)$ for all different temperatures we have data for. Then we do the fit again, but omit the smallest systemsize, to get another line of estimated $\omega$ vs T, which intersects the first line at $T_c$, from which wich the value of $\omega$ can be read off at the Y-axis.One can further omit smaller systemsizes until one only has two points left to get more lines, and then look at the average intersection point to get an estimation of $\omega$ and Tc.
 Another possibility is to plot the variance of the least-squares fit as a function of temperature for the different curves, which should be minimal at the critical temperature.
 
 This depends on the assumption that the higher order corrections are sufficiently small, which they might not in fact be for the lowest system size we have simulated, $L=4$.
@@ -177,7 +205,7 @@ For such cases one can resort to methods of parameter fitting.
 
 Consider the Superfluid density, which scales as 
 \begin{align}
-  r(L)&\equiv \rho_s(L,t=0) \cdot L = r_0 + r_1L^{-\omega_\rho}\\
+  r(L)&\equiv L \rho_s(L,t=0)  = r_0 + r_1L^{-\omega_\rho}\\
   r(2L) - r(L) &= r_1(2^{-\omega_\rho} -1)L^{-\omega_\rho}
 \end{align}
 

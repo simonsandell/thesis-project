@@ -10,7 +10,7 @@ In this section we will describe the models we simulate using Monte Carlo, as we
 The goal of this thesis is to estimate the critical exponents of the lambda phase transition (\lpt) in $^4$He by Monte Carlo (MC) simulation of a model. 
 The principle of Universality allows us to freely chose a model for our simulation as long as it is part of the same Universality Class as the \lpt, since all those models are guaranteed to have the exact same critical properties. 
 The three criteria that define universality classes are the symmetry group of the order parameter, the physical dimensions and the range of the interactions.
-The class of the lamba transition in $^4$He is represented by the symmetry group $O(2)$, short range interactions and $d=3$. With $d=2$ instead the class changes to that of the famous topological Kosterlitz-Thouless transition.
+The class of the lambda transition in $^4$He is represented by the symmetry group $O(2)$, short range interactions and $d=3$. With $d=2$ instead the class changes to that of the famous topological Kosterlitz-Thouless transition.
 
 The model we use in our simulation is the so-called XY-model in 3 dimension and allowing only nearest neighbour interactions on a cubic lattice.
 We employ periodic boundary conditions, so that the nearest neighbours of any given lattice site $\bm{s} = (x,y,z)$ is defined as 
@@ -21,7 +21,7 @@ We employ periodic boundary conditions, so that the nearest neighbours of any gi
 \end{align}
 where the lattice indices $(x,y,z)$ range from $[0,L-1]$.
 
-The hamiltonian is written as 
+The Hamiltonian is written as 
 \begin{equation}
   \label{xyham}
   H_{\trm{3DXY}} = -K\sum\limits_{\langle i,j\rangle} \bm{s_i}\cdot\bm{s_j} = -K\sum\limits_{\langle i,j\rangle} \cos(\alpha_i - \alpha_j)
@@ -60,39 +60,18 @@ $\rho_s = (m/\hbar)^2 \Upsilon(T)$.
 Fischer et al showed in 1973 that this quantity can be calculated within the framework of equilibrium statistical mechanics, but one need to go beyond bulk properties.
 Operational definition for spherical model (1952 Barber Fischer) and ideal Bose gas (Barber 1977) under periodic and antiperiodic boundary conditions:
 \begin{equation}
-  \Upsilon(T) = \trm{lim}\limits_{L\rightarrow \infty} (2L^2/\pi^2) (F^{1/2} (T;L)-F^0(T;L)).
+  \Upsilon(T) = \trm{lim}_{L\rightarrow \infty} (2L^2/\pi^2) (F^{1/2} (T;L)-F^0(T;L)).
   \label{}
 \end{equation}
 Rudnick Jasnow (1977) operational definition: 
 \begin{equation}
-  \Upsilon(T) =\left \frac{  \pa^2F(T;k_0)}{\pa k^2_0}\right|_{k_0 =0}
+  \Upsilon(T) = \left. \frac{  \pa^2F(T;k_0)}{\pa k^2_0}\right|_{k_0 =0}
   \label{}
 \end{equation}
 Thought: the boundary conditions induce a long wavelength twist of the wavenumber $k_0$ of the order parameter.
 Showed that Josephson relation ($\nu = 2\beta -\eta\nu = 2 - \alpha -2\nu = (d -2)\nu$) (1966) is exact using this definition and epsilon-expansion.
 The superfluid density is in the thermodynamic limit a constant at $T_c$.
 
-\section{Scaling}
-Often in physics, relations between different quantities are described by so-called power-laws, expressions on the form $f = f(\xi)\cdot g^{x}$, where the physical quantity $f$ is said to scale with $x$ in relation to some other physical quantity $g$. $\xi$ represents variables that are deemed irrelevant for the scaling behaviour of $f$.
-
-So also in statistical physics, where such laws are fundamental to understanding phase transitions.
-
-In statistical physics, when studying a specific system, the fundamental quantity is some thermodynamic potential,  Gibbs, Helmholtz. From this potential, several other physical quantites are derived, such as the energy, magnetization, and other that may depend on the specifics. 
-If the system has a phase transition, often, but not always, since what constitutes a phase transition is not trivial, physical quantites will diverege, and follow certain scaling laws as they do. 
-Using mean field theory to calculate these laws gives always a fractional exponent in the laws, but experiments had shown evidence of non-fractional exponents. 
-Kadanoff realized that a diverging correlation length implied that there was a relation between the lenght scale at which the order parameter was defined and the coupling constants of an effective Hamiltonian. Altough his block-spin approach does not enable one to compute the critical expoents, it was an important step.
-The full theory of Renormalization Group was put forth by Wilson.
-The core concept is the renormalization group transformations which takes a Hamiltonian and by some method/rule of coarse-graining clumps together short wave-length degrees of freedom, and defines a new effective hamiltonian describing the long-wavelength degrees of freedom with new coupling parameters for the new lenghtscale.
-The name renormalization group is not entirely appropriate, since these transformations are in general complicated and non-linear, thus not always having inverses. But the transformations do have the associative property of groups. Rescaling the system by some length $l_1$ and then rescaling again by some other length $l_2$ should be equivalent to performing the rescaling in the other order.
-But so far all we did was remove a finite number of degrees of freedom from out system, how can that explain the sigular behaviour at phase transitions? By repeating the transformations an infinite number of times, singular behaviour can be introduced.
-The partition function is what we really want to compute to know everything about a physical system, but that task is most often simply unachievable. The renormalization transformation are also not easy to compute, but the transformation of the coupling constants can be approximated.
-
-\section{Universality}
-The theromodynamics of any model; the phase diagram, correlation functions, other quantites etc, may depend on the specific values of coupling parameters in the hamiltonian, symmetries, dimensionality, type of lattice, etc. 
-But it turns out that the critical phenomena (phase transitions) only depend on three things, the symmetries of the hamiltonian, the dimensionality and the range of interations ( type of critical point ).
-
-We can study the critical behaviour of say Helium-4, which we know is in the $O(2)$ universality class, by calculation themodynamical averages directly by using Monte-Carlo method on the simulated 3DXY-model, which should have the exact same critical exponents. 
-One inconvenience is that one cannot simulate the infinite size 3DXY-model due to computer memory finite-ness, thus one simulates instead finite-size versions of the 3DXY-model. The theory of how finite size systems relate to the infinite size models is called finite size scaling. The normal power-laws aquire correction terms, which needs to be accounted for.
 
 
 \section{Finite size scaling}
@@ -126,10 +105,8 @@ This form function will have a maximum at some shifted value of $T$,
   T_c(L) = T_c +  a_0 L^{-1/\nu}.
   \label{}
 \end{equation}
-This kind of correction is necessary to go from quantities simulated on finite systems to the infinite lattice universal quantities.
 
 
-Higher order corrections can be included as well.
 Similarly for the susceptibility,
 \begin{align}
   \chi = \frac{\partial^2 f}{\partial h^2}
@@ -142,17 +119,7 @@ The magnetization goes as
   M = \frac{\partial f}{\partial h} \sim L^{-d + y_h} = L^{-\beta/\nu}
   \label{}
 \end{equation}
-The 4th order Binder cumulandt is in the thermodynamic limit constant at $T_c$, and thus scales as 
-\begin{equation}
-  B \sim a_B(1+L^{-\omega})
-  \label{}
-\end{equation}
-with our ansatz.
-The derivative of the 4th order Binder cumuland scales as
-\begin{equation}
-  \frac{\der B}{\der T}\sim L
-  \label{}
-\end{equation}
+
 
 \section{Scaling laws}
 From renormalization-group theory we learn that there only exist two independent critical exponents from which all the others are derived.
