@@ -5,25 +5,28 @@
 
 \section{Monte Carlo}
 In the theoretical framework of statistical physics, physical predictions come from thermal averages, calculated from 
-where  $P(x) = (1/Z)\trm{exp}(-H(x))$ is the Boltzmann distribution, and the sum is a sum over all possible states of the system. 
+\begin{equation}
+  \langle A \rangle = 
+  \label{}
+\end{equation}
+where  $P(x) = (1/Z)\trm{exp}(-H(x))$ is the Boltzmann distribution, and the sum is over all possible states of the system. 
 
-Models of physical systems are described by writing down the mathematical expression for the Hamiltonian.
-An expression for the partition funciton $Z$ can be written down, but for most models, the number of states are infinite or at least impractically large, so the first formula above can for most models not be used to calculate the averages.
-Estimation of such very large integrals can be done in several ways.
-One way is to calculate the value of the function to be integrated at equidistant points inside the integration area and extrapolating to obtain a measure of the full integral.
+Models of physical systems can be described by writing down a expression for the Hamiltonian, from which the partition function $Z$ follows.
+An expression for the partition funciton $Z$ can be written down, but for most models, the number of states are infinite or at least impractically large, so the first formula above can not be used directly to calculate the averages.
+Luckily there are method to estimate such very large integrals.
+
+One method is to calculate the value of the function to be integrated at equidistant points inside the integration area and extrapolating to obtain a measure of the full integral.
 This method can be biased, if you do not know your function with full detail, you may select points that are somehow correlated or otherwise introduces an unnecessary error.
 A better and safer way to obtain an estimate of the integral is to use randomly distributed points.
-This will remove potential bias and will often yeild a better estimate when using the same number of points.
+This will remove potential bias and will often yield a better estimate when using the same number of points.
 
-By simulating a model, and updating the state of the model randomly, but with such rules so that it's states are Boltzmann-distributed, one can estimate the thermal averages by calculating the corresponding quantity of the simulated model for each state, and then averaging over these ``drawn'' states. 
-
-
+By simulating a model, and updating the state of the model randomly, with such rules so that the simulated states are Boltzmann-distributed, one can estimate the thermal averages by calculating the corresponding quantity of the simulated model for each state, and then averaging over these simulated states. 
 
 When implementing such an algorithm, it is convenient to use a pseudo-random number generator (pRNG) to produce random numbers.
 The quality of the pRNG is very important when implementing a Monte Carlo-method.
 Since one often wants to generate a large number of random numbers, it is important that the generator produces numbers that are not correlated to the previous ones, as this could lead to bias. 
-In this work we use the Mersenne Twister mt\_19937\_64  pRNG implemented in the standard library of C++.
-This is generator has a period length of $2^{19937}$ and perform very good in various quality tests. Add reference?
+In this work we use the Mersenne Twister algorithm first proposed by \cite{Matsumoto1998}, and the specifict  mt\_19937\_64  implementation in the standard library of C++.
+This generator has a period length of $2^{19937}-1$ and perform very high in various quality tests.
 
 
 %The Boltzmann distribution may be unsuitable for some systems/configurations we want to study. In practice, we can use any distribution we want, if we introduce the proper normalization.
@@ -53,19 +56,30 @@ To get the average of A at some different temperature, say $\beta_1$, we can do
   = \frac{\langle A e^{-(\beta_1 - \beta_0)H}\rangle_{\beta_0}}{\langle e^{-(\beta_1 - \beta_0)H}\rangle_{\beta_0}}.
 \end{equation}
 The range of temperatures to which extrapolation is viable will decrease with system size,
-as loss in precision will occur when the exponential factor becomes large. To minimize the exponential factor, one can shift the energy of the system by a constant, which we call $H_{max}$. A constant shift in energy does not affect the values, 
+as loss in precision will occur when the exponential factor becomes large.
+To minimize the exponential factor, one can shift the energy of the system by a constant, which we call $H_{max}$.
+We are allowed to shift the energy by a constant factor, so
 \begin{equation}
   \langle A \rangle = \frac{e^{\beta H_{max}}}{e^{\beta H_{max}}}\frac{\sum_x A_x e^{-\beta H_x}}{\sum_x e^{-\beta H_x}}= \frac{\sum_x A_x e^{-\beta(H_x-H_{max})}}{\sum_x e^{-\beta(H_x-H_{max})}}.
   \label{}
 \end{equation}
-This technique can extend the range of temperate, but fluctuations in energy grow with the system size, so for high enough system sizes, extrapolation becomes fruitless.
-The data gathered at the extrapolated temperature will be worse and worse the further we go, since we generate states that are probable for actual running temperature, but these states will likely become more and more unimportant for the extrapolated temperature.
+This technique can extend the range of temperate, but fluctuations in energy grow with the system size, so for high enough system sizes, extrapolation breaks down.
+The data gathered at the extrapolated temperature will be worse and worse the further we go, since we generate states that are probable for the actual running temperature, but these states will likely become more and more unimportant for the extrapolated temperature.
 
 
 
-\section{Wolff Algorithm}
-The Wolff algorithm is a non-local update method, and is an improvement upon the Swendsen-Wang method in which spin bonds are scanned and either deleted or frozen. This will divide the lattice into clusters, which are then flipped/updated with certain probabilites. In the Wolff algorithm only a single cluster is generated, with the starting spin uniformly random. That way of initializing the cluster, one can expect to hit large clusters with higher probability, since the probability of a certain cluster will depend on the size of that cluster.
+\section{Monte Carlo Algorithms For Spin Systems}
+The simplest algorithm for doing Monte Carlo simulation of a spin lattice system is called the Metropolist algorithm.
+A update of the lattice consist of selecting a spin at random, and proposing a random rotation of the spin. The energy difference of that rotation is calculated and used to determine the probability of accepting the update. This process is then repeated.
+To not get overblown by the amount of data this method produces, one only samples the system at discrete poins, usually after $N_{updates} = k\cdot N_{spins}$.
+A number of proposed updates equal to the number of spins on the lattice is what is usually called a full Monte Carlo sweep (MCS).
+
+The Wolff algorithm\cite{Wolff1989} is a non-local update method. It is an improvement upon the Swendsen-Wang method in which spin bonds are scanned and either deleted or frozen with some probabilities.
+This will divide the lattice into clusters, which are then flipped/updated with some other probabilites.
+In the Wolff algorithm only a single cluster is generated at each update, with the starting spin chosen with equal probability for each spin.
+That way of initializing the cluster, one can expect to hit large clusters with higher probability, since the probability of hitting a given cluster will depend on the size of that cluster.
 Thus one can avoid the many single spin clusters usually generated in the Swendsen-Wang method.
+
 For a markovian update method to give a chain of system configurations which are Boltzmann-distributed, it must satisfy two conditions, 
 
 (i) for any given state of the simulated system, any other state must be reachable in a finite number of steps.

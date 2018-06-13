@@ -32,33 +32,28 @@ In the XY-model, the spins are confined to a plane, so they can be parametrized 
 Next, we define some of the quantities which we calculate during simulation.
 We define the magnetization as 
 \begin{equation}
-  M = \left| \sum_i \bm{s_i}\right|
+  M = \left| \sum_i \bm{s_i}\right|,
   \label{}
-\end{equation},
+\end{equation}
 the energy as 
 \begin{equation}
-  E = -\sum\limits_{\langle i,j \rangle} \cos(\alpha_i - \alpha_j)
+  E = -\sum\limits_{\langle i,j \rangle} \cos(\alpha_i - \alpha_j),
   \label{}
-\end{equation},
+\end{equation}
 the superfluid stiffness/helicity modulus as 
 \begin{equation}
-  L\rho_s = -\langle E\rangle - \frac{1}{T}\left\langle\left(\sum_i \sin(\alpha_i - \alpha_{i+(1,0,0)})\right)^2\right\rangle
+  \Upsilon_{\bm{\mu}} = -\left\langle \sum_{\langle i,j\rangle} cos(\alpha_i - \alpha_j) (\hat{r_{i,j}}\cdot \bm{\mu})^2 \right\rangle - \frac{1}{T}\left\langle\left(\sum_{\langle i,j\rangle} \sin(\alpha_i - \alpha_j)(\bm{\epsilon_{i,j}}\cdot \bm{\mu})\right)^2\right\rangle
   \label{}
 \end{equation}
 The superfluid stiffness/density/helicity modulus is a quantity representing the shift in free energy introduced by a twist of the spins.
-To improve statistical results, we also compute
-\begin{align}
-  L\rho_s = -\langle E\rangle - \frac{1}{T}\left\langle\left(\sum_i \sin(\alpha_i - \alpha_{i+(0,1,0)})\right)^2\right\rangle\\
-  L\rho_s = -\langle E\rangle - \frac{1}{T}\left\langle\left(\sum_i \sin(\alpha_i - \alpha_{i+(0,0,1)})\right)^2\right\rangle
-  \label{}
-\end{align}
+To improve statistical results, we compute $\Upsilon_{\bm{\mu}}$ for $\bm{\mu} = \bm{\hat{x}},\bm{\hat{y}},\bm{\hat{z}}$.
+
 In the regular liquid phase, the energy of the system is unaffected by uniform boundary motion. The superfluid stiffness is a quantity which measures the shift in energy due to a shift of the angles along a boundary.
-It is interesting as it scales as 
 
 The helicity modulus $\Upsilon(T)$ is a measure of the system to a ``phase twisting'' field, for a superfluid system the helicity modulus is related to the superfluid density
 $\rho_s = (m/\hbar)^2 \Upsilon(T)$.
 Fischer et al showed in 1973 that this quantity can be calculated within the framework of equilibrium statistical mechanics, but one need to go beyond bulk properties.
-Operational definition for spherical model (1952 Barber Fischer) and ideal Bose gas (Barber 1977) under periodic and antiperiodic boundary conditions:
+Operational definition for spherical model (1952 Barber Fischer) and ideal Bose gas (Barber 1977) under periodic and anti-periodic boundary conditions, ($F^{0},F^{1/2}$) :
 \begin{equation}
   \Upsilon(T) = \trm{lim}_{L\rightarrow \infty} (2L^2/\pi^2) (F^{1/2} (T;L)-F^0(T;L)).
   \label{}
@@ -68,7 +63,7 @@ Rudnick Jasnow (1977) operational definition:
   \Upsilon(T) = \left. \frac{  \pa^2F(T;k_0)}{\pa k^2_0}\right|_{k_0 =0}
   \label{}
 \end{equation}
-Thought: the boundary conditions induce a long wavelength twist of the wavenumber $k_0$ of the order parameter.
+Thought: the boundary conditions induce a long wavelength twist of the wave-number $k_0$ of the order parameter.
 Showed that Josephson relation ($\nu = 2\beta -\eta\nu = 2 - \alpha -2\nu = (d -2)\nu$) (1966) is exact using this definition and epsilon-expansion.
 The superfluid density is in the thermodynamic limit a constant at $T_c$.
 
@@ -81,7 +76,7 @@ The singular part of the free energy scales as
   f_s([K],L^{-1}) = l^{-d}f_s([K],lL^{-1}).
   \label{}
 \end{equation}
-Close to a fixed point of the RG, we can write this equation in terms of right eigenvectors of the linearized RG-transform,
+Close to a fixed point of the RG, we can write this equation in terms of right eigenvectors of the linearised RG-transform,
 \begin{equation}
   f_s(t,h,K_3,\cdots,L^{-1}) = l^{-d}f_s(tl^{y_t},hl^{y_h},K_3 l^{y_3},\cdots,lL^{-1}).
   \label{}
@@ -120,7 +115,11 @@ The magnetization goes as
   \label{}
 \end{equation}
 
-
+These relations are only correct in the limit $t= \frac{T-T_c}{T_c} \rightarrow 0$ or equivalently $L^{-1/\nu} \rightarrow 0$.
+The irrelevant coupling constants will contribute to the averages close but at the critical point.
+To correct for these contributions, there are many methods. Hasenbusch employ so-called improved models, which by definition eliminates the first order irrelevant contribution.
+This method has some merit as there is theoretical evidence that multiple next-to-leading order irrelevant contributions all scale with an exponent $y_{irr} \approx -2$.
+In this thesis we instead use the plain 3DXY-model and use the ansatz that only the leading order correction, $\omega = -y_3/\nu$, will be necessary to gain accurate estimations of the critical exponents.
 \section{Scaling laws}
 From renormalization-group theory we learn that there only exist two independent critical exponents from which all the others are derived.
 This was not a surprise, in fact, it was foreshadowed by the many scaling laws proposed both from prior theory and experiments.
@@ -134,17 +133,12 @@ Here we state the various relations between exponents and their definitions in t
 	\nu d &= 2-\alpha = 2\beta + \gamma = \beta(\delta+1) = \gamma\frac{\delta +1}{\delta -1}
 \end{align}
 \section{Definitions of critical exponents}
-For $h=0$,
 \begin{align}
-  f &\sim l^{-d}f(tl^{y_t},hl^{y_h},K_3l^{y_3},\cdots,L^{-1}l)\\
-  C &\sim t^{-\alpha}\\
-  M &\sim (-t)^{\beta}\\
-  \chi &\sim |t|^{-\gamma}\\
-  \xi &\sim |t|^{-\nu}\\
-\end{align}  
-For $t =0$,
-\begin{align}
-  h &\sim m^{\delta}\\
-  \langle m(r)m(0)\rangle &\sim r^{-d +2 -\eta}
+  C &\sim t^{-\alpha}, & &h=0\\
+  M &\sim (-t)^{\beta} & &h=0\\
+  \chi &\sim |t|^{-\gamma} & &h=0\\
+  \xi &\sim |t|^{-\nu} & &h=0\\
+  h &\sim m^{\delta} & &t=0\\
+  \langle m(r)m(0)\rangle &\sim r^{-d +2 -\eta} & &t=0
   \label{}
 \end{align}
