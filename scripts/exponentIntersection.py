@@ -6,8 +6,8 @@ import anaFuncs
 import settings
 
 TAG = "jun_11"
-JACK_NUM = 100;
-TEMP_NUM = 101;
+JACK_NUM = 100
+TEMP_NUM = 101
 
 dirpath = settings.datatables_path + "June_11_2018/"
 FILELIST= [
@@ -26,13 +26,14 @@ JACKLIST= [
         np.load(dirpath + "jackknife/64combined.npy"),
         np.load(dirpath + "jackknife/128combined.npy"),
 ]
+
 def calculateExponents(omega, skip_n):
     def fitfunc(L, nu, a, b):
-        res = (L ** (1.0 / nu)) * (a + b * (L ** (-omega)))
+        res = pow(L, (1.0 / nu)) * (a + b * (L ** (-omega)))
         return res
 
     def etafunc(L, eta, a, b):
-        res = (L ** (2 - eta)) * (a + b * (L ** (-omega)))
+        res = pow(L,(2 - eta)) * (a + b * (L ** (-omega)))
         return res
 
     def calculateNu(tview):
