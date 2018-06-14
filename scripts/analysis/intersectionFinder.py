@@ -50,5 +50,6 @@ def findCloseness(pts):
             dx = abs(p[0] - avgx)
             dy = abs(p[1] - avgy)
             dist += pow((dx ** 2) + (dy ** 2), 0.5)
+    dist = dist/float(len(pts))
 
     return [dist, avgx, avgy]

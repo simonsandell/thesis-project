@@ -5,7 +5,6 @@ from scipy.optimize import curve_fit
 from plotting import fileWriter
 import settings
 
-
 def fitfunc(size, omega, a_1):
     res = a_1 * (size ** (-omega))
     return res
@@ -34,6 +33,7 @@ JACKLIST = [
     settings.pickles_path + "2Lquant/jackknife/jack_jun_1132_64.npy",
     settings.pickles_path + "2Lquant/jackknife/jack_jun_1164_128.npy"
 ]
+
 # remove SKIP_N smallest sizes
 NAMELIST = NAMELIST[SKIP_N:]
 JACKLIST = JACKLIST[SKIP_N:]
@@ -103,11 +103,11 @@ for temp_ind in range(TI.shape[0] - 1):
     try:
         BIN_OMEGA[temp_ind, 3] = np.sqrt(len(jack_omega_bin) - 1) * np.std(jack_omega_bin)
     except:
-        pass
+        print("asdf")
     try:
         RS_OMEGA[temp_ind, 3] = np.sqrt(len(jack_omega_rs) - 1) * np.std(jack_omega_rs)
     except:
-        pass
+        print("asdf_rs")
 
 
 # plot both omega as func of T

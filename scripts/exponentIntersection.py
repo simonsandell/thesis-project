@@ -164,6 +164,13 @@ for index, o in enumerate(ORANGE):
     ls_j_avgTeta = [];
     ls_j_avgNu = [];
     ls_j_avgEta = [];
+
+    ls_j_nu_cl[:] = [];
+    ls_j_eta_cl[:] = [];
+    ls_j_avgTnu[:] = [];
+    ls_j_avgTeta[:] = [];
+    ls_j_avgNu[:] = [];
+    ls_j_avgEta[:] = [];
     for j_num in range(JACK_NUM):
         jack_nu_cl, jack_avgTnu, jack_avgNu = intersectionFinder.findCloseness(nu_ints)
         jack_eta_cl, jack_avgTeta, jack_avgEta = intersectionFinder.findCloseness(eta_ints)
