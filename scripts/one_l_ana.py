@@ -14,6 +14,11 @@ if __name__ == "__main__":
     FILEPATH = sys.argv[1]
     TAG = sys.argv[2]
     MODEL = settings.model
+    FOLDERNAME = datetime.date.today().strftime("%B_%d_%Y")
+    if not os.path.exists(settings.datatables_path + FOLDERNAME):
+        os.makedirs(settings.datatables_path + FOLDERNAME)
+        os.makedirs(settings.datatables_path + FOLDERNAME + "/jackknife")
+
     # data = pickler.loadData(model+FILEPATH)
     DATA = np.load(FILEPATH)
     # sort data
@@ -64,7 +69,7 @@ if __name__ == "__main__":
         current_t = repr(view[0, 1])
         current_l = repr(view[0, 0])
         np.save(
-            settings.datatables_path + "jackknife/j_est_" + current_l + "_" + current_t,
+            settings.datatables_path + FOLDERNAME + "/jackknife/j_est_" + current_l + "_" + current_t,
             j_est,
         )
         j_std = np.std(j_est, axis=0)
@@ -100,10 +105,7 @@ if __name__ == "__main__":
     # save text file for visual inspeciton
     fileWriter.writeDataTable(TAG, RES)
     # save npy file for further analysis
-    FOLDERNAME = datetime.date.today().strftime("%B_%d_%Y")
 
-    if not os.path.exists(settings.datatables_path + FOLDERNAME):
-        os.makedirs(settings.datatables_path + FOLDERNAME)
-    np.save(settings.datatables_path + "/datatable_" + repr(LV[0]) + TAG + MODEL, RES)
+    np.save(settings.datatables_path + FOLDERNAME + "/datatable_" + repr(LV[0]) + TAG + MODEL, RES)
     # make plots from  the npy datatables
     datatableToPlots.datatableToPlots(settings.datatables_path + FOLDERNAME, TAG)
