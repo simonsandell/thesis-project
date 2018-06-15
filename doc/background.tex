@@ -50,9 +50,9 @@ The superfluid stiffness/density/helicity modulus is a quantity representing the
 In the normal state, where the phase of the system is at large random, there will not be any change in free energy by such a twist, but in the superfluid state, the system is in a coherent state, and applying a twist at the boundary will propagate throughout the system. Thus the magnitude of the shift in free energy should be proportional to the total superfluid density.
 The superfluid stiffness is defined by the following expression
 \begin{align}
-  \Delta F = \frac{1}{2}\rho_s(\varphi)^2\\
-  \rho_s = \left. \frac{\pa^{2} f}{\pa \varphi^2}\right|_{\varphi =0}
-  \label{}
+  \Delta F = \frac{1}{2}\rho_s\varphi^2\\
+  \rho_s = \left. \frac{\pa^{2} \Delta f}{\pa \varphi^2}\right|_{\varphi =0}
+  \label{eq:rhos}
 \end{align}
 where $f$ is the free energy density defined by
 \begin{equation}
@@ -65,48 +65,74 @@ and
   \label{}
 \end{equation}
 $H$ is as defined above.
-So, to calculate the difference we introduce a new Hamiltonian which is identical to the old, but for spins along a certain boundary, we add a term $\varphi$ for their neighbours in one direction, say for instance the positive x-direction.
-\begin{equation}
-  H_{\trm{twist}} = - \sum_{i\in\pa}\cos\left( \alpha_i - \alpha_{i+x} + \varphi \right)
-  \label{}
-\end{equation}
-Here, $\sum_{i\in\pa}$ signifies that we only sum over spins on a certain boundary plane, and by $\alpha_{i+x}$ we mean the spin at location $(1,0,0)$ relative to spin $i$ at location $(x_i,y_i,z_i)$.
-
-Note now that when we derive $\Delta f$, only the terms in $H - H_{\trm{twist}}$ at the boundary will remain.
-Some partial results in our derivation of the usable expression for $\rho_s$ are
+The difference in free energy introduced by a twist is
 \begin{align}
-  \frac{\pa Z[H_{\trm{twist}}]}{\pa (\varphi)} &=  \prodint \frac{\pa}{\pa (\varphi)}e^{ -\beta H_{\trm{twist}}} = \\
-  &= \prodint (-\beta\sum\limits_{i\in\pa} \sin(\alpha_i - \alpha_{i+x} + \varphi))e^{ -\beta H_{\trm{twist}}} =\\
-  &= -\beta\left\langle \sum_{i\in\pa}\sin(\alpha_i-\alpha_{i+x}+\varphi) \right\rangle = 0.
+  \Delta f =f_{\trm{twist}} - f = \frac{T}{L^d}\ln Z - \frac{T}{L^d}\ln Z_{\trm{twist}}\\
+  Z_{\trm{twist}} = \prodint e^{-\beta H_{\trm{twist}}}\\
+  H_{\trm{twist}} = H - H' + H_\varphi \\
+  H' = -\sum_{i\in\pa} \cos(\alpha_i -\alpha_{i+x} )\\
+  H_\varphi = -\sum_{i\in\pa} \cos(\alpha_i -\alpha_{i+x}+\varphi )\\
   \label{}
 \end{align}
+Here, $\sum_{i\in\pa}$ signifies that we only sum over spins on a certain plane, and by $\alpha_{i+x}$ we mean the spin at location $(1,0,0)$ relative to spin $i$ at location $(x_i,y_i,z_i)$.
+
+Now we state two partial results in our derivation of the expression for $\rho_s$.
+
 \begin{align}
-  \frac{\pa^2 Z[H_{\trm{twist}}]}{\pa (\varphi)^2} &= \prodint \frac{\pa}{\pa (\varphi)}\left[\left(-\beta\sum_{i\in\pa}\sin(\alpha_i - \alpha_{i+x} + \varphi)\right)e^{ -\beta H_{\trm{twist}}}\right] =\\
-  &= \prodint\Bigg[ \left\{-\beta\sum_{i\in\pa}\cos(\alpha_i - \alpha_{i+x} + \varphi) + \beta^2\left(\sum_{i\in\pa}\sin(\alpha_i - \alpha_{i+x} + \varphi)\right)^2\right\}\\
-  &\times e^{ -\beta H_{\trm{twist}}} \Bigg] = -\beta\left\langle \sum_{i\in\pa}\cos(\alpha_i -\alpha{i+x} +\varphi) \right\rangle +\\
-  &+ \beta^2 \left\langle \left(\sum_{i\in\pa} \sin(\alpha_i - \alpha_{i+x}+\varphi)\right)^2\right\rangle
+  Z^{\varphi}_{\trm{twist}}\equiv&\frac{\pa Z_{\trm{twist}}}{\pa \varphi} =  \frac{\pa}{\pa \varphi}\prodint e^{ -\beta H}e^{\beta H'} e^{-\beta H_\varphi}= \\
+   &=  \prodint e^{ -\beta H}e^{\beta H'}\frac{\pa}{\pa \varphi} e^{-\beta H_\varphi}= \\
+  &= \prodint \left(-\beta\sum\limits_{i\in\pa} \sin(\alpha_i - \alpha_{i+x} + \varphi)\right)e^{ -\beta H_{\trm{twist}}} = \\
+  &= 0.
+  \label{}
+\end{align}
+
+\begin{align}
+  Z^{\varphi\varphi}_{\trm{twist}}\equiv&\frac{\pa^2 Z_{\trm{twist}}}{\pa \varphi^2} = \prodint \frac{\pa}{\pa \varphi}\left[\left(-\beta\sum_{i\in\pa}\sin(\alpha_i - \alpha_{i+x} + \varphi)\right)e^{ -\beta H_{\trm{twist}}}\right] =\\
+  =& \prodint \bigg[-\beta\sum_{i\in\pa}\cos(\alpha_i - \alpha_{i+x} + \varphi) +\\
+   &+ \beta^2\bigg(\sum_{i\in\pa}\sin(\alpha_i - \alpha_{i+x} + \varphi)\bigg)^2\bigg] \times e^{ -\beta H_{\trm{twist}}} \\
   \label{}
 \end{align}
 
 Now we start the derivation:
 \begin{align}
-  \rho_s &= \left.\frac{\pa^2 \Delta f}{\pa( \varphi)^2}\right|_{\varphi=0} = \frac{1}{L^d}\frac{\pa^2}{}
+  \frac{L^d}{T}\frac{\pa^2 \Delta f}{\pa \varphi^2} &= -\frac{\pa^2}{\pa\varphi^2}\ln Z_{\trm{twist}} +\frac{\pa^2}{\pa\varphi^2}\ln Z = \\
+  &=-\frac{\pa }{\pa \varphi}\frac{Z^{\varphi}_{\trm{twist}}}{Z_{\trm{twist}}} = -\frac{Z^{\varphi\varphi}_{\trm{twist}}}{Z_{\trm{twist}}} + \frac{(Z^{\varphi}_{\trm{twist}})^2}{Z_{\trm{twist}}} =\\
+  &=\beta\left\langle \sum_{i\in\pa}\cos(\alpha_i -\alpha_{i+x} + \varphi)\right\rangle - \\
+  &- \beta^2\left\langle\left(\sum_{i\in\pa}\sin(\alpha_i - \alpha_{i+x} +\varphi)\right)^2\right\rangle
   \label{}
 \end{align}
+Thus, by \ref{eq:rhos} we get
+\begin{equation}
+  \rho_s = \frac{1}{L^d}\left(-\left\langle \sum_{i\in\pa}\cos(\alpha_i -\alpha_{i+x} )\right\rangle + \beta\left\langle\left(\sum_{i\in\pa}\sin(\alpha_i - \alpha_{i+x}) \right)^2\right\rangle\right).
+  \label{}
+\end{equation}
 
 
-To improve statistical results, we compute $\Upsilon_{\bm{\mu}}$ for $\bm{\mu} = \bm{\hat{x}},\bm{\hat{y}},\bm{\hat{z}}$.
+In our simulations we use periodic boundary conditions, which means that we are free to chose any plane in the system to calculate these averages. Thus we extend the definition to
+\begin{align}
+  \rho_s &= \frac{1}{L^{2+d}}\left(-\left\langle \sum_{i}\cos(\alpha_i -\alpha_{i+x} )\right\rangle + \beta\left\langle\left(\sum_{i}\sin(\alpha_i - \alpha_{i+x}) \right)^2\right\rangle\right) \\
+  &\equiv\frac{1}{L^{2+d}}\left(-\left\langle \sum_{i}\cos(\alpha_i -\alpha_{i+x} )\right\rangle + \beta\left\langle S^2_{\bm{x}} \right\rangle\right)
+\end{align}
+Finally, there is nothing special about the x-direction, so we compute it for the y and z-directions as well, to obtain our working definition
+\begin{equation}
+  \rho_s = \frac{1}{3 L^{2+d}}\left(-\left\langle E \right\rangle + \beta\left( \langle S^2_{\bm{x}}\rangle + \langle S^2_{\bm{y}}\rangle + \langle S^2_{\bm{z}}\rangle\right) \right).
+  \label{}
+\end{equation}
 
-In the regular liquid phase, the energy of the system is unaffected by uniform boundary motion. The superfluid stiffness is a quantity which measures the shift in energy due to a shift of the angles along a boundary.
+
+
+In the regular liquid phase, the energy of the system is unaffected by uniform boundary motion. The superfluid stiffness is a quantity which measures the shift in energy due to a constant shift of the phase along a boundary.
 
 The helicity modulus $\Upsilon(T)$ is a measure of the system to a ``phase twisting'' field, for a superfluid system the helicity modulus is related to the superfluid density
 $\rho_s = (m/\hbar)^2 \Upsilon(T)$.
+
 Fischer et al showed in 1973 that this quantity can be calculated within the framework of equilibrium statistical mechanics, but one need to go beyond bulk properties.
 Operational definition for spherical model (1952 Barber Fischer) and ideal Bose gas (Barber 1977) under periodic and anti-periodic boundary conditions, ($F^{0},F^{1/2}$) :
 \begin{equation}
   \Upsilon(T) = \trm{lim}_{L\rightarrow \infty} (2L^2/\pi^2) (F^{1/2} (T;L)-F^0(T;L)).
   \label{}
 \end{equation}
+
 Rudnick Jasnow (1977) operational definition: 
 \begin{equation}
   \Upsilon(T) = \left. \frac{  \pa^2F(T;k_0)}{\pa k^2_0}\right|_{k_0 =0}
@@ -114,7 +140,6 @@ Rudnick Jasnow (1977) operational definition:
 \end{equation}
 Thought: the boundary conditions induce a long wavelength twist of the wave-number $k_0$ of the order parameter.
 Showed that Josephson relation ($\nu = 2\beta -\eta\nu = 2 - \alpha -2\nu = (d -2)\nu$) (1966) is exact using this definition and epsilon-expansion.
-The superfluid density is in the thermodynamic limit a constant at $T_c$.
 
 
 
