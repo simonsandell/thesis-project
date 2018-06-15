@@ -23,9 +23,9 @@ In this chapter we will first present the results of the equilibration studies. 
   $\omega_2$ 	& 1.8(2) 			& N/A					&			& \\
 \end{tabular}
 \end{center}
-\caption{3DXY-model }
+\caption{Here we present some of the recent and most precise result as well as our best estimates from this work }
 \end{table}
-Sokolov did pesudo-$\varepsilon$ expasion on 3dxy.\cite{Sokolov2016}
+Sokolov did pseudo-$\varepsilon$ expansion on 3DXY.\cite{Sokolov2016}
 Lipa et al. did space stuff \cite{Lipa2003}
 \begin{table}[!htpb]
 \begin{center}
@@ -44,18 +44,20 @@ Lipa et al. did space stuff \cite{Lipa2003}
 \end{center}
 \caption{3D Ising-model }
 \end{table}
-Gliozzo used conformal bootstrap method on ising 3d.\cite{Gliozzi2014}
+Gliozzo used conformal bootstrap method on Ising 3D.\cite{Gliozzi2014}
+
+
 \subsection{Data Analysis}
 The simulation program outputs raw data ordered in lines. Data from one ``simulation'' is contained in $N_{temperatures} \cdot N_{averages per simulation} \cdot N_{simulations}$.
-To calculate quantities of interest from this raw data, a python script has been written, utilizing the numpy library. All available raw data is loaded into a numpy ndarray, and sorted by system size and temperature. Then for each block of data with one temperature and one system size, combined averages are calculated and from these, further functions of the averages are calculated, such as the Binder Parameter, it's derivative, Susceptibility, Superfluid density, etc. To estimate the statistical error in these estimations, we utilize a resampling method usually refered to as the jackknife method. For each block used in calculating the estimations, a jackknife function is called, which calculates the quantities again, but with a subblock of data omitted.
+To calculate quantities of interest from this raw data, a python script has been written, utilizing the numpy library. All available raw data is loaded into a numpy ndarray, and sorted by system size and temperature. Then for each block of data with one temperature and one system size, combined averages are calculated and from these, further functions of the averages are calculated, such as the Binder Parameter, it's derivative, Susceptibility, Superfluid density, etc. To estimate the statistical error in these estimations, we utilize a resampling method called the jackknife method. For each block used in calculating the estimations, a jackknife function is called, which calculates the quantities again, but with a sub-block of data omitted.
 \subsection{3DXY-model}
 Simulations were performed using the Wolff-cluster algorithm at the temperature $T_{run} = 2.2020~K$. Histogram extrapolation was performed to extrapolate to the range of temperatures $T_{range} = 2.2015-2.2030 ~ K$.
-The simulations are structured so that a lattice is initialized in the zero temperature state, all spins pointing in one direction. Then clusterupdates are performed until over 100k sweeps have been performed.
+The simulations are structured so that a lattice is initialized in the zero temperature state, all spins pointing in one direction. Then cluster-updates are performed until over 100k sweeps have been performed.
 
 (We say that one sweep has been performed when a number of spins equal to the total number of spins on the lattice has been tested to be added to a cluster.
-Thus the number of clusters and sweeps performed as warmup varies slightly between independent simulations)
+Thus the number of clusters and sweeps performed as warm-up varies slightly between independent simulations)
 
-After the warmup, cluster updates are performed for 100k more sweeps, and the thermodynamic quantities are collected after each update. Then, averages are calculated and printed. Then 100 sweeps are performed to take the lattice to a state not correlated, and another 100k sample sweeps are performed. This is repeated 100 times. The system sizes simulated are 4, 8, 16, 32, 64 and 128. 
+After the warm-up, cluster updates are performed for 100k more sweeps, and the thermodynamic quantities are collected after each update. Then, averages are calculated and printed. Then 100 sweeps are performed to take the lattice to a state not correlated, and another 100k sample sweeps are performed. This is repeated 100 times. The system sizes simulated are 4, 8, 16, 32, 64 and 128. 
 The number of simulations currently used to calculate $U_4, \rho_s, \chi $ etc. for the system sizes 4
 
 
@@ -94,6 +96,27 @@ The same general formula is used when simulating the 3D Ising-model, however, th
 
 
 %\input{figures.tex}
+\begin{figure}[!htpb]
+  \centering
+  \includegraphics[width=\textwidth]{./plots/3DXY/vsO/three_L_BinderCumuland.eps}
+  \caption{Using three system sizes with a constant factor in size difference, one can directly compute the first order scaling correction $\omega$ by \ref{three_l_omega}. The hope is that for large enough system sizes, this ansatz will be adequate to get a good estimation of omega.}
+\end{figure}
+
+\begin{figure}[!htpb]
+  \centering
+  \includegraphics[width=\textwidth]{./plots/3DXY/vsT/nu.eps}
+  \caption{Here we plot $\nu$ obtained by fitting $\frac{dB}{dT}(L)|_T$ to a function $f = a*L^{1/\nu}(1+L^{-\omega})$ for a estimated value of $\omega$. }
+\end{figure}
+
+\begin{figure}[!htpb]
+  \centering
+  \includegraphics[width=\textwidth]{./plots/3DXY/vsT/eta.eps}
+  \caption{The value of $\eta$ is plotted versus the temperature as obtained by fitting $\chi_T(L)$ to the scaling ansatz $f = a*L^{2-\eta}(1+L^{-\omega})$, where only $a$ and $\eta$ are unknown.  }
+\end{figure}
 
 
-
+\begin{figure}[!htpb]
+  \centering
+  \includegraphics[width=\textwidth]{./plots/3DXY/vsT/variace_omega.eps}
+  \caption{The variance $\omega$ from fitting $b'(L) = B(2L)-B(L)$ to $f = a*L^{-\omega}$, this gives a hint about what $T_c$ should be.}
+\end{figure}

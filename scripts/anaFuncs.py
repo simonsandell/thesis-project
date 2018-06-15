@@ -1,18 +1,25 @@
 def dirToXaxis(fullpath):
     if "vsT" in fullpath:
         return "T - temperature"
+
     if "vsL" in fullpath:
         return "L - systemsize"
+
     if "vsO" in fullpath:
-        return "Omega" 
+        return "Omega"
+
     if "vsN" in fullpath:
         return r"N\ssweeps\S"
+
     if "findZ" in fullpath:
         return "z"
+
     if "scalingCorr" in fullpath:
         return "Temperature"
+
     if "intersections" in fullpath:
         return "1/L"
+
     if "subtraction" in fullpath:
         return "L - systemsize"
     else:
@@ -54,6 +61,19 @@ def dirToYaxis(dirname):
 
 def dirToTitle(dirname):
     dirLex = {
+        "threeL": "Omega_from_three_L",
+        "twoL": "subration_two_L",
+        "vsO": "versus_omega",
+        "sigmaVsZ": "teq_sigma",
+        "tc": "tc",
+        "intersection": "intersection",
+        "eta": "eta",
+        "omega": "omega",
+        "varomega": "variace_omega",
+        "nu": "nu",
+        "delta": 'cputime',
+        "2Lbin": "bin_subtraction_2L",
+        "2Lrs": "rs_subtraction_2L",
         "en": "Energy",
         "mag": "Magnetization",
         "bin": "BinderCumulant",
@@ -69,31 +89,34 @@ def dirToTitle(dirname):
         "std_omegaBin2L": "std_intersect_Bin_vs_omega",
         "omegaRS2L": "Ltoomega_from_RS",
         "std_omegaRS2L": "std_intersect_RS_vs_omega",
-        "sigmaVsZ": "find_teq_scaling",
         "teq": "Equilibration_study",
     }
+
     if dirname in dirLex:
         return dirLex[dirname]
-    else:
-        return "unknown"
+
+    return "unknown"
 
 
 def dirToLogPlot(fullpath):
+    xlog = False
+    ylog = False
+
     if "varomega" in fullpath:
-        return [False, True]
+        ylog = True
+
     if "vsN" in fullpath:
-        return [True, False]
-    if "teq" in fullpath:
-        return [False, False]
-    if "scalingCorr" in fullpath:
-        return [False, False]
+        xlog = True
+
     if "subtraction" in fullpath:
-        return [True, True]
-    if "vsT" in fullpath:
-        return [False, False]
+        xlog = True
+        ylog = True
+
     if "vsL" in fullpath:
-        return [True, True]
-    return [False, False]
+        xlog = True
+        ylog = True 
+
+    return [xlog, ylog]
 
 
 def getParams(dirname, fullpath, doPrint):
@@ -101,6 +124,7 @@ def getParams(dirname, fullpath, doPrint):
     xaxis = dirToXaxis(fullpath)
     yaxis = dirToYaxis(dirname)
     [xlog, ylog] = dirToLogPlot(fullpath)
+
     return [fullpath, title, xaxis, yaxis, xlog, ylog, doPrint]
 
 
@@ -140,4 +164,5 @@ def get3DXYIndex():
         "Nmcavg": 29,
         "last": 30,
     }
+
     return res

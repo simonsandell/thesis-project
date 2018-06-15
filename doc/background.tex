@@ -33,7 +33,7 @@ In the XY-model, the spins are confined to a plane, so they can be parametrized 
 Next, we define some of the quantities which we calculate during simulation.
 We define the magnetization as 
 \begin{equation}
-  M = \left| \sum_i \bm{s_i}\right| = \sqrt{\sum_i \cos^2(\alpha_i) + \sin^2(\alpha_i)
+  M = \left| \sum_i \bm{s_i}\right| = \sqrt{\sum_i \cos^2(\alpha_i) + \sin^2(\alpha_i)}
   \label{}
 \end{equation}
 the energy as 
@@ -41,18 +41,14 @@ the energy as
   E = -\sum\limits_{\langle i,j \rangle} \cos(\alpha_i - \alpha_j),
   \label{}
 \end{equation}
-the superfluid stiffness/helicity modulus as 
-\begin{equation}
-  \Upsilon_{\bm{\mu}} = -\left\langle \sum_{\langle i,j\rangle} cos(\alpha_i - \alpha_j) (\hat{r_{i,j}}\cdot \bm{\mu})^2 \right\rangle - \frac{1}{T}\left\langle\left(\sum_{\langle i,j\rangle} \sin(\alpha_i - \alpha_j)(\bm{\epsilon_{i,j}}\cdot \bm{\mu})\right)^2\right\rangle
-  \label{}
-\end{equation}
+
+\subsection{Superfluid density}
 The superfluid stiffness/density/helicity modulus is a quantity representing the shift in free energy introduced by applying a phase twist along a boundary of the system.
 In the normal state, where the phase of the system is at large random, there will not be any change in free energy by such a twist, but in the superfluid state, the system is in a coherent state, and applying a twist at the boundary will propagate throughout the system. Thus the magnitude of the shift in free energy should be proportional to the total superfluid density.
 The superfluid stiffness is defined by the following expression
 \begin{align}
-  \Delta F = \frac{1}{2}\rho_s\varphi^2\\
-  \rho_s = \left. \frac{\pa^{2} \Delta f}{\pa \varphi^2}\right|_{\varphi =0}
-  \label{eq:rhos}
+  \Delta F = \frac{1}{2}\rho_s\varphi^2 \nonumber \\
+  \rho_s = \left. \frac{\pa^{2} \Delta f}{\pa \varphi^2}\right|_{\varphi =0}\label{eq_rhos}\\
 \end{align}
 where $f$ is the free energy density defined by
 \begin{equation}
@@ -101,7 +97,7 @@ Now we start the derivation:
   &- \beta^2\left\langle\left(\sum_{i\in\pa}\sin(\alpha_i - \alpha_{i+x} +\varphi)\right)^2\right\rangle
   \label{}
 \end{align}
-Thus, by \ref{eq:rhos} we get
+Thus, by \ref{eq_rhos} we get
 \begin{equation}
   \rho_s = \frac{1}{L^d}\left(-\left\langle \sum_{i\in\pa}\cos(\alpha_i -\alpha_{i+x} )\right\rangle + \beta\left\langle\left(\sum_{i\in\pa}\sin(\alpha_i - \alpha_{i+x}) \right)^2\right\rangle\right).
   \label{}
@@ -141,11 +137,11 @@ Rudnick Jasnow (1977) operational definition:
 Thought: the boundary conditions induce a long wavelength twist of the wave-number $k_0$ of the order parameter.
 Showed that Josephson relation ($\nu = 2\beta -\eta\nu = 2 - \alpha -2\nu = (d -2)\nu$) (1966) is exact using this definition and epsilon-expansion.
 
-
+The superfluid density scales as $\rho_s \sim t^{\nu} $
 
 \section{Finite size scaling}
 Consider a system with a set of coupling constants $[K]$ and linear finite size $L$. 
-The singular part of the free energy scales as
+The singular part of the free energy density scales as
 \begin{equation}
   f_s([K],L^{-1}) = l^{-d}f_s([K],lL^{-1}).
   \label{}
@@ -156,9 +152,9 @@ Close to a fixed point of the RG, we can write this equation in terms of right e
   \label{}
 \end{equation}
 It is evident that the inverse size of the system is in fact a relevant eigenvector with eigenvalue $y_L = 1$, and only becomes irrelevant in the thermodynamic limit $L^{-1}\rightarrow 0$.
-The models we study in this paper have the external field set to zero, if we let the scaling parameter $l = L$, we can write the scaling form of the free energy as
+If we let the scaling parameter $l = L$, we can write the scaling form of the free energy as
 \begin{equation}
-  f_s(t,L^{-1}) = L^{-d} F_f(t L^{1/\nu})
+  f_s(t,L^{-1}) = L^{-d} F_f(t L^{1/\nu},h L^{(2-\eta +d)/2},)
   \label{}
 \end{equation}
 where we used $\nu = 1/y_t$ and the scaling law $2 -\alpha = d\nu$.
@@ -203,16 +199,16 @@ Here we state the various relations between exponents and their definitions in t
   y_t &= \frac{1}{\nu}\\
   y_h &= \frac{2-\eta +d}{2}\\
   \Delta &= y_h/y_t\\
-	2 - \eta &= \frac{\gamma}{\nu} = d\frac{\delta -1}{\delta+1}\\
-	\nu d &= 2-\alpha = 2\beta + \gamma = \beta(\delta+1) = \gamma\frac{\delta +1}{\delta -1}
+  2 - \eta &= \frac{\gamma}{\nu} = d\frac{\delta -1}{\delta+1}\\
+  \nu d &= 2-\alpha = 2\beta + \gamma = \beta(\delta+1) = \gamma\frac{\delta +1}{\delta -1}
 \end{align}
 \section{Definitions of critical exponents}
 \begin{align}
-  C &\sim t^{-\alpha}, & &h=0\\
-  M &\sim (-t)^{\beta} & &h=0\\
-  \chi &\sim |t|^{-\gamma} & &h=0\\
-  \xi &\sim |t|^{-\nu} & &h=0\\
-  h &\sim m^{\delta} & &t=0\\
-  \langle m(r)m(0)\rangle &\sim r^{-d +2 -\eta} & &t=0
+  &C \sim t^{-\alpha},                           &t\rightarrow 0, ~h=0\\
+  &M \sim (-t)^{\beta}                           &t\rightarrow 0, ~h=0\\
+  &\chi \sim |t|^{-\gamma}                       &t\rightarrow 0, ~h=0\\
+  &\xi \sim |t|^{-\nu}                           &t\rightarrow 0, ~h=0\\
+  &h \sim m^{\delta}                             &t= 0, ~h\rightarrow 0\\
+  &\langle m(r)m(0)\rangle \sim r^{-d +2 -\eta}  &t= 0, ~h\rightarrow 0
   \label{}
 \end{align}

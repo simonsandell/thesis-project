@@ -7,10 +7,10 @@
 \section{Monte Carlo}
 In the theoretical framework of statistical physics, physical predictions come from thermal averages, calculated from 
 \begin{equation}
-  \langle A \rangle = 
+  \langle A \rangle =\frac{\prodint A(\{\alpha\})e^{-\beta H}}{\prodint e^{-\beta H}}
   \label{}
 \end{equation}
-where  $P(x) = (1/Z)\trm{exp}(-H(x))$ is the Boltzmann distribution, and the sum is over all possible states of the system. 
+where  $P(x) = (1/Z)\trm{exp}(- \beta H(x))$ is the Boltzmann distribution, and the sum is over all possible states of the system. 
 
 Models of physical systems can be described by writing down a expression for the Hamiltonian, from which the partition function $Z$ follows.
 An expression for the partition funciton $Z$ can be written down, but for most models, the number of states are infinite or at least impractically large, so the first formula above can not be used directly to calculate the averages.
@@ -202,7 +202,7 @@ We can use this ansatz to define a new quantity $b'(L)$, from which we can estim
 \begin{align}
   b'(L) &\equiv B(2L,t=0) - B(L,t=0) = b_1(2^{-\omega} -1)L^{-\omega}\\
   b''(L)&\equiv \frac{b'(2L)}{b'(L)} = 2^{-\omega}\\
-  \Rightarrow \omega &= -\frac{\ln(b''(L))}{\ln(2)}.
+  \Rightarrow \omega &= -\frac{\ln(b''(L))}{\ln(2)}.\label{three_l_omega}
 \end{align}
 
 If we plot this function for systemsizes that are powers of 2, we can get several graphs that intersect at the critical temperature, and from that the scaling correction $\omega$ can be read of without the need for any form of parameter fitting. 
