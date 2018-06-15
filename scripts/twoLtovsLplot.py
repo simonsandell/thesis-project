@@ -4,16 +4,17 @@ import numpy as np
 
 
 namelist = [
-    settings.pickles_path + "4.0_8.0_2Lquant.npy",
-    settings.pickles_path + "8.0_16.0_2Lquant.npy",
-    settings.pickles_path + "16.0_32.0_2Lquant.npy",
-    settings.pickles_path + "32.0_64.0_2Lquant.npy",
-    settings.pickles_path + "64.0_128.0_2Lquant.npy",
+    settings.pickles_path + "/2Lquant/jun_114_8.npy",
+    settings.pickles_path + "/2Lquant/jun_118_16.npy",
+    settings.pickles_path + "/2Lquant/jun_1116_32.npy",
+    settings.pickles_path + "/2Lquant/jun_1132_64.npy",
+    settings.pickles_path + "/2Lquant/jun_1164_128.npy",
 ]
+TAG = "jun_11"
 a = np.load(namelist[0])
 all_dt = np.empty((0, a.shape[1]))
-# format: L1 L2 T B R N1 N2 dB dR
-#        0  1  2 3 4 5  6  7  8
+# format: L1 L2 T B R  dB dR
+#        0  1  2 3 4 5  6
 for n in namelist:
     dt = np.load(n)
     all_dt = np.append(all_dt, dt, axis=0)
@@ -37,14 +38,15 @@ for ind in range(Ti.shape[0] - 1):
     # print to files
     x = 0
     yb = 3
-    dyb = 7
+    dyb = 5
     yr = 4
-    dyr = 7
+    dyr = 6
     n = 5
     bpath = (
         settings.foutput_path
         + settings.model
         + "/vsL/2Lbin/"
+        + TAG + "_"
         + str(tview[0, 2])
         + "_bin2L-binL.dat"
     )
@@ -52,6 +54,7 @@ for ind in range(Ti.shape[0] - 1):
         settings.foutput_path
         + settings.model
         + "/vsL/2Lrs/"
+        + TAG + "_"
         + str(tview[0, 2])
         + "_rs2L-rsL.dat"
     )

@@ -16,7 +16,7 @@ def stringBuilder(line):
     return res
 
 
-def writeDataTable(fName, array):
+def writeDatatable(fName, array):
     openfile = open(
         settings.foutput_path + settings.model + "/datatable_" + fName + "_.txt", "w"
     )

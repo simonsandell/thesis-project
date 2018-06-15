@@ -1,3 +1,4 @@
+% !TEX root = .righo/thesis.tex
 %        File: preface.tex
 %     Created: mån feb 12 01:00  2018 C
 % Last Change: mån feb 12 01:00  2018 C
@@ -6,74 +7,125 @@
 % scaling laws and definitions of critical exponents, maybe remove? maybe write some text. move to appendix or other place?
 % There should be some parts about xy model and ising3d model here.
 In this section we will describe the models we simulate using Monte Carlo, as well as establish some theoretical background to explain how physical information can be extracted from simulated systems with sizes $10^X$ times smaller than actual realizations of the transition studied in experiments.
-
-Throughout this chapter we set $k_B=1$.
 \section{Models} % define equations, define quantities.
-The principle of universality allows one to freely choose a model from the pool of models all coressponding to the same universality class, since all those models will have the same universal critical properties.
+The goal of this thesis is to estimate the critical exponents of the lambda phase transition (\lpt) in $^4$He by Monte Carlo (MC) simulation of a model. 
+The principle of Universality allows us to freely chose a model for our simulation as long as it is part of the same Universality Class as the \lpt, since all those models are guaranteed to have the exact same critical properties. 
 The three criteria that define universality classes are the symmetry group of the order parameter, the physical dimensions and the range of the interactions.
-The class of the lamba transition in $^4$He is represented by the symmetry group $O(2)$, short range interactions and $d=3$. With $d=2$ instead the class changes to that of the famous Kosterlitz-Thouless-transition.
+The class of the lambda transition in $^4$He is represented by the symmetry group $O(2)$, short range interactions and $d=3$. With $d=2$ instead the class changes to that of the famous topological Kosterlitz-Thouless transition.
 
 The model we use in our simulation is the so-called XY-model in 3 dimension and allowing only nearest neighbour interactions on a cubic lattice.
+We employ periodic boundary conditions, so that the nearest neighbours of any given lattice site $\bm{s} = (x,y,z)$ is defined as 
+\begin{align}
+    \bm{n_{1,2}} &= (\trm{mod}(L+x\pm1), &   &y,                    &    z)&\\
+    \bm{n_{3,4}} &= (x,                  &   &\trm{mod}(L+y\pm1),   &    z)&\\
+    \bm{n_{5,6}} &= (x,                  &   &y,                    &    \trm{mod}(L+z\pm1))&
+\end{align}
+where the lattice indices $(x,y,z)$ range from $[0,L-1]$.
 
-The hamiltonian of the 3DXY-model is
+The Hamiltonian is written as 
 \begin{equation}
+  \label{xyham}
   H_{\trm{3DXY}} = -K\sum\limits_{\langle i,j\rangle} \bm{s_i}\cdot\bm{s_j} = -K\sum\limits_{\langle i,j\rangle} \cos(\alpha_i - \alpha_j)
 \end{equation}
-where $K$ is the coupling constant, which we set to $K=1$. 
+where $K$ is the coupling constant, which we during the rest of the thesis let $K=1$.
+In the XY-model, the spins are confined to a plane, so they can be parametrized by $ \bm{s_1} = (\cos(\alpha_i),\sin(\alpha_i)$, hence the second equality in \ref{xyham}.
 
+Next, we define some of the quantities which we calculate during simulation.
 We define the magnetization as 
 \begin{equation}
-  M = \left| \sum_i \bm{s_i}\right|
-  \label{}
-\end{equation},
-the energy as 
-\begin{equation}
-  E = -\sum\limits_{\langle i,j \rangle} \cos(\alpha_i - \alpha_j)
-  \label{}
-\end{equation},
-the superfluid stiffness/helicity modulus as 
-\begin{equation}
-  L\rho_s = -\langle E\rangle - \frac{1}{T}\left\langle\left(\sum_i \sin(\alpha_i - \alpha_{i+(1,0,0)})\right)^2\right\rangle
+  M = \left| \sum_i \bm{s_i}\right|,
   \label{}
 \end{equation}
-The superfluid stiffness/density/helicity modulus is a quantity representing the shift in free energy introduced by a twist of the spins.
-To improve statistical results, we also compute
+the energy as 
+\begin{equation}
+  E = -\sum\limits_{\langle i,j \rangle} \cos(\alpha_i - \alpha_j),
+  \label{}
+\end{equation}
+the superfluid stiffness/helicity modulus as 
+\begin{equation}
+  \Upsilon_{\bm{\mu}} = -\left\langle \sum_{\langle i,j\rangle} cos(\alpha_i - \alpha_j) (\hat{r_{i,j}}\cdot \bm{\mu})^2 \right\rangle - \frac{1}{T}\left\langle\left(\sum_{\langle i,j\rangle} \sin(\alpha_i - \alpha_j)(\bm{\epsilon_{i,j}}\cdot \bm{\mu})\right)^2\right\rangle
+  \label{}
+\end{equation}
+The superfluid stiffness/density/helicity modulus is a quantity representing the shift in free energy introduced by applying a phase twist along a boundary of the system.
+In the normal state, where the phase of the system is at large random, there will not be any change in free energy by such a twist, but in the superfluid state, the system is in a coherent state, and applying a twist at the boundary will propagate throughout the system. Thus the magnitude of the shift in free energy should be proportional to the total superfluid density.
+The superfluid stiffness is defined by the following expression
 \begin{align}
-  L\rho_s = -\langle E\rangle - \frac{1}{T}\left\langle\left(\sum_i \sin(\alpha_i - \alpha_{i+(0,1,0)})\right)^2\right\rangle\\
-  L\rho_s = -\langle E\rangle - \frac{1}{T}\left\langle\left(\sum_i \sin(\alpha_i - \alpha_{i+(0,0,1)})\right)^2\right\rangle
+  \Delta F = \frac{1}{2}\rho_s(\varphi)^2\\
+  \rho_s = \left. \frac{\pa^{2} f}{\pa \varphi^2}\right|_{\varphi =0}
   \label{}
 \end{align}
-In the regular liquid phase, the energy of the system is unaffected by uniform boundary motion. The superfluid stiffness is a quantity which measures the shift in energy due to a shift of the angles along a boundary, so this quantity is expected to 
-\section{Scaling}
-Often in physics, relations between different quantities are described by so-called power-laws, expressions on the form $f = f(\xi)\cdot g^{x}$, where the physical quantity $f$ is said to scale with $x$ in relation to some other physical quantity $g$. $\xi$ represents variables that are deemed irrelevant for the scaling behaviour of $f$.
+where $f$ is the free energy density defined by
+\begin{equation}
+  f = L^{-d}F = -TL^{-d}\ln(Z)
+  \label{}
+\end{equation}
+and 
+\begin{equation}
+  Z = \prodint \exp\left(-\beta H\right).
+  \label{}
+\end{equation}
+$H$ is as defined above.
+So, to calculate the difference we introduce a new Hamiltonian which is identical to the old, but for spins along a certain boundary, we add a term $\varphi$ for their neighbours in one direction, say for instance the positive x-direction.
+\begin{equation}
+  H_{\trm{twist}} = - \sum_{i\in\pa}\cos\left( \alpha_i - \alpha_{i+x} + \varphi \right)
+  \label{}
+\end{equation}
+Here, $\sum_{i\in\pa}$ signifies that we only sum over spins on a certain boundary plane, and by $\alpha_{i+x}$ we mean the spin at location $(1,0,0)$ relative to spin $i$ at location $(x_i,y_i,z_i)$.
 
-So also in statistical physics, where such laws are fundamental to understanding phase transitions.
+Note now that when we derive $\Delta f$, only the terms in $H - H_{\trm{twist}}$ at the boundary will remain.
+Some partial results in our derivation of the usable expression for $\rho_s$ are
+\begin{align}
+  \frac{\pa Z[H_{\trm{twist}}]}{\pa (\varphi)} &=  \prodint \frac{\pa}{\pa (\varphi)}e^{ -\beta H_{\trm{twist}}} = \\
+  &= \prodint (-\beta\sum\limits_{i\in\pa} \sin(\alpha_i - \alpha_{i+x} + \varphi))e^{ -\beta H_{\trm{twist}}} =\\
+  &= -\beta\left\langle \sum_{i\in\pa}\sin(\alpha_i-\alpha_{i+x}+\varphi) \right\rangle = 0.
+  \label{}
+\end{align}
+\begin{align}
+  \frac{\pa^2 Z[H_{\trm{twist}}]}{\pa (\varphi)^2} &= \prodint \frac{\pa}{\pa (\varphi)}\left[\left(-\beta\sum_{i\in\pa}\sin(\alpha_i - \alpha_{i+x} + \varphi)\right)e^{ -\beta H_{\trm{twist}}}\right] =\\
+  &= \prodint\Bigg[ \left\{-\beta\sum_{i\in\pa}\cos(\alpha_i - \alpha_{i+x} + \varphi) + \beta^2\left(\sum_{i\in\pa}\sin(\alpha_i - \alpha_{i+x} + \varphi)\right)^2\right\}\\
+  &\times e^{ -\beta H_{\trm{twist}}} \Bigg] = -\beta\left\langle \sum_{i\in\pa}\cos(\alpha_i -\alpha{i+x} +\varphi) \right\rangle +\\
+  &+ \beta^2 \left\langle \left(\sum_{i\in\pa} \sin(\alpha_i - \alpha_{i+x}+\varphi)\right)^2\right\rangle
+  \label{}
+\end{align}
 
-In statistical physics, when studying a specific system, the fundamental quantity is some thermodynamic potential,  Gibbs, Helmholtz. From this potential, several other physical quantites are derived, such as the energy, magnetization, and other that may depend on the specifics. 
-If the system has a phase transition, often, but not always, since what constitutes a phase transition is not trivial, physical quantites will diverege, and follow certain scaling laws as they do. 
-Using mean field theory to calculate these laws gives always a fractional exponent in the laws, but experiments had shown evidence of non-fractional exponents. 
-Kadanoff realized that a diverging correlation length implied that there was a relation between the lenght scale at which the order parameter was defined and the coupling constants of an effective Hamiltonian. Altough his block-spin approach does not enable one to compute the critical expoents, it was an important step.
-The full theory of Renormalization Group was put forth by Wilson.
-The core concept is the renormalization group transformations which takes a Hamiltonian and by some method/rule of coarse-graining clumps together short wave-length degrees of freedom, and defines a new effective hamiltonian describing the long-wavelength degrees of freedom with new coupling parameters for the new lenghtscale.
-The name renormalization group is not entirely appropriate, since these transformations are in general complicated and non-linear, thus not always having inverses. But the transformations do have the associative property of groups. Rescaling the system by some length $l_1$ and then rescaling again by some other length $l_2$ should be equivalent to performing the rescaling in the other order.
-But so far all we did was remove a finite number of degrees of freedom from out system, how can that explain the sigular behaviour at phase transitions? By repeating the transformations an infinite number of times, singular behaviour can be introduced.
-The partition function is what we really want to compute to know everything about a physical system, but that task is most often simply unachievable. The renormalization transformation are also not easy to compute, but the transformation of the coupling constants can be approximated.
-\section{Universality}
-The theromodynamics of any model; the phase diagram, correlation functions, other quantites etc, may depend on the specific values of coupling parameters in the hamiltonian, symmetries, dimensionality, type of lattice, etc. 
-But it turns out that the critical phenomena (phase transitions) only depend on three things, the symmetries of the hamiltonian, the dimensionality and the range of interations ( type of critical point ).
+Now we start the derivation:
+\begin{align}
+  \rho_s &= \left.\frac{\pa^2 \Delta f}{\pa( \varphi)^2}\right|_{\varphi=0} = \frac{1}{L^d}\frac{\pa^2}{}
+  \label{}
+\end{align}
 
-We can study the critical behaviour of say Helium-4, which we know is in the $O(2)$ universality class, by calculation themodynamical averages directly by using Monte-Carlo method on the simulated 3DXY-model, which should have the exact same critical exponents. 
-One inconvenience is that one cannot simulate the infinite size 3DXY-model due to computer memory finite-ness, thus one simulates instead finite-size versions of the 3DXY-model. The theory of how finite size systems relate to the infinite size models is called finite size scaling. The normal power-laws aquire correction terms, which needs to be accounted for.
+
+To improve statistical results, we compute $\Upsilon_{\bm{\mu}}$ for $\bm{\mu} = \bm{\hat{x}},\bm{\hat{y}},\bm{\hat{z}}$.
+
+In the regular liquid phase, the energy of the system is unaffected by uniform boundary motion. The superfluid stiffness is a quantity which measures the shift in energy due to a shift of the angles along a boundary.
+
+The helicity modulus $\Upsilon(T)$ is a measure of the system to a ``phase twisting'' field, for a superfluid system the helicity modulus is related to the superfluid density
+$\rho_s = (m/\hbar)^2 \Upsilon(T)$.
+Fischer et al showed in 1973 that this quantity can be calculated within the framework of equilibrium statistical mechanics, but one need to go beyond bulk properties.
+Operational definition for spherical model (1952 Barber Fischer) and ideal Bose gas (Barber 1977) under periodic and anti-periodic boundary conditions, ($F^{0},F^{1/2}$) :
+\begin{equation}
+  \Upsilon(T) = \trm{lim}_{L\rightarrow \infty} (2L^2/\pi^2) (F^{1/2} (T;L)-F^0(T;L)).
+  \label{}
+\end{equation}
+Rudnick Jasnow (1977) operational definition: 
+\begin{equation}
+  \Upsilon(T) = \left. \frac{  \pa^2F(T;k_0)}{\pa k^2_0}\right|_{k_0 =0}
+  \label{}
+\end{equation}
+Thought: the boundary conditions induce a long wavelength twist of the wave-number $k_0$ of the order parameter.
+Showed that Josephson relation ($\nu = 2\beta -\eta\nu = 2 - \alpha -2\nu = (d -2)\nu$) (1966) is exact using this definition and epsilon-expansion.
+The superfluid density is in the thermodynamic limit a constant at $T_c$.
+
 
 
 \section{Finite size scaling}
-Consider a system with coupling constants $K$ and linear finite size $L$. 
+Consider a system with a set of coupling constants $[K]$ and linear finite size $L$. 
 The singular part of the free energy scales as
 \begin{equation}
   f_s([K],L^{-1}) = l^{-d}f_s([K],lL^{-1}).
   \label{}
 \end{equation}
-Close to a fixed point of the RG, we can write this equation in terms of right eigenvectors of the linearized RG-transform,
+Close to a fixed point of the RG, we can write this equation in terms of right eigenvectors of the linearised RG-transform,
 \begin{equation}
   f_s(t,h,K_3,\cdots,L^{-1}) = l^{-d}f_s(tl^{y_t},hl^{y_h},K_3 l^{y_3},\cdots,lL^{-1}).
   \label{}
@@ -97,10 +149,8 @@ This form function will have a maximum at some shifted value of $T$,
   T_c(L) = T_c +  a_0 L^{-1/\nu}.
   \label{}
 \end{equation}
-This kind of correction is necessary to go from quantities simulated on finite systems to the infinite lattice universal quantities.
 
 
-Higher order corrections can be included as well.
 Similarly for the susceptibility,
 \begin{align}
   \chi = \frac{\partial^2 f}{\partial h^2}
@@ -113,19 +163,17 @@ The magnetization goes as
   M = \frac{\partial f}{\partial h} \sim L^{-d + y_h} = L^{-\beta/\nu}
   \label{}
 \end{equation}
-The 4th order Binder cumulandt is in the thermodynamic limit constant at $T_c$, and thus scales as 
-\begin{equation}
-  B \sim a_B(1+L^{-\omega})
-  \label{}
-\end{equation}
-with our ansatz.
-The derivative of the 4th order Binder cumuland scales as
-\begin{equation}
-  \frac{\der B}{\der T}\sim L
-  \label{}
-\end{equation}
 
+These relations are only correct in the limit $t= \frac{T-T_c}{T_c} \rightarrow 0$ or equivalently $L^{-1/\nu} \rightarrow 0$.
+The irrelevant coupling constants will contribute to the averages close but at the critical point.
+To correct for these contributions, there are many methods. Hasenbusch employ so-called improved models, which by definition eliminates the first order irrelevant contribution.
+This method has some merit as there is theoretical evidence that multiple next-to-leading order irrelevant contributions all scale with an exponent $y_{irr} \approx -2$.
+In this thesis we instead use the plain 3DXY-model and use the ansatz that only the leading order correction, $\omega = -y_3/\nu$, will be necessary to gain accurate estimations of the critical exponents.
 \section{Scaling laws}
+From renormalization-group theory we learn that there only exist two independent critical exponents from which all the others are derived.
+This was not a surprise, in fact, it was foreshadowed by the many scaling laws proposed both from prior theory and experiments.
+The framework of renormalization-group define the two independent exponents as the eigenvalues of rescaling operators.
+Here we state the various relations between exponents and their definitions in terms of limiting behaviour of physical quantities.
 \begin{align}
   y_t &= \frac{1}{\nu}\\
   y_h &= \frac{2-\eta +d}{2}\\
@@ -134,17 +182,12 @@ The derivative of the 4th order Binder cumuland scales as
 	\nu d &= 2-\alpha = 2\beta + \gamma = \beta(\delta+1) = \gamma\frac{\delta +1}{\delta -1}
 \end{align}
 \section{Definitions of critical exponents}
-For $h=0$,
 \begin{align}
-  f &\sim l^{-d}f(tl^{y_t},hl^{y_h},K_3l^{y_3},\cdots,L^{-1}l)\\
-  C &\sim t^{-\alpha}\\
-  M &\sim (-t)^{\beta}\\
-  \chi &\sim |t|^{-\gamma}\\
-  \xi &\sim |t|^{-\nu}\\
-\end{align}  
-For $t =0$,
-\begin{align}
-  h &\sim m^{\delta}\\
-  \langle m(r)m(0)\rangle &\sim r^{-d +2 -\eta}
+  C &\sim t^{-\alpha}, & &h=0\\
+  M &\sim (-t)^{\beta} & &h=0\\
+  \chi &\sim |t|^{-\gamma} & &h=0\\
+  \xi &\sim |t|^{-\nu} & &h=0\\
+  h &\sim m^{\delta} & &t=0\\
+  \langle m(r)m(0)\rangle &\sim r^{-d +2 -\eta} & &t=0
   \label{}
 \end{align}

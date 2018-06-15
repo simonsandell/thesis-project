@@ -14,6 +14,7 @@ def datatableToPlots(folderName, tag):
     for filename in os.listdir(folderName):
         if "datatable" in filename:
             datatable = np.load(os.path.join(folderName, filename))
+            fileWriter.writeDatatable(str(datatable[0, 0]) + "_" + tag,datatable)
             fileWriter.writeVsT(str(datatable[0, 0]) + "_" + tag, datatable)
             allDT = np.append(allDT, datatable, axis=0)
     # sort by T, then L

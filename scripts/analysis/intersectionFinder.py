@@ -20,6 +20,7 @@ def findIntersection(X, Y1, Y2):
         # returns [x,y] value of intersection of the lines through the points
         isc = testIntersection.seg_intersect(p1, p2, q1, q2)
         # if x val of int is between the two x values of the points, add this intersection to result
+
         if (isc[0] > T1) and (isc[0] < T2):
             result.append(isc)
     result = np.array(result)
@@ -30,7 +31,7 @@ def findIntersection(X, Y1, Y2):
 # takes intersectionpoints as input, calcultes closeness
 def findCloseness(pts):
     # calculate average x and y
-    # calculate mean distance to average
+    # calculate sum of distances to average point
     avgx = 0
     avgy = 0
     n_pts = 0
@@ -40,7 +41,7 @@ def findCloseness(pts):
             n_pts += 1
             avgx += p[0]
             avgy += p[1]
-    dist = []
+    dist = 0.0
     avgx /= float(n_pts)
     avgy /= float(n_pts)
 
@@ -48,6 +49,7 @@ def findCloseness(pts):
         for p in pt:
             dx = abs(p[0] - avgx)
             dy = abs(p[1] - avgy)
-            dist.append(pow((dx ** 2) + (dy ** 2), 0.5))
+            dist += pow((dx ** 2) + (dy ** 2), 0.5)
+    dist = dist/float(len(pts))
 
-    return [np.mean(dist), avgx, avgy]
+    return [dist, avgx, avgy]

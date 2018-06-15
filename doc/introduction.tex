@@ -1,3 +1,4 @@
+% !TEX root = thesis.tex
 %        File: preface.tex
 %     Created: mån feb 12 01:00  2018 C
 % Last Change: mån feb 12 01:00  2018 C
@@ -16,10 +17,35 @@ Gravitational gradients on Earth will induce a pressure gradient in the sample, 
 The measurements of the heat capacity as well as the superfluid density was performed, to temperatures in the range of $nK$ of $T_c$, with no evidence of broadening.
 
 Theoretical calculations of Sokolov and Nikitina \cite{Sokolov2016} have given predictions of the critical exponents which to the stated precision agrees with the value seen in experiment.
-However, numerical studies performed by Campostrini et. al. \cite{Campostrini2006} has predicted values that are incompatible with both experiment and the theoretical predictions. 
+However, numerical studies performed by Campostrini et. al. \cite{Campostrini2006} has predicted values that are incompatible with both experiment and the theoretical predictions. These estimates was obtained by similar methods that we use in this thesis, but they simulate the $\phi^4$ model as well as the ddXY model since these models have a parameter which can be freely set to elimate the first order scaling corrections. In this thesis we take a different approach, by simulation of the XY model and precise determination of the first order scaling correction we hope to obtain more presice results.
 
 The aim of this thesis is to achieve numerical estimations to a higher precision than previous studies. By virtue of a new approach to finite size scaling corrections, which has not been widely utilized before, we hope to achieve estimations for the critical exponents which agree with experimenal and theoretical values. The method is very general and is implementable on numerous systems. We chose to investigate the 3DXY model since it is of  particular interest to see if discrepancies will dissapear with higher precision, and also the 3D Ising-model, since it is also a very important model, and it's implementation is very similar to that of the 3DXY-model.
+
+The numerical estimation technique we use is a Monte Carlo method, by computing thermal quantities from a randomly drawn selection of states distributed by the Boltzmann-distribution, one can estimate the thermal averges. The algorithm is rather straightforward to implement, the difficulty lies in getting estimates accurate enough to draw conclutions about physical quantities. Simulating small system sizes are quicker, the cputime required to get accurate estimations grows roughly linearly with the number of spins.
 
 Our results show a better/the same/worse agreement with the experimental value. Agreement shows that numerical studies are a valid method of study of these systems, and discredits the idea that numberical simulations may be part of a different but closely related universality class.
 
 
+\section{Scaling}
+Often in physics, relations between different quantities are described by so-called power-laws, expressions on the form $f = f(\xi)\cdot g^{x}$, where the physical quantity $f$ is said to scale with $x$ in relation to some other physical quantity $g$. $\xi$ represents variables that are deemed irrelevant for the scaling behaviour of $f$.
+
+So also in statistical physics, where such laws are fundamental to understanding phase transitions.
+
+In statistical physics, when studying a specific system, the fundamental quantity is some thermodynamic potential,  Gibbs, Helmholtz. From this potential, several other physical quantities are derived, such as the energy, magnetization, and other that may depend on the specifics. 
+If the system has a phase transition, often, but not always, since what constitutes a phase transition is not trivial, physical quantities will diverge, and follow certain scaling laws as they do. 
+Using mean field theory to calculate these laws gives always a fractional exponent in the laws, but experiments had shown evidence of non-fractional exponents. 
+Kadanoff realized that a diverging correlation length implied that there was a relation between the length scale at which the order parameter was defined and the coupling constants of an effective Hamiltonian.
+Although his block-spin approach does not enable one to compute the critical exponents, it was an important step.
+The full theory of Renormalization Group was put forth by Wilson.
+The core concept is the renormalization group transformations which takes a Hamiltonian and by some method/rule of coarse-graining clumps together short wave-length degrees of freedom, and defines a new effective Hamiltonian describing the long-wavelength degrees of freedom with new coupling parameters for the new length-scale.
+The name renormalization group is not entirely appropriate, since these transformations are in general complicated and non-linear, thus not always having inverses. But the transformations do have the associative property of groups. Rescaling the system by some length $l_1$ and then rescaling again by some other length $l_2$ should be equivalent to performing the rescaling in the other order.
+But so far all we did was remove a finite number of degrees of freedom from out system, how can that explain the singular behaviour at phase transitions? By repeating the transformations an infinite number of times, singular behaviour can be introduced.
+The partition function is what we really want to compute to know everything about a physical system, but that task is most often simply unachievable. The renormalization transformation are also not easy to compute, but the transformation of the coupling constants can be approximated.
+
+\section{Universality}
+The thermodynamics of any model; the phase diagram, correlation functions, other quantities etc., may depend on the specific values of coupling parameters in the Hamiltonian, symmetries, dimensionality, type of lattice, etc. 
+But it turns out that the critical phenomena (phase transitions) only depend on three things, the symmetries of the Hamiltonian, the dimensionality and the range of interactions ( type of critical point ).
+
+We can study the critical behaviour of say Helium-4, which we know is in the $O(2)$ universality class, by calculation of thermodynamic averages directly by using Monte-Carlo method on the simulated 3DXY-model, which should have the exact same critical exponents. 
+One inconvenience is that one cannot simulate the infinite size 3DXY-model due to computer our puny, finite computers, thus one simulates instead finite-size versions of the 3DXY-model.
+In this thesis we simulate the model on a simple cubic lattice three dimensional lattice, with $N_{spins} = (2^n)^3$ where $n \in \{2,3,4,5,6,7\}$.
