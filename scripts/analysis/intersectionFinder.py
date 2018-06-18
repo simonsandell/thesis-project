@@ -47,8 +47,8 @@ def findCloseness(pts):
 
     for pt in pts:
         for p in pt:
-            dx = abs(p[0] - avgx)
-            dy = abs(p[1] - avgy)
+            dx = abs(p[0] - avgx)/abs(avgx)
+            dy = abs(p[1] - avgy)/abs(avgy)
             dist += pow((dx ** 2) + (dy ** 2), 0.5)
     dist = dist/float(len(pts))
 
