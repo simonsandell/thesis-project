@@ -93,19 +93,27 @@ The number of simulations currently used to calculate $U_4, \rho_s, \chi $ etc. 
 \subsection{3D Ising-model}
 The same general formula is used when simulating the 3D Ising-model, however, the temperature range is changed to capture the phase transition, $T_{\trm{run}} = 4.50, ~ T_{\trm{range}} = 4.486-4.515$.
 
+\subsection{Figures}
+We begin by plotting some bare quantities which we use in our further analysis.
+\begin{figure}[!htpb]
+  \centering
+  \includegraphics[width=\textwidth]{./plots/3DXY/vsT/Susceptibility.eps}
+  \caption{Plotted here is the susceptibility (per spin?), plotted for different system sizes as a function of temperature}
+\end{figure}
 
 
 %\input{figures.tex}
 \begin{figure}[!htpb]
   \centering
+  \label{fig:three_l_omega}
   \includegraphics[width=\textwidth]{./plots/3DXY/vsO/three_L_BinderCumuland.eps}
-  \caption{Using three system sizes with a constant factor in size difference, one can directly compute the first order scaling correction $\omega$ by \ref{three_l_omega}. The hope is that for large enough system sizes, this ansatz will be adequate to get a good estimation of omega.}
+  \caption{Using three system sizes with a constant factor in size difference, one can directly compute the first order scaling correction $\omega$ as shown in \ref{three_l_omega}. The hope is that for large enough system sizes, this ansatz will be adequate to get a good estimation of omega.}
 \end{figure}
 
 \begin{figure}[!htpb]
   \centering
   \includegraphics[width=\textwidth]{./plots/3DXY/vsT/nu.eps}
-  \caption{Here we plot $\nu$ obtained by fitting $\frac{dB}{dT}(L)|_T$ to a function $f = a*L^{1/\nu}(1+L^{-\omega})$ for a estimated value of $\omega$. }
+  \caption{Here we plot $\nu$ obtained by fitting $\frac{dB}{dT}(L)$ for constant $T$, to a function $f = a*L^{1/\nu}(1+L^{-\omega})$ for a estimated value of $\omega$, and plot the result versus the temperature. }
 \end{figure}
 
 \begin{figure}[!htpb]
@@ -115,8 +123,17 @@ The same general formula is used when simulating the 3D Ising-model, however, th
 \end{figure}
 
 
+
+
+\begin{figure}[!htpb]
+  \centering
+  \label{fig:omega_two_l}
+  \includegraphics[width=\textwidth]{./plots/3DXY/vsT/omega.eps}
+  \caption{By fitting $b''(L) = B(2L) - B(L)$ to a function $f = b'L^{-\omega}$, we get an intersection at $T=T_c$ and the y-value should give us $\omega$. Curve $n$ is defined by dropping the $n$ lowest values for $L$, so for $n = 3$, only the values for $L= 32,64,128$ are used. The same analysis can be performed using $L\rho_s$, but our statistics are not enough to give any meaningful output. The curves in this figure are somewhat similar to those of \ref{fig:three_l_omega}, but are in fact two quite different methods of calculating omega. }
+\end{figure}
+
 \begin{figure}[!htpb]
   \centering
   \includegraphics[width=\textwidth]{./plots/3DXY/vsT/variace_omega.eps}
-  \caption{The variance $\omega$ from fitting $b'(L) = B(2L)-B(L)$ to $f = a*L^{-\omega}$, this gives a hint about what $T_c$ should be.}
+  \caption{The variance $\omega$ from fitting $b''(L) = B(2L)-B(L)$ to $f = a*L^{-\omega}$, this gives a hint about what $T_c$ should be. By visual inspection of \ref{fig:omega_two_l} one would guess the same value for $T_c$ as the minimum here, which is nice. }
 \end{figure}
