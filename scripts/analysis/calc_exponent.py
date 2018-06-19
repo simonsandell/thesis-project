@@ -5,16 +5,16 @@ import settings
 from plotting import fileWriter
 
 #  define some variables, path to datatables
-DIRPATH = settings.datatables_path+ "June_11_2018/"
-TAG = "jun_11_no_128"
+DIRPATH = settings.datatables_path+ "June_18_2018/"
+TAG = "jun_18"
 JACKPATH = DIRPATH + "/jackknife/"
 FILELIST = [
-    np.load(DIRPATH + "datatable_4.0jun113DXY.npy"),
-    np.load(DIRPATH + "datatable_8.0jun113DXY.npy"),
-    np.load(DIRPATH + "datatable_16.0jun113DXY.npy"),
-    np.load(DIRPATH + "datatable_32.0jun113DXY.npy"),
-    np.load(DIRPATH + "datatable_64.0jun113DXY.npy"),
-#    np.load(DIRPATH + "datatable_128.0jun113DXY.npy"),
+    np.load(DIRPATH + "datatable_4.0jun_153DXY.npy"),
+    np.load(DIRPATH + "datatable_8.0jun_153DXY.npy"),
+    np.load(DIRPATH + "datatable_16.0jun_153DXY.npy"),
+    np.load(DIRPATH + "datatable_32.0jun_153DXY.npy"),
+    np.load(DIRPATH + "datatable_64.0jun_153DXY.npy"),
+    np.load(DIRPATH + "datatable_128.0jun_153DXY.npy"),
 ]
 JACK_LIST = [
     np.load(JACKPATH + "4combined.npy"),
@@ -22,11 +22,11 @@ JACK_LIST = [
     np.load(JACKPATH + "16combined.npy"),
     np.load(JACKPATH + "32combined.npy"),
     np.load(JACKPATH + "64combined.npy"),
-#    np.load(JACKPATH + "128combined.npy"),
+    np.load(JACKPATH + "128combined.npy"),
 ]
 
 
-def getTempIndices(arr):
+def get_temp_idx(arr):
     tval, tidx = np.unique(arr[:, 1], return_index=True)
     tidx2 = tidx.copy()
 
@@ -85,7 +85,7 @@ def calculate_exponents(omega,skip_n):
     jackknife_list = JACK_LIST[skip_n:]
     dt_num_vals = filelist[0].shape[1]
     jack_num_vals = jackknife_list[0].shape[1]
-    JACK_NUM = 100
+    JACK_NUM = 500
     TEMP_NUM = 101
     L_NUM = len(filelist)
     all_tables = np.empty((0, dt_num_vals))
@@ -95,7 +95,7 @@ def calculate_exponents(omega,skip_n):
         all_tables = np.append(all_tables, dt, axis=0)
         jind = np.lexsort((jt[:, 0], jt[:, 1]))
         sort_jt = jt[jind]
-        tind = getTempIndices(sort_jt)
+        tind = get_temp_idx(sort_jt)
 
         for temp_index,(t1, t2) in enumerate(zip(tind[:-1], tind[1:])):
             oneT = sort_jt[t1:t2, :]
@@ -110,7 +110,7 @@ def calculate_exponents(omega,skip_n):
     all_tables = all_tables[ind]
     # temperatures unfortunately not exact, use some isclose magic to group unique temperatures
     # into correct blocks
-    Ti = getTempIndices(all_tables)
+    Ti = get_temp_idx(all_tables)
 
     result = np.empty((Ti.shape[0] - 1, 4))
     eta_result = np.empty((Ti.shape[0] - 1, 4))
@@ -127,8 +127,6 @@ def calculate_exponents(omega,skip_n):
         for i in range(JACK_NUM):
             jresult = np.append(jresult, calculateNu(jack_tables[i, ind, :, :]), axis=0)
             jeta_result = np.append(jeta_result, calculateEta(jack_tables[i, ind, :, :]), axis=0)
-        print(jresult[:,1])
-        print(np.std(jresult[:,1]))
         nu_delta = pow(JACK_NUM - 1, 0.5) * np.std(jresult[:, 1])
         eta_delta = pow(JACK_NUM - 1, 0.5) * np.std(jeta_result[:, 1])
         result[ind, 2] = nu_delta

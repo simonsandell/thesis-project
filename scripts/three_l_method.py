@@ -5,18 +5,18 @@ from analysis import threeL
 from plotting import fileWriter
 
 MODEL = settings.model
-SAVENAME = "jun_11"
-JACK_N = 100
+SAVENAME = "jun_18"
+JACK_N = 500
 
-CURFOLDER = "June_11_2018/"
+CURFOLDER = "June_18_2018/"
 
 DATAFILES = [
-    settings.datatables_path + CURFOLDER + "datatable_4.0jun113DXY.npy",
-    settings.datatables_path + CURFOLDER + "datatable_8.0jun113DXY.npy",
-    settings.datatables_path + CURFOLDER + "datatable_16.0jun113DXY.npy",
-    settings.datatables_path + CURFOLDER + "datatable_32.0jun113DXY.npy",
-    settings.datatables_path + CURFOLDER + "datatable_64.0jun113DXY.npy",
-    settings.datatables_path + CURFOLDER + "datatable_128.0jun113DXY.npy"
+    settings.datatables_path + CURFOLDER + "datatable_4.0jun_153DXY.npy",
+    settings.datatables_path + CURFOLDER + "datatable_8.0jun_153DXY.npy",
+    settings.datatables_path + CURFOLDER + "datatable_16.0jun_153DXY.npy",
+    settings.datatables_path + CURFOLDER + "datatable_32.0jun_153DXY.npy",
+    settings.datatables_path + CURFOLDER + "datatable_64.0jun_153DXY.npy",
+    settings.datatables_path + CURFOLDER + "datatable_128.0jun_153DXY.npy"
 ]
 
 JACKFILES = [
