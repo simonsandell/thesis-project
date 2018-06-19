@@ -12,12 +12,14 @@ FILES = [
 TIMES = []
 with open(settings.datatables_path + "cputime/time.txt", "r") as timefile:
     TIMES = timefile.readlines()
+# times contains cpu-sec / 10*100k
 RESULT = []
 for i, F in enumerate(FILES):
     data = np.load(F)
     delta = np.std(data[:, 9])/np.sqrt(data.shape[0]-1)
     size = data[0, 0]
-    frac = float(TIMES[i])/(60*60*data.shape[0]) # get hours per data_amount
+    frac = float(TIMES[i])/(60*60) # get hours per 10^{6} MCS
+
     RESULT.append([size, frac, 0.0, delta, float(TIMES[i])])
 RESULT = np.array(RESULT)
 np.save(settings.datatables_path + "cputime/cputime", RESULT)
