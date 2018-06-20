@@ -1,0 +1,3 @@
+[submodule "mscthesis"]
+	path = mscthesis
+	url = git@gits-15.sys.kth.se:simsan/mscthesis.git
