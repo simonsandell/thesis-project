@@ -7,7 +7,6 @@ import settings
 from plotting import fileWriter
 from analysis import twoLana
 
-# from analysis import twoLomega
 # from analysis import twoLomegaVsGood
 
 
@@ -114,14 +113,6 @@ for i in range(len(DATAFILES) - 1):
         [2, 4, 6, 0],
     )
 
-## for range of omega, rescale and find intersection between sequentially larger system sizes
-# bres, rres = np.empty((0, 5)), np.empty((0, 5))
-# for q1, q2 in zip(TWO_L_QUANT[:-1], TWO_L_QUANT[1:]):
-#    bothres = twoLomega.twoLfindIntersection(q1, q2, MODEL)
-#    bres=np.append(bres, bothres[0], axis=0)
-#    rres=np.append(rres, bothres[1], axis=0)
-# result format:
-# bres = [[omega, intx, inty, L1, L2], ...]
 
 ## calculate how close intersections are for each omega and save to xmgrace file
 # twoLomegaVsGood.twoLintersectionCloseness(bres, "bin", savename+"bind_good")
