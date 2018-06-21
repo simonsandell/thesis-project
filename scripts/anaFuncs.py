@@ -1,4 +1,6 @@
 def dirToXaxis(fullpath):
+    if "2Lquant_fit" in fullpath:
+        return "T - temperature"
     if "vsT" in fullpath:
         return "T - temperature"
 
@@ -13,12 +15,6 @@ def dirToXaxis(fullpath):
 
     if "findZ" in fullpath:
         return "z"
-
-    if "scalingCorr" in fullpath:
-        return "Temperature"
-
-    if "intersections" in fullpath:
-        return "1/L"
 
     if "subtraction" in fullpath:
         return "L - systemsize"
@@ -50,7 +46,19 @@ def dirToYaxis(dirname):
         "omega": r"\xw\0",
         "varomega": r"Var(\xw\0)",
         "nu": r"\xn\0 critical exponent",
-        "delta": r'CPU hours / N\sMCAvg\S'
+        "delta": r'CPU hours / N\sMCAvg\S',
+        "a_rs": 'a  ---  lr(2l) - lr(l) fit',
+        "a_bin": 'a  ---  bin(2l) - bin(l) fit',
+        "omega_rs": r'\xw\0  ---  lr(2l) - lr(l) fit',
+        "omega_bin": r'\xw\0  ---  bin(2l) - bin(l) fit',
+        "a_omega_bin":r'\xw\0*a --- bin fit',
+        "a_omega_rs":r'\xw\0*a --- rs fit',
+        "var_bin":r'Var(\xw\0) + Var(a) --- bin fit',
+        "var_rs":r'Var(\xw\0) + Var(a) --- rs fit',
+        "var_a_rs": r'Var(a)  ---  lr(2l) - lr(l) fit',
+        "var_a_bin": r'Var(a)  ---  bin(2l) - bin(l) fit',
+        "var_omega_rs": r'Var(\xw\0)  ---  lr(2l) - lr(l) fit',
+        "var_omega_bin": r'Var(\xw\0)  ---  bin(2l) - bin(l) fit',
     }
 
     if dirname in dirLex:
@@ -95,15 +103,12 @@ def dirToTitle(dirname):
     if dirname in dirLex:
         return dirLex[dirname]
 
-    return "unknown"
+    return dirname
 
 
 def dirToLogPlot(fullpath):
     xlog = False
     ylog = False
-
-    if "varomega" in fullpath:
-        ylog = True
 
     if "vsN" in fullpath:
         xlog = True
@@ -115,6 +120,8 @@ def dirToLogPlot(fullpath):
     if "vsL" in fullpath:
         xlog = True
         ylog = True 
+    if "var_" in fullpath:
+        ylog = True
 
     return [xlog, ylog]
 

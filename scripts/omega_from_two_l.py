@@ -1,4 +1,5 @@
 import sys
+import os
 import numpy as np
 from scipy.optimize import curve_fit
 
@@ -13,8 +14,8 @@ def fit_curve(x_val, y_val):
     try:
         par, cov = curve_fit(fitfunc, x_val, y_val)
     except:
-        par = ["nan"]
-        cov = np.array(([["nan", "nan"], ["nan", "nan"]]))
+        par = [np.nan, np.nan]
+        cov = np.array(([[np.nan, np.nan], [np.nan, np.nan]]))
     return par, cov
 
 SKIP_N = int(sys.argv[1])
@@ -72,8 +73,8 @@ TI = np.append(TI, ALL_DT.shape[0])
 
 # container for fit results
 # [ T omega var(omega) jackknife(omega) ]
-BIN_OMEGA = np.empty((TI.shape[0] - 1, 4))
-RS_OMEGA = np.empty((TI.shape[0] - 1, 4))
+BIN_OMEGA = np.empty((TI.shape[0] - 1, 9))
+RS_OMEGA = np.empty((TI.shape[0] - 1, 9))
 
 # for each temperature, fit Q to powerlaw to obtain omega
 for temp_ind in range(TI.shape[0] - 1):
@@ -85,60 +86,131 @@ for temp_ind in range(TI.shape[0] - 1):
     Yb = tview[:, 3]
     Yr = tview[:, 4]
     param, covar = fit_curve(X, Yb)
-    BIN_OMEGA[temp_ind, :] = [tview[0, 2], param[0], covar[0, 0], 0.0]
+    BIN_OMEGA[temp_ind, :] = [tview[0, 2], param[0], param[1], covar[0, 0], covar[1, 1], 0.0, 0.0, 0.0, 0.0]
     param, covar = fit_curve(X, Yr)
-    RS_OMEGA[temp_ind, :] = [tview[0, 2], param[0], covar[0, 0], 0.0]
+    RS_OMEGA[temp_ind, :] = [tview[0, 2], param[0], param[1], covar[0, 0], covar[1, 1], 0.0, 0.0, 0.0, 0.0]
     jack_omega_bin = []
     jack_omega_bin[:] = []
     jack_omega_rs = []
     jack_omega_rs[:] = []
+    jack_a_bin = []
+    jack_a_bin[:] = []
+    jack_a_rs = []
+    jack_a_rs[:] = []
+    jack_var_w_bin = []
+    jack_var_w_bin[:] = []
+    jack_var_w_rs = []
+    jack_var_w_rs[:] = []
+    jack_var_a_bin = []
+    jack_var_a_bin[:] = []
+    jack_var_a_rs = []
+    jack_var_a_rs[:] = []
     for jack_i in range(N_JACK):
         X = ALL_JACK[jack_i, temp_ind*N_FILES:(temp_ind+1)*N_FILES:, 1]
         Yb = ALL_JACK[jack_i, temp_ind*N_FILES:(temp_ind+1)*N_FILES:, 3]
         Yr = ALL_JACK[jack_i, temp_ind*N_FILES:(temp_ind+1)*N_FILES:, 4]
         param, covar = fit_curve(X, Yb)
         jack_omega_bin.append(param[0])
+        jack_a_bin.append(param[1])
+        jack_var_w_bin.append(covar[0, 0])
+        jack_var_a_bin.append(covar[1, 1])
         param, covar = fit_curve(X, Yr)
         jack_omega_rs.append(param[0])
+        jack_a_rs.append(param[1])
+        jack_var_w_rs.append(covar[0, 0])
+        jack_var_a_rs.append(covar[1, 1])
     try:
-        BIN_OMEGA[temp_ind, 3] = np.sqrt(len(jack_omega_bin) - 1) * np.std(jack_omega_bin)
+        BIN_OMEGA[temp_ind, 5] = np.sqrt(len(jack_omega_bin) - 1) * np.std(jack_omega_bin)
+        BIN_OMEGA[temp_ind, 6] = np.sqrt(len(jack_omega_bin) - 1) * np.std(jack_a_bin)
+        BIN_OMEGA[temp_ind, 7] = np.sqrt(len(jack_omega_bin) - 1) * np.std(jack_var_w_bin)
+        BIN_OMEGA[temp_ind, 8] = np.sqrt(len(jack_omega_bin) - 1) * np.std(jack_var_a_bin)
     except:
         print("asdf")
     try:
-        RS_OMEGA[temp_ind, 3] = np.sqrt(len(jack_omega_rs) - 1) * np.std(jack_omega_rs)
+        RS_OMEGA[temp_ind, 5] = np.sqrt(len(jack_omega_rs) - 1) * np.std(jack_omega_rs)
+        RS_OMEGA[temp_ind, 6] = np.sqrt(len(jack_omega_rs) - 1) * np.std(jack_a_rs)
+        RS_OMEGA[temp_ind, 7] = np.sqrt(len(jack_omega_rs) - 1) * np.std(jack_var_w_rs)
+        RS_OMEGA[temp_ind, 8] = np.sqrt(len(jack_omega_rs) - 1) * np.std(jack_var_a_rs)
     except:
         print("asdf_rs")
 
+# disable warnings about invalid name
+# pylint: disable=C0103
+# plot
+basep = settings.foutput_path +settings.model + "/2Lquant_fit/"
+pth_omega_bin = basep + "omega_bin/" + str(SKIP_N) + TAG + ".dat"
+pth_omega_rs = basep + "omega_rs/" + str(SKIP_N) + TAG + ".dat"
+pth_a_bin = basep + "a_bin/" + str(SKIP_N) + TAG + ".dat"
+pth_a_rs = basep + "a_rs/" + str(SKIP_N) + TAG + ".dat"
+pth_var_omega_bin = basep + "var_omega_bin/" + str(SKIP_N) + TAG + ".dat"
+pth_var_omega_rs = basep + "var_omega_rs/" + str(SKIP_N) + TAG + ".dat"
+pth_var_a_bin = basep + "var_a_bin/" + str(SKIP_N) + TAG + ".dat"
+pth_var_a_rs = basep + "var_a_rs/" + str(SKIP_N) + TAG + ".dat"
+pth_a_omega_bin = basep + "a_omega_bin/" + str(SKIP_N) + TAG + ".dat"
+pth_a_omega_rs = basep + "a_omega_rs/" + str(SKIP_N) + TAG + ".dat"
+pth_var_bin = basep + "var_bin/" + str(SKIP_N) + TAG + ".dat"
+pth_var_rs = basep + "var_rs/" + str(SKIP_N) + TAG + ".dat"
+dirlist = [
+    pth_omega_bin, pth_omega_rs, pth_a_bin, pth_a_rs,
+    pth_var_omega_bin, pth_var_omega_rs, pth_var_a_bin, pth_var_a_rs,
+    pth_a_omega_bin, pth_a_omega_rs, pth_var_bin, pth_var_rs,
+]
+for dir_paths in dirlist:
+    d = os.path.dirname(dir_paths)
+    if not os.path.exists(d):
+        os.makedirs(d)
 
-# plot both omega as func of T
 fileWriter.writeQuant(
-    settings.foutput_path + settings.model + "/vsT/omega/bin" + str(SKIP_N) + TAG + ".dat",
-    BIN_OMEGA,
-    [0, 1, 3, 2]
-)
+    pth_omega_bin, BIN_OMEGA, [0, 1, 5]
+    )
 fileWriter.writeQuant(
-    settings.foutput_path + settings.model + "/vsT/omega/rs" + str(SKIP_N) + TAG + ".dat",
-    RS_OMEGA,
-    [0, 1, 3, 2]
-)
+    pth_a_bin, BIN_OMEGA, [0, 2, 6]
+    )
+fileWriter.writeQuant(
+    pth_var_omega_bin, BIN_OMEGA, [0, 3, 7]
+    )
+fileWriter.writeQuant(
+    pth_var_a_bin, BIN_OMEGA, [0, 4, 8]
+    )
 
 fileWriter.writeQuant(
-    settings.foutput_path
-    + settings.model
-    + "/vsT/varomega/var_bin"
-    + str(SKIP_N)
-    + TAG
-    + ".dat",
-    BIN_OMEGA,
-    [0, 2, 3, 1]
-)
+    pth_omega_rs, RS_OMEGA, [0, 1, 5]
+    )
 fileWriter.writeQuant(
-    settings.foutput_path
-    + settings.model
-    + "/vsT/varomega/var_rs"
-    + str(SKIP_N)
-    + TAG
-    + ".dat",
-    RS_OMEGA,
-    [0, 2, 3, 1]
-)
+    pth_a_rs, RS_OMEGA, [0, 2, 6]
+    )
+fileWriter.writeQuant(
+    pth_var_omega_rs, RS_OMEGA, [0, 3, 7]
+    )
+fileWriter.writeQuant(
+    pth_var_a_rs, RS_OMEGA, [0, 4, 8]
+    )
+prod_BIN = BIN_OMEGA[:,:]
+prod_RS = RS_OMEGA[:,:]
+for temp_idx in range(BIN_OMEGA.shape[0]):
+    T,w, a, VarW, VarA, dw, da, dVarW, dVarA = prod_BIN[temp_idx, :]
+
+    prod_BIN[temp_idx, 1] = w*a
+    prod_BIN[temp_idx, 2] = a*dw + w*da + da*dw
+    prod_BIN[temp_idx, 3] = VarW + VarA
+    prod_BIN[temp_idx, 4] = dVarW + dVarA
+
+    T,w, a, VarW, VarA, dw, da, dVarW, dVarA = prod_RS[temp_idx, :]
+
+    prod_RS[temp_idx, 1] = w*a
+    prod_RS[temp_idx, 2] = a*dw + w*da + da*dw
+    prod_RS[temp_idx, 3] = VarW + VarA
+    prod_RS[temp_idx, 4] = dVarW + dVarA
+
+fileWriter.writeQuant(
+    pth_a_omega_bin, prod_BIN, [0, 1, 2]
+    )
+fileWriter.writeQuant(
+    pth_var_bin, prod_BIN, [0, 3, 4]
+    )
+fileWriter.writeQuant(
+    pth_a_omega_rs, prod_RS, [0, 1, 2]
+    )
+fileWriter.writeQuant(
+    pth_var_rs, prod_RS, [0, 3, 4]
+    )
