@@ -1,139 +1,16 @@
-def dirToXaxis(fullpath):
-    if "2Lquant_fit" in fullpath:
-        return "T - temperature"
-    if "vsT" in fullpath:
-        return "T - temperature"
+import plot_dicts
+class plot_params:
+    xlabel,ylabel,title = "", "", ""
+    xlog, ylog = False, False
 
-    if "vsL" in fullpath:
-        return "L - systemsize"
+    def __init__(self, path):
+        self.xlabel = plot_dicts.dict_xaxis[path]
+        self.ylabel = plot_dicts.dict_yaxis[path]
+        self.title = plot_dicts.dict_title[path]
 
-    if "vsO" in fullpath:
-        return "Omega"
-
-    if "vsN" in fullpath:
-        return r"N\ssweeps\S"
-
-    if "findZ" in fullpath:
-        return "z"
-
-    if "subtraction" in fullpath:
-        return "L - systemsize"
-    else:
-        return "unknown"
-
-
-def dirToYaxis(dirname):
-    dirLex = {
-        "en": r"e Energy per spin",
-        "mag": r"m Magnetization per spin",
-        "bin": r"B = \x\ca\0\Cm\S4\N\x\cq\0\C/\x\ca\0\Cm\S2\N\x\cq\0\C\S2\N",
-        "2Lbin": r"B(2L)-B(L)",
-        "2Lrs": r"L\xr\0\ss\N(2L)-L\xr\0\ss\N(L)",
-        "dbdt": r"dB/dT",
-        "chi": r"\xc\0 Susceptibility",
-        "rs": r"L\xr\0\ss\N Superfluid density",
-        "m2": r"m\S2\N",
-        "m4": r"m\S4\N",
-        "c": "C - Heat Capacity",
-        "teq": "Magnetization",
-        "threeL": r"\xw\0 = -ln(Q(4L) - Q(2L)/Q(2L) - Q(L))/ln(2)",
-        "twoL": r"L\S\xw\0\N\c7\C[Q(2L) - Q(L)]",
-        "vsO": r"\xs\0\sQ(2L)-Q(L)\N",
-        "sigmaVsZ": r"\xc\0\S2\N",
-        "tc": r"T\sc\S",
-        "intersection": r"mean dist to mean point of intersections",
-        "eta": r"\xh\0 critical exponent",
-        "omega": r"\xw\0",
-        "varomega": r"Var(\xw\0)",
-        "nu": r"\xn\0 critical exponent",
-        "delta": r'CPU hours / N\sMCAvg\S',
-        "a_rs": 'a  ---  lr(2l) - lr(l) fit',
-        "a_bin": 'a  ---  bin(2l) - bin(l) fit',
-        "omega_rs": r'\xw\0  ---  lr(2l) - lr(l) fit',
-        "omega_bin": r'\xw\0  ---  bin(2l) - bin(l) fit',
-        "a_omega_bin":r'\xw\0*a --- bin fit',
-        "a_omega_rs":r'\xw\0*a --- rs fit',
-        "var_bin":r'Var(\xw\0) + Var(a) --- bin fit',
-        "var_rs":r'Var(\xw\0) + Var(a) --- rs fit',
-        "var_a_rs": r'Var(a)  ---  lr(2l) - lr(l) fit',
-        "var_a_bin": r'Var(a)  ---  bin(2l) - bin(l) fit',
-        "var_omega_rs": r'Var(\xw\0)  ---  lr(2l) - lr(l) fit',
-        "var_omega_bin": r'Var(\xw\0)  ---  bin(2l) - bin(l) fit',
-    }
-
-    if dirname in dirLex:
-        return dirLex[dirname]
-    else:
-        return "unknown"
-
-
-def dirToTitle(dirname):
-    dirLex = {
-        "threeL": "Omega_from_three_L",
-        "twoL": "subration_two_L",
-        "vsO": "versus_omega",
-        "sigmaVsZ": "teq_sigma",
-        "tc": "tc",
-        "intersection": "intersection",
-        "eta": "eta",
-        "omega": "omega",
-        "varomega": "variace_omega",
-        "nu": "nu",
-        "delta": 'cputime',
-        "2Lbin": "bin_subtraction_2L",
-        "2Lrs": "rs_subtraction_2L",
-        "en": "Energy",
-        "mag": "Magnetization",
-        "bin": "BinderCumulant",
-        "dbdt": "dBdT",
-        "chi": "Susceptibility",
-        "rs": "SuperfluidDensity",
-        "m2": "M2",
-        "m4": "M4",
-        "c": "HeatCapacity",
-        "omegaBin3L": "omega_from_B",
-        "omegaRS3L": "omega_from_rs",
-        "omegaBin2L": "Ltoomega_from_B",
-        "std_omegaBin2L": "std_intersect_Bin_vs_omega",
-        "omegaRS2L": "Ltoomega_from_RS",
-        "std_omegaRS2L": "std_intersect_RS_vs_omega",
-        "teq": "Equilibration_study",
-    }
-
-    if dirname in dirLex:
-        return dirLex[dirname]
-
-    return dirname
-
-
-def dirToLogPlot(fullpath):
-    xlog = False
-    ylog = False
-
-    if "vsN" in fullpath:
-        xlog = True
-
-    if "subtraction" in fullpath:
-        xlog = True
-        ylog = True
-
-    if "vsL" in fullpath:
-        xlog = True
-        ylog = True 
-    if "var_" in fullpath:
-        ylog = True
-
-    return [xlog, ylog]
-
-
-def getParams(dirname, fullpath, doPrint):
-    title = dirToTitle(dirname)
-    xaxis = dirToXaxis(fullpath)
-    yaxis = dirToYaxis(dirname)
-    [xlog, ylog] = dirToLogPlot(fullpath)
-
-    return [fullpath, title, xaxis, yaxis, xlog, ylog, doPrint]
-
+        for k in plot_dicts.dict_log:
+            if path in plot_dicts.dict_log[k]:
+                self.xlog,self.ylog = k
 
 # datatable indices, boldface quants are good
 # add "last" to get delta

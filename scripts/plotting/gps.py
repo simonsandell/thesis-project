@@ -31,7 +31,8 @@ def addFile(bfile, path, n):
     writeToBat(bfile, "KILL BLOCK")
 
 
-def graceDirPlot(directory, title, xaxis, yaxis, xlog, ylog, doPrint, filefilter):
+def graceDirPlot(directory, parameters, doPrint, filefilter):
+    title, xaxis, yaxis, xlog, ylog = parameters.title, parameters.xlabel,parameters.ylabel, parameters.xlog, parameters.ylog
     nonEmpty = False
     syscall = []
     bfile = initBat()
