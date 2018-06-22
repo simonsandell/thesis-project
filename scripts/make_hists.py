@@ -22,8 +22,8 @@ NUM_FILES = len(FILENAMES)
 def func(filename):
     if os.path.isfile(os.path.join(TARGET_DIR, filename)):
         ret = textToFloats.loadData(os.path.join(TARGET_DIR, filename), nvals)
-        max_diff = hist_Nmcavg.draw_diff_hist(ret)
-        return [filename, max_diff]
+        diffs = hist_Nmcavg.draw_diff_hist(ret)
+        return [filename, max(diffs)]
     return ["nofile", 0]
 
 
