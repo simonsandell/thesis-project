@@ -10,7 +10,7 @@ class plot_params:
 
         for k in plot_dicts.dict_log:
             if path in plot_dicts.dict_log[k]:
-                self.xlog,self.ylog = k
+                self.xlog, self.ylog = k
 
 # datatable indices, boldface quants are good
 # add "last" to get delta

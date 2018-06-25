@@ -7,6 +7,8 @@ x_n = r"N\ssweeps\S"
 x_omega = r"\xw\0 - 1st order scaling correction"
 
 dict_xaxis = {
+    "twoL/intersection": x_omega,
+    "twoL/tc": x_omega,
     "2Lquant_fit/a_bin": x_temp,
     "2Lquant_fit/a_omega_rs": x_temp,
     "2Lquant_fit/omega_bin": x_temp,
@@ -92,6 +94,8 @@ y_var_a_bin = r"Var(a)  from  bin(2l) - bin(l) fit"
 y_var_omega_rs = r"Var(\xw\0)  from  lr(2l) - lr(l) fit"
 y_var_omega_bin = r"Var(\xw\0)  from  bin(2l) - bin(l) fit"
 dict_yaxis = {
+    "twoL/intersection": y_intersection,
+    "twoL/tc": y_tc,
     "2Lquant_fit/a_bin": y_a_bin,
     "2Lquant_fit/a_omega_rs": y_a_omega_rs,
     "2Lquant_fit/omega_bin": y_omega_bin,
@@ -161,6 +165,8 @@ dict_log = {
         "2Lquant_fit/var_rs",
     ],
     (False, False): [
+        "twoL/intersection",
+        "twoL/tc",
         "vsT/bin",
         "vsT/c",
         "vsT/chi",
@@ -190,6 +196,8 @@ dict_log = {
     ],
 }
 dict_title = {
+    "twoL/intersection": "twoL_intersection",
+    "twoL/tc": "twoL_tc",
     "2Lquant_fit/a_bin": "2Lquant_fit_a_bin",
     "2Lquant_fit/a_omega_rs": "2Lquant_fit_a_omega_rs",
     "2Lquant_fit/omega_bin": "2Lquant_fit_omega_bin",
