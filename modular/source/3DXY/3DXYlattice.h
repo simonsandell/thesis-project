@@ -8,6 +8,7 @@
 #include "../clusterStruct.h"
 
 struct Lattice3DXY{
+        std::tuple<int,int,int> kToXYZ(unsigned long int K);
 	RandStruct rand;
 	Cluster clust;
 	long double* theLattice;
@@ -45,6 +46,7 @@ struct Lattice3DXY{
 	void saveLatticeAs(std::string name);
 	void loadLattice();
 	void printVals();
+	void print_lattice();
 
 };
 #endif

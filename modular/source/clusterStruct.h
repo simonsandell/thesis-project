@@ -15,6 +15,8 @@ struct Cluster{
 	void addToCl(int s1,int s2,int s3);
 	bool checkSpin(std::tuple<int,int,int,long double> spin);
 
+        void print_cluster();
+
 };
 
 #endif

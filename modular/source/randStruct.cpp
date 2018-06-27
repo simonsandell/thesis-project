@@ -24,7 +24,19 @@ RandStruct::RandStruct(){
 	eng = temp_eng;
 	eng.seed(seed);
 }
+RandStruct::RandStruct(unsigned long int s){
+
+    seed = s;
+    std::cout << "SEED " << seed << std::endl;
+    std::uniform_real_distribution<long double> temp_dist(0.0L,1.0L);
+    dist = temp_dist;
+    std::mt19937_64 temp_eng;
+    eng = temp_eng;
+    eng.seed(seed);
+}
 
 long double RandStruct::rnd(){
-	return dist(eng);
+    long double ret = dist(eng);
+    //std::cout << "randStruct gives " <<  ret << std::endl;
+    return ret;
 }

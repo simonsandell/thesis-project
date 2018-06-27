@@ -69,7 +69,7 @@ int main(int argc,char* argv[]){
 		if (world_rank == 1){
 			doP = true;
 		}
-		_3DXY::cputime_vs_delta(mep, wlp);
+		_3DXY::wolffHistJob(L, mep, wlp, doP);
 		std::string bigstr = "# finished\n";
 		int tag = 1;
 		MPI_Send(bigstr.c_str(),bigstr.size(),MPI_CHAR,0,tag,MPI_COMM_WORLD);

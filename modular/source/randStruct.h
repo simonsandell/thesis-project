@@ -10,6 +10,7 @@ struct RandStruct{
 	unsigned long int seed;
 
 	RandStruct();
+        RandStruct(unsigned long int s);
 
 	long double rnd();
 

@@ -1,5 +1,6 @@
 #include "clusterStruct.h"
 #include <tuple>
+#include <iostream>
 long unsigned int xyzToK_C( int x, int y , int z,long double L){
 	long unsigned int ret = 0;
 	ret += (long unsigned int) x;
@@ -34,5 +35,16 @@ bool Cluster::checkSpin(std::tuple<int,int,int,long double> spin){
 	int s3 = std::get<2>(spin);
 	long unsigned int k = xyzToK_C(s1,s2,s3,L);
 	return theCluster[k];
+}
+
+void Cluster::print_cluster(){
+	for (int i = 0; i< L; ++i){
+		for (int j = 0; j< L; ++j){
+			for (int k = 0; k<L; ++k){	
+                            std::cout << i << j << k << std::endl;
+                            std::cout << theCluster[xyzToK_C(i,j,k,L)] << std::endl;
+			}
+		}
+	}
 }
 
