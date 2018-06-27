@@ -1,3 +1,4 @@
+#include <iostream>
 #include "clusterStruct.h"
 Cluster::Cluster(int l){
 	L = l;	
@@ -28,3 +29,14 @@ void Cluster::emptyCluster(){
 		}
 	}
 };
+
+void Cluster::print_cluster(){
+	for (int i = 0; i< L; ++i){
+		for (int j = 0; j< L; ++j){
+			for (int k = 0; k<L; ++k){	
+                            std::cout << i << j << k << std::endl;
+                            std::cout << theCluster[i][j][k] << std::endl;
+			}
+		}
+	}
+}

@@ -10,6 +10,7 @@ struct Cluster{
 	Cluster();
 
 	void emptyCluster();
+        void print_cluster();
 
 
 

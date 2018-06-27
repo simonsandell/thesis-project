@@ -40,6 +40,7 @@ struct Lattice3DXY{
 	void saveLatticeAs(std::string name);
 	void loadLattice();
 	void printVals();
+        void print_lattice();
 
 	};
 #endif

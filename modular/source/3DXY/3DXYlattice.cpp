@@ -12,6 +12,17 @@
 #include "3DXYio.h"
 #include "../maxEHandle.h"
 
+void Lattice3DXY::print_lattice(){
+    for (int i =0; i< L; i++){
+        for (int j = 0; j<L; j++){
+            for (int k = 0; k<L; k++){
+                std::cout << i << j << k << std::endl;
+                std::cout << theLattice[i][j][k] << std::endl;
+            }
+        }
+    }
+}
+
 long double Lattice3DXY::siteEnergy( int &s1, int &s2, int &s3){
 	long double sum = 0.0L;
 	//find indices of neighbours
@@ -247,6 +258,7 @@ void Lattice3DXY::testConsistent(){
 	//new test of magnetization
 	long double sitemag;
 	long double accum = 0.0L;
+	std::cout << "Magnetization at sites: " << std::endl;
 	for (int i = 0; i< L; ++i){
 		for (int j = 0; j< L; ++j){
 			for (int k = 0; k<L; ++k){	
@@ -257,6 +269,7 @@ void Lattice3DXY::testConsistent(){
 			}
 		}
 	}
+	std::cout << "Accumulated error: ";
 	std::cout << std::fixed << accum << std::endl;
 }
 
@@ -407,7 +420,7 @@ void Lattice3DXY::loadLattice(){
 
 void Lattice3DXY::printVals(){
 	std::cout << "runTemp L, NTotSweeps,NTotClusts, coldstart, warmLatPath ,maxEPath, maxE, energy " << std::endl <<
-	runTemp << " " << L << " " << NTotSweeps<< " " <<NTotClusts<< " " << coldstart<< " " << warmLatPath << " " <<maxEPath<< " " << maxE<< " " << energy << std::endl;
+		runTemp << " " << L << " " << NTotSweeps<< " " <<NTotClusts<< " " << coldstart<< " " << warmLatPath << " " <<maxEPath<< " " << maxE<< " " << energy << std::endl;
 
 }
 

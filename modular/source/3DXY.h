@@ -11,5 +11,6 @@ namespace _3DXY {
 	void warmupJob(long double L,std::string maxepath,std::string warmlatpath);
 	void teqJob(long double L,bool cold,std::string maxepath,std::string warmlatpath);
 	void loadandPrint(long double L,std::string maxepath,std::string warmlatpath);
+        void full_output(long double L,std::string maxepath,std::string warmlatpath,bool doPrint);
 };
 #endif
