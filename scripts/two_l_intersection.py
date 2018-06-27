@@ -16,20 +16,20 @@ def prune_nan(not_pruned_X, not_pruned_Y):
 
 
 
-TAG = 'jun_18'
+TAG = 'jun_26'
 DATLIST = [
-    np.load(settings.pickles_path + "2Lquant/jun_184_8.npy"),
-    np.load(settings.pickles_path + "2Lquant/jun_188_16.npy"),
-    np.load(settings.pickles_path + "2Lquant/jun_1816_32.npy"),
-    np.load(settings.pickles_path + "2Lquant/jun_1832_64.npy"),
-    np.load(settings.pickles_path + "2Lquant/jun_1864_128.npy"),
+    np.load(settings.pickles_path + "2Lquant/jun_264_8.npy"),
+    np.load(settings.pickles_path + "2Lquant/jun_268_16.npy"),
+    np.load(settings.pickles_path + "2Lquant/jun_2616_32.npy"),
+    np.load(settings.pickles_path + "2Lquant/jun_2632_64.npy"),
+    np.load(settings.pickles_path + "2Lquant/jun_2664_128.npy"),
 ]
 JACKLIST = [
-    np.load(settings.pickles_path + "2Lquant/jackknife/jack_jun_184_8.npy"),
-    np.load(settings.pickles_path + "2Lquant/jackknife/jack_jun_188_16.npy"),
-    np.load(settings.pickles_path + "2Lquant/jackknife/jack_jun_1816_32.npy"),
-    np.load(settings.pickles_path + "2Lquant/jackknife/jack_jun_1832_64.npy"),
-    np.load(settings.pickles_path + "2Lquant/jackknife/jack_jun_1864_128.npy"),
+    np.load(settings.pickles_path + "2Lquant/jackknife/jack_jun_264_8.npy"),
+    np.load(settings.pickles_path + "2Lquant/jackknife/jack_jun_268_16.npy"),
+    np.load(settings.pickles_path + "2Lquant/jackknife/jack_jun_2616_32.npy"),
+    np.load(settings.pickles_path + "2Lquant/jackknife/jack_jun_2632_64.npy"),
+    np.load(settings.pickles_path + "2Lquant/jackknife/jack_jun_2664_128.npy"),
 ]
 
 # for range of omega, rescale and find intersection between sequentially larger system sizes
@@ -49,7 +49,8 @@ for size_idx, (q1, q2) in enumerate(zip(DATLIST[:-1], DATLIST[1:])):
             temp_bin, temp_rho = jbres[0], jbres[1]
             J_RESULT[j_idx, om_idx, size_idx, :] = [omega, *temp_bin, *temp_rho]
 
-# calculate intersection closeness bin_close_result = np.empty((0,7))
+# calculate intersection closeness 
+bin_close_result = np.empty((0,7))
 rho_close_result = np.empty((0,7))
 
 for om_idx, omega in enumerate(OMEGA_RANGE):

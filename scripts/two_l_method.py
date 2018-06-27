@@ -1,6 +1,3 @@
-"""
-heres your goddamn docstring
-"""
 import numpy as np
 
 import settings
@@ -11,46 +8,48 @@ from analysis import twoLana
 
 
 MODEL = settings.model
-DTSET = "June_18_2018"
-TAG = "jun_18"
+DTSET = "June_26_2018"
+TAG = "jun_26"
 
 DATAFILES = [
-    settings.datatables_path + DTSET + "/datatable_4.0jun_153DXY.npy",
-    settings.datatables_path + DTSET + "/datatable_8.0jun_153DXY.npy",
-    settings.datatables_path + DTSET + "/datatable_16.0jun_153DXY.npy",
-    settings.datatables_path + DTSET + "/datatable_32.0jun_153DXY.npy",
-    settings.datatables_path + DTSET + "/datatable_64.0jun_153DXY.npy",
-    settings.datatables_path + DTSET + "/datatable_128.0jun_153DXY.npy",
+    np.load(settings.datatables_path + DTSET + "/datatable_4.0jun_153DXY.npy"),
+    np.load(settings.datatables_path + DTSET + "/datatable_8.0jun_153DXY.npy"),
+    np.load(settings.datatables_path + DTSET + "/datatable_16.0jun_153DXY.npy"),
+    np.load(settings.datatables_path + DTSET + "/datatable_32.0jun_263DXY.npy"),
+    np.load(settings.datatables_path + DTSET + "/datatable_64.0jun_263DXY.npy"),
+    np.load(settings.datatables_path + DTSET + "/datatable_128.0jun_263DXY.npy"),
 ]
 JACKFILES = [
-    settings.datatables_path + DTSET + "/jackknife/4combined.npy",
-    settings.datatables_path + DTSET + "/jackknife/8combined.npy",
-    settings.datatables_path + DTSET + "/jackknife/16combined.npy",
-    settings.datatables_path + DTSET + "/jackknife/32combined.npy",
-    settings.datatables_path + DTSET + "/jackknife/64combined.npy",
-    settings.datatables_path + DTSET + "/jackknife/128combined.npy",
+    np.load(settings.datatables_path + DTSET + "/jackknife/4combined_nf.npy"),
+    np.load(settings.datatables_path + DTSET + "/jackknife/8combined_nf.npy"),
+    np.load(settings.datatables_path + DTSET + "/jackknife/16combined_nf.npy"),
+    np.load(settings.datatables_path + DTSET + "/jackknife/32combined_nf.npy"),
+    np.load(settings.datatables_path + DTSET + "/jackknife/64combined_nf.npy"),
+    np.load(settings.datatables_path + DTSET + "/jackknife/128combined_nf.npy"),
 ]
 
 # calculate the quantities, plain
-N_TEMPS = 101
-JACK_NUM = 500
+N_TEMPS = JACKFILES[0].shape[1]
+JACK_NUM = JACKFILES[0].shape[0]
+print('N_TEMPS', N_TEMPS)
+print('JACK_NUM', JACK_NUM)
+
 TWO_L_QUANT = np.empty((len(DATAFILES) - 1, N_TEMPS, 7))
 
-for index, data1, data2 in zip(
-        range(len(DATAFILES) - 1), DATAFILES[:-1], DATAFILES[1:]
-):
-    TWO_L_QUANT[index, :, :5] = twoLana.twoLomega(np.load(data1), np.load(data2))
+for index in range(len(DATAFILES) - 1):
+    data1 = DATAFILES[index]
+    data2 = DATAFILES[index+1]
+    TWO_L_QUANT[index, :, :5] = twoLana.twoLomega(data1, data2)
     # jackknifing
-    j_data = np.load(JACKFILES[index])
-    j_data_2 = np.load(JACKFILES[index + 1])
-    j_data = j_data[j_data[:, 1].argsort()]
-    j_data_2 = j_data_2[j_data_2[:, 1].argsort()]
+    j_data = JACKFILES[index]
+    j_data_2 = JACKFILES[index + 1]
+
     j_result = []
     j_result[:] = []
 
-    for i in range(JACK_NUM):
+    for j_idx in range(JACK_NUM):
         j_result.append(
-            twoLana.twoLomega(j_data[i::JACK_NUM, :], j_data_2[i::JACK_NUM, :])
+            twoLana.twoLomega(j_data[j_idx, :, :], j_data_2[j_idx, :, :])
         )
 
     j_result = np.array(j_result)
@@ -112,13 +111,3 @@ for i in range(len(DATAFILES) - 1):
         TWO_L_QUANT[i, :, :],
         [2, 4, 6, 0],
     )
-
-
-## calculate how close intersections are for each omega and save to xmgrace file
-# twoLomegaVsGood.twoLintersectionCloseness(bres, "bin", savename+"bind_good")
-# twoLomegaVsGood.twoLintersectionCloseness(rres, "rs", savename+"rho_good")
-## skipping smallest, do it again
-# bres_ds = twoLomega.removeSmallestSize(bres)
-# rres_ds = twoLomega.removeSmallestSize(rres)
-# twoLomegaVsGood.twoLintersectionCloseness(bres_ds, "bin", savename+"_ds_bind_good")
-# twoLomegaVsGood.twoLintersectionCloseness(rres_ds, "rs", savename+"_ds_rho_good")

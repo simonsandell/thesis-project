@@ -5,27 +5,27 @@ from analysis import threeL
 from plotting import fileWriter
 
 MODEL = settings.model
-SAVENAME = "jun_18"
+SAVENAME = "jun_26"
 JACK_N = 500
 
-CURFOLDER = "June_18_2018/"
+CURFOLDER = "June_26_2018/"
 
 DATAFILES = [
     settings.datatables_path + CURFOLDER + "datatable_4.0jun_153DXY.npy",
     settings.datatables_path + CURFOLDER + "datatable_8.0jun_153DXY.npy",
     settings.datatables_path + CURFOLDER + "datatable_16.0jun_153DXY.npy",
-    settings.datatables_path + CURFOLDER + "datatable_32.0jun_153DXY.npy",
-    settings.datatables_path + CURFOLDER + "datatable_64.0jun_153DXY.npy",
-    settings.datatables_path + CURFOLDER + "datatable_128.0jun_153DXY.npy"
+    settings.datatables_path + CURFOLDER + "datatable_32.0jun_263DXY.npy",
+    settings.datatables_path + CURFOLDER + "datatable_64.0jun_263DXY.npy",
+    settings.datatables_path + CURFOLDER + "datatable_128.0jun_263DXY.npy"
 ]
 
 JACKFILES = [
-    settings.datatables_path + CURFOLDER + "jackknife/4combined.npy",
-    settings.datatables_path + CURFOLDER + "jackknife/8combined.npy",
-    settings.datatables_path + CURFOLDER + "jackknife/16combined.npy",
-    settings.datatables_path + CURFOLDER + "jackknife/32combined.npy",
-    settings.datatables_path + CURFOLDER + "jackknife/64combined.npy",
-    settings.datatables_path + CURFOLDER + "jackknife/128combined.npy"
+    settings.datatables_path + CURFOLDER + "jackknife/4combined_nf.npy",
+    settings.datatables_path + CURFOLDER + "jackknife/8combined_nf.npy",
+    settings.datatables_path + CURFOLDER + "jackknife/16combined_nf.npy",
+    settings.datatables_path + CURFOLDER + "jackknife/32combined_nf.npy",
+    settings.datatables_path + CURFOLDER + "jackknife/64combined_nf.npy",
+    settings.datatables_path + CURFOLDER + "jackknife/128combined_nf.npy"
 ]
 
 for i, f in enumerate(DATAFILES):
@@ -47,7 +47,7 @@ for ind, (j1, j2, j3) in enumerate(zip(JACKFILES[:-1], JACKFILES[1:-1], JACKFILE
 
     for i in range(JACK_N):
         J_RESULT[ind].append(threeL.threeLmethod(
-            j1[i::JACK_N, :], j2[i::JACK_N, :], j3[i::JACK_N, :]
+            j1[i,: , :], j2[i, :, :], j3[i, :, :]
             ))
 J_RESULT = np.array(J_RESULT)
 print(J_RESULT.shape)

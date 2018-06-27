@@ -5,28 +5,31 @@ from analysis import intersectionFinder
 import anaFuncs
 import settings
 
-TAG = "jun_18"
-JACK_NUM = 500
-TEMP_NUM = 101
+TAG = "jun_28"
 
-DIRPATH = settings.datatables_path + "June_18_2018/"
+DIRPATH = settings.datatables_path + "June_26_2018/"
 FILELIST = [
     np.load(DIRPATH + "datatable_4.0jun_153DXY.npy"),
     np.load(DIRPATH + "datatable_8.0jun_153DXY.npy"),
     np.load(DIRPATH + "datatable_16.0jun_153DXY.npy"),
-    np.load(DIRPATH + "datatable_32.0jun_153DXY.npy"),
-    np.load(DIRPATH + "datatable_64.0jun_153DXY.npy"),
-    np.load(DIRPATH + "datatable_128.0jun_153DXY.npy"),
+    np.load(DIRPATH + "datatable_32.0jun_263DXY.npy"),
+    np.load(DIRPATH + "datatable_64.0jun_263DXY.npy"),
+    np.load(DIRPATH + "datatable_128.0jun_263DXY.npy"),
 ]
 JACKLIST = [
-    np.load(DIRPATH + "jackknife/4combined.npy"),
-    np.load(DIRPATH + "jackknife/8combined.npy"),
-    np.load(DIRPATH + "jackknife/16combined.npy"),
-    np.load(DIRPATH + "jackknife/32combined.npy"),
-    np.load(DIRPATH + "jackknife/64combined.npy"),
-    np.load(DIRPATH + "jackknife/128combined.npy"),
+    np.load(DIRPATH + "jackknife/4combined_nf.npy"),
+    np.load(DIRPATH + "jackknife/8combined_nf.npy"),
+    np.load(DIRPATH + "jackknife/16combined_nf.npy"),
+    np.load(DIRPATH + "jackknife/32combined_nf.npy"),
+    np.load(DIRPATH + "jackknife/64combined_nf.npy"),
+    np.load(DIRPATH + "jackknife/128combined_nf.npy"),
 ]
 
+JACK_NUM = JACKLIST[0].shape[0]
+TEMP_NUM = JACKLIST[0].shape[1]
+print('JACK_NUM', JACK_NUM)
+print('TEMP_NUM', TEMP_NUM)
+idx = anaFuncs.get3DXYIndex()
 
 def calc_exponents(omega, skip_n):
     def fitfunc(L, nu, a, b):
@@ -63,49 +66,40 @@ def calc_exponents(omega, skip_n):
 
     filelist = FILELIST[skip_n:]
     jacklist = JACKLIST[skip_n:]
-    shape = filelist[0].shape[1]
-    jshape = jacklist[0].shape[1]
-    all_tables = np.empty((0, shape))
-    all_jacks = np.empty((JACK_NUM, len(filelist), TEMP_NUM, jshape))
+    quant_num = filelist[0].shape[1]
+    jquant_num = jacklist[0].shape[2]
+    size_num = len(filelist)
+    
+    all_data = np.empty((size_num, TEMP_NUM, quant_num))
+    all_jdata = np.empty((JACK_NUM, size_num, TEMP_NUM, jquant_num))
 
-    for dt in filelist:
-        all_tables = np.append(all_tables, dt, axis=0)
+    for s_idx in range(size_num):
+        sorted_data = filelist[s_idx][filelist[s_idx][:, 1].argsort()]
+        all_data[s_idx, :, :] = sorted_data
+        for j_idx in range(JACK_NUM):
+            uniJ = jacklist[s_idx][j_idx, :, :]
+            sorted_data = uniJ[uniJ[:, 1].argsort()]
+            all_jdata[j_idx, s_idx, :, :] = sorted_data
 
-    for l_num, jt in enumerate(jacklist):
-        t_sort = jt[jt[:, 1].argsort()]
 
-        for jack_n in range(JACK_NUM):
-            all_jacks[jack_n, l_num, :, :] = t_sort[jack_n::JACK_NUM, :]
-
-    ind = np.lexsort((all_tables[:, 0], all_tables[:, 1]))
-    all_tables = all_tables[ind]
-    t_val, t_idx = np.unique(all_tables[:, 1], return_index=True)
-    t_idx2 = t_idx.copy()
-
-    for tind in range(t_idx.shape[0] - 1):
-        if np.isclose(
-                all_tables[t_idx[tind], 1], all_tables[t_idx[tind + 1], 1], rtol=1e-10, atol=1e-10
-        ):
-            t_idx2[tind + 1] = 0.0
-    t_idx = [x for x in t_idx2 if not x == 0.0]
-    t_idx = np.append(t_idx, all_tables.shape[0])
-    t_idx = np.append(0, t_idx)
-    idx = anaFuncs.get3DXYIndex()
-    result = np.empty((t_idx.shape[0] - 1, 4))
-    eta_result = np.empty((t_idx.shape[0] - 1, 4))
-    jack_nu_res = np.empty((JACK_NUM, t_idx.shape[0] - 1, 4))
-    jack_eta_res = np.empty((JACK_NUM, t_idx.shape[0] - 1, 4))
+    result = np.empty((TEMP_NUM, 4))
+    eta_result = np.empty((TEMP_NUM, 4))
+    jack_nu_res = np.empty((JACK_NUM, TEMP_NUM, 4))
+    jack_eta_res = np.empty((JACK_NUM, TEMP_NUM, 4))
     # result format : T nu deltanu N
 
-    for ind in range(t_idx.shape[0] - 1):
-        tview = all_tables[t_idx[ind] : t_idx[ind + 1], :]
-        tview = tview[tview[:, 0].argsort()]
+    for ind in range(TEMP_NUM):
+        # pick out range of values vs L for specific t...
+        tview = all_data[:, ind, :]
+        # sort by L
+        tview = tview[tview[:, 0].argsort()] 
+        # fit to functions
         result[ind, :] = calc_nu(tview)
         eta_result[ind, :] = calc_eta(tview)
 
         for jack_n in range(JACK_NUM):
-            jack_nu_res[jack_n, ind, :] = calc_nu(all_jacks[jack_n, :, ind, :])
-            jack_eta_res[jack_n, ind, :] = calc_eta(all_jacks[jack_n, :, ind, :])
+            jack_nu_res[jack_n, ind, :] = calc_nu(all_jdata[jack_n, :, ind, :])
+            jack_eta_res[jack_n, ind, :] = calc_eta(all_jdata[jack_n, :, ind, :])
 
     return [result, eta_result, jack_nu_res, jack_eta_res]
 

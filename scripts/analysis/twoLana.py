@@ -51,6 +51,8 @@ def twoLomega(data1, data2):
     # check if L2 = 2*L1
     L1 = data1[0, 0]
     L2 = data2[0, 0]
+    #print(L1)
+    #print(L2)
 
     if L2 != (2 * L1):
         print(L1)
