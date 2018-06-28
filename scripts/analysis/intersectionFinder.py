@@ -30,7 +30,6 @@ def findIntersection(X, Y1, Y2):
 
 # takes intersectionpoints as input, calcultes closeness
 def findCloseness(pts):
-    print(pts)
     # calculate average x and y
     # calculate sum of distances to average point
     avgx = 0
@@ -38,9 +37,7 @@ def findCloseness(pts):
     n_pts = 0
 
     for pt in pts:
-        print(pt)
         for p in pt:
-            print(p)
             n_pts += 1
             avgx += p[0]
             avgy += p[1]

@@ -6,12 +6,12 @@ from analysis import intersectionFinder
 
 # load binder from datatables
 DT_LIST = [
-    # np.load(settings.datatables_path + "June_11_2018/datatable_4.0jun113DXY.npy"),
-    # np.load(settings.datatables_path + "June_11_2018/datatable_8.0jun113DXY.npy"),
-    np.load(settings.datatables_path + "June_11_2018/datatable_16.0jun113DXY.npy"),
-    np.load(settings.datatables_path + "June_11_2018/datatable_32.0jun113DXY.npy"),
-    np.load(settings.datatables_path + "June_11_2018/datatable_64.0jun113DXY.npy"),
-    np.load(settings.datatables_path + "June_11_2018/datatable_128.0jun113DXY.npy"),
+     #np.load(settings.datatables_path + "June_26_2018/datatable_4.0jun_153DXY.npy"),
+     #np.load(settings.datatables_path + "June_26_2018/datatable_8.0jun_153DXY.npy"),
+    np.load(settings.datatables_path + "June_26_2018/datatable_16.0jun_153DXY.npy"),
+    np.load(settings.datatables_path + "June_26_2018/datatable_32.0jun_263DXY.npy"),
+    np.load(settings.datatables_path + "June_26_2018/datatable_64.0jun_263DXY.npy"),
+    np.load(settings.datatables_path + "June_26_2018/datatable_128.0jun_263DXY.npy"),
 ]
 PLOT_DURING = False
 QUANT_IDX = 22
@@ -51,7 +51,7 @@ def closeness(omega, b_range, quant_idx=QUANT_IDX):
             if current_intersection.any():
                 ints.append(current_intersection)
 
-        if len(ints) > 2:
+        if len(ints) > 1:
             close_vs_b[b_idx, :] = [B, intersectionFinder.findCloseness(ints)[0]]
 
             if PLOT_DURING:
@@ -62,19 +62,21 @@ def closeness(omega, b_range, quant_idx=QUANT_IDX):
 
         if PLOT_DURING:
             plt.figlegend()
-            plt.show(block=False)
+            plt.show(block=True)
 
     return close_vs_b
 
 
 # ansatz : B - bL^{-omega} = a
 OMEGA = 0.78
-B_RANGE = np.linspace(-0.2, 0.05, 200)
+B_RANGE = np.linspace(-0.200, -0.05, 500)
 omega_best_res = closeness(OMEGA, B_RANGE)
 
 OMEGA = 1
-B_RANGE = np.linspace(-0.2, 0.05, 200)
 omega_one_res = closeness(OMEGA, B_RANGE)
+
+OMEGA = 1.2
+omega_two_res = closeness(OMEGA, B_RANGE)
 
 plt.figure(figsize=(18, 8))
 plt.title("closeness of intersection points")
@@ -82,13 +84,13 @@ plt.xlabel("b")
 plt.ylabel("closeness")
 plt.plot(omega_best_res[:, 0], omega_best_res[:, 1], "rx", label="omega = 0.78")
 plt.plot(omega_one_res[:, 0], omega_one_res[:, 1], "bx", label="omega = 1")
+plt.plot(omega_two_res[:, 0], omega_two_res[:, 1], "bx", label="omega = 1.2")
 plt.figlegend()
 plt.show(block=False)
 
 one_min_b = omega_one_res[np.nanargmin(omega_one_res[:, 1])][0]
 best_min_b = omega_best_res[np.nanargmin(omega_best_res[:, 1])][0]
-print(best_min_b)
-print(one_min_b)
+
 PLOT_DURING = True
 closeness(0.78, np.linspace(best_min_b * 0.9, best_min_b * 1.1, 3))
 closeness(1, np.linspace(one_min_b * 0.9, one_min_b * 1.1, 3))

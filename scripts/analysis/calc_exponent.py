@@ -5,24 +5,24 @@ import settings
 from plotting import fileWriter
 
 #  define some variables, path to datatables
-DIRPATH = settings.datatables_path+ "June_18_2018/"
-TAG = "jun_18"
+DIRPATH = settings.datatables_path+ "June_26_2018/"
+TAG = "jun_26"
 JACKPATH = DIRPATH + "/jackknife/"
 FILELIST = [
     np.load(DIRPATH + "datatable_4.0jun_153DXY.npy"),
     np.load(DIRPATH + "datatable_8.0jun_153DXY.npy"),
     np.load(DIRPATH + "datatable_16.0jun_153DXY.npy"),
-    np.load(DIRPATH + "datatable_32.0jun_153DXY.npy"),
-    np.load(DIRPATH + "datatable_64.0jun_153DXY.npy"),
-    np.load(DIRPATH + "datatable_128.0jun_153DXY.npy"),
+    np.load(DIRPATH + "datatable_32.0jun_263DXY.npy"),
+    np.load(DIRPATH + "datatable_64.0jun_263DXY.npy"),
+    np.load(DIRPATH + "datatable_128.0jun_263DXY.npy"),
 ]
 JACK_LIST = [
-    np.load(JACKPATH + "4combined.npy"),
-    np.load(JACKPATH + "8combined.npy"),
-    np.load(JACKPATH + "16combined.npy"),
-    np.load(JACKPATH + "32combined.npy"),
-    np.load(JACKPATH + "64combined.npy"),
-    np.load(JACKPATH + "128combined.npy"),
+    np.load(JACKPATH + "4combined_nf.npy"),
+    np.load(JACKPATH + "8combined_nf.npy"),
+    np.load(JACKPATH + "16combined_nf.npy"),
+    np.load(JACKPATH + "32combined_nf.npy"),
+    np.load(JACKPATH + "64combined_nf.npy"),
+    np.load(JACKPATH + "128combined_nf.npy"),
 ]
 
 
@@ -84,25 +84,22 @@ def calculate_exponents(omega,skip_n):
     filelist = FILELIST[skip_n:]
     jackknife_list = JACK_LIST[skip_n:]
     dt_num_vals = filelist[0].shape[1]
-    jack_num_vals = jackknife_list[0].shape[1]
-    JACK_NUM = 500
-    TEMP_NUM = 101
+    jack_num_vals = jackknife_list[0].shape[2]
+    JACK_NUM = jackknife_list[0].shape[0]
+    TEMP_NUM = jackknife_list[0].shape[1]
     L_NUM = len(filelist)
     all_tables = np.empty((0, dt_num_vals))
     jack_tables = np.empty((JACK_NUM, TEMP_NUM,L_NUM, jack_num_vals))
 
     for dt, jt, l_ind in zip(filelist, jackknife_list, range(len(jackknife_list))):
         all_tables = np.append(all_tables, dt, axis=0)
-        jind = np.lexsort((jt[:, 0], jt[:, 1]))
-        sort_jt = jt[jind]
-        tind = get_temp_idx(sort_jt)
 
-        for temp_index,(t1, t2) in enumerate(zip(tind[:-1], tind[1:])):
-            oneT = sort_jt[t1:t2, :]
-
-            for i in range(JACK_NUM):
-                jack_tables[i, temp_index, l_ind, :] = oneT[i, :]
-
+        # sort all jnum vals in current jt by temp and put in jack_tables
+        for j_idx in range(JACK_NUM):
+            j_jt = jt[j_idx, :, :];
+            j_jt = j_jt[j_jt[:,1].argsort()]
+            for t_idx in range(TEMP_NUM):
+                jack_tables[j_idx, t_idx, l_ind, :] = j_jt[t_idx, :]
 
     print("done loading")
     # sort by temperature.
