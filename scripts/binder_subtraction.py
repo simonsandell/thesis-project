@@ -6,8 +6,8 @@ from analysis import intersectionFinder
 
 # load binder from datatables
 DT_LIST = [
-     #np.load(settings.datatables_path + "June_26_2018/datatable_4.0jun_153DXY.npy"),
-     #np.load(settings.datatables_path + "June_26_2018/datatable_8.0jun_153DXY.npy"),
+    #np.load(settings.datatables_path + "June_26_2018/datatable_4.0jun_153DXY.npy"),
+    #np.load(settings.datatables_path + "June_26_2018/datatable_8.0jun_153DXY.npy"),
     np.load(settings.datatables_path + "June_26_2018/datatable_16.0jun_153DXY.npy"),
     np.load(settings.datatables_path + "June_26_2018/datatable_32.0jun_263DXY.npy"),
     np.load(settings.datatables_path + "June_26_2018/datatable_64.0jun_263DXY.npy"),
