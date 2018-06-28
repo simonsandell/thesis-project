@@ -1,6 +1,3 @@
-"""
-stupid docstring
-"""
 import subprocess
 
 import settings
@@ -19,7 +16,7 @@ for f in FILELIST:
     subprocess.call(
         [
             "python3",
-            settings.scripts_path + "oneLana.py",
+            settings.scripts_path + "one_l_ana.py",
             settings.pickles_path + f,
             TAG,
         ]

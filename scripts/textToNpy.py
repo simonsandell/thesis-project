@@ -14,6 +14,7 @@ inittime = timeit.default_timer()
 dirpath = sys.argv[1]
 model = settings.model
 saveName = sys.argv[2]
+
 if model == "3DXY":
     nvals = 22
 else:
@@ -36,6 +37,7 @@ pool = Pool(processes=4, maxtasksperchild=1)
 poolres = pool.map(func, filenames)
 pool.close()
 pool.join()
+
 for x in poolres:
     print(len(x))
     res.extend(x)
@@ -50,6 +52,7 @@ print(npmat.shape)
 lval = np.unique(npmat[:, 0])
 u = "_"
 strL = ""
+
 for v in lval:
     strL += str(v) + u
 tval = np.unique(npmat[:, 1])

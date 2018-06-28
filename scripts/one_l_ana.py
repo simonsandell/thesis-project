@@ -19,9 +19,8 @@ if __name__ == "__main__":
         os.makedirs(settings.datatables_path + FOLDERNAME)
         os.makedirs(settings.datatables_path + FOLDERNAME + "/jackknife")
 
-    # data = pickler.loadData(model+FILEPATH)
+    # load and sort data
     DATA = np.load(FILEPATH)
-    # sort data
     IND = np.lexsort((DATA[:, 1], DATA[:, 0]))
     DATA = DATA[IND]
 
@@ -48,7 +47,9 @@ if __name__ == "__main__":
             ma_res[4] = ma.getRs(
                 avgs[7], avgs[14], avgs[15], avgs[16], avgs[21], avgs[0], avgs[1]
             )
+            # energy
             ma_res[5] = avgs[7] / avgs[21]
+            # magnetization
             ma_res[6] = avgs[9] / avgs[21]
         return ma_res
 
@@ -104,8 +105,7 @@ if __name__ == "__main__":
     RES = RES.squeeze()
     # save text file for visual inspeciton
     fileWriter.writeDataTable(TAG, RES)
-    # save npy file for further analysis
-
+    # save npy file
     np.save(settings.datatables_path + FOLDERNAME + "/datatable_" + repr(LV[0]) + TAG + MODEL, RES)
     # make plots from  the npy datatables
     datatableToPlots.datatableToPlots(settings.datatables_path + FOLDERNAME, TAG)

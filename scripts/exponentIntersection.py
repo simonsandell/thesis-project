@@ -69,7 +69,7 @@ def calc_exponents(omega, skip_n):
     quant_num = filelist[0].shape[1]
     jquant_num = jacklist[0].shape[2]
     size_num = len(filelist)
-    
+
     all_data = np.empty((size_num, TEMP_NUM, quant_num))
     all_jdata = np.empty((JACK_NUM, size_num, TEMP_NUM, jquant_num))
 
@@ -92,7 +92,7 @@ def calc_exponents(omega, skip_n):
         # pick out range of values vs L for specific t...
         tview = all_data[:, ind, :]
         # sort by L
-        tview = tview[tview[:, 0].argsort()] 
+        tview = tview[tview[:, 0].argsort()]
         # fit to functions
         result[ind, :] = calc_nu(tview)
         eta_result[ind, :] = calc_eta(tview)
@@ -162,10 +162,12 @@ for index, o in enumerate(ORANGE):
             temp_jack_cont.append(tmpint)
         jack_eta_ints.append(temp_jack_cont)
     # calculate how close the intersectionpoints are
+    """
     print("nu_ints")
     print(len(nu_ints))
     print("eta_ints")
     print(len(eta_ints))
+    """
     nu_cl, avgTnu, avgNu = intersectionFinder.findCloseness(nu_ints)
     eta_cl, avgTeta, avgEta = intersectionFinder.findCloseness(eta_ints)
 
