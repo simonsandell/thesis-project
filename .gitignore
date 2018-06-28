@@ -46,7 +46,9 @@ Thumbs.db
 *.bbl
 *.toc
 *.blg
-
+# Python
+*.pickle
+*.npy
 *.pyc
 # Directories 
 #################################################
