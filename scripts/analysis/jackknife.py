@@ -4,7 +4,7 @@ import sys
 import settings
 
 # returns the jackknife estimations of the given func
-def jackknife(mat, func, result_size, blocks=100):
+def jackknife(mat, func, result_size, blocks=500):
     N = mat.shape[0]
     indices = np.arange(N)
     indBlocks = np.array_split(indices, blocks)
