@@ -9,20 +9,20 @@ DIRPATH = settings.datatables_path+ "June_26_2018/"
 TAG = "jun_26"
 JACKPATH = DIRPATH + "/jackknife/"
 FILELIST = [
-    np.load(DIRPATH + "datatable_4.0jun_153DXY.npy"),
-    np.load(DIRPATH + "datatable_8.0jun_153DXY.npy"),
-    np.load(DIRPATH + "datatable_16.0jun_153DXY.npy"),
-    np.load(DIRPATH + "datatable_32.0jun_263DXY.npy"),
-    np.load(DIRPATH + "datatable_64.0jun_263DXY.npy"),
-    np.load(DIRPATH + "datatable_128.0jun_263DXY.npy"),
+    np.load(settings.DATATABLES[0]),
+    np.load(settings.DATATABLES[1]),
+    np.load(settings.DATATABLES[2]),
+    np.load(settings.DATATABLES[3]),
+    np.load(settings.DATATABLES[4]),
+    np.load(settings.DATATABLES[5]),
 ]
 JACK_LIST = [
-    np.load(JACKPATH + "4combined_nf.npy"),
-    np.load(JACKPATH + "8combined_nf.npy"),
-    np.load(JACKPATH + "16combined_nf.npy"),
-    np.load(JACKPATH + "32combined_nf.npy"),
-    np.load(JACKPATH + "64combined_nf.npy"),
-    np.load(JACKPATH + "128combined_nf.npy"),
+    np.load(settings.JACKTABLES[0]),
+    np.load(settings.JACKTABLES[1]),
+    np.load(settings.JACKTABLES[2]),
+    np.load(settings.JACKTABLES[3]),
+    np.load(settings.JACKTABLES[4]),
+    np.load(settings.JACKTABLES[5]),
 ]
 
 

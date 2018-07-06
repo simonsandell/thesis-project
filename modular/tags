@@ -1,0 +1,219 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+AVGSTRUCT_H	source/avgStruct.h	2;"	d
+CLUSTERSTRUCT_H	source/clusterStruct.h	2;"	d
+Cluster	source/clusterStruct.cpp	/^Cluster::Cluster(){$/;"	f	class:Cluster
+Cluster	source/clusterStruct.cpp	/^Cluster::Cluster(int l){$/;"	f	class:Cluster
+Cluster	source/clusterStruct.h	/^struct Cluster{$/;"	s
+FlagsForFile	source/.ycm_extra_conf.py	/^def FlagsForFile( filename, **kwargs ):$/;"	f
+IOFUNCS_H	source/Ising3D/Ising3Dio.h	2;"	d
+IOHANDLE_H	source/ioHandle.h	2;"	d
+ISING3D_H	source/Ising3D.h	2;"	d
+Ising3D	source/Ising3D.h	/^namespace Ising3D{$/;"	n
+L	source/3DXY/3DXYlattice.h	/^	long double L,Nspins,Neqsweeps,NTotSweeps;$/;"	m	struct:Lattice3DXY
+L	source/Ising3D/Ising3Dlattice.h	/^	long double L,Nspins,Neqsweeps,NTotSweeps;$/;"	m	struct:LatticeIsing3D
+L	source/clusterStruct.h	/^	int L;$/;"	m	struct:Cluster
+L	updMaxE.py	/^    L = int(strL[0]);$/;"	v
+L	updMaxEI3D.py	/^    L = int(strL[0]);$/;"	v
+LATTICESTRUCT_H	source/Ising3D/Ising3Dlattice.h	2;"	d
+Lattice3DXY	source/3DXY/3DXYlattice.cpp	/^Lattice3DXY::Lattice3DXY(){$/;"	f	class:Lattice3DXY
+Lattice3DXY	source/3DXY/3DXYlattice.cpp	/^Lattice3DXY::Lattice3DXY(int l,long double rT, bool cold,RandStruct r,Cluster c,std::string pathMaxE,std::string pathWarmLat) $/;"	f	class:Lattice3DXY
+Lattice3DXY	source/3DXY/3DXYlattice.h	/^struct Lattice3DXY{$/;"	s
+LatticeIsing3D	source/Ising3D/Ising3Dlattice.cpp	/^LatticeIsing3D::LatticeIsing3D(){$/;"	f	class:LatticeIsing3D
+LatticeIsing3D	source/Ising3D/Ising3Dlattice.cpp	/^LatticeIsing3D::LatticeIsing3D(long double l, bool cold,long double Beta,RandStruct r, Cluster c,std::string pathMaxE,std::string pathWarmLat)$/;"	f	class:LatticeIsing3D
+LatticeIsing3D	source/Ising3D/Ising3Dlattice.h	/^struct LatticeIsing3D{$/;"	s
+MAXEHANDLE_H	source/maxEHandle.h	2;"	d
+NTotClusts	source/3DXY/3DXYlattice.h	/^	long int Neqclusts,NTotClusts,int_L;$/;"	m	struct:Lattice3DXY
+NTotClusts	source/Ising3D/Ising3Dlattice.h	/^	long int Neqclusts,NTotClusts,int_L;$/;"	m	struct:LatticeIsing3D
+NTotSweeps	source/3DXY/3DXYlattice.h	/^	long double L,Nspins,Neqsweeps,NTotSweeps;$/;"	m	struct:Lattice3DXY
+NTotSweeps	source/Ising3D/Ising3Dlattice.h	/^	long double L,Nspins,Neqsweeps,NTotSweeps;$/;"	m	struct:LatticeIsing3D
+Neighbours	source/3DXY/3DXYlattice.h	/^	unsigned long int ** Neighbours;$/;"	m	struct:Lattice3DXY
+Neqclusts	source/3DXY/3DXYlattice.h	/^	long int Neqclusts,NTotClusts,int_L;$/;"	m	struct:Lattice3DXY
+Neqclusts	source/Ising3D/Ising3Dlattice.h	/^	long int Neqclusts,NTotClusts,int_L;$/;"	m	struct:LatticeIsing3D
+Neqsweeps	source/3DXY/3DXYlattice.h	/^	long double L,Nspins,Neqsweeps,NTotSweeps;$/;"	m	struct:Lattice3DXY
+Neqsweeps	source/Ising3D/Ising3Dlattice.h	/^	long double L,Nspins,Neqsweeps,NTotSweeps;$/;"	m	struct:LatticeIsing3D
+Nspins	source/3DXY/3DXYlattice.h	/^	long double L,Nspins,Neqsweeps,NTotSweeps;$/;"	m	struct:Lattice3DXY
+Nspins	source/Ising3D/Ising3Dlattice.h	/^	long double L,Nspins,Neqsweeps,NTotSweeps;$/;"	m	struct:LatticeIsing3D
+Nspins	source/clusterStruct.h	/^	long unsigned int Nspins;$/;"	m	struct:Cluster
+PROB	source/Ising3D/Ising3Dlattice.h	/^	long double PROB; $/;"	m	struct:LatticeIsing3D
+RANDSTRUCT_H	source/randStruct.h	2;"	d
+RandStruct	source/randStruct.cpp	/^RandStruct::RandStruct(){$/;"	f	class:RandStruct
+RandStruct	source/randStruct.h	/^struct RandStruct{$/;"	s
+Rfile	updMaxE.py	/^    Rfile = open(directory+filename,"r")$/;"	v
+Rfile	updMaxEI3D.py	/^    Rfile = open(directory+filename,"r")$/;"	v
+SOURCE_EXTENSIONS	source/.ycm_extra_conf.py	/^SOURCE_EXTENSIONS = [ '.cpp', '.cxx', '.cc', '.c', ]$/;"	v
+THREAD_POOL_H	source/ThreadPool.h	2;"	d
+ThreadPool	source/ThreadPool.h	/^class ThreadPool {$/;"	c
+ThreadPool	source/ThreadPool.h	/^inline ThreadPool::ThreadPool(size_t threads)$/;"	f	class:ThreadPool
+WOLFFHISTRUN_H	source/Ising3D/Ising3DrunWolff.h	2;"	d
+WOLFF_H	source/Ising3D/Ising3Dwolff.h	2;"	d
+Wfile	updMaxE.py	/^    Wfile = open(directory + str(l) + "_maxE.txt","w")$/;"	v
+Wfile	updMaxEI3D.py	/^    Wfile = open(directory + str(l) + "_maxE.txt","w")$/;"	v
+_3DXY	source/3DXY.h	/^namespace _3DXY {$/;"	n
+_3DXYIO_H	source/3DXY/3DXYio.h	2;"	d
+_3DXYLATTICE_H	source/3DXY/3DXYlattice.h	2;"	d
+_3DXYMETRO_H	source/3DXY/3DXYmetro.h	2;"	d
+_3DXYRUNMETRO_H	source/3DXY/3DXYrunMetro.h	2;"	d
+_3DXYRUNWOLFF_H	source/3DXY/3DXYrunWolff.h	2;"	d
+_3DXYWOLFF_H	source/3DXY/3DXYwolff.h	2;"	d
+_3DXY_H	source/3DXY.h	2;"	d
+addLine	source/ioHandle.cpp	/^void outPutter::addLine(std::string ln){$/;"	f	class:outPutter
+addToCl	source/clusterStruct.cpp	/^void Cluster::addToCl(int s1,int s2,int s3){$/;"	f	class:Cluster
+argToL	source/mpi_spider.cpp	/^long double argToL(const char* l){$/;"	f
+avgStruct	source/avgStruct.cpp	/^avgStruct::avgStruct(){$/;"	f	class:avgStruct
+avgStruct	source/avgStruct.h	/^struct avgStruct {$/;"	s
+beta	source/3DXY/3DXYlattice.h	/^	long double runTemp,beta;$/;"	m	struct:Lattice3DXY
+beta	source/Ising3D/Ising3Dlattice.h	/^	long double beta;$/;"	m	struct:LatticeIsing3D
+calcEn	source/3DXY/3DXYlattice.cpp	/^long double calcEn(Lattice3DXY* lat){$/;"	f
+calcEn	source/Ising3D/Ising3Dlattice.cpp	/^long double LatticeIsing3D::calcEn(){$/;"	f	class:LatticeIsing3D
+calcMag	source/3DXY/3DXYlattice.cpp	/^long double calcMag(long double *lattice,long double L){$/;"	f
+calcMag	source/Ising3D/Ising3Dlattice.cpp	/^long double LatticeIsing3D::calcMag(){$/;"	f	class:LatticeIsing3D
+calcSinX	source/3DXY/3DXYlattice.cpp	/^long double calcSinX(long double *lattice,long double  L){$/;"	f
+calcSinY	source/3DXY/3DXYlattice.cpp	/^long double calcSinY(long double *lattice,long double  L){$/;"	f
+calcSinZ	source/3DXY/3DXYlattice.cpp	/^long double calcSinZ(long double *lattice,long double  L){$/;"	f
+calcXMag	source/3DXY/3DXYlattice.cpp	/^long double calcXMag(long double *lattice,long double L){$/;"	f
+calcYMag	source/3DXY/3DXYlattice.cpp	/^long double calcYMag(long double *lattice,long double L){$/;"	f
+checkSpin	source/clusterStruct.cpp	/^bool Cluster::checkSpin(std::tuple<int,int,int,long double> spin){$/;"	f	class:Cluster
+clust	source/3DXY/3DXYlattice.h	/^	Cluster clust;$/;"	m	struct:Lattice3DXY
+clust	source/Ising3D/Ising3Dlattice.h	/^	Cluster clust;$/;"	m	struct:LatticeIsing3D
+cluster3DXY	source/3DXY/3DXYwolff.cpp	/^long double cluster3DXY(Lattice3DXY& lat){$/;"	f
+clusterIsing3D	source/Ising3D/Ising3Dwolff.cpp	/^long double clusterIsing3D(LatticeIsing3D& lat){$/;"	f
+coldstart	source/3DXY/3DXYlattice.h	/^	bool coldstart,warmedUp;$/;"	m	struct:Lattice3DXY
+coldstart	source/Ising3D/Ising3Dlattice.h	/^	bool coldstart,warmedUp;$/;"	m	struct:LatticeIsing3D
+condition	source/ThreadPool.h	/^    std::condition_variable condition;$/;"	m	class:ThreadPool
+cputime_vs_delta	source/3DXY.cpp	/^void _3DXY::cputime_vs_delta(std::string maxepath, std::string warmlatpath){$/;"	f	class:_3DXY
+directory	updMaxE.py	/^directory = "\/home\/simon\/exjobb\/modular\/maxE\/3DXY\/";$/;"	v
+directory	updMaxEI3D.py	/^directory = "\/home\/simon\/exjobb\/modular\/maxE\/Ising3D\/";$/;"	v
+dist	source/randStruct.h	/^	std::uniform_real_distribution<long double> dist;	$/;"	m	struct:RandStruct
+e	source/avgStruct.h	/^	long double e,e2,m,m2,m4,m2e,m4e,s2x,s2y,s2z,exp;$/;"	m	struct:avgStruct
+e2	source/avgStruct.h	/^	long double e,e2,m,m2,m4,m2e,m4e,s2x,s2y,s2z,exp;$/;"	m	struct:avgStruct
+emptyCluster	source/clusterStruct.cpp	/^void Cluster::emptyCluster(){$/;"	f	class:Cluster
+energy	source/3DXY/3DXYlattice.h	/^	long double energy,xmag,ymag,sinx,siny,sinz;$/;"	m	struct:Lattice3DXY
+energy	source/Ising3D/Ising3Dlattice.h	/^	long double energy,mag;$/;"	m	struct:LatticeIsing3D
+eng	source/randStruct.h	/^	std::mt19937_64 eng;$/;"	m	struct:RandStruct
+exp	source/avgStruct.h	/^	long double e,e2,m,m2,m4,m2e,m4e,s2x,s2y,s2z,exp;$/;"	m	struct:avgStruct
+flags	source/.ycm_extra_conf.py	/^flags = [$/;"	v
+fpath	updMaxE.py	/^    fpath = directory + filename;$/;"	v
+fpath	updMaxEI3D.py	/^    fpath = directory + filename;$/;"	v
+future	source/ThreadPool.h	/^        -> std::future<typename std::result_of<F(Args...)>::type>;$/;"	m	class:ThreadPool::std
+generateNeighbours	source/3DXY/3DXYlattice.cpp	/^unsigned long  int ** Lattice3DXY::generateNeighbours(int l){$/;"	f	class:Lattice3DXY
+getAngle	source/3DXY/3DXYlattice.cpp	/^long double Lattice3DXY::getAngle(int s1,int s2,int s3){$/;"	f	class:Lattice3DXY
+getMaxE	source/maxEHandle.cpp	/^long double getMaxE(std::string path,long double L){$/;"	f
+getProb	source/3DXY/3DXYwolff.cpp	/^long double getProb(long double u, long double angleParent, long double angle,long double beta){$/;"	f
+getTrange	source/3DXY.cpp	/^long double * getTrange(long double start, long double end, int N){$/;"	f
+getTrangeIsing3D	source/Ising3D.cpp	/^long double * getTrangeIsing3D(long double start, long double end, int N){$/;"	f
+get_selfpath2	source/Ising3D/Ising3Dio.cpp	/^std::string get_selfpath2(){$/;"	f
+int_L	source/3DXY/3DXYlattice.h	/^	long int Neqclusts,NTotClusts,int_L;$/;"	m	struct:Lattice3DXY
+int_L	source/Ising3D/Ising3Dlattice.h	/^	long int Neqclusts,NTotClusts,int_L;$/;"	m	struct:LatticeIsing3D
+kToXYZ	source/3DXY/3DXYlattice.cpp	/^std::tuple<int,int,int> kToXYZ(unsigned long int K,long double L){$/;"	f
+list128	updMaxE.py	/^list128 = [];$/;"	v
+list128	updMaxEI3D.py	/^list128 = [];$/;"	v
+list16	updMaxE.py	/^list16 = [];$/;"	v
+list16	updMaxEI3D.py	/^list16 = [];$/;"	v
+list32	updMaxE.py	/^list32 = [];$/;"	v
+list32	updMaxEI3D.py	/^list32 = [];$/;"	v
+list4	updMaxE.py	/^list4 = [];$/;"	v
+list4	updMaxEI3D.py	/^list4 = [];$/;"	v
+list64	updMaxE.py	/^list64 = [];$/;"	v
+list64	updMaxEI3D.py	/^list64 = [];$/;"	v
+list8	updMaxE.py	/^list8 = [];$/;"	v
+list8	updMaxEI3D.py	/^list8 = [];$/;"	v
+lists	updMaxE.py	/^lists = { 4:list4,$/;"	v
+lists	updMaxEI3D.py	/^lists = { 4:list4,$/;"	v
+loadAndPrint	source/3DXY.cpp	/^void _3DXY::loadAndPrint(long double L,std::string maxepath,std::string warmlatpath){$/;"	f	class:_3DXY
+loadLattice	source/3DXY/3DXYlattice.cpp	/^void Lattice3DXY::loadLattice(){$/;"	f	class:Lattice3DXY
+loadLattice	source/Ising3D/Ising3Dlattice.cpp	/^void LatticeIsing3D::loadLattice(){$/;"	f	class:LatticeIsing3D
+loadandPrint	source/Ising3D.cpp	/^void Ising3D::loadandPrint(long double L,std::string maxepath,std::string warmlatpath){$/;"	f	class:Ising3D
+m	source/avgStruct.h	/^	long double e,e2,m,m2,m4,m2e,m4e,s2x,s2y,s2z,exp;$/;"	m	struct:avgStruct
+m2	source/avgStruct.h	/^	long double e,e2,m,m2,m4,m2e,m4e,s2x,s2y,s2z,exp;$/;"	m	struct:avgStruct
+m2e	source/avgStruct.h	/^	long double e,e2,m,m2,m4,m2e,m4e,s2x,s2y,s2z,exp;$/;"	m	struct:avgStruct
+m4	source/avgStruct.h	/^	long double e,e2,m,m2,m4,m2e,m4e,s2x,s2y,s2z,exp;$/;"	m	struct:avgStruct
+m4e	source/avgStruct.h	/^	long double e,e2,m,m2,m4,m2e,m4e,s2x,s2y,s2z,exp;$/;"	m	struct:avgStruct
+mag	source/Ising3D/Ising3Dlattice.h	/^	long double energy,mag;$/;"	m	struct:LatticeIsing3D
+main	source/mpi_spider.cpp	/^int main(int argc,char* argv[]){$/;"	f
+maxE	source/3DXY/3DXYlattice.h	/^	long double maxE;$/;"	m	struct:Lattice3DXY
+maxE	source/Ising3D/Ising3Dlattice.h	/^	long double maxE;$/;"	m	struct:LatticeIsing3D
+maxEPath	source/3DXY/3DXYlattice.h	/^	std::string maxEPath;$/;"	m	struct:Lattice3DXY
+maxEPath	source/Ising3D/Ising3Dlattice.h	/^	std::string maxEPath;$/;"	m	struct:LatticeIsing3D
+maxV	updMaxE.py	/^            maxV = v;$/;"	v
+maxV	updMaxE.py	/^    maxV = 0;$/;"	v
+maxV	updMaxEI3D.py	/^            maxV = v;$/;"	v
+maxV	updMaxEI3D.py	/^    maxV = 0;$/;"	v
+newLattice	source/3DXY/3DXYlattice.cpp	/^long double* Lattice3DXY::newLattice(long double L,bool cold){$/;"	f	class:Lattice3DXY
+newLatticeI3D	source/Ising3D/Ising3Dlattice.cpp	/^long double *** LatticeIsing3D::newLatticeI3D(long double L,bool cold){$/;"	f	class:LatticeIsing3D
+oPer	source/3DXY/3DXYlattice.h	/^	outPutter oPer;$/;"	m	struct:Lattice3DXY
+oPer	source/Ising3D/Ising3Dlattice.h	/^	outPutter oPer;$/;"	m	struct:LatticeIsing3D
+outPutter	source/ioHandle.h	/^struct outPutter {$/;"	s
+outputLines	source/ioHandle.h	/^	std::vector<std::string> outputLines;$/;"	m	struct:outPutter
+print3DXYOutput	source/3DXY/3DXYio.cpp	/^void print3DXYOutput(Lattice3DXY &lat, long double T,avgStruct avgs, long double bin, long double dbdt, long double xi, long double rs){$/;"	f
+printData	source/ioHandle.cpp	/^void outPutter::printData(int tag){$/;"	f	class:outPutter
+printIsing3DOutput	source/Ising3D/Ising3Dio.cpp	/^void printIsing3DOutput(LatticeIsing3D& lat, long double T,avgStruct avgs, long double bin, long double dbdt, long double xi, long double c){$/;"	f
+printLattice3DXY	source/3DXY/3DXYio.cpp	/^void printLattice3DXY(long double ***lattice,long double  L){$/;"	f
+printLatticeIsing3D	source/Ising3D/Ising3Dio.cpp	/^void printLatticeIsing3D(long double ***lattice,long double  L){$/;"	f
+printSettings	source/3DXY.cpp	/^void _3DXY::printSettings(long double rT,long double sT,long double eT,int nT,long double nEQ,bool cold,long double nSamp,long double nBetw,long double L){$/;"	f	class:_3DXY
+printVals	source/3DXY/3DXYlattice.cpp	/^void Lattice3DXY::printVals(){$/;"	f	class:Lattice3DXY
+printVals	source/Ising3D/Ising3Dlattice.cpp	/^void LatticeIsing3D::printVals(){$/;"	f	class:LatticeIsing3D
+queue_mutex	source/ThreadPool.h	/^    std::mutex queue_mutex;$/;"	m	class:ThreadPool
+rand	source/3DXY/3DXYlattice.h	/^	RandStruct rand;$/;"	m	struct:Lattice3DXY
+rand	source/Ising3D/Ising3Dlattice.h	/^	RandStruct rand;$/;"	m	struct:LatticeIsing3D
+rnd	source/randStruct.cpp	/^long double RandStruct::rnd(){$/;"	f	class:RandStruct
+runTemp	source/3DXY/3DXYlattice.h	/^	long double runTemp,beta;$/;"	m	struct:Lattice3DXY
+s2x	source/avgStruct.h	/^	long double e,e2,m,m2,m4,m2e,m4e,s2x,s2y,s2z,exp;$/;"	m	struct:avgStruct
+s2y	source/avgStruct.h	/^	long double e,e2,m,m2,m4,m2e,m4e,s2x,s2y,s2z,exp;$/;"	m	struct:avgStruct
+s2z	source/avgStruct.h	/^	long double e,e2,m,m2,m4,m2e,m4e,s2x,s2y,s2z,exp;$/;"	m	struct:avgStruct
+saveLattice	source/3DXY/3DXYlattice.cpp	/^void Lattice3DXY::saveLattice(){$/;"	f	class:Lattice3DXY
+saveLattice	source/Ising3D/Ising3Dlattice.cpp	/^void LatticeIsing3D::saveLattice(){$/;"	f	class:LatticeIsing3D
+saveLatticeAs	source/3DXY/3DXYlattice.cpp	/^void Lattice3DXY::saveLatticeAs(std::string name){$/;"	f	class:Lattice3DXY
+saveLatticeAs	source/Ising3D/Ising3Dlattice.cpp	/^void LatticeIsing3D::saveLatticeAs(std::string name){$/;"	f	class:LatticeIsing3D
+seed	source/randStruct.h	/^	unsigned long int seed;$/;"	m	struct:RandStruct
+setAngle	source/3DXY/3DXYlattice.cpp	/^void Lattice3DXY::setAngle(int s1,int s2,int s3,long double newAng){$/;"	f	class:Lattice3DXY
+setMaxE	source/maxEHandle.cpp	/^void setMaxE(std::string path,long double L,long double newE){$/;"	f
+sinX	source/3DXY/3DXYlattice.cpp	/^long double Lattice3DXY::sinX(unsigned long int &K,long double &angle){$/;"	f	class:Lattice3DXY
+sinY	source/3DXY/3DXYlattice.cpp	/^long double Lattice3DXY::sinY(unsigned long int &K,long double &angle){$/;"	f	class:Lattice3DXY
+sinZ	source/3DXY/3DXYlattice.cpp	/^long double Lattice3DXY::sinZ(unsigned long int &K,long double &angle){$/;"	f	class:Lattice3DXY
+sinx	source/3DXY/3DXYlattice.h	/^	long double energy,xmag,ymag,sinx,siny,sinz;$/;"	m	struct:Lattice3DXY
+siny	source/3DXY/3DXYlattice.h	/^	long double energy,xmag,ymag,sinx,siny,sinz;$/;"	m	struct:Lattice3DXY
+sinz	source/3DXY/3DXYlattice.h	/^	long double energy,xmag,ymag,sinx,siny,sinz;$/;"	m	struct:Lattice3DXY
+siteEnergy	source/3DXY/3DXYlattice.cpp	/^long double Lattice3DXY::siteEnergy( unsigned long int K){$/;"	f	class:Lattice3DXY
+siteEnergy	source/Ising3D/Ising3Dlattice.cpp	/^long double LatticeIsing3D::siteEnergy( int &s1, int &s2, int &s3){$/;"	f	class:LatticeIsing3D
+stop	source/ThreadPool.h	/^    bool stop;$/;"	m	class:ThreadPool
+strL	updMaxE.py	/^    strL = filename.rsplit("_")$/;"	v
+strL	updMaxEI3D.py	/^    strL = filename.rsplit("_")$/;"	v
+tasks	source/ThreadPool.h	/^    std::queue< std::function<void()> > tasks;$/;"	m	class:ThreadPool
+teqJob	source/3DXY.cpp	/^void _3DXY::teqJob(long double L,bool cold,std::string maxepath,std::string warmlatpath){$/;"	f	class:_3DXY
+teqJob	source/Ising3D.cpp	/^void Ising3D::teqJob(long double L,bool cold,std::string maxepath,std::string warmlatpath){$/;"	f	class:Ising3D
+testConsistent	source/3DXY/3DXYlattice.cpp	/^void Lattice3DXY::testConsistent(){$/;"	f	class:Lattice3DXY
+testConsistent	source/Ising3D/Ising3Dlattice.cpp	/^void LatticeIsing3D::testConsistent(){$/;"	f	class:LatticeIsing3D
+theCluster	source/clusterStruct.h	/^	bool* theCluster;$/;"	m	struct:Cluster
+theLattice	source/3DXY/3DXYlattice.h	/^	long double* theLattice;$/;"	m	struct:Lattice3DXY
+theLattice	source/Ising3D/Ising3Dlattice.h	/^	long double *** theLattice;$/;"	m	struct:LatticeIsing3D
+timetag	source/Ising3D/Ising3Dlattice.cpp	/^std::string timetag(){$/;"	f
+timetag3dxy	source/3DXY/3DXYlattice.cpp	/^std::string timetag3dxy(){$/;"	f
+updateQuants	source/3DXY/3DXYlattice.cpp	/^void Lattice3DXY::updateQuants(){$/;"	f	class:Lattice3DXY
+updateQuants	source/Ising3D/Ising3Dlattice.cpp	/^void LatticeIsing3D::updateQuants(){$/;"	f	class:LatticeIsing3D
+updateVals	source/3DXY/3DXYwolff.cpp	/^void updateVals(Lattice3DXY& lat,long double e0,long double e1,$/;"	f
+updateVals	source/Ising3D/Ising3Dwolff.cpp	/^void updateVals(LatticeIsing3D& lat,long double addE,long double addM){$/;"	f
+val	updMaxE.py	/^    val = float(Rfile.read())$/;"	v
+val	updMaxEI3D.py	/^    val = float(Rfile.read())$/;"	v
+warmLatPath	source/3DXY/3DXYlattice.h	/^	std::string warmLatPath;$/;"	m	struct:Lattice3DXY
+warmLatPath	source/Ising3D/Ising3Dlattice.h	/^	std::string warmLatPath;$/;"	m	struct:LatticeIsing3D
+warmedUp	source/3DXY/3DXYlattice.h	/^	bool coldstart,warmedUp;$/;"	m	struct:Lattice3DXY
+warmedUp	source/Ising3D/Ising3Dlattice.h	/^	bool coldstart,warmedUp;$/;"	m	struct:LatticeIsing3D
+warmup	source/3DXY.cpp	/^void _3DXY::warmup(Lattice3DXY& lat,long double N){$/;"	f	class:_3DXY
+warmup	source/Ising3D.cpp	/^void Ising3D::warmup(LatticeIsing3D& lat,long double N){$/;"	f	class:Ising3D
+warmupJob	source/3DXY.cpp	/^void _3DXY::warmupJob(long double L, std::string maxepath,std::string warmlatpath){$/;"	f	class:_3DXY
+warmupJob	source/Ising3D.cpp	/^void Ising3D::warmupJob(long double L, std::string maxepath,std::string warmlatpath){$/;"	f	class:Ising3D
+wolffHistJob	source/3DXY.cpp	/^void _3DXY::wolffHistJob(long double L,std::string maxepath,std::string warmlatpath,bool doPrint){$/;"	f	class:_3DXY
+wolffHistJob	source/Ising3D.cpp	/^void Ising3D::wolffHistJob(long double L,std::string maxepath,std::string warmlatpath){$/;"	f	class:Ising3D
+wolffHistRun3DXY	source/3DXY/3DXYrunWolff.cpp	/^void wolffHistRun3DXY(Lattice3DXY& lat, long double N_sample_sweeps,long double *Temperatures,int N_temps){$/;"	f
+wolffHistRunIsing3D	source/Ising3D/Ising3DrunWolff.cpp	/^void wolffHistRunIsing3D(LatticeIsing3D& lat, long double N_sample_sweeps,long double *Temperatures,int N_temps){$/;"	f
+workers	source/ThreadPool.h	/^    std::vector< std::thread > workers;$/;"	m	class:ThreadPool
+xmag	source/3DXY/3DXYlattice.h	/^	long double energy,xmag,ymag,sinx,siny,sinz;$/;"	m	struct:Lattice3DXY
+xyzToK	source/3DXY/3DXYlattice.cpp	/^long unsigned int xyzToK( int x, int y , int z,long double L){$/;"	f
+xyzToK_C	source/clusterStruct.cpp	/^long unsigned int xyzToK_C( int x, int y , int z,long double L){$/;"	f
+ymag	source/3DXY/3DXYlattice.h	/^	long double energy,xmag,ymag,sinx,siny,sinz;$/;"	m	struct:Lattice3DXY
+~ThreadPool	source/ThreadPool.h	/^inline ThreadPool::~ThreadPool()$/;"	f	class:ThreadPool

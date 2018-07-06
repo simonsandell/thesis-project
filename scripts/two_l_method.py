@@ -8,24 +8,23 @@ from analysis import twoLana
 
 
 MODEL = settings.model
-DTSET = "June_26_2018"
-TAG = "jun_26"
+TAG = "jul_5"
 
 DATAFILES = [
-    np.load(settings.datatables_path + DTSET + "/datatable_4.0jun_153DXY.npy"),
-    np.load(settings.datatables_path + DTSET + "/datatable_8.0jun_153DXY.npy"),
-    np.load(settings.datatables_path + DTSET + "/datatable_16.0jun_153DXY.npy"),
-    np.load(settings.datatables_path + DTSET + "/datatable_32.0jun_263DXY.npy"),
-    np.load(settings.datatables_path + DTSET + "/datatable_64.0jun_263DXY.npy"),
-    np.load(settings.datatables_path + DTSET + "/datatable_128.0jun_263DXY.npy"),
+    np.load(settings.DATATABLES[0]),
+    np.load(settings.DATATABLES[1]),
+    np.load(settings.DATATABLES[2]),
+    np.load(settings.DATATABLES[3]),
+    np.load(settings.DATATABLES[4]),
+    np.load(settings.DATATABLES[5]),
 ]
 JACKFILES = [
-    np.load(settings.datatables_path + DTSET + "/jackknife/4combined_nf.npy"),
-    np.load(settings.datatables_path + DTSET + "/jackknife/8combined_nf.npy"),
-    np.load(settings.datatables_path + DTSET + "/jackknife/16combined_nf.npy"),
-    np.load(settings.datatables_path + DTSET + "/jackknife/32combined_nf.npy"),
-    np.load(settings.datatables_path + DTSET + "/jackknife/64combined_nf.npy"),
-    np.load(settings.datatables_path + DTSET + "/jackknife/128combined_nf.npy"),
+    np.load(settings.JACKTABLES[0]),
+    np.load(settings.JACKTABLES[1]),
+    np.load(settings.JACKTABLES[2]),
+    np.load(settings.JACKTABLES[3]),
+    np.load(settings.JACKTABLES[4]),
+    np.load(settings.JACKTABLES[5]),
 ]
 
 # calculate the quantities, plain

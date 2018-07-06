@@ -29,7 +29,12 @@ def addFile(bfile, path, n):
     writeToBat(bfile, "s" + str(n) + " symbol size  0.5")
     writeToBat(bfile, "s" + str(n) + ' legend "' + os.path.basename(path) + '"')
     writeToBat(bfile, "KILL BLOCK")
-
+    
+def check_file_filter(filename, filefilter):
+    for filt in filefilter.rsplit(" "):
+        if filt in filename:
+            return True
+    return False
 
 def graceDirPlot(directory, parameters, doPrint, filefilter):
     title, xaxis, yaxis, xlog, ylog = parameters.title, parameters.xlabel,parameters.ylabel, parameters.xlog, parameters.ylog
@@ -40,7 +45,7 @@ def graceDirPlot(directory, parameters, doPrint, filefilter):
     writeToBat(bfile, 'YAXIS LABEL "' + yaxis + '"')
     n = 0
     for filename in sorted(os.listdir(directory)):
-        if filefilter in filename:
+        if check_file_filter(filename,filefilter):
             if os.stat(os.path.join(directory, filename)).st_size != 0:
                 nonEmpty = True
                 if doPrint:

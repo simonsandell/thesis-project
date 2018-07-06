@@ -8,6 +8,28 @@ model = "3DXY"
 nprocs = 2
 
 
+#######
+## Current datatables
+#######
+
+DATATABLES = [
+    datatables_path + "July_05_2018/datatable_4.0jul53DXY.npy",
+    datatables_path + "July_05_2018/datatable_8.0jul53DXY.npy",
+    datatables_path + "July_05_2018/datatable_16.0jul53DXY.npy",
+    datatables_path + "July_05_2018/datatable_32.0jul53DXY.npy",
+    datatables_path + "July_05_2018/datatable_64.0jul53DXY.npy",
+    datatables_path + "July_05_2018/datatable_128.0jul53DXY.npy",
+]
+
+JACKTABLES = [
+    datatables_path + "July_05_2018/jackknife/4combined_nf.npy",
+    datatables_path + "July_05_2018/jackknife/8combined_nf.npy",
+    datatables_path + "July_05_2018/jackknife/16combined_nf.npy",
+    datatables_path + "July_05_2018/jackknife/32combined_nf.npy",
+    datatables_path + "July_05_2018/jackknife/64combined_nf.npy",
+    datatables_path + "July_05_2018/jackknife/128combined_nf.npy",
+]
+
 def write_self(vals):
     with open("./settings.py", "r") as fname:
         data = fname.readlines()

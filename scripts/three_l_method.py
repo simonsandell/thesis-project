@@ -5,34 +5,19 @@ from analysis import threeL
 from plotting import fileWriter
 
 MODEL = settings.model
-SAVENAME = "jun_26"
-JACK_N = 500
+SAVENAME = "jul_5"
 
 CURFOLDER = "June_26_2018/"
 
-DATAFILES = [
-    settings.datatables_path + CURFOLDER + "datatable_4.0jun_153DXY.npy",
-    settings.datatables_path + CURFOLDER + "datatable_8.0jun_153DXY.npy",
-    settings.datatables_path + CURFOLDER + "datatable_16.0jun_153DXY.npy",
-    settings.datatables_path + CURFOLDER + "datatable_32.0jun_263DXY.npy",
-    settings.datatables_path + CURFOLDER + "datatable_64.0jun_263DXY.npy",
-    settings.datatables_path + CURFOLDER + "datatable_128.0jun_263DXY.npy"
-]
-
-JACKFILES = [
-    settings.datatables_path + CURFOLDER + "jackknife/4combined_nf.npy",
-    settings.datatables_path + CURFOLDER + "jackknife/8combined_nf.npy",
-    settings.datatables_path + CURFOLDER + "jackknife/16combined_nf.npy",
-    settings.datatables_path + CURFOLDER + "jackknife/32combined_nf.npy",
-    settings.datatables_path + CURFOLDER + "jackknife/64combined_nf.npy",
-    settings.datatables_path + CURFOLDER + "jackknife/128combined_nf.npy"
-]
+DATAFILES = settings.DATATABLES
+JACKFILES = settings.JACKTABLES
 
 for i, f in enumerate(DATAFILES):
     DATAFILES[i] = np.load(f)
     JACKFILES[i] = np.load(JACKFILES[i])
 
 RESULT = []
+JACK_N = JACKFILES[0].shape[0]
 
 for i, (d1, d2, d3) in enumerate(zip(DATAFILES[:-2], DATAFILES[1:-1], DATAFILES[2:])):
     RESULT.append(threeL.threeLmethod(d1, d2, d3))
