@@ -15,9 +15,9 @@ def plot_results_two_l_log(res):
     for a_idx in range(a_num):
         fig = plt.figure(figsize=(10, 8))
         for plane_idx  in range(curve_num):
-            current_ln = results[plane_idx, a_idx*temp_num:(a_idx+1)*temp_num, :]
-            x = results[plane_idx, a_idx*temp_num:(a_idx+1)*temp_num, 1]
-            y = results[plane_idx, a_idx*temp_num:(a_idx+1)*temp_num, 4]
+            current_ln = res[plane_idx, a_idx*temp_num:(a_idx+1)*temp_num, :]
+            x = res[plane_idx, a_idx*temp_num:(a_idx+1)*temp_num, 1]
+            y = res[plane_idx, a_idx*temp_num:(a_idx+1)*temp_num, 4]
             lab = str(current_ln[0, :])
             plt.plot(x, y, label=lab)
         plt.legend()
@@ -66,7 +66,7 @@ if __name__ == '__main__':
         np.load(settings.JACKTABLES[4]),
         np.load(settings.JACKTABLES[5]),
     ]
-    TAG = "jul_5"
+    TAG = "jul_5_zoom_1"
     JACK_NUM = JACKLIST[0].shape[0]
     # prune T's assuming they are temperature sorted...
     
@@ -76,7 +76,7 @@ if __name__ == '__main__':
     for JDAT in JACKLIST:
         JDAT = JDAT[:, 50:76, :]
     
-    a_values = np.linspace(1.1, 1.3, 100)
+    a_values = np.linspace(1.24, 1.25, 100)
     NUM_SURF = len(DATLIST) - 1
     NUM_TEMP = DATLIST[0].shape[0]
     NUM_A = a_values.shape[0]
