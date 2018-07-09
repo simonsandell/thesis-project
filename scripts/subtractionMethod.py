@@ -49,7 +49,7 @@ def get_bin_rho_omega(vals_l1, vals_l2, a_val):
         calculate_omega(rho_val1, rho_val2, a_val),
     ]
 
-if __name__ = '__main__':
+if __name__ == '__main__':
     DATLIST = [
         np.load(settings.DATATABLES[0]),
         np.load(settings.DATATABLES[1]),
