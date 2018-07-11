@@ -7,7 +7,6 @@ from plotting import fileWriter
 MODEL = settings.model
 SAVENAME = "jul_5"
 
-CURFOLDER = "June_26_2018/"
 
 DATAFILES = settings.DATATABLES
 JACKFILES = settings.JACKTABLES

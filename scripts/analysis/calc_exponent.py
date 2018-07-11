@@ -6,7 +6,7 @@ from plotting import fileWriter
 
 #  define some variables, path to datatables
 DIRPATH = settings.datatables_path+ "June_26_2018/"
-TAG = "jun_26"
+TAG = "jul_5"
 JACKPATH = DIRPATH + "/jackknife/"
 FILELIST = [
     np.load(settings.DATATABLES[0]),

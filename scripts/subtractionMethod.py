@@ -14,6 +14,9 @@ def plot_results_two_l_log(res):
     temp_num = np.unique(res[0, :, 1]).shape[0]
     for a_idx in range(a_num):
         fig = plt.figure(figsize=(10, 8))
+        ax = plt.gca()
+        ax.set_ylim(bottom=0.0, top=1.1)
+        ax.set_xlim(left=2.2018, right=2.2019)
         for plane_idx  in range(curve_num):
             current_ln = res[plane_idx, a_idx*temp_num:(a_idx+1)*temp_num, :]
             x = res[plane_idx, a_idx*temp_num:(a_idx+1)*temp_num, 1]
@@ -66,7 +69,7 @@ if __name__ == '__main__':
         np.load(settings.JACKTABLES[4]),
         np.load(settings.JACKTABLES[5]),
     ]
-    TAG = "jul_5_zoom_1"
+    TAG = "jul_5_zoom_2"
     JACK_NUM = JACKLIST[0].shape[0]
     # prune T's assuming they are temperature sorted...
     
@@ -76,7 +79,7 @@ if __name__ == '__main__':
     for JDAT in JACKLIST:
         JDAT = JDAT[:, 50:76, :]
     
-    a_values = np.linspace(1.24, 1.25, 100)
+    a_values = np.linspace(1.243, 1.2444, 10)
     NUM_SURF = len(DATLIST) - 1
     NUM_TEMP = DATLIST[0].shape[0]
     NUM_A = a_values.shape[0]
