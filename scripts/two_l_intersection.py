@@ -16,16 +16,16 @@ def prune_nan(not_pruned_X, not_pruned_Y):
 
 
 
-TAG = 'jul_5'
+TAG = 'jul_5_skip_4'
 DATLIST = [
-    np.load(settings.pickles_path + "2Lquant/jun_264_8.npy"),
+    #np.load(settings.pickles_path + "2Lquant/jun_264_8.npy"),
     np.load(settings.pickles_path + "2Lquant/jun_268_16.npy"),
     np.load(settings.pickles_path + "2Lquant/jun_2616_32.npy"),
     np.load(settings.pickles_path + "2Lquant/jun_2632_64.npy"),
     np.load(settings.pickles_path + "2Lquant/jun_2664_128.npy"),
 ]
 JACKLIST = [
-    np.load(settings.pickles_path + "2Lquant/jackknife/jack_jun_264_8.npy"),
+    #np.load(settings.pickles_path + "2Lquant/jackknife/jack_jun_264_8.npy"),
     np.load(settings.pickles_path + "2Lquant/jackknife/jack_jun_268_16.npy"),
     np.load(settings.pickles_path + "2Lquant/jackknife/jack_jun_2616_32.npy"),
     np.load(settings.pickles_path + "2Lquant/jackknife/jack_jun_2632_64.npy"),
@@ -102,7 +102,7 @@ for om_idx, omega in enumerate(OMEGA_RANGE):
         close_rho = intersectionFinder.findCloseness([rho_pruned])
         row = np.array([[omega, *close_rho, *j_res]])
         rho_close_result = np.append(rho_close_result, row, axis=0)
-### werid 3d plot
+### weird 3d plot
 #fig = plt.figure()
 #ax = fig.add_subplot(111, projection='3d')
 #ax.plot(bin_close_result[:, 0], bin_close_result[:,1], zs=bin_close_result[:, 2])
@@ -116,7 +116,6 @@ fileWriter.writeQuant(int_path + TAG + "bin.dat", bin_close_result, [0, 1, 4])
 fileWriter.writeQuant(int_path + TAG + "rho.dat", rho_close_result, [0, 1, 4])
 fileWriter.writeQuant(tc_path + TAG + "bin.dat", bin_close_result, [0, 2, 5])
 fileWriter.writeQuant(tc_path + TAG + "rho.dat", rho_close_result, [0, 2, 5])
-"""
 f, (ax1, ax2) = plt.subplots(2, 1, sharex=True)
 ax1.plot(bin_close_result[:, 0], bin_close_result[:, 1], label='binder')
 ax1.plot(rho_close_result[:,0],rho_close_result[:,1], label='rho')
@@ -125,4 +124,3 @@ ax2.plot(rho_close_result[:,0],rho_close_result[:,2], label='rho')
 plt.figlegend()
 plt.show(block=False)
 input()
-"""

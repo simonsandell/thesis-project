@@ -5,8 +5,11 @@ x_size = "L - linear system size"
 x_z = "z - dynamical critical exponent"
 x_n = r"N\ssweeps\S"
 x_omega = r"\xw\0 - 1st order scaling correction"
+x_vstime = "Year"
 
 dict_xaxis = {
+    "vstime/nu": x_vstime,
+    "vstime/eta": x_vstime,
     "twoL/intersection": x_omega,
     "twoL/tc": x_omega,
     "2Lquant_fit/a_bin": x_temp,
@@ -54,6 +57,7 @@ dict_xaxis = {
     "vsT/rs": x_temp,
 }
 
+y_vstime = r'\xn\0'
 y_en = r"e Energy per spin"
 y_mag = r"m Magnetization per spin"
 y_bin = r"B = \x\ca\0\Cm\S4\N\x\cq\0\C/\x\ca\0\Cm\S2\N\x\cq\0\C\S2\N"
@@ -93,7 +97,11 @@ y_var_a_rs = r"Var(a)  from  lr(2l) - lr(l) fit"
 y_var_a_bin = r"Var(a)  from  bin(2l) - bin(l) fit"
 y_var_omega_rs = r"Var(\xw\0)  from  lr(2l) - lr(l) fit"
 y_var_omega_bin = r"Var(\xw\0)  from  bin(2l) - bin(l) fit"
+
+
 dict_yaxis = {
+    "vstime/nu": y_vstime,
+    "vstime/eta": y_eta,
     "twoL/intersection": y_intersection,
     "twoL/tc": y_tc,
     "2Lquant_fit/a_bin": y_a_bin,
@@ -165,6 +173,8 @@ dict_log = {
         "2Lquant_fit/var_rs",
     ],
     (False, False): [
+        "vstime/nu",
+        "vstime/eta",
         "twoL/intersection",
         "twoL/tc",
         "vsT/bin",
@@ -195,7 +205,10 @@ dict_log = {
         "subtraction/rs",
     ],
 }
+
 dict_title = {
+    "vstime/eta": "vstime_eta",
+    "vstime/nu": "vstime_nu",
     "twoL/intersection": "twoL_intersection",
     "twoL/tc": "twoL_tc",
     "2Lquant_fit/a_bin": "2Lquant_fit_a_bin",
