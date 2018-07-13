@@ -21,8 +21,9 @@ def plot_results_two_l_log(res):
             current_ln = res[plane_idx, a_idx*temp_num:(a_idx+1)*temp_num, :]
             x = res[plane_idx, a_idx*temp_num:(a_idx+1)*temp_num, 1]
             y = res[plane_idx, a_idx*temp_num:(a_idx+1)*temp_num, 4]
+            delta_y = res[plane_idx, a_idx*temp_num:(a_idx+1)*temp_num, 6]
             lab = str(current_ln[0, :])
-            plt.plot(x, y, label=lab)
+            plt.errorbar(x, y, yerr=delta_y, label=lab)
         plt.legend()
         plt.show()
 
@@ -54,22 +55,23 @@ def get_bin_rho_omega(vals_l1, vals_l2, a_val):
 
 if __name__ == '__main__':
     DATLIST = [
-        np.load(settings.DATATABLES[0]),
+        #np.load(settings.DATATABLES[0]),
         np.load(settings.DATATABLES[1]),
         np.load(settings.DATATABLES[2]),
         np.load(settings.DATATABLES[3]),
         np.load(settings.DATATABLES[4]),
-        np.load(settings.DATATABLES[5]),
+        #np.load(settings.DATATABLES[5]),
     ]
     JACKLIST = [
-        np.load(settings.JACKTABLES[0]),
+        #np.load(settings.JACKTABLES[0]),
         np.load(settings.JACKTABLES[1]),
         np.load(settings.JACKTABLES[2]),
         np.load(settings.JACKTABLES[3]),
         np.load(settings.JACKTABLES[4]),
-        np.load(settings.JACKTABLES[5]),
+        #np.load(settings.JACKTABLES[5]),
     ]
-    TAG = "jul_5_zoom_2"
+    DO_JACK = True
+    TAG = "jul_5_skip_4_128"
     JACK_NUM = JACKLIST[0].shape[0]
     # prune T's assuming they are temperature sorted...
     
@@ -79,7 +81,7 @@ if __name__ == '__main__':
     for JDAT in JACKLIST:
         JDAT = JDAT[:, 50:76, :]
     
-    a_values = np.linspace(1.243, 1.2444, 10)
+    a_values = np.linspace(1.242444913121172, 1.2424449131669697, 5)
     NUM_SURF = len(DATLIST) - 1
     NUM_TEMP = DATLIST[0].shape[0]
     NUM_A = a_values.shape[0]
@@ -106,14 +108,14 @@ if __name__ == '__main__':
                 )
     
                 temporary_jack_res = np.empty((JACK_NUM, 2))
-    
-                for j_idx in range(JACK_NUM):
-                    temporary_jack_res[j_idx, :] = get_bin_rho_omega(
-                        j_vals_1[j_idx, :], j_vals_2[j_idx, :], a_const
-                    )
-                bin_delta = np.sqrt(JACK_NUM - 1) * np.std(temporary_jack_res[:, 0])
-                rho_delta = np.sqrt(JACK_NUM - 1) * np.std(temporary_jack_res[:, 1])
-                results[l_idx, a_idx * NUM_TEMP + t_idx, 6:] = [bin_delta, rho_delta]
+                if DO_JACK:
+                    for j_idx in range(JACK_NUM):
+                        temporary_jack_res[j_idx, :] = get_bin_rho_omega(
+                            j_vals_1[j_idx, :], j_vals_2[j_idx, :], a_const
+                        )
+                    bin_delta = np.sqrt(JACK_NUM - 1) * np.std(temporary_jack_res[:, 0])
+                    rho_delta = np.sqrt(JACK_NUM - 1) * np.std(temporary_jack_res[:, 1])
+                    results[l_idx, a_idx * NUM_TEMP + t_idx, 6:] = [bin_delta, rho_delta]
     
     np.save(settings.pickles_path + "2L_log_omega/results_" + TAG, results)
     
