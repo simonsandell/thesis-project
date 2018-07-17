@@ -1,12 +1,8 @@
 import numpy as np
-import pandas as pd
 
-from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
-from matplotlib import cm
 
 import settings
-from plotting import fileWriter
 
 def plot_results_two_l_log(res):
     a_num = np.unique(res[0, :, 0]).shape[0]

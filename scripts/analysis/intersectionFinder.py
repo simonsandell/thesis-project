@@ -53,3 +53,20 @@ def findCloseness(pts):
     dist = dist/float(len(pts))
 
     return [dist, avgx, avgy]
+
+def findClose_parse(arr):
+    # calculate average x and y
+    # calculate sum of distances to average point
+    avgx = np.mean(arr[:, 0])
+    avgy = np.mean(arr[:, 1])
+    n_pts = arr.shape[0]
+
+    dist = 0.0
+
+    for pt_idx in range(n_pts):
+        dx = abs(arr[pt_idx, 0] - avgx)/avgx
+        dy = abs(arr[pt_idx, 1] - avgy)/avgy
+        dist += pow((dx**2) + (dy**2), 0.5)
+    dist /=float(n_pts)
+    return [dist, avgx, avgy]
+

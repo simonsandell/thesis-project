@@ -4,13 +4,13 @@ import numpy as np
 
 
 namelist = [
-    settings.pickles_path + "/2Lquant/jun_184_8.npy",
-    settings.pickles_path + "/2Lquant/jun_188_16.npy",
-    settings.pickles_path + "/2Lquant/jun_1816_32.npy",
-    settings.pickles_path + "/2Lquant/jun_1832_64.npy",
-    settings.pickles_path + "/2Lquant/jun_1864_128.npy",
+    settings.pickles_path + "/2Lquant/jul_174_8.npy",
+    settings.pickles_path + "/2Lquant/jul_178_16.npy",
+    settings.pickles_path + "/2Lquant/jul_1716_32.npy",
+    settings.pickles_path + "/2Lquant/jul_1732_64.npy",
+    settings.pickles_path + "/2Lquant/jul_1764_128.npy",
 ]
-TAG = "jun_18"
+TAG = "jul_17"
 a = np.load(namelist[0])
 all_dt = np.empty((0, a.shape[1]))
 # format: L1 L2 T B R  dB dR

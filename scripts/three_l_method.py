@@ -5,7 +5,7 @@ from analysis import threeL
 from plotting import fileWriter
 
 MODEL = settings.model
-SAVENAME = "jul_5"
+SAVENAME = "jul_17"
 
 
 DATAFILES = settings.DATATABLES

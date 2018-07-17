@@ -6,9 +6,9 @@ import settings
 p0_rho = [1.2, 1.2, 0.5]
 
 # skip smallest
-SKIP_N = 1
-data = [np.load(x) for x in settings.DATATABLES[1:]]
-jack = [np.load(x) for x in settings.JACKTABLES[1:]]
+SKIP_N = 0
+data = [np.load(x) for x in settings.DATATABLES[SKIP_N:]]
+jack = [np.load(x) for x in settings.JACKTABLES[SKIP_N:]]
 
 binderindex = 22
 rhoindex = 26
