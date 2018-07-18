@@ -6,6 +6,7 @@ x_z = "z - dynamical critical exponent"
 x_n = r"N\ssweeps\S"
 x_omega = r"\xw\0 - 1st order scaling correction"
 x_vstime = "Year"
+x_var_nu = x_temp
 
 dict_xaxis = {
     "vstime/nu": x_vstime,
@@ -55,6 +56,8 @@ dict_xaxis = {
     "vsT/mag": x_temp,
     "vsT/nu": x_temp,
     "vsT/rs": x_temp,
+    "vsT/var_nu": x_temp,
+    "vsT/var_eta": x_temp,
 }
 
 y_vstime = r'\xn\0'
@@ -98,8 +101,12 @@ y_var_a_bin = r"Var(a)  from  bin(2l) - bin(l) fit"
 y_var_omega_rs = r"Var(\xw\0)  from  lr(2l) - lr(l) fit"
 y_var_omega_bin = r"Var(\xw\0)  from  bin(2l) - bin(l) fit"
 
+y_var_nu = r'Var(\xn\0) from dB/dT fit'
+y_var_eta = r'Var(\xh\0) from \xc\0 fit'
 
 dict_yaxis = {
+    "vsT/var_nu": y_var_nu,
+    "vsT/var_eta": y_var_eta,
     "vstime/nu": y_vstime,
     "vstime/eta": y_eta,
     "twoL/intersection": y_intersection,
@@ -173,6 +180,8 @@ dict_log = {
         "2Lquant_fit/var_rs",
     ],
     (False, False): [
+        "vsT/var_nu",
+        "vsT/var_eta",
         "vstime/nu",
         "vstime/eta",
         "twoL/intersection",
@@ -207,6 +216,8 @@ dict_log = {
 }
 
 dict_title = {
+    "vsT/var_eta": "vsT_var_eta",
+    "vsT/var_nu": "vsT_var_nu",
     "vstime/eta": "vstime_eta",
     "vstime/nu": "vstime_nu",
     "twoL/intersection": "twoL_intersection",

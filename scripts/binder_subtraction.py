@@ -6,12 +6,12 @@ from analysis import intersectionFinder
 
 # load binder from datatables
 DT_LIST = [
-    #np.load(settings.datatables_path + "June_26_2018/datatable_4.0jun_153DXY.npy"),
-    #np.load(settings.datatables_path + "June_26_2018/datatable_8.0jun_153DXY.npy"),
-    np.load(settings.datatables_path + "June_26_2018/datatable_16.0jun_153DXY.npy"),
-    np.load(settings.datatables_path + "June_26_2018/datatable_32.0jun_263DXY.npy"),
-    np.load(settings.datatables_path + "June_26_2018/datatable_64.0jun_263DXY.npy"),
-    np.load(settings.datatables_path + "June_26_2018/datatable_128.0jun_263DXY.npy"),
+#    np.load(settings.DATATABLES[0]),
+    np.load(settings.DATATABLES[1]),
+    np.load(settings.DATATABLES[2]),
+    np.load(settings.DATATABLES[3]),
+    np.load(settings.DATATABLES[4]),
+    np.load(settings.DATATABLES[5]),
 ]
 PLOT_DURING = False
 QUANT_IDX = 22
@@ -84,7 +84,7 @@ plt.xlabel("b")
 plt.ylabel("closeness")
 plt.plot(omega_best_res[:, 0], omega_best_res[:, 1], "rx", label="omega = 0.78")
 plt.plot(omega_one_res[:, 0], omega_one_res[:, 1], "bx", label="omega = 1")
-plt.plot(omega_two_res[:, 0], omega_two_res[:, 1], "bx", label="omega = 1.2")
+plt.plot(omega_two_res[:, 0], omega_two_res[:, 1], "gx", label="omega = 1.2")
 plt.figlegend()
 plt.show(block=False)
 

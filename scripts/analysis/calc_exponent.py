@@ -43,12 +43,12 @@ def calculate_exponents(omega,skip_n):
     SAVENAME = TAG + "_" + str(omega) + "_skip_" + str(skip_n)
 
     def fitfunc(L, nu, a, b):
-        res = (L ** (1.0 / nu)) * (a + b * (L ** (-omega)))
+        res = np.power(L ,(1.0 / nu)) * (a + b * np.power(L, (-omega)))
 
         return res
 
     def etafunc(L, eta, a, b):
-        res = (L ** (2 - eta)) * (a + b * (L ** (-omega)))
+        res = np.power(L , (2 - eta)) * (a + b * np.power(L , (-omega)))
 
         return res
 
@@ -107,15 +107,15 @@ def calculate_exponents(omega,skip_n):
     # into correct blocks
     Ti = get_temp_idx(all_tables)
 
-    result = np.empty((Ti.shape[0] - 1, 4))
-    eta_result = np.empty((Ti.shape[0] - 1, 4))
+    result = np.empty((Ti.shape[0] - 1, 6))
+    eta_result = np.empty((Ti.shape[0] - 1, 6))
     # result format : [T exponent var(exponent) N=NL1 + NL2]
 
     for ind in range(Ti.shape[0] - 1):
         tview = all_tables[Ti[ind] : Ti[ind + 1], :]
         tview = tview[tview[:, 0].argsort()]
-        result[ind, :] = calculateNu(tview)
-        eta_result[ind, :] = calculateEta(tview)
+        result[ind, :4] = calculateNu(tview)
+        eta_result[ind, :4] = calculateEta(tview)
 
         jresult = np.empty((0, 4))
         jeta_result = np.empty((0, 4))
@@ -124,13 +124,21 @@ def calculate_exponents(omega,skip_n):
             jeta_result = np.append(jeta_result, calculateEta(jack_tables[i, ind, :, :]), axis=0)
         nu_delta = pow(JACK_NUM - 1, 0.5) * np.std(jresult[:, 1])
         eta_delta = pow(JACK_NUM - 1, 0.5) * np.std(jeta_result[:, 1])
-        result[ind, 2] = nu_delta
-        eta_result[ind, 2] = eta_delta
+        var_nu_delta = pow(JACK_NUM - 1, 0.5) * np.std(jresult[:, 2])
+        var_eta_delta = pow(JACK_NUM - 1, 0.5) * np.std(jeta_result[:, 2])
+        result[ind, 4] = nu_delta
+        eta_result[ind, 4] = eta_delta
+        result[ind, 5] = var_nu_delta
+        eta_result[ind, 5] = var_eta_delta
 
 
     # write to dat files for plotting
     writePath = settings.foutput_path + settings.model + "/vsT/nu/" + SAVENAME + ".dat"
     eta_Path = settings.foutput_path + settings.model + "/vsT/eta/" + SAVENAME + ".dat"
+    varnu_path = settings.foutput_path + settings.model + "/vsT/var_nu/var_"+SAVENAME + ".dat"
+    vareta_path = settings.foutput_path + settings.model + "/vsT/var_eta/var_"+SAVENAME + ".dat"
 
-    fileWriter.writeQuant(writePath, result, [0, 1, 2, 3])
-    fileWriter.writeQuant(eta_Path, eta_result, [0, 1, 2, 3])
+    fileWriter.writeQuant(writePath, result, [0, 1, 4, 3])
+    fileWriter.writeQuant(eta_Path, eta_result, [0, 1, 4, 3])
+    fileWriter.writeQuant(varnu_path, result, [0, 2, 5, 3])
+    fileWriter.writeQuant(vareta_path, eta_result, [0, 2, 5, 3])

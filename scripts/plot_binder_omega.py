@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
 
 import settings
-result_struct = np.load("result_bin_fit_omega.npy")
+result_struct = np.load("result_bin_fit_omega_a_fix.npy")
 
 temperature = result_struct[:, 1]
 omega_bin = result_struct[:, 2]

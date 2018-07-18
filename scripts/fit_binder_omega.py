@@ -3,10 +3,9 @@ import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
 
 import settings
-p0_rho = [1.2, 1.2, 0.5]
 
 # skip smallest
-SKIP_N = 0
+SKIP_N = 1
 data = [np.load(x) for x in settings.DATATABLES[SKIP_N:]]
 jack = [np.load(x) for x in settings.JACKTABLES[SKIP_N:]]
 
@@ -16,7 +15,8 @@ rhoindex = 26
 NUM_T = data[0].shape[0]
 NUM_J = jack[0].shape[0]
 
-def fit_func(L, a ,b, omega):
+def fit_func(L, omega, b):
+    a = 1.244
     return a + b*pow(L,-omega)
 
 def perform_fit(data_list,t_idx, q_idx):
@@ -27,8 +27,8 @@ def perform_fit(data_list,t_idx, q_idx):
     for l_idx, ldata in enumerate(data_list):
         X.append(ldata[t_idx, 0])
         Y.append(ldata[t_idx, q_idx])
-    params, covar = curve_fit(fit_func, X, Y, p0=p0_rho, maxfev=1000000)
-    return params[2], covar[2, 2]
+    params, covar = curve_fit(fit_func, X, Y )
+    return params[0], covar[0, 0]
 
 result_struct = np.empty((NUM_T, 20))
 jack_result_struct = np.empty((NUM_J, NUM_T, 20))
@@ -51,9 +51,9 @@ for t_idx in range(NUM_T):
     result_struct[t_idx, 8] = np.sqrt(NUM_J -1) * np.std(jack_res_struct[:, 2])
     result_struct[t_idx, 9] = np.sqrt(NUM_J -1) * np.std(jack_res_struct[:, 3])
 
-np.save("result_bin_fit_omega", result_struct)
+np.save("result_bin_fit_omega_a_fix_skip_4", result_struct)
 
-result_struct = np.load("result_bin_fit_omega")
+result_struct = np.load("result_bin_fit_omega_a_fix_skip_4.npy")
 
 temperature = result_struct[:, 1]
 omega_bin = result_struct[:, 2]

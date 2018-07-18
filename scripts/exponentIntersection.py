@@ -1,4 +1,5 @@
 import numpy as np
+import math
 from scipy.optimize import curve_fit
 from plotting import fileWriter
 from analysis import intersectionFinder
@@ -28,16 +29,17 @@ JACK_NUM = JACKLIST[0].shape[0]
 TEMP_NUM = JACKLIST[0].shape[1]
 print('JACK_NUM', JACK_NUM)
 print('TEMP_NUM', TEMP_NUM)
+BOOL_DOJACK = False
 idx = anaFuncs.get3DXYIndex()
 
 def calc_exponents(omega, skip_n):
     def fitfunc(L, nu, a, b):
-        res = pow(L, (1.0 / nu)) * (a + b * (L ** (-omega)))
+        res = np.power(L, (1.0 / nu)) * (a + b * np.power(L ,(-omega)))
 
         return res
 
-    def etafunc(L, eta, a, b):
-        res = pow(L, (2 - eta)) * (a + b * (L ** (-omega)))
+    def etafunc(L, tmineta, a, b):
+        res = np.power(L, tmineta) * (a + b * np.power(L ,-omega))
 
         return res
 
@@ -58,7 +60,7 @@ def calc_exponents(omega, skip_n):
         params, covar = curve_fit(etafunc, x, y)
         res = np.empty((1, 4))
         res[0, 0] = tview[0, 1]
-        res[0, 1] = params[0]
+        res[0, 1] = 2.0 - params[0]
         res[0, 2] = covar[0, 0]
 
         return res
@@ -105,23 +107,25 @@ def calc_exponents(omega, skip_n):
 
 # for a range of omegas, find different nu,eta curves by curve_fit by succesively omitting smallest L points
 # for each omega, find the intersection points of those nu/eta-curves and check their closeness/clustering.
-ORANGE = np.linspace(0.5, 1.5, 50)
+ORANGE = np.linspace(0.5, 1.5, 2)
 N_SKIP_RANGE = [0, 1, 2, 3]
 nu_close = np.empty((ORANGE.shape[0], 7))
 eta_close = np.empty((ORANGE.shape[0], 7))
 
 for index, o in enumerate(ORANGE):
+    print('omega', o)
     nu_curves = np.empty((len(N_SKIP_RANGE), 101, 4))
     eta_curves = np.empty((len(N_SKIP_RANGE), 101, 4))
-    jack_nu_curves = np.empty((JACK_NUM, len(N_SKIP_RANGE), 101, 4))
-    jack_eta_curves = np.empty((JACK_NUM, len(N_SKIP_RANGE), 101, 4))
+    if BOOL_DOJACK:
+        jack_nu_curves = np.empty((JACK_NUM, len(N_SKIP_RANGE), 101, 4))
+        jack_eta_curves = np.empty((JACK_NUM, len(N_SKIP_RANGE), 101, 4))
 
     for n in N_SKIP_RANGE:
         nu_curves[n, :, :], eta_curves[n, :, :], jack_nu_curves[
             :, n, :, :
         ], jack_eta_curves[:, n, :, :] = calc_exponents(o, n)
-    # for all pairs of curves, find intersections
-    # try only consecutive curves maybe
+    print('calculated exponent curves')
+    # for sequential curves, find intersections
     nu_ints = []
     eta_ints = []
     jack_nu_ints = []
@@ -203,9 +207,9 @@ for index, o in enumerate(ORANGE):
         nu_cl,
         avgNu,
         avgTnu,
-        pow(JACK_NUM - 1, 0.5) * np.std(ls_j_nu_cl),
-        pow(JACK_NUM - 1, 0.5) * np.std(ls_j_avgNu),
-        pow(JACK_NUM - 1, 0.5) * np.std(ls_j_avgTnu),
+        math.pow(JACK_NUM - 1, 0.5) * np.std(ls_j_nu_cl),
+        math.pow(JACK_NUM - 1, 0.5) * np.std(ls_j_avgNu),
+        math.pow(JACK_NUM - 1, 0.5) * np.std(ls_j_avgTnu),
     ]
 
     eta_close[index, :] = [
@@ -213,9 +217,9 @@ for index, o in enumerate(ORANGE):
         eta_cl,
         avgEta,
         avgTeta,
-        pow(JACK_NUM - 1, 0.5) * np.std(ls_j_eta_cl),
-        pow(JACK_NUM - 1, 0.5) * np.std(ls_j_avgEta),
-        pow(JACK_NUM - 1, 0.5) * np.std(ls_j_avgTeta),
+        math.pow(JACK_NUM - 1, 0.5) * np.std(ls_j_eta_cl),
+        math.pow(JACK_NUM - 1, 0.5) * np.std(ls_j_avgEta),
+        math.pow(JACK_NUM - 1, 0.5) * np.std(ls_j_avgTeta),
     ]
 
 # write three plots, closeness vs omega, exponent vs omega, Tc vs omega
