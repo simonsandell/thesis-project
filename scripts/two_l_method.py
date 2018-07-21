@@ -8,7 +8,7 @@ from analysis import twoLana
 
 
 MODEL = settings.model
-TAG = "jul_17"
+TAG = settings.TAG
 
 DATAFILES = [
     np.load(settings.DATATABLES[0]),

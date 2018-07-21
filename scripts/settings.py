@@ -11,23 +11,24 @@ nprocs = 2
 #######
 ## Current datatables
 #######
+TAG = "jul_20"
 
 DATATABLES = [
-    datatables_path + "July_17_2018/datatable_4.0jul53DXY.npy",
-    datatables_path + "July_17_2018/datatable_8.0jul53DXY.npy",
-    datatables_path + "July_17_2018/datatable_16.0jul53DXY.npy",
-    datatables_path + "July_17_2018/datatable_32.0jul53DXY.npy",
-    datatables_path + "July_17_2018/datatable_64.0jul53DXY.npy",
-    datatables_path + "July_17_2018/datatable_128.0jul_173DXY.npy",
+    datatables_path + "July_20_2018/datatable_4.0jul53DXY.npy",
+    datatables_path + "July_20_2018/datatable_8.0jul53DXY.npy",
+    datatables_path + "July_20_2018/datatable_16.0jul53DXY.npy",
+    datatables_path + "July_20_2018/datatable_32.0jul_203DXY.npy",
+    datatables_path + "July_20_2018/datatable_64.0jul_203DXY.npy",
+    datatables_path + "July_20_2018/datatable_128.0jul_203DXY.npy",
 ]
 
 JACKTABLES = [
-    datatables_path + "July_17_2018/jackknife/4combined_nf.npy",
-    datatables_path + "July_17_2018/jackknife/8combined_nf.npy",
-    datatables_path + "July_17_2018/jackknife/16combined_nf.npy",
-    datatables_path + "July_17_2018/jackknife/32combined_nf.npy",
-    datatables_path + "July_17_2018/jackknife/64combined_nf.npy",
-    datatables_path + "July_17_2018/jackknife/128combined_nf.npy",
+    datatables_path + "July_20_2018/jackknife/4combined_nf.npy",
+    datatables_path + "July_20_2018/jackknife/8combined_nf.npy",
+    datatables_path + "July_20_2018/jackknife/16combined_nf.npy",
+    datatables_path + "July_20_2018/jackknife/32combined_nf.npy",
+    datatables_path + "July_20_2018/jackknife/64combined_nf.npy",
+    datatables_path + "July_20_2018/jackknife/128combined_nf.npy",
 ]
 
 def write_self(vals):

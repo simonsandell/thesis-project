@@ -4,6 +4,7 @@ from scipy.optimize import curve_fit
 
 import settings
 
+spoint = [2.5, 2.1, -1.2]
 # skip smallest
 SKIP_N = 1
 data = [np.load(x) for x in settings.DATATABLES[SKIP_N:]]
@@ -15,11 +16,11 @@ rhoindex = 26
 NUM_T = data[0].shape[0]
 NUM_J = jack[0].shape[0]
 
-def fit_func(L, omega, b):
-    a = 1.244
+def fit_func(L, omega, a, b):
+    #a = 1.244
     return a + b*pow(L,-omega)
 
-def perform_fit(data_list,t_idx, q_idx):
+def perform_fit(data_list, t_idx, q_idx):
     X = []
     X[:] = []
     Y = []
@@ -27,14 +28,15 @@ def perform_fit(data_list,t_idx, q_idx):
     for l_idx, ldata in enumerate(data_list):
         X.append(ldata[t_idx, 0])
         Y.append(ldata[t_idx, q_idx])
-    params, covar = curve_fit(fit_func, X, Y )
+    params, covar = curve_fit(fit_func, X, Y, p0=spoint, maxfev=5000)
     return params[0], covar[0, 0]
 
 result_struct = np.empty((NUM_T, 20))
 jack_result_struct = np.empty((NUM_J, NUM_T, 20))
 for t_idx in range(NUM_T):
     omega_b, var_omb = perform_fit(data, t_idx, binderindex)
-    omega_r, var_omr = perform_fit(data, t_idx, rhoindex)
+    #omega_r, var_omr = perform_fit(data, t_idx, rhoindex)
+    omega_r, var_omr = 0.0, 0.0
 
     result_struct[t_idx, 0:6] = [
         data[0][t_idx, 0], data[0][t_idx, 1],
@@ -44,14 +46,18 @@ for t_idx in range(NUM_T):
     jack_res_struct = np.empty((NUM_J, 4))
     for j_idx in range(NUM_J):
         one_jack = [x[j_idx, :, :] for x in jack]
-        jack_res_struct[j_idx, :2] = perform_fit(one_jack, t_idx, binderindex)
-        jack_res_struct[j_idx, 2:] = perform_fit(one_jack, t_idx, rhoindex)
+        #jack_res_struct[j_idx, :2] = perform_fit(one_jack, t_idx, binderindex)
+        #jack_res_struct[j_idx, 2:] = perform_fit(one_jack, t_idx, rhoindex)
+        jack_res_struct[j_idx, :2] = 0.0, 0.0
+        jack_res_struct[j_idx, 2:] = 0.0, 0.0
     result_struct[t_idx, 6] = np.sqrt(NUM_J -1) * np.std(jack_res_struct[:, 0])
     result_struct[t_idx, 7] = np.sqrt(NUM_J -1) * np.std(jack_res_struct[:, 1])
     result_struct[t_idx, 8] = np.sqrt(NUM_J -1) * np.std(jack_res_struct[:, 2])
     result_struct[t_idx, 9] = np.sqrt(NUM_J -1) * np.std(jack_res_struct[:, 3])
 
-np.save("result_bin_fit_omega_a_fix_skip_4", result_struct)
+    print(result_struct[t_idx, :])
+
+np.save("result_bin_fit_omega_a_free_skip_4", result_struct)
 
 result_struct = np.load("result_bin_fit_omega_a_fix_skip_4.npy")
 

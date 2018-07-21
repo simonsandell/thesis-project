@@ -6,7 +6,7 @@ from analysis import intersectionFinder
 import anaFuncs
 import settings
 
-TAG = "jul_17"
+TAG = settings.TAG
 
 FILELIST = [
     np.load(settings.DATATABLES[0]),

@@ -10,7 +10,7 @@ namelist = [
     settings.pickles_path + "/2Lquant/jul_1732_64.npy",
     settings.pickles_path + "/2Lquant/jul_1764_128.npy",
 ]
-TAG = "jul_17"
+TAG = settings.TAG
 a = np.load(namelist[0])
 all_dt = np.empty((0, a.shape[1]))
 # format: L1 L2 T B R  dB dR

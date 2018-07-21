@@ -51,23 +51,23 @@ def get_bin_rho_omega(vals_l1, vals_l2, a_val):
 
 if __name__ == '__main__':
     DATLIST = [
-        #np.load(settings.DATATABLES[0]),
+        np.load(settings.DATATABLES[0]),
         np.load(settings.DATATABLES[1]),
         np.load(settings.DATATABLES[2]),
         np.load(settings.DATATABLES[3]),
         np.load(settings.DATATABLES[4]),
-        #np.load(settings.DATATABLES[5]),
+        np.load(settings.DATATABLES[5]),
     ]
     JACKLIST = [
-        #np.load(settings.JACKTABLES[0]),
+        np.load(settings.JACKTABLES[0]),
         np.load(settings.JACKTABLES[1]),
         np.load(settings.JACKTABLES[2]),
         np.load(settings.JACKTABLES[3]),
         np.load(settings.JACKTABLES[4]),
-        #np.load(settings.JACKTABLES[5]),
+        np.load(settings.JACKTABLES[5]),
     ]
     DO_JACK = True
-    TAG = "jul_5_skip_4_128"
+    TAG = settings.TAG
     JACK_NUM = JACKLIST[0].shape[0]
     # prune T's assuming they are temperature sorted...
     

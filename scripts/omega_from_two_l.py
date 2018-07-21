@@ -19,7 +19,7 @@ def fit_curve(x_val, y_val):
     return par, cov
 
 SKIP_N = int(sys.argv[1])
-TAG = "jul_17"
+TAG = settings.TAG + "_skip_" + repr(SKIP_N)
 NAMELIST = [
     settings.pickles_path + "2Lquant/jul_174_8.npy",
     settings.pickles_path + "2Lquant/jul_178_16.npy",

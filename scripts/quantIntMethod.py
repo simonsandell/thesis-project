@@ -6,24 +6,12 @@ from plotting import fileWriter
 savename = input("savename: ")
 model = input("model: ")
 datalist = [
-    np.load(
-        settings.root_path + "modular/datatables/combined/datatable_4combined3DXY.npy"
-    ),
-    np.load(
-        settings.root_path + "modular/datatables/combined/datatable_8combined3DXY.npy"
-    ),
-    np.load(
-        settings.root_path + "modular/datatables/combined/datatable_16combined3DXY.npy"
-    ),
-    np.load(
-        settings.root_path + "modular/datatables/combined/datatable_32combined3DXY.npy"
-    ),
-    np.load(
-        settings.root_path + "modular/datatables/combined/datatable_64combined3DXY.npy"
-    ),
-    np.load(
-        settings.root_path + "modular/datatables/combined/datatable_128combined3DXY.npy"
-    ),
+    np.load(settings.DATATABLES[0]),
+    np.load(settings.DATATABLES[1]),
+    np.load(settings.DATATABLES[2]),
+    np.load(settings.DATATABLES[3]),
+    np.load(settings.DATATABLES[4]),
+    np.load(settings.DATATABLES[5]),
 ]
 Tint_b = []
 Tint_r = []

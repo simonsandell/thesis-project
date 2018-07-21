@@ -16,7 +16,7 @@ def prune_nan(not_pruned_X, not_pruned_Y):
 
 
 
-TAG = 'jul_17_zoom'
+TAG = 'jul_20_zoom'
 DATLIST = [
     np.load(settings.pickles_path + "2Lquant/jul_174_8.npy"),
     np.load(settings.pickles_path + "2Lquant/jul_178_16.npy"),
