@@ -21,18 +21,18 @@ def fit_curve(x_val, y_val):
 SKIP_N = int(sys.argv[1])
 TAG = settings.TAG + "_skip_" + repr(SKIP_N)
 NAMELIST = [
-    settings.pickles_path + "2Lquant/jul_174_8.npy",
-    settings.pickles_path + "2Lquant/jul_178_16.npy",
-    settings.pickles_path + "2Lquant/jul_1716_32.npy",
-    settings.pickles_path + "2Lquant/jul_1732_64.npy",
-    settings.pickles_path + "2Lquant/jul_1764_128.npy",
+    settings.pickles_path + "2Lquant/jul_204_8.npy",
+    settings.pickles_path + "2Lquant/jul_208_16.npy",
+    settings.pickles_path + "2Lquant/jul_2016_32.npy",
+    settings.pickles_path + "2Lquant/jul_2032_64.npy",
+    settings.pickles_path + "2Lquant/jul_2064_128.npy",
 ]
 JACKLIST = [
-    settings.pickles_path + "2Lquant/jackknife/jack_jul_174_8.npy",
-    settings.pickles_path + "2Lquant/jackknife/jack_jul_178_16.npy",
-    settings.pickles_path + "2Lquant/jackknife/jack_jul_1716_32.npy",
-    settings.pickles_path + "2Lquant/jackknife/jack_jul_1732_64.npy",
-    settings.pickles_path + "2Lquant/jackknife/jack_jul_1764_128.npy",
+    settings.pickles_path + "2Lquant/jackknife/jack_jul_204_8.npy",
+    settings.pickles_path + "2Lquant/jackknife/jack_jul_208_16.npy",
+    settings.pickles_path + "2Lquant/jackknife/jack_jul_2016_32.npy",
+    settings.pickles_path + "2Lquant/jackknife/jack_jul_2032_64.npy",
+    settings.pickles_path + "2Lquant/jackknife/jack_jul_2064_128.npy",
 ]
 
 # remove SKIP_N smallest sizes

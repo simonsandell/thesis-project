@@ -4,11 +4,11 @@ import numpy as np
 
 
 namelist = [
-    settings.pickles_path + "/2Lquant/jul_174_8.npy",
-    settings.pickles_path + "/2Lquant/jul_178_16.npy",
-    settings.pickles_path + "/2Lquant/jul_1716_32.npy",
-    settings.pickles_path + "/2Lquant/jul_1732_64.npy",
-    settings.pickles_path + "/2Lquant/jul_1764_128.npy",
+    settings.pickles_path + "/2Lquant/jul_204_8.npy",
+    settings.pickles_path + "/2Lquant/jul_208_16.npy",
+    settings.pickles_path + "/2Lquant/jul_2016_32.npy",
+    settings.pickles_path + "/2Lquant/jul_2032_64.npy",
+    settings.pickles_path + "/2Lquant/jul_2064_128.npy",
 ]
 TAG = settings.TAG
 a = np.load(namelist[0])

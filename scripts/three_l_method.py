@@ -50,6 +50,6 @@ for line in range(J_RESULT.shape[0]):
 for line in range(FINAL_RESULT.shape[0]):
     l1 = str(int(FINAL_RESULT[line, 0, 3]))
     binpath = settings.foutput_path + settings.model + "/threeL/bin/" + l1 + TAG + ".dat"
-    rspath = settings.foutput_path + settings.model + "/threeL/rs/" + l1 + SAVENAME + ".dat"
+    rspath = settings.foutput_path + settings.model + "/threeL/rs/" + l1 + TAG + ".dat"
     fileWriter.writeQuant(binpath, FINAL_RESULT[line, :, :], [0, 1, 7, 6])
     fileWriter.writeQuant(rspath, FINAL_RESULT[line, :, :], [0, 2, 8, 6])
