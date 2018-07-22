@@ -68,11 +68,11 @@ int main(int argc,char* argv[]){
 	if (world_rank != 0){
 		if (world_rank == 1){
 			doP = true;
-		}
-		_3DXY::cputime_vs_delta(mep, wlp);
+		_3DXY::correlationRun(mep, wlp, L);
 		std::string bigstr = "# finished\n";
 		int tag = 1;
 		MPI_Send(bigstr.c_str(),bigstr.size(),MPI_CHAR,0,tag,MPI_COMM_WORLD);
+                }
 	}
 	if (world_rank == 0){
 		int N_finished = 0;

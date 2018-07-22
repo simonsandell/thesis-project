@@ -13,5 +13,6 @@ namespace _3DXY {
 	void teqJob(long double L,bool cold,std::string maxepath,std::string warmlatpath);
 	void loadAndPrint(long double L,std::string maxepath,std::string warmlatpath);
 	void cputime_vs_delta(std::string maxepath, std::string warmlatpath);
+        void correlationRun(std::string maxepath, std::string warmlatpath, long double L);
 };
 #endif

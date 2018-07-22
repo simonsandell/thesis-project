@@ -9,6 +9,7 @@
 #include "3DXY/3DXYrunMetro.h"
 #include "3DXY/3DXYrunWolff.h"
 #include "3DXY/3DXYwolff.h"
+#include "3DXY/3DXYcorrelation.h"
 #include "3DXY.h"
 #include "clusterStruct.h"
 #include "randStruct.h"
@@ -158,5 +159,19 @@ void _3DXY::cputime_vs_delta(std::string maxepath, std::string warmlatpath){
 		lat.oPer.addLine(ss.str());
 		lat.oPer.printData(0);
 	}
+}
+
+void _3DXY::correlationRun(std::string maxepath, std::string warmlatpath, long double L)
+{
+    long double runTemp = 2.2018600000000000L;
+    Cluster c(L);
+    RandStruct r;
+    Lattice3DXY lat(L, runTemp, true, r, c, maxepath, warmlatpath);
+    lat.loadLattice();
+    long int N_clusts = 10000;
+    for (int i =0; i < 100; i++) 
+    {
+        computeWolffCorrelation(lat, N_clusts);
+    }
 }
 
