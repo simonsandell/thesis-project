@@ -12,7 +12,7 @@ from analysis import modelAvgs as ma, jackknife
 
 if __name__ == "__main__":
     FILEPATH = sys.argv[1]
-    TAG = sys.argv[2]
+    TAG = settings.TAG
     MODEL = settings.model
     FOLDERNAME = datetime.date.today().strftime("%B_%d_%Y")
     if not os.path.exists(settings.datatables_path + FOLDERNAME):

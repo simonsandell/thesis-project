@@ -1,7 +1,11 @@
 # n_vals = 22 for 3DXY, 19 for Ising3D
-def loadData(path, n_vals):
+def loadData(path, n_vals, enf_enc = False):
     data = []
-    datafile = open(path, "r")
+    if enf_enc:
+        datafile = open(path, "r", encoding='utf-8')
+    else:
+        datafile = open(path, "r")
+
     i = 0
     for line in datafile:
         i = i + 1
