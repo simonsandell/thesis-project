@@ -8,34 +8,39 @@ import settings
 
 filelist = [
     np.load(settings.pickles_path + "correlation/" + settings.TAG + "4.npy"),
-#    np.load(settings.pickles_path + "correlation/" + settings.TAG + "8.npy"),
-#    np.load(settings.pickles_path + "correlation/" + settings.TAG + "16.npy"),
-#    np.load(settings.pickles_path + "correlation/" + settings.TAG + "32.npy"),
-#    np.load(settings.pickles_path + "correlation/" + settings.TAG + "64.npy"),
-#    np.load(settings.pickles_path + "correlation/" + settings.TAG + "128.npy"),
+    np.load(settings.pickles_path + "correlation/" + settings.TAG + "8.npy"),
+    np.load(settings.pickles_path + "correlation/" + settings.TAG + "16.npy"),
+    np.load(settings.pickles_path + "correlation/" + settings.TAG + "32.npy"),
+    np.load(settings.pickles_path + "correlation/" + settings.TAG + "64.npy"),
+    np.load(settings.pickles_path + "correlation/" + settings.TAG + "128.npy"),
 ]
 
 datatables = [
     np.load(settings.DATATABLES[0]),
-#    np.load(settings.DATATABLES[1]),
-#g    np.load(settings.DATATABLES[2]),
-#    np.load(settings.DATATABLES[3]),
-#    np.load(settings.DATATABLES[4]),
-#    np.load(settings.DATATABLES[5]),
+    np.load(settings.DATATABLES[1]),
+    np.load(settings.DATATABLES[2]),
+    np.load(settings.DATATABLES[3]),
+    np.load(settings.DATATABLES[4]),
+    np.load(settings.DATATABLES[5]),
 ]
 # data format:
 # L T xmag ymag time cluster_index
 
 # definition of autocorrelation function:
 # <A(0)A(t)> - <A^2>
+
+do_plot = False
 T = filelist[0][0, 1]
 Mags = []
+Data = []
+
+def lidx_to_L(idx):
+    return 4*math.pow(2, idx)
 
 for i in datatables:
-    mag2 = i[60, 10]
-    exp = i[60, 21]
-    Mags.append(mag2/exp)
-    print(Mags[-1])
+    mag = i[60, 28]
+    Mags.append(math.pow(mag, 2))
+    Data.append(i[60, :])
 
 def L_to_lidx(L):
     exp = math.log2(L)
@@ -51,33 +56,40 @@ def calc_mag(ser):
 
     return np.power(np.power(xmag, 2.0) + np.power(ymag, 2.0), 0.5)/np.power(Ls, 3)
 
-def calc_corr(timeseries, step):
+def calc_corr(timeseries, step, lidx):
     mag_t = calc_mag(timeseries)
-    L = timeseries[0,0]
-    m2 =  Mags[L_to_lidx(L)]
-    corr = mag_t[0:step:step]*mag_t[step::step]
-    print(np.mean(corr))
-    return (np.mean(corr)-m2), np.std(corr)
+    avg_m_sq = Mags[lidx]
+    corr = mag_t[0:-step:step]*mag_t[step::step]
+    corr = corr - np.ones(corr.size)*avg_m_sq
 
-def calc_time(timeseries, step):
-    res = []
-    res[:] = []
-    for t_1, t_2 in zip(timeseries[0:step:step, 4], timeseries[step::step, 4]):
-        res.append(t_2-t_1)
-    return np.mean(res), np.std(res)
+    return np.mean(corr), np.std(corr)
 
-correlation_func = []
-N_com = int(filelist[0].shape[0]/2.0)
-steprange= []
+def calc_MCS_per_clust(timeseries):
+    diff = timeseries[1::2, 4] - timeseries[:-1:2, 4]
+    diff /= math.pow(timeseries[0, 0], 3)        #measure in sweeps
+    return np.mean(diff), np.std(diff)
+def calc_corr_zero(lidx):
+    avg_m2 = Data[lidx][10]
+    avg_m = Data[lidx][9]
+    exp = Data[lidx][21]
+    return avg_m2/exp  - math.pow(avg_m/exp,2)
 
-for i in range(1, 1000, 100):
-    print(i )
-    correlation_func.append([*calc_time(filelist[0], i), *calc_corr(filelist[0], i)])
-corr_func = np.array(correlation_func)
-plt.figure()
-plt.errorbar(corr_func[:, 0],
-        corr_func[:, 2],
-        xerr=corr_func[:,1],
-        yerr=corr_func[:,3],
-        fmt='o')
-plt.show()
+for l_idx, series in enumerate(filelist):
+    correlation_func = []
+    correlation_func[:] = []
+    correlation_func.append([ 0, 0, calc_corr_zero(l_idx), 0])
+
+    avg_time = calc_MCS_per_clust(series)
+    print('average cluster time ', avg_sweeps)
+    print('average m2', Mags[l_idx])
+
+    for i in range(1, 1000):
+        correlation_func.append([i*avg_time[0], i*avg_time[1], *calc_corr(series, i, l_idx)])
+    corr_func = np.array(correlation_func)
+    if do_plot:
+        plt.figure()
+        plt.errorbar(corr_func[:, 0],
+                     corr_func[:, 2],
+                     fmt='o')
+        plt.show()
+    np.save("corr_func_" + repr(lidx_to_L(l_idx)), corr_func)
