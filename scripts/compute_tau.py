@@ -67,15 +67,24 @@ corfunclist = [
 result = []
 for lidx, filenames in enumerate(corfunclist):
     corr_f = np.load(filenames)
-    #n_clusts = compute_clusts(corr_f, lidx)
-    n_clusts = compute_clu_full(corr_f, lidx)
-    result.append([lidx_to_L(lidx), n_clusts*corr_f[0, 0]])
-    print(filenames, n_clusts, n_clusts*corr_f[0, 0], corr_f[0, 0])
+    n_clusts = compute_clusts(corr_f, lidx)
+    #n_clusts = compute_clu_full(corr_f, lidx)
+    result.append([lidx_to_L(lidx), n_clusts*corr_f[1, 0]])
+    print(filenames, n_clusts, n_clusts*corr_f[1, 0], corr_f[1, 0])
+    """
+    spectrum = np.fft.rfft(corr_f[:, 2])
+    cspec = np.conj(spectrum)
+    absspec = spectrum*cspec
+    plt.figure()
+    plt.plot(absspec)
+    plt.show()
+    """
     #plot_cf(corr_f)
 
 result = np.array(result)
 def func(x, a1, a2):
     return a1*np.power(x, a2);
+p0 = [2.5, -0.1]
 x = result[:, 0]
 y = result[:, 1]
 param, covar = curve_fit(func, x, y, maxfev=10000)
@@ -85,7 +94,8 @@ plt.yscale('log')
 plt.xscale('log')
 plt.plot(result[:, 0], result[:,1])
 xp = np.arange(0, 256, 1)
-plt.plot(xp, func(xp, *param))
+plt.plot(xp, func(xp, param[0], param[1]))
 plt.show()
+
 
 print(param,covar)

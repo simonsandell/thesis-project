@@ -17,8 +17,9 @@ datlist = []
 for l_idx, direc in enumerate(dirlist):
     datlist = np.empty((0, n_vals))
     for fname in os.listdir(direc):
-        print(os.path.join(direc, fname))
-        datlist = np.append(datlist, np.array(textToFloats.loadData(os.path.join(direc, fname), n_vals)), axis=0)
+        if "jul_24" in fname:
+            print(os.path.join(direc, fname))
+            datlist = np.append(datlist, np.array(textToFloats.loadData(os.path.join(direc, fname), n_vals)), axis=0)
     np.save(settings.pickles_path + "correlation/" + settings.TAG + repr(4*pow(2, l_idx)), datlist)
 
 

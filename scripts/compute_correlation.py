@@ -80,10 +80,10 @@ for l_idx, series in enumerate(filelist):
     correlation_func.append([ 0, 0, calc_corr_zero(l_idx), 0])
 
     avg_time = calc_MCS_per_clust(series)
-    print('average cluster time ', avg_sweeps)
+    print('average cluster time ', avg_time)
     print('average m2', Mags[l_idx])
 
-    for i in range(1, 1000):
+    for i in range(1, 500):
         correlation_func.append([i*avg_time[0], i*avg_time[1], *calc_corr(series, i, l_idx)])
     corr_func = np.array(correlation_func)
     if do_plot:
