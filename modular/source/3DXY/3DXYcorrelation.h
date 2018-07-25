@@ -3,6 +3,6 @@
 #include "3DXYlattice.h"
 
 
-void computeWolffCorrelation(Lattice3DXY &lat, long int n_clusters );
+void computeWolffCorrelation(Lattice3DXY &lat, long int n_clusters, int jack_num);
 
 #endif

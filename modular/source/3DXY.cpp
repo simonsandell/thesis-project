@@ -163,15 +163,16 @@ void _3DXY::cputime_vs_delta(std::string maxepath, std::string warmlatpath){
 
 void _3DXY::correlationRun(std::string maxepath, std::string warmlatpath, long double L)
 {
-    long double runTemp = 2.2018600000000000L;
+    long double runTemp = 2.2018400000000000L;
     Cluster c(L);
     RandStruct r;
     Lattice3DXY lat(L, runTemp, true, r, c, maxepath, warmlatpath);
     lat.loadLattice();
     long int N_clusts = 10000;
-    for (int i =0; i < 100; i++) 
+    for (int i =0; i < 500; i++) 
     {
-        computeWolffCorrelation(lat, N_clusts);
+        warmup(lat, 100);
+        computeWolffCorrelation(lat, N_clusts, i);
     }
 }
 
