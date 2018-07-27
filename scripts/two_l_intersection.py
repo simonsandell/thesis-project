@@ -16,20 +16,20 @@ def prune_nan(not_pruned_X, not_pruned_Y):
 
 
 
-TAG = 'jul_20_zoom'
+TAG = 'jul_26_final_zoom'
 DATLIST = [
-    np.load(settings.pickles_path + "2Lquant/jul_204_8.npy"),
-    np.load(settings.pickles_path + "2Lquant/jul_208_16.npy"),
-    np.load(settings.pickles_path + "2Lquant/jul_2016_32.npy"),
-    np.load(settings.pickles_path + "2Lquant/jul_2032_64.npy"),
-    np.load(settings.pickles_path + "2Lquant/jul_2064_128.npy"),
+    np.load(settings.pickles_path + "2Lquant/jul_26_final4_8.npy"),
+    np.load(settings.pickles_path + "2Lquant/jul_26_final8_16.npy"),
+    np.load(settings.pickles_path + "2Lquant/jul_26_final16_32.npy"),
+    np.load(settings.pickles_path + "2Lquant/jul_26_final32_64.npy"),
+    np.load(settings.pickles_path + "2Lquant/jul_26_final64_128.npy"),
 ]
 JACKLIST = [
-    np.load(settings.pickles_path + "2Lquant/jackknife/jack_jul_204_8.npy"),
-    np.load(settings.pickles_path + "2Lquant/jackknife/jack_jul_208_16.npy"),
-    np.load(settings.pickles_path + "2Lquant/jackknife/jack_jul_2016_32.npy"),
-    np.load(settings.pickles_path + "2Lquant/jackknife/jack_jul_2032_64.npy"),
-    np.load(settings.pickles_path + "2Lquant/jackknife/jack_jul_2064_128.npy"),
+    np.load(settings.pickles_path + "2Lquant/jackknife/jack_jul_26_final4_8.npy"),
+    np.load(settings.pickles_path + "2Lquant/jackknife/jack_jul_26_final8_16.npy"),
+    np.load(settings.pickles_path + "2Lquant/jackknife/jack_jul_26_final16_32.npy"),
+    np.load(settings.pickles_path + "2Lquant/jackknife/jack_jul_26_final32_64.npy"),
+    np.load(settings.pickles_path + "2Lquant/jackknife/jack_jul_26_final64_128.npy"),
 ]
 
 # for range of omega, rescale and find intersection between sequentially larger system sizes

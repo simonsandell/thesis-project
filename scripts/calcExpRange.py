@@ -1,7 +1,7 @@
 from analysis import calc_exponent
 
-W_FROM_3LBIN = 0.62
-W_FROM_EXPONENT_FIT = 0.782566
+W_FROM_3LBIN = 0.5
+W_FROM_EXPONENT_FIT = 0.8
 W_ANALYTIC = 1.0
 # orange = np.linspace(w_from_exponent_fit*0.9,w_from_exponent_fit*1.1,11);
 ORANGE = [W_FROM_3LBIN, W_FROM_EXPONENT_FIT, W_ANALYTIC]

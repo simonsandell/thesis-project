@@ -1,14 +1,16 @@
 
 
-x_temp = "T - temperature"
-x_size = "L - linear system size"
-x_z = "z - dynamical critical exponent"
+x_temp = "T - Temperature"
+x_size = "L - Linear System Size"
+x_z = "z - Dynamical Critical Exponent"
 x_n = r"N\ssweeps\S"
-x_omega = r"\xw\0 - 1st order scaling correction"
+x_omega = r"\xw\0 - First Order Scaling Correction"
 x_vstime = "Year"
 x_var_nu = x_temp
 
 dict_xaxis = {
+    "vsT/omega_fit_var": x_temp,
+    "vsT/omega_fit": x_temp,
     "vstime/nu": x_vstime,
     "vstime/eta": x_vstime,
     "twoL/intersection": x_omega,
@@ -100,11 +102,14 @@ y_var_a_rs = r"Var(a)  from  lr(2l) - lr(l) fit"
 y_var_a_bin = r"Var(a)  from  bin(2l) - bin(l) fit"
 y_var_omega_rs = r"Var(\xw\0)  from  lr(2l) - lr(l) fit"
 y_var_omega_bin = r"Var(\xw\0)  from  bin(2l) - bin(l) fit"
-
+y_omega_fit = r"\xw\0 from g(L) fit"
+y_omega_fit_var = r"Var(\xw\0) from g(L) fit"
 y_var_nu = r'Var(\xn\0) from dB/dT fit'
 y_var_eta = r'Var(\xh\0) from \xc\0 fit'
 
 dict_yaxis = {
+    "vsT/omega_fit": y_omega_fit,
+    "vsT/omega_fit_var": y_omega_fit_var,
     "vsT/var_nu": y_var_nu,
     "vsT/var_eta": y_var_eta,
     "vstime/nu": y_vstime,
@@ -172,6 +177,7 @@ dict_log = {
     ],
     (True, False): ["vsN/teq"],
     (False, True): [
+        "vsT/omega_fit_var",
         "2Lquant_fit/var_a_bin",
         "2Lquant_fit/var_bin",
         "2Lquant_fit/var_omega_rs",
@@ -180,6 +186,7 @@ dict_log = {
         "2Lquant_fit/var_rs",
     ],
     (False, False): [
+        "vsT/omega_fit",
         "vsT/var_nu",
         "vsT/var_eta",
         "vstime/nu",
@@ -216,6 +223,8 @@ dict_log = {
 }
 
 dict_title = {
+    "vsT/omega_fit":"vsT_omega_fit",
+    "vsT/omega_fit_var":"vsT_omega_fit_var",
     "vsT/var_eta": "vsT_var_eta",
     "vsT/var_nu": "vsT_var_nu",
     "vstime/eta": "vstime_eta",

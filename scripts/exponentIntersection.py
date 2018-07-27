@@ -29,7 +29,7 @@ JACK_NUM = JACKLIST[0].shape[0]
 TEMP_NUM = JACKLIST[0].shape[1]
 print('JACK_NUM', JACK_NUM)
 print('TEMP_NUM', TEMP_NUM)
-BOOL_DOJACK = False
+BOOL_DOJACK = True
 idx = anaFuncs.get3DXYIndex()
 
 def calc_exponents(omega, skip_n):
@@ -107,7 +107,7 @@ def calc_exponents(omega, skip_n):
 
 # for a range of omegas, find different nu,eta curves by curve_fit by succesively omitting smallest L points
 # for each omega, find the intersection points of those nu/eta-curves and check their closeness/clustering.
-ORANGE = np.linspace(0.5, 1.5, 2)
+ORANGE = np.linspace(0.5, 1.5, num=30)
 N_SKIP_RANGE = [0, 1, 2, 3]
 nu_close = np.empty((ORANGE.shape[0], 7))
 eta_close = np.empty((ORANGE.shape[0], 7))
