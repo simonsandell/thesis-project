@@ -43,7 +43,7 @@ int main(int argc,char* argv[]){
 	typedef std::numeric_limits<long double> dbl;
 	std::cout.precision(dbl::max_digits10 + 5);
 
-	MPI_Init(NULL,NULL);
+	MPI_Init(NULL, NULL);
 
 	int world_size;
 	MPI_Comm_size(MPI_COMM_WORLD,&world_size);
