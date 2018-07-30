@@ -9,6 +9,7 @@ x_vstime = "Year"
 x_var_nu = x_temp
 
 dict_xaxis = {
+    "vsT/A_variation": x_temp,
     "vsT/omega_fit_var": x_temp,
     "vsT/omega_fit": x_temp,
     "vstime/nu": x_vstime,
@@ -108,6 +109,7 @@ y_var_nu = r'Var(\xn\0) from dB/dT fit'
 y_var_eta = r'Var(\xh\0) from \xc\0 fit'
 
 dict_yaxis = {
+    "vsT/A_variation":y_omega,
     "vsT/omega_fit": y_omega_fit,
     "vsT/omega_fit_var": y_omega_fit_var,
     "vsT/var_nu": y_var_nu,
@@ -186,6 +188,7 @@ dict_log = {
         "2Lquant_fit/var_rs",
     ],
     (False, False): [
+        "vsT/A_variation",
         "vsT/omega_fit",
         "vsT/var_nu",
         "vsT/var_eta",
@@ -223,6 +226,7 @@ dict_log = {
 }
 
 dict_title = {
+    "vsT/A_variation":"vsT_A_variation",
     "vsT/omega_fit":"vsT_omega_fit",
     "vsT/omega_fit_var":"vsT_omega_fit_var",
     "vsT/var_eta": "vsT_var_eta",

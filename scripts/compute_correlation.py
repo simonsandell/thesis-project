@@ -7,12 +7,12 @@ import settings
 
 
 filelist = [
-    np.load(settings.pickles_path + "correlation/" + settings.TAG + "4.npy"),
-    np.load(settings.pickles_path + "correlation/" + settings.TAG + "8.npy"),
-    np.load(settings.pickles_path + "correlation/" + settings.TAG + "16.npy"),
-    np.load(settings.pickles_path + "correlation/" + settings.TAG + "32.npy"),
-    np.load(settings.pickles_path + "correlation/" + settings.TAG + "64.npy"),
-    np.load(settings.pickles_path + "correlation/" + settings.TAG + "128.npy"),
+    np.load(settings.pickles_path + "correlation/jack/jack_" + settings.TAG + "4.npy"),
+    np.load(settings.pickles_path + "correlation/jack/jack_" + settings.TAG + "8.npy"),
+    np.load(settings.pickles_path + "correlation/jack/jack_" + settings.TAG + "16.npy"),
+    np.load(settings.pickles_path + "correlation/jack/jack_" + settings.TAG + "32.npy"),
+    np.load(settings.pickles_path + "correlation/jack/jack_" + settings.TAG + "64.npy"),
+    np.load(settings.pickles_path + "correlation/jack/jack_" + settings.TAG + "128.npy"),
 ]
 
 datatables = [
@@ -30,7 +30,7 @@ datatables = [
 # <A(0)A(t)> - <A^2>
 
 do_plot = False
-T = filelist[0][0, 1]
+T = filelist[0][0, 0, 1]
 Mags = []
 Data = []
 

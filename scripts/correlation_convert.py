@@ -12,12 +12,12 @@ dirlist = [
     d + "64/",
     d + "128/",
 ]
-n_vals = 6
+n_vals = 7
 datlist = []
 for l_idx, direc in enumerate(dirlist):
     datlist = np.empty((0, n_vals))
     for fname in os.listdir(direc):
-        if "jul_24" in fname:
+        if "jul_25" in fname:
             print(os.path.join(direc, fname))
             datlist = np.append(datlist, np.array(textToFloats.loadData(os.path.join(direc, fname), n_vals)), axis=0)
     np.save(settings.pickles_path + "correlation/" + settings.TAG + repr(4*pow(2, l_idx)), datlist)
