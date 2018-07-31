@@ -9,6 +9,8 @@ x_vstime = "Year"
 x_var_nu = x_temp
 
 dict_xaxis = {
+    "vstime/corr":x_n,
+    "vstime/tau":x_size,
     "vsT/A_variation": x_temp,
     "vsT/omega_fit_var": x_temp,
     "vsT/omega_fit": x_temp,
@@ -107,8 +109,12 @@ y_omega_fit = r"\xw\0 from g(L) fit"
 y_omega_fit_var = r"Var(\xw\0) from g(L) fit"
 y_var_nu = r'Var(\xn\0) from dB/dT fit'
 y_var_eta = r'Var(\xh\0) from \xc\0 fit'
+y_corrfunc = r'C\sMM\N(t)'
+y_tau = r'\xt\0\sr\N - Relaxation Time'
 
 dict_yaxis = {
+    "vstime/corr":y_corrfunc,
+    "vstime/tau":y_tau,
     "vsT/A_variation":y_omega,
     "vsT/omega_fit": y_omega_fit,
     "vsT/omega_fit_var": y_omega_fit_var,
@@ -166,6 +172,7 @@ dict_yaxis = {
 
 dict_log = {
     (True, True): [
+        "vstime/tau",
         "vsL/2Lbin",
         "vsL/2Lrs",
         "vsL/bin",
@@ -222,10 +229,13 @@ dict_log = {
         "findZ/sigmaVsZ",
         "subtraction/bin",
         "subtraction/rs",
+        "vstime/corr",
     ],
 }
 
 dict_title = {
+    "vstime/corr":"vstime_corr",
+    "vstime/tau":"vstime_tau",
     "vsT/A_variation":"vsT_A_variation",
     "vsT/omega_fit":"vsT_omega_fit",
     "vsT/omega_fit_var":"vsT_omega_fit_var",

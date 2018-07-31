@@ -57,32 +57,45 @@ def calc_mag(ser):
     return np.power(np.power(xmag, 2.0) + np.power(ymag, 2.0), 0.5)/np.power(Ls, 3)
 
 def calc_corr(timeseries, step, lidx):
-    mag_t = calc_mag(timeseries)
-    avg_m_sq = Mags[lidx]
-    corr = mag_t[0:-step:step]*mag_t[step::step]
-    corr = corr - np.ones(corr.size)*avg_m_sq
+    jlist = []
+    for j in range(timeseries.shape[0]):
+        mag_t = calc_mag(timeseries)
+        avg_m_sq = Mags[lidx]
+        corr = mag_t[0:-step:step]*mag_t[step::step]
+        corr = corr - np.ones(corr.size)*avg_m_sq
 
-    return np.mean(corr), np.std(corr)
+        jlist.append(np.mean(corr))
 
+#compute average time per cluster
 def calc_MCS_per_clust(timeseries):
-    diff = timeseries[1::2, 4] - timeseries[:-1:2, 4]
-    diff /= math.pow(timeseries[0, 0], 3)        #measure in sweeps
-    return np.mean(diff), np.std(diff)
+    diff = [];
+
+    for j in range(timeseries.shape[0]):
+        diff.append(timeseries[j, 1::2, 4] - timeseries[j, :-1:2, 4])
+    atpc = np.mean(diff)
+    delta_atpc = math.pow(timeseries.shape[0],0.5)*np.std(diff)
+    atpc /= math.pow(timeseries[0, 0, 0], 3)        #measure in sweeps
+    delta_atpc /= math.pow(timeseries[0, 0, 0], 3)
+    return atpc, delta_atpc
+
+#compute corrfunc at t=0 from MC avgs
 def calc_corr_zero(lidx):
     avg_m2 = Data[lidx][10]
     avg_m = Data[lidx][9]
     exp = Data[lidx][21]
     return avg_m2/exp  - math.pow(avg_m/exp,2)
 
+
 for l_idx, series in enumerate(filelist):
     correlation_func = []
     correlation_func[:] = []
     correlation_func.append([ 0, 0, calc_corr_zero(l_idx), 0])
 
-    avg_time = calc_MCS_per_clust(series)
+    avg_time, delta_time = calc_MCS_per_clust(series)
     print('average cluster time ', avg_time)
     print('average m2', Mags[l_idx])
 
+    # for timediffs of upto x, compute correlation function
     for i in range(1, 500):
         correlation_func.append([i*avg_time[0], i*avg_time[1], *calc_corr(series, i, l_idx)])
     corr_func = np.array(correlation_func)

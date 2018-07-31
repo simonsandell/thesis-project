@@ -57,18 +57,18 @@ def compute_clusts(corr_func, L):
     return s
 
 corfunclist = [
-    "./corr_func_4.0.npy",
-    "./corr_func_8.0.npy",
-    "./corr_func_16.0.npy",
-    "./corr_func_32.0.npy",
-    "./corr_func_64.0.npy",
-    "./corr_func_128.0.npy",
+    "./jack_correlation_func_4.0.npy",
+    "./jack_correlation_func_8.0.npy",
+    "./jack_correlation_func_16.0.npy",
+    "./jack_correlation_func_32.0.npy",
+    "./jack_correlation_func_64.0.npy",
+    "./jack_correlation_func_128.0.npy",
 ]
 result = []
 for lidx, filenames in enumerate(corfunclist):
     corr_f = np.load(filenames)
-    n_clusts = compute_clusts(corr_f, lidx)
-    #n_clusts = compute_clu_full(corr_f, lidx)
+    #n_clusts = compute_clusts(corr_f, lidx)
+    n_clusts = compute_clu_full(corr_f, lidx)
     result.append([lidx_to_L(lidx), n_clusts*corr_f[1, 0]])
     print(filenames, n_clusts, n_clusts*corr_f[1, 0], corr_f[1, 0])
     """
@@ -90,8 +90,8 @@ y = result[:, 1]
 param, covar = curve_fit(func, x, y, maxfev=10000)
 
 plt.figure()
-plt.yscale('log')
-plt.xscale('log')
+#plt.yscale('log')
+#plt.xscale('log')
 plt.plot(result[:, 0], result[:,1])
 xp = np.arange(0, 256, 1)
 plt.plot(xp, func(xp, param[0], param[1]))
