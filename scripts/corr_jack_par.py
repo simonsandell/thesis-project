@@ -1,3 +1,4 @@
+from multiprocessing import Pool
 import math
 import time
 import numpy as np
@@ -117,16 +118,32 @@ for l_idx, series in enumerate(filelist):
     correlation_func = []
     correlation_func[:] = []
     correlation_func.append([ 0, 0, get_zero_corr(l_idx), 0])
-    for ndiff in range(1, 5000):
+
+    def compute_cf(ndiff):
         curr_corr = []
         curr_corr[:] = []
         for j in range(JACK_N):
             curr_corr.append(calc_corr(magseries[j, :], ndiff, l_idx))
         curr_corr = np.array(curr_corr)
-        correlation_func.append([avg_time*ndiff, delta_time*ndiff, *jack_time(curr_corr)])
+        return [avg_time*ndiff, delta_time*ndiff, *jack_time(curr_corr)]
+
+    ARGS = []
+    RES = []
+    for ndiff in range(1, 5000):
+        ARGS.append(ndiff);
+    POOL = Pool(processes=settings.nprocs, maxtasksperchild=1)
+    RES.append(POOL.map(compute_cf, ARGS))
+    POOL.close()
+    POOL.join()
+    correlation_func = np.array(RES)
+    print(correlation_func.shape)
+    correlation_func = np.squeeze(correlation_func)
+    print(correlation_func.shape)
+    ind = np.lexsort((correlation_func[:, 0],correlation_func[:, 1]))
+    correlation_func = correlation_func[ind]
+
         #correlation_func.append([avg_time*ndiff, delta_time*ndiff, np.mean(curr_corr), (1/math.sqrt(JACK_N))*np.std(curr_corr)])
         
-    correlation_func = np.array(correlation_func)
 
     if do_plot:
             plt.figure()

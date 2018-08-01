@@ -5,7 +5,7 @@ scripts_path = "/home/simon/exjobb/scripts/"
 pickles_path = "/home/simon/exjobb/modular/pickles/"
 datatables_path = "/home/simon/exjobb/modular/datatables/"
 model = "3DXY"
-nprocs = 2
+nprocs = 4
 
 
 #######
