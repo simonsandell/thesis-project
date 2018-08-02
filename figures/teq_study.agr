@@ -79,7 +79,7 @@
 @default color 1
 @default pattern 1
 @default font 0
-@default char size 1.000000
+@default char size 1.500000
 @default symbol size 1.000000
 @default sformat "%.8g"
 @background color 0
@@ -89,8 +89,8 @@
 @timestamp color 1
 @timestamp rot 0
 @timestamp font 0
-@timestamp char size 1.000000
-@timestamp def "Fri Jul 27 14:48:30 2018"
+@timestamp char size 1.500000
+@timestamp def "Thu Aug  2 13:35:09 2018"
 @r0 off
 @link r0 to g0
 @r0 type above
@@ -137,7 +137,7 @@
 @g0 fixedpoint format general general
 @g0 fixedpoint prec 6, 6
 @with g0
-@    world 1, 0, 10000, 1
+@    world 0.952410072, -0.0909425626, 2385.8753, 1.00441826
 @    stack world 0, 0, 0, 0
 @    znorm 1
 @    view 0.219072, 0.150000, 1.679553, 0.850000
@@ -163,7 +163,7 @@
 @    xaxis  label "N\ssweeps\S"
 @    xaxis  label layout para
 @    xaxis  label place auto
-@    xaxis  label char size 1.000000
+@    xaxis  label char size 1.560000
 @    xaxis  label font 0
 @    xaxis  label color 1
 @    xaxis  label place normal
@@ -199,7 +199,7 @@
 @    xaxis  ticklabel start 0.000000
 @    xaxis  ticklabel stop type auto
 @    xaxis  ticklabel stop 0.000000
-@    xaxis  ticklabel char size 1.000000
+@    xaxis  ticklabel char size 1.540000
 @    xaxis  ticklabel font 0
 @    xaxis  ticklabel color 1
 @    xaxis  tick place both
@@ -241,7 +241,7 @@
 @    yaxis  label "Magnetization"
 @    yaxis  label layout para
 @    yaxis  label place auto
-@    yaxis  label char size 1.000000
+@    yaxis  label char size 1.560000
 @    yaxis  label font 0
 @    yaxis  label color 1
 @    yaxis  label place normal
@@ -277,7 +277,7 @@
 @    yaxis  ticklabel start 0.000000
 @    yaxis  ticklabel stop type auto
 @    yaxis  ticklabel stop 0.000000
-@    yaxis  ticklabel char size 1.000000
+@    yaxis  ticklabel char size 1.540000
 @    yaxis  ticklabel font 0
 @    yaxis  ticklabel color 1
 @    yaxis  tick place both
@@ -286,7 +286,7 @@
 @    altyaxis  off
 @    legend on
 @    legend loctype view
-@    legend 1.33407302737, 0.801287001287
+@    legend 1.43587715108, 0.824482877576
 @    legend box color 1
 @    legend box pattern 1
 @    legend box linewidth 1.0
@@ -294,7 +294,7 @@
 @    legend box fill color 0
 @    legend box fill pattern 1
 @    legend font 0
-@    legend char size 1.000000
+@    legend char size 1.500000
 @    legend color 1
 @    legend length 0
 @    legend vgap 1
@@ -334,7 +334,7 @@
 @    s0 fill pattern 1
 @    s0 avalue off
 @    s0 avalue type 2
-@    s0 avalue char size 1.000000
+@    s0 avalue char size 1.500000
 @    s0 avalue font 0
 @    s0 avalue color 1
 @    s0 avalue rot 0
@@ -383,7 +383,7 @@
 @    s1 fill pattern 1
 @    s1 avalue off
 @    s1 avalue type 2
-@    s1 avalue char size 1.000000
+@    s1 avalue char size 1.500000
 @    s1 avalue font 0
 @    s1 avalue color 1
 @    s1 avalue rot 0
@@ -432,7 +432,7 @@
 @    s2 fill pattern 1
 @    s2 avalue off
 @    s2 avalue type 2
-@    s2 avalue char size 1.000000
+@    s2 avalue char size 1.500000
 @    s2 avalue font 0
 @    s2 avalue color 1
 @    s2 avalue rot 0
@@ -481,7 +481,7 @@
 @    s3 fill pattern 1
 @    s3 avalue off
 @    s3 avalue type 2
-@    s3 avalue char size 1.000000
+@    s3 avalue char size 1.500000
 @    s3 avalue font 0
 @    s3 avalue color 1
 @    s3 avalue rot 0
@@ -530,7 +530,7 @@
 @    s4 fill pattern 1
 @    s4 avalue off
 @    s4 avalue type 2
-@    s4 avalue char size 1.000000
+@    s4 avalue char size 1.500000
 @    s4 avalue font 0
 @    s4 avalue color 1
 @    s4 avalue rot 0
@@ -579,7 +579,7 @@
 @    s5 fill pattern 1
 @    s5 avalue off
 @    s5 avalue type 2
-@    s5 avalue char size 1.000000
+@    s5 avalue char size 1.500000
 @    s5 avalue font 0
 @    s5 avalue color 1
 @    s5 avalue rot 0
@@ -628,7 +628,7 @@
 @    s6 fill pattern 1
 @    s6 avalue off
 @    s6 avalue type 2
-@    s6 avalue char size 1.000000
+@    s6 avalue char size 1.500000
 @    s6 avalue font 0
 @    s6 avalue color 1
 @    s6 avalue rot 0
@@ -677,7 +677,7 @@
 @    s7 fill pattern 1
 @    s7 avalue off
 @    s7 avalue type 2
-@    s7 avalue char size 1.000000
+@    s7 avalue char size 1.500000
 @    s7 avalue font 0
 @    s7 avalue color 1
 @    s7 avalue rot 0
@@ -726,7 +726,7 @@
 @    s8 fill pattern 1
 @    s8 avalue off
 @    s8 avalue type 2
-@    s8 avalue char size 1.000000
+@    s8 avalue char size 1.500000
 @    s8 avalue font 0
 @    s8 avalue color 1
 @    s8 avalue rot 0
@@ -775,7 +775,7 @@
 @    s9 fill pattern 1
 @    s9 avalue off
 @    s9 avalue type 2
-@    s9 avalue char size 1.000000
+@    s9 avalue char size 1.500000
 @    s9 avalue font 0
 @    s9 avalue color 1
 @    s9 avalue rot 0

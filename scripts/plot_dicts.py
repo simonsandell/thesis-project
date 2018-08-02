@@ -9,6 +9,7 @@ x_vstime = "Year"
 x_var_nu = x_temp
 
 dict_xaxis = {
+    "vsL/tau":x_size,
     "vstime/corr":x_n,
     "vstime/tau":x_size,
     "vsT/A_variation": x_temp,
@@ -113,6 +114,7 @@ y_corrfunc = r'C\sMM\N(t)'
 y_tau = r'\xt\0\sr\N - Relaxation Time'
 
 dict_yaxis = {
+    "vsL/tau":y_tau,
     "vstime/corr":y_corrfunc,
     "vstime/tau":y_tau,
     "vsT/A_variation":y_omega,
@@ -172,6 +174,7 @@ dict_yaxis = {
 
 dict_log = {
     (True, True): [
+        "vsL/tau",
         "vstime/tau",
         "vsL/2Lbin",
         "vsL/2Lrs",
@@ -234,6 +237,7 @@ dict_log = {
 }
 
 dict_title = {
+    "vsL/tau":"vsL_tau",
     "vstime/corr":"vstime_corr",
     "vstime/tau":"vstime_tau",
     "vsT/A_variation":"vsT_A_variation",

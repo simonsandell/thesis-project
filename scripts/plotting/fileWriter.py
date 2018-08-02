@@ -36,8 +36,9 @@ def writeQuantClean(path, array, inds):
             of.write(stringBuilder(line))
 
 
-def writeQuant(path, array, inds):
+def writeQuant(path, array, inds, comment = "#comment"):
     of = open(path, "w")
+    of.write(comment+'\n')
     for i in range(array.shape[0]):
         line = []
         line[:] = []

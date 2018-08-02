@@ -9,12 +9,12 @@ def lidx_to_L(idx):
     return 4*math.pow(2, idx)
 
 flist = [
-        "jack_correlation_func_4.0.npy",
-        "jack_correlation_func_8.0.npy",
-        "jack_correlation_func_16.0.npy",
-        "jack_correlation_func_32.0.npy",
-        "jack_correlation_func_64.0.npy",
-        "jack_correlation_func_128.0.npy",
+        "./correlation_data/jack_correlation_func_4.0.npy",
+        "./correlation_data/jack_correlation_func_8.0.npy",
+        "./correlation_data/jack_correlation_func_16.0.npy",
+        "./correlation_data/jack_correlation_func_32.0.npy",
+        "./correlation_data/jack_correlation_func_64.0.npy",
+        "./correlation_data/jack_correlation_func_128.0.npy",
         ]
 for li,f in enumerate(flist):
     correlation_func = np.load(f)

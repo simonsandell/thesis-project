@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import subprocess
 import time
 import os
@@ -21,7 +22,6 @@ for files in os.listdir("."):
         f = mk_bat(title)
         f.flush();
         cmd  = ['gracebat',"./"+files, '-batch', f.name, '-nosafe','-noask' ]
-        print(cmd)
         subprocess.call(cmd)
         time.sleep(0.4)
-
+subprocess.call(["cp ../eps_files/jul_26/* ../../mscthesis/plots/"], shell=True)
