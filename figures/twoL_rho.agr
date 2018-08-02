@@ -79,7 +79,7 @@
 @default color 1
 @default pattern 1
 @default font 0
-@default char size 1.500000
+@default char size 1.000000
 @default symbol size 1.000000
 @default sformat "%.8g"
 @background color 0
@@ -89,8 +89,8 @@
 @timestamp color 1
 @timestamp rot 0
 @timestamp font 0
-@timestamp char size 1.500000
-@timestamp def "Fri Jul 27 14:20:44 2018"
+@timestamp char size 1.000000
+@timestamp def "Thu Aug  2 17:22:35 2018"
 @r0 off
 @link r0 to g0
 @r0 type above
@@ -137,7 +137,7 @@
 @g0 fixedpoint format general general
 @g0 fixedpoint prec 6, 6
 @with g0
-@    world 2.20159682072, -0.0499443991308, 2.20200395499, 0.103729091553
+@    world 2.20159452601, -0.0643199783752, 2.20201002288, 0.10681133845
 @    stack world 0, 0, 0, 0
 @    znorm 1
 @    view 0.219072, 0.150000, 1.679553, 0.850000
@@ -163,7 +163,7 @@
 @    xaxis  label "T - Temperature"
 @    xaxis  label layout para
 @    xaxis  label place auto
-@    xaxis  label char size 1.500000
+@    xaxis  label char size 1.000000
 @    xaxis  label font 0
 @    xaxis  label color 1
 @    xaxis  label place normal
@@ -199,7 +199,7 @@
 @    xaxis  ticklabel start 0.000000
 @    xaxis  ticklabel stop type auto
 @    xaxis  ticklabel stop 0.000000
-@    xaxis  ticklabel char size 1.500000
+@    xaxis  ticklabel char size 1.000000
 @    xaxis  ticklabel font 0
 @    xaxis  ticklabel color 1
 @    xaxis  tick place both
@@ -214,7 +214,7 @@
 @    yaxis  label "2L\xr\0(2L) - L\x\r\0(L)"
 @    yaxis  label layout para
 @    yaxis  label place auto
-@    yaxis  label char size 1.500000
+@    yaxis  label char size 1.000000
 @    yaxis  label font 0
 @    yaxis  label color 1
 @    yaxis  label place normal
@@ -250,7 +250,7 @@
 @    yaxis  ticklabel start 0.000000
 @    yaxis  ticklabel stop type auto
 @    yaxis  ticklabel stop 0.000000
-@    yaxis  ticklabel char size 1.500000
+@    yaxis  ticklabel char size 1.000000
 @    yaxis  ticklabel font 0
 @    yaxis  ticklabel color 1
 @    yaxis  tick place both
@@ -259,7 +259,7 @@
 @    altyaxis  off
 @    legend on
 @    legend loctype view
-@    legend 1.24140893471, 0.8
+@    legend 1.24140893, 0.8
 @    legend box color 1
 @    legend box pattern 1
 @    legend box linewidth 1.0
@@ -267,7 +267,7 @@
 @    legend box fill color 0
 @    legend box fill pattern 1
 @    legend font 0
-@    legend char size 1.500000
+@    legend char size 1.000000
 @    legend color 1
 @    legend length 0
 @    legend vgap 1
@@ -307,7 +307,7 @@
 @    s0 fill pattern 1
 @    s0 avalue off
 @    s0 avalue type 2
-@    s0 avalue char size 1.500000
+@    s0 avalue char size 1.000000
 @    s0 avalue font 0
 @    s0 avalue color 1
 @    s0 avalue rot 0
@@ -356,7 +356,7 @@
 @    s1 fill pattern 1
 @    s1 avalue off
 @    s1 avalue type 2
-@    s1 avalue char size 1.500000
+@    s1 avalue char size 1.000000
 @    s1 avalue font 0
 @    s1 avalue color 1
 @    s1 avalue rot 0
@@ -405,7 +405,7 @@
 @    s2 fill pattern 1
 @    s2 avalue off
 @    s2 avalue type 2
-@    s2 avalue char size 1.500000
+@    s2 avalue char size 1.000000
 @    s2 avalue font 0
 @    s2 avalue color 1
 @    s2 avalue rot 0
@@ -454,7 +454,7 @@
 @    s3 fill pattern 1
 @    s3 avalue off
 @    s3 avalue type 2
-@    s3 avalue char size 1.500000
+@    s3 avalue char size 1.000000
 @    s3 avalue font 0
 @    s3 avalue color 1
 @    s3 avalue rot 0
@@ -503,7 +503,7 @@
 @    s4 fill pattern 1
 @    s4 avalue off
 @    s4 avalue type 2
-@    s4 avalue char size 1.500000
+@    s4 avalue char size 1.000000
 @    s4 avalue font 0
 @    s4 avalue color 1
 @    s4 avalue rot 0
