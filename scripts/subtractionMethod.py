@@ -69,11 +69,11 @@ def subtract_A_between(amin, amax, tagg,rem_idx):
     for idx in sorted(rem_idx, reverse=True):
         del DATLIST[idx]
         del JACKLIST[idx]
-    DO_JACK = True
+    DO_JACK = False
     TAG = tagg
     JACK_NUM = JACKLIST[0].shape[0]
 
-    a_values = np.linspace(amin, amax, 3)
+    a_values = np.linspace(amin, amax, 50)
     NUM_SURF = len(DATLIST) - 1
     NUM_TEMP = DATLIST[0].shape[0]
     NUM_A = a_values.shape[0]

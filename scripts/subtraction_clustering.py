@@ -10,12 +10,12 @@ brow = 0.0
 a_last = 0.0
 a_new= 1.0
 TOL = 10e-10
-amin =  1.241
-amax =  1.245
+amin =  1.2415
+amax =  1.246
 while abs(a_last-a_new) > TOL:
     nametag = 'u4_skip_4_128'
     a_last = a_new
-    subtractionMethod.subtract_A_between(amin, amax, "temporary")
+    subtractionMethod.subtract_A_between(amin, amax, "temporary",[0,5])
     results = np.load(settings.pickles_path + '2L_log_omega/results_temporary.npy')
     NUM_T = np.unique(results[0, :, 1]).shape[0]
     NUM_A = np.unique(results[0, :, 0]).shape[0]
@@ -57,7 +57,7 @@ while abs(a_last-a_new) > TOL:
     print(brow)
     print(bclose)
     print(abest_idx)
-    amax = bclose[abest_idx+1, 3]
-np.save(settings.pickles_path + "2L_log_omega/"+nametag,results)
+    amax = bclose[abest_idx + 1, 3]
+#np.save(settings.pickles_path + "2L_log_omega/"+nametag,results)
 
     

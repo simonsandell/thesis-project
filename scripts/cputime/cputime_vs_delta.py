@@ -1,8 +1,8 @@
 import numpy as np
-
 import settings
 from plotting import fileWriter
 
+# files with cputime vs delta
 FILES = [
     settings.datatables_path + "cputime/4_cputime_delta.npy",
     settings.datatables_path + "cputime/8_cputime_delta.npy",
@@ -12,7 +12,7 @@ FILES = [
 TIMES = []
 with open(settings.datatables_path + "cputime/time.txt", "r") as timefile:
     TIMES = timefile.readlines()
-# times contains cpu-sec / 10*100k
+# times contains cpu-sec for 1M MCS?
 RESULT = []
 for i, F in enumerate(FILES):
     data = np.load(F)

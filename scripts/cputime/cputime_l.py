@@ -1,6 +1,6 @@
 import sys
 
-def time(L):
+def hours_per_sweep(L):
     A = 0.000432888
     B = 2.96398
     print(A*(pow(L,B)))
