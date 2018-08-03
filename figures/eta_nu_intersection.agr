@@ -79,7 +79,7 @@
 @default color 1
 @default pattern 1
 @default font 0
-@default char size 1.000000
+@default char size 1.500000
 @default symbol size 1.000000
 @default sformat "%.8g"
 @background color 0
@@ -89,7 +89,7 @@
 @timestamp color 1
 @timestamp rot 0
 @timestamp font 0
-@timestamp char size 1.000000
+@timestamp char size 1.500000
 @timestamp def "Thu Aug  2 17:18:26 2018"
 @r0 off
 @link r0 to g0
@@ -135,7 +135,7 @@
 @g0 fixedpoint type 0
 @g0 fixedpoint xy 0.000000, 0.000000
 @g0 fixedpoint format general general
-@g0 fixedpoint prec 6, 6
+@g0 fixedpoint prec 9, 9
 @with g0
 @    world 0.5, 0.0001, 2, 0.1
 @    stack world 0, 0, 0, 0
@@ -163,7 +163,7 @@
 @    xaxis  label "\xw\0 - First Order Scaling Correction"
 @    xaxis  label layout para
 @    xaxis  label place auto
-@    xaxis  label char size 1.000000
+@    xaxis  label char size 1.500000
 @    xaxis  label font 0
 @    xaxis  label color 1
 @    xaxis  label place normal
@@ -185,7 +185,7 @@
 @    xaxis  tick minor size 0.500000
 @    xaxis  ticklabel on
 @    xaxis  ticklabel format general
-@    xaxis  ticklabel prec 5
+@    xaxis  ticklabel prec 9
 @    xaxis  ticklabel formula ""
 @    xaxis  ticklabel append ""
 @    xaxis  ticklabel prepend ""
@@ -199,7 +199,7 @@
 @    xaxis  ticklabel start 0.000000
 @    xaxis  ticklabel stop type auto
 @    xaxis  ticklabel stop 0.000000
-@    xaxis  ticklabel char size 1.000000
+@    xaxis  ticklabel char size 1.500000
 @    xaxis  ticklabel font 0
 @    xaxis  ticklabel color 1
 @    xaxis  tick place both
@@ -214,7 +214,7 @@
 @    yaxis  label "mean dist to mean point of intersections"
 @    yaxis  label layout para
 @    yaxis  label place auto
-@    yaxis  label char size 1.000000
+@    yaxis  label char size 1.500000
 @    yaxis  label font 0
 @    yaxis  label color 1
 @    yaxis  label place normal
@@ -236,7 +236,7 @@
 @    yaxis  tick minor size 0.500000
 @    yaxis  ticklabel on
 @    yaxis  ticklabel format general
-@    yaxis  ticklabel prec 5
+@    yaxis  ticklabel prec 9
 @    yaxis  ticklabel formula ""
 @    yaxis  ticklabel append ""
 @    yaxis  ticklabel prepend ""
@@ -250,7 +250,7 @@
 @    yaxis  ticklabel start 0.000000
 @    yaxis  ticklabel stop type auto
 @    yaxis  ticklabel stop 0.000000
-@    yaxis  ticklabel char size 1.000000
+@    yaxis  ticklabel char size 1.500000
 @    yaxis  ticklabel font 0
 @    yaxis  ticklabel color 1
 @    yaxis  tick place both
@@ -267,7 +267,7 @@
 @    legend box fill color 0
 @    legend box fill pattern 1
 @    legend font 0
-@    legend char size 1.000000
+@    legend char size 1.500000
 @    legend color 1
 @    legend length 0
 @    legend vgap 1
@@ -307,12 +307,12 @@
 @    s0 fill pattern 1
 @    s0 avalue off
 @    s0 avalue type 2
-@    s0 avalue char size 1.000000
+@    s0 avalue char size 1.500000
 @    s0 avalue font 0
 @    s0 avalue color 1
 @    s0 avalue rot 0
 @    s0 avalue format general
-@    s0 avalue prec 3
+@    s0 avalue prec 9
 @    s0 avalue prepend ""
 @    s0 avalue append ""
 @    s0 avalue offset 0.000000 , 0.000000
@@ -356,12 +356,12 @@
 @    s1 fill pattern 1
 @    s1 avalue off
 @    s1 avalue type 2
-@    s1 avalue char size 1.000000
+@    s1 avalue char size 1.500000
 @    s1 avalue font 0
 @    s1 avalue color 1
 @    s1 avalue rot 0
 @    s1 avalue format general
-@    s1 avalue prec 3
+@    s1 avalue prec 9
 @    s1 avalue prepend ""
 @    s1 avalue append ""
 @    s1 avalue offset 0.000000 , 0.000000

@@ -155,7 +155,7 @@
 @g0 fixedpoint type 0
 @g0 fixedpoint xy 0.000000, 0.000000
 @g0 fixedpoint format general general
-@g0 fixedpoint prec 6, 6
+@g0 fixedpoint prec 9, 9
 @with g0
 @    world -26.2321148634, -0.000408309783186, 202.438572776, 0.00287474201562
 @    stack world 0, 0, 0, 0
@@ -205,7 +205,7 @@
 @    xaxis  tick minor size 0.500000
 @    xaxis  ticklabel on
 @    xaxis  ticklabel format general
-@    xaxis  ticklabel prec 5
+@    xaxis  ticklabel prec 9
 @    xaxis  ticklabel formula ""
 @    xaxis  ticklabel append ""
 @    xaxis  ticklabel prepend ""
@@ -256,7 +256,7 @@
 @    yaxis  tick minor size 0.500000
 @    yaxis  ticklabel on
 @    yaxis  ticklabel format general
-@    yaxis  ticklabel prec 5
+@    yaxis  ticklabel prec 9
 @    yaxis  ticklabel formula ""
 @    yaxis  ticklabel append ""
 @    yaxis  ticklabel prepend ""
@@ -307,7 +307,7 @@
 @    altxaxis  tick minor size 0.500000
 @    altxaxis  ticklabel on
 @    altxaxis  ticklabel format general
-@    altxaxis  ticklabel prec 5
+@    altxaxis  ticklabel prec 9
 @    altxaxis  ticklabel formula ""
 @    altxaxis  ticklabel append ""
 @    altxaxis  ticklabel prepend ""
@@ -358,7 +358,7 @@
 @    altyaxis  tick minor size 0.500000
 @    altyaxis  ticklabel on
 @    altyaxis  ticklabel format general
-@    altyaxis  ticklabel prec 5
+@    altyaxis  ticklabel prec 9
 @    altyaxis  ticklabel formula ""
 @    altyaxis  ticklabel append ""
 @    altyaxis  ticklabel prepend ""
@@ -432,7 +432,7 @@
 @    s4 avalue color 1
 @    s4 avalue rot 0
 @    s4 avalue format general
-@    s4 avalue prec 3
+@    s4 avalue prec 9
 @    s4 avalue prepend ""
 @    s4 avalue append ""
 @    s4 avalue offset 0.000000 , 0.000000
@@ -458,7 +458,7 @@
 @g1 fixedpoint type 0
 @g1 fixedpoint xy 0.000000, 0.000000
 @g1 fixedpoint format general general
-@g1 fixedpoint prec 6, 6
+@g1 fixedpoint prec 9, 9
 @with g1
 @    world -15.3302071106, -0.00354041010012, 203.383022851, 0.0200835998221
 @    stack world 0, 0, 0, 0
@@ -508,7 +508,7 @@
 @    xaxis  tick minor size 0.500000
 @    xaxis  ticklabel on
 @    xaxis  ticklabel format general
-@    xaxis  ticklabel prec 5
+@    xaxis  ticklabel prec 9
 @    xaxis  ticklabel formula ""
 @    xaxis  ticklabel append ""
 @    xaxis  ticklabel prepend ""
@@ -559,7 +559,7 @@
 @    yaxis  tick minor size 0.500000
 @    yaxis  ticklabel on
 @    yaxis  ticklabel format general
-@    yaxis  ticklabel prec 5
+@    yaxis  ticklabel prec 9
 @    yaxis  ticklabel formula ""
 @    yaxis  ticklabel append ""
 @    yaxis  ticklabel prepend ""
@@ -610,7 +610,7 @@
 @    altxaxis  tick minor size 0.500000
 @    altxaxis  ticklabel on
 @    altxaxis  ticklabel format general
-@    altxaxis  ticklabel prec 5
+@    altxaxis  ticklabel prec 9
 @    altxaxis  ticklabel formula ""
 @    altxaxis  ticklabel append ""
 @    altxaxis  ticklabel prepend ""
@@ -661,7 +661,7 @@
 @    altyaxis  tick minor size 0.500000
 @    altyaxis  ticklabel on
 @    altyaxis  ticklabel format general
-@    altyaxis  ticklabel prec 5
+@    altyaxis  ticklabel prec 9
 @    altyaxis  ticklabel formula ""
 @    altyaxis  ticklabel append ""
 @    altyaxis  ticklabel prepend ""
@@ -735,7 +735,7 @@
 @    s0 avalue color 1
 @    s0 avalue rot 0
 @    s0 avalue format general
-@    s0 avalue prec 3
+@    s0 avalue prec 9
 @    s0 avalue prepend ""
 @    s0 avalue append ""
 @    s0 avalue offset 0.000000 , 0.000000
@@ -761,7 +761,7 @@
 @g2 fixedpoint type 0
 @g2 fixedpoint xy 0.000000, 0.000000
 @g2 fixedpoint format general general
-@g2 fixedpoint prec 6, 6
+@g2 fixedpoint prec 9, 9
 @with g2
 @    world -24.7856108513, -0.000272061678535, 208.455999575, 0.0015553213826
 @    stack world 0, 0, 0, 0
@@ -811,7 +811,7 @@
 @    xaxis  tick minor size 0.500000
 @    xaxis  ticklabel on
 @    xaxis  ticklabel format general
-@    xaxis  ticklabel prec 5
+@    xaxis  ticklabel prec 9
 @    xaxis  ticklabel formula ""
 @    xaxis  ticklabel append ""
 @    xaxis  ticklabel prepend ""
@@ -862,7 +862,7 @@
 @    yaxis  tick minor size 0.500000
 @    yaxis  ticklabel on
 @    yaxis  ticklabel format general
-@    yaxis  ticklabel prec 5
+@    yaxis  ticklabel prec 9
 @    yaxis  ticklabel formula ""
 @    yaxis  ticklabel append ""
 @    yaxis  ticklabel prepend ""
@@ -913,7 +913,7 @@
 @    altxaxis  tick minor size 0.500000
 @    altxaxis  ticklabel on
 @    altxaxis  ticklabel format general
-@    altxaxis  ticklabel prec 5
+@    altxaxis  ticklabel prec 9
 @    altxaxis  ticklabel formula ""
 @    altxaxis  ticklabel append ""
 @    altxaxis  ticklabel prepend ""
@@ -964,7 +964,7 @@
 @    altyaxis  tick minor size 0.500000
 @    altyaxis  ticklabel on
 @    altyaxis  ticklabel format general
-@    altyaxis  ticklabel prec 5
+@    altyaxis  ticklabel prec 9
 @    altyaxis  ticklabel formula ""
 @    altyaxis  ticklabel append ""
 @    altyaxis  ticklabel prepend ""
@@ -1038,7 +1038,7 @@
 @    s0 avalue color 1
 @    s0 avalue rot 0
 @    s0 avalue format general
-@    s0 avalue prec 3
+@    s0 avalue prec 9
 @    s0 avalue prepend ""
 @    s0 avalue append ""
 @    s0 avalue offset 0.000000 , 0.000000
@@ -1064,7 +1064,7 @@
 @g3 fixedpoint type 0
 @g3 fixedpoint xy 0.000000, 0.000000
 @g3 fixedpoint format general general
-@g3 fixedpoint prec 6, 6
+@g3 fixedpoint prec 9, 9
 @with g3
 @    world -26.1321019025, -0.00115382864213, 213.436752744, 0.0101257564796
 @    stack world 0, 0, 0, 0
@@ -1114,7 +1114,7 @@
 @    xaxis  tick minor size 0.500000
 @    xaxis  ticklabel on
 @    xaxis  ticklabel format general
-@    xaxis  ticklabel prec 5
+@    xaxis  ticklabel prec 9
 @    xaxis  ticklabel formula ""
 @    xaxis  ticklabel append ""
 @    xaxis  ticklabel prepend ""
@@ -1165,7 +1165,7 @@
 @    yaxis  tick minor size 0.500000
 @    yaxis  ticklabel on
 @    yaxis  ticklabel format general
-@    yaxis  ticklabel prec 5
+@    yaxis  ticklabel prec 9
 @    yaxis  ticklabel formula ""
 @    yaxis  ticklabel append ""
 @    yaxis  ticklabel prepend ""
@@ -1216,7 +1216,7 @@
 @    altxaxis  tick minor size 0.500000
 @    altxaxis  ticklabel on
 @    altxaxis  ticklabel format general
-@    altxaxis  ticklabel prec 5
+@    altxaxis  ticklabel prec 9
 @    altxaxis  ticklabel formula ""
 @    altxaxis  ticklabel append ""
 @    altxaxis  ticklabel prepend ""
@@ -1267,7 +1267,7 @@
 @    altyaxis  tick minor size 0.500000
 @    altyaxis  ticklabel on
 @    altyaxis  ticklabel format general
-@    altyaxis  ticklabel prec 5
+@    altyaxis  ticklabel prec 9
 @    altyaxis  ticklabel formula ""
 @    altyaxis  ticklabel append ""
 @    altyaxis  ticklabel prepend ""
@@ -1341,7 +1341,7 @@
 @    s0 avalue color 1
 @    s0 avalue rot 0
 @    s0 avalue format general
-@    s0 avalue prec 3
+@    s0 avalue prec 9
 @    s0 avalue prepend ""
 @    s0 avalue append ""
 @    s0 avalue offset 0.000000 , 0.000000
@@ -1367,7 +1367,7 @@
 @g4 fixedpoint type 0
 @g4 fixedpoint xy 0.000000, 0.000000
 @g4 fixedpoint format general general
-@g4 fixedpoint prec 6, 6
+@g4 fixedpoint prec 9, 9
 @with g4
 @    world -24.8841546685, -0.00014749492425, 202.980660499, 0.000781237331626
 @    stack world 0, 0, 0, 0
@@ -1417,7 +1417,7 @@
 @    xaxis  tick minor size 0.500000
 @    xaxis  ticklabel on
 @    xaxis  ticklabel format general
-@    xaxis  ticklabel prec 5
+@    xaxis  ticklabel prec 9
 @    xaxis  ticklabel formula ""
 @    xaxis  ticklabel append ""
 @    xaxis  ticklabel prepend ""
@@ -1468,7 +1468,7 @@
 @    yaxis  tick minor size 0.500000
 @    yaxis  ticklabel on
 @    yaxis  ticklabel format general
-@    yaxis  ticklabel prec 5
+@    yaxis  ticklabel prec 9
 @    yaxis  ticklabel formula ""
 @    yaxis  ticklabel append ""
 @    yaxis  ticklabel prepend ""
@@ -1519,7 +1519,7 @@
 @    altxaxis  tick minor size 0.500000
 @    altxaxis  ticklabel on
 @    altxaxis  ticklabel format general
-@    altxaxis  ticklabel prec 5
+@    altxaxis  ticklabel prec 9
 @    altxaxis  ticklabel formula ""
 @    altxaxis  ticklabel append ""
 @    altxaxis  ticklabel prepend ""
@@ -1570,7 +1570,7 @@
 @    altyaxis  tick minor size 0.500000
 @    altyaxis  ticklabel on
 @    altyaxis  ticklabel format general
-@    altyaxis  ticklabel prec 5
+@    altyaxis  ticklabel prec 9
 @    altyaxis  ticklabel formula ""
 @    altyaxis  ticklabel append ""
 @    altyaxis  ticklabel prepend ""
@@ -1644,7 +1644,7 @@
 @    s0 avalue color 1
 @    s0 avalue rot 0
 @    s0 avalue format general
-@    s0 avalue prec 3
+@    s0 avalue prec 9
 @    s0 avalue prepend ""
 @    s0 avalue append ""
 @    s0 avalue offset 0.000000 , 0.000000
@@ -1670,7 +1670,7 @@
 @g5 fixedpoint type 0
 @g5 fixedpoint xy 0.000000, 0.000000
 @g5 fixedpoint format general general
-@g5 fixedpoint prec 6, 6
+@g5 fixedpoint prec 9, 9
 @with g5
 @    world -30.8617688099, -0.000939352917708, 205.732930223, 0.0057223639644
 @    stack world 0, 0, 0, 0
@@ -1720,7 +1720,7 @@
 @    xaxis  tick minor size 0.500000
 @    xaxis  ticklabel on
 @    xaxis  ticklabel format general
-@    xaxis  ticklabel prec 5
+@    xaxis  ticklabel prec 9
 @    xaxis  ticklabel formula ""
 @    xaxis  ticklabel append ""
 @    xaxis  ticklabel prepend ""
@@ -1771,7 +1771,7 @@
 @    yaxis  tick minor size 0.500000
 @    yaxis  ticklabel on
 @    yaxis  ticklabel format general
-@    yaxis  ticklabel prec 5
+@    yaxis  ticklabel prec 9
 @    yaxis  ticklabel formula ""
 @    yaxis  ticklabel append ""
 @    yaxis  ticklabel prepend ""
@@ -1822,7 +1822,7 @@
 @    altxaxis  tick minor size 0.500000
 @    altxaxis  ticklabel on
 @    altxaxis  ticklabel format general
-@    altxaxis  ticklabel prec 5
+@    altxaxis  ticklabel prec 9
 @    altxaxis  ticklabel formula ""
 @    altxaxis  ticklabel append ""
 @    altxaxis  ticklabel prepend ""
@@ -1873,7 +1873,7 @@
 @    altyaxis  tick minor size 0.500000
 @    altyaxis  ticklabel on
 @    altyaxis  ticklabel format general
-@    altyaxis  ticklabel prec 5
+@    altyaxis  ticklabel prec 9
 @    altyaxis  ticklabel formula ""
 @    altyaxis  ticklabel append ""
 @    altyaxis  ticklabel prepend ""
@@ -1947,7 +1947,7 @@
 @    s0 avalue color 1
 @    s0 avalue rot 0
 @    s0 avalue format general
-@    s0 avalue prec 3
+@    s0 avalue prec 9
 @    s0 avalue prepend ""
 @    s0 avalue append ""
 @    s0 avalue offset 0.000000 , 0.000000
