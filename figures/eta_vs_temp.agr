@@ -135,7 +135,7 @@
 @g0 fixedpoint type 0
 @g0 fixedpoint xy 0.000000, 0.000000
 @g0 fixedpoint format general general
-@g0 fixedpoint prec 9, 9
+@g0 fixedpoint prec 9, 9    
 @with g0
 @    world 2.20158185669, -0.00240853097996, 2.20204361458, 0.165637065637
 @    stack world 0, 0, 0, 0
@@ -160,7 +160,7 @@
 @    xaxis  bar color 1
 @    xaxis  bar linestyle 1
 @    xaxis  bar linewidth 1.0
-@    xaxis  label "T - Temperature"
+@    xaxis  label "T"
 @    xaxis  label layout para
 @    xaxis  label place auto
 @    xaxis  label char size 1.500000
@@ -578,9 +578,9 @@
 @    s6 type xydy
 @    s6 symbol 5
 @    s6 symbol size 0.500000
-@    s6 symbol color 5
+@    s6 symbol color 11
 @    s6 symbol pattern 1
-@    s6 symbol fill color 5
+@    s6 symbol fill color 11
 @    s6 symbol fill pattern 0
 @    s6 symbol linewidth 1.0
 @    s6 symbol linestyle 1
@@ -590,7 +590,7 @@
 @    s6 line type 1
 @    s6 line linestyle 1
 @    s6 line linewidth 1.0
-@    s6 line color 5
+@    s6 line color 11
 @    s6 line pattern 1
 @    s6 baseline type 0
 @    s6 baseline off
@@ -627,9 +627,9 @@
 @    s7 type xydy
 @    s7 symbol 6
 @    s7 symbol size 0.500000
-@    s7 symbol color 6
+@    s7 symbol color 7
 @    s7 symbol pattern 1
-@    s7 symbol fill color 6
+@    s7 symbol fill color 7
 @    s7 symbol fill pattern 0
 @    s7 symbol linewidth 1.0
 @    s7 symbol linestyle 1
@@ -639,7 +639,7 @@
 @    s7 line type 1
 @    s7 line linestyle 1
 @    s7 line linewidth 1.0
-@    s7 line color 6
+@    s7 line color 7
 @    s7 line pattern 1
 @    s7 baseline type 0
 @    s7 baseline off

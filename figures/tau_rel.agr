@@ -135,7 +135,7 @@
 @g0 fixedpoint type 0
 @g0 fixedpoint xy 0.000000, 0.000000
 @g0 fixedpoint format general general
-@g0 fixedpoint prec 9, 9
+@g0 fixedpoint prec 9, 9    
 @with g0
 @    world 3.03586197, 0.0489479605, 149.473442, 2.51275581
 @    stack world 0, 0, 0, 0
@@ -160,7 +160,7 @@
 @    xaxis  bar color 1
 @    xaxis  bar linestyle 1
 @    xaxis  bar linewidth 1.0
-@    xaxis  label "L - Linear System Size"
+@    xaxis  label "L"
 @    xaxis  label layout para
 @    xaxis  label place auto
 @    xaxis  label char size 1.560000

@@ -135,7 +135,7 @@
 @g0 fixedpoint type 0
 @g0 fixedpoint xy 0.000000, 0.000000
 @g0 fixedpoint format general general
-@g0 fixedpoint prec 9, 9
+@g0 fixedpoint prec 9, 9    
 @with g0
 @    world 2.20180329418, 1.12411311495e-05, 2.20194552948, 11.1840959335
 @    stack world 0, 0, 0, 0
@@ -160,7 +160,7 @@
 @    xaxis  bar color 1
 @    xaxis  bar linestyle 1
 @    xaxis  bar linewidth 1.0
-@    xaxis  label "T - Temperature"
+@    xaxis  label "T"
 @    xaxis  label layout para
 @    xaxis  label place auto
 @    xaxis  label char size 1.500000
@@ -317,7 +317,7 @@
 @    s0 avalue append ""
 @    s0 avalue offset 0.000000 , 0.000000
 @    s0 errorbar off
-@    s0 errorbar place both
+@    s0 errorbar place normal
 @    s0 errorbar color 1
 @    s0 errorbar pattern 1
 @    s0 errorbar size 1.000000
@@ -366,7 +366,7 @@
 @    s1 avalue append ""
 @    s1 avalue offset 0.000000 , 0.000000
 @    s1 errorbar off
-@    s1 errorbar place both
+@    s1 errorbar place normal
 @    s1 errorbar color 2
 @    s1 errorbar pattern 1
 @    s1 errorbar size 1.000000
@@ -415,7 +415,7 @@
 @    s2 avalue append ""
 @    s2 avalue offset 0.000000 , 0.000000
 @    s2 errorbar off
-@    s2 errorbar place both
+@    s2 errorbar place normal
 @    s2 errorbar color 3
 @    s2 errorbar pattern 1
 @    s2 errorbar size 1.000000
@@ -464,7 +464,7 @@
 @    s3 avalue append ""
 @    s3 avalue offset 0.000000 , 0.000000
 @    s3 errorbar off
-@    s3 errorbar place both
+@    s3 errorbar place normal
 @    s3 errorbar color 4
 @    s3 errorbar pattern 1
 @    s3 errorbar size 1.000000
@@ -480,9 +480,9 @@
 @    s4 type xydy
 @    s4 symbol 5
 @    s4 symbol size 0.500000
-@    s4 symbol color 5
+@    s4 symbol color 11
 @    s4 symbol pattern 1
-@    s4 symbol fill color 5
+@    s4 symbol fill color 11
 @    s4 symbol fill pattern 0
 @    s4 symbol linewidth 1.0
 @    s4 symbol linestyle 1
@@ -492,7 +492,7 @@
 @    s4 line type 1
 @    s4 line linestyle 1
 @    s4 line linewidth 1.0
-@    s4 line color 5
+@    s4 line color 11
 @    s4 line pattern 1
 @    s4 baseline type 0
 @    s4 baseline off
@@ -513,7 +513,7 @@
 @    s4 avalue append ""
 @    s4 avalue offset 0.000000 , 0.000000
 @    s4 errorbar off
-@    s4 errorbar place both
+@    s4 errorbar place normal
 @    s4 errorbar color 5
 @    s4 errorbar pattern 1
 @    s4 errorbar size 1.000000
@@ -529,9 +529,9 @@
 @    s5 type xydy
 @    s5 symbol 6
 @    s5 symbol size 0.500000
-@    s5 symbol color 6
+@    s5 symbol color 7
 @    s5 symbol pattern 1
-@    s5 symbol fill color 6
+@    s5 symbol fill color 7
 @    s5 symbol fill pattern 0
 @    s5 symbol linewidth 1.0
 @    s5 symbol linestyle 1
@@ -541,7 +541,7 @@
 @    s5 line type 1
 @    s5 line linestyle 1
 @    s5 line linewidth 1.0
-@    s5 line color 6
+@    s5 line color 7
 @    s5 line pattern 1
 @    s5 baseline type 0
 @    s5 baseline off
@@ -562,7 +562,7 @@
 @    s5 avalue append ""
 @    s5 avalue offset 0.000000 , 0.000000
 @    s5 errorbar off
-@    s5 errorbar place both
+@    s5 errorbar place normal
 @    s5 errorbar color 6
 @    s5 errorbar pattern 1
 @    s5 errorbar size 1.000000
