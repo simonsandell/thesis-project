@@ -16,14 +16,9 @@ def writeFig(filepath,cap,f,filename):
 
 directory = "."
 writefile = initFile();
-for subdirs,dirs, files in os.walk(directory):
-    for f in files:
-        if (".eps" in f):
-            if ("3DXY" in subdirs):
-                cap = "3DXY";
-                writeFig(os.path.join(subdirs,f),cap,writefile,f)
-            if ("Ising3D" in subdirs):
-                cap = "Ising3D";
-                writeFig(os.path.join(subdirs,f),cap,writefile,f)
+for files in os.listdir(directory):
+    if (".eps" in files):
+        cap = "autogen";
+        writeFig("./plots/" + files, cap, writefile, files)
 
     

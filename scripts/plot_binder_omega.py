@@ -19,7 +19,7 @@ delta_var_omega_bin = 8
 delta_var_omega_rho = 9
 
 for f in os.listdir("."):
-    if "result_bin_fit_omega" in f:
+    if "result_fit_omega" in f:
         result_struct = np.load(f)
         plt.figure()
         plt_eb(temperature, omega_bin, delta_omega_bin, result_struct, f)

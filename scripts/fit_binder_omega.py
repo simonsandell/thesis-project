@@ -6,7 +6,7 @@ from plotting import fileWriter
 
 import settings
 
-spoint = [2.5, 2.1, -1.2]
+spoint = [2.5, -1.2]
 # skip smallest
 SKIP_N = int(sys.argv[1])
 data = [np.load(x) for x in settings.DATATABLES[SKIP_N:]]
@@ -18,23 +18,22 @@ rhoindex = 26
 NUM_T = data[0].shape[0]
 NUM_J = jack[0].shape[0]
 
-def fit_func(L, omega, a, b):
+def fit_func(L, omega, b):
     a = 1.244
-    return a + b*pow(L,-omega)
+    return a + b*pow(L, -omega)
 
 def perform_fit(data_list, t_idx, q_idx):
     X = []
     X[:] = []
     Y = []
     Y[:] = []
-    for l_idx, ldata in enumerate(data_list):
+    for ldata in data_list:
         X.append(ldata[t_idx, 0])
         Y.append(ldata[t_idx, q_idx])
     params, covar = curve_fit(fit_func, X, Y, p0=spoint, maxfev=5000)
     return params[0], covar[0, 0]
 
 result_struct = np.empty((NUM_T, 20))
-jack_result_struct = np.empty((NUM_J, NUM_T, 20))
 for t_idx in range(NUM_T):
     omega_b, var_omb = perform_fit(data, t_idx, binderindex)
     omega_r, var_omr = perform_fit(data, t_idx, rhoindex)
@@ -56,7 +55,7 @@ for t_idx in range(NUM_T):
     result_struct[t_idx, 8] = np.sqrt(NUM_J -1) * np.std(jack_res_struct[:, 2])
     result_struct[t_idx, 9] = np.sqrt(NUM_J -1) * np.std(jack_res_struct[:, 3])
 do_save = True
-do_plot = False
+do_plot = False 
 if do_save:
     np.save("result_fit_omega_skip_"+str(SKIP_N), result_struct)
     savePath = settings.foutput_path+settings.model + "/vsT/omega_fit/a_fix_"
@@ -65,8 +64,8 @@ if do_save:
     fileWriter.writeQuant(savePath+"omega_r_skip"+str(SKIP_N)+".dat", result_struct, [1, 3, 7]) # omega_rho
     fileWriter.writeQuant(savePathVar+"var_omega_b_skip"+str(SKIP_N)+".dat", result_struct, [1, 4, 8]) # var_omega_bin
     fileWriter.writeQuant(savePathVar+"var_omega_r_skip"+str(SKIP_N)+".dat", result_struct, [1, 5, 9]) # var_omega_rho
-    
-   
+  
+ 
 if do_plot:
     temperature = result_struct[:, 1]
     omega_bin = result_struct[:, 2]
