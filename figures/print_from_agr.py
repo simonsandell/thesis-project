@@ -6,9 +6,10 @@ from tempfile import NamedTemporaryFile
 
 
 def mk_bat(title):
+    print(title)
     t = NamedTemporaryFile("w", delete=False)
     t.write("#asdf\n")
-    t.write(r'PRINT TO "../eps_files/jul_26/' + title + r'.eps"' + "\n")
+    t.write('PRINT TO \"../eps_files/jul_26/' + title + '.eps\"' + "\n")
     t.write('HARDCOPY DEVICE "EPS"\n')
     t.write('PAGE SIZE 2560, 2048\n')
     t.write('DEVICE "EPS" OP "level2"\n')
