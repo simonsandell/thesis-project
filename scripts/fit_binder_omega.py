@@ -6,7 +6,8 @@ from plotting import fileWriter
 
 import settings
 
-spoint = [2.5, -1.2]
+sp_fi = [0.8, -1.2]
+sp_fr = [0.8, 1.1, -1.2]
 # skip smallest
 SKIP_N = int(sys.argv[1])
 data = [np.load(x) for x in settings.DATATABLES[SKIP_N:]]
@@ -18,8 +19,11 @@ rhoindex = 26
 NUM_T = data[0].shape[0]
 NUM_J = jack[0].shape[0]
 
-def fit_func(L, omega, b):
+def fit_func_fix(L, omega, b):
     a = 1.244
+    return a + b*pow(L, -omega)
+
+def fit_func_free(L, omega, a, b):
     return a + b*pow(L, -omega)
 
 def perform_fit(data_list, t_idx, q_idx):
@@ -27,29 +31,54 @@ def perform_fit(data_list, t_idx, q_idx):
     X[:] = []
     Y = []
     Y[:] = []
+    DY = []
+    DY[:] = []
     for ldata in data_list:
         X.append(ldata[t_idx, 0])
         Y.append(ldata[t_idx, q_idx])
-    params, covar = curve_fit(fit_func, X, Y, p0=spoint, maxfev=5000)
+        DY.append(ldata[t_idx, q_idx +30])
+    try:
+        params, covar = curve_fit(fit_func_free, X, Y, p0=sp_fr, sigma=DY, maxfev=1000)
+    except:
+        params = [0]
+        covar = np.zeros((1,1))
+        print('reg fail')
+    return params[0], covar[0, 0], DY
+
+def perform_fit_jack(data_list, t_idx, q_idx, dy):
+    X = []
+    X[:] = []
+    Y = []
+    Y[:] = []
+    for ldata in data_list:
+        X.append(ldata[t_idx, 0])
+        Y.append(ldata[t_idx, q_idx])
+    try:
+        params, covar = curve_fit(fit_func_free, X, Y, p0=sp_fr, sigma=dy, maxfev=10000)
+    except:
+        params = [0]
+        covar = np.zeros((1,1))
+        print('jack_fail')
     return params[0], covar[0, 0]
 
-result_struct = np.empty((NUM_T, 20))
+result_struct = np.zeros((NUM_T, 20))
 for t_idx in range(NUM_T):
-    omega_b, var_omb = perform_fit(data, t_idx, binderindex)
-    omega_r, var_omr = perform_fit(data, t_idx, rhoindex)
+    omega_b, var_omb, DYB = perform_fit(data, t_idx, binderindex)
+    #omega_r, var_omr, DYR = perform_fit(data, t_idx, rhoindex)
+    omega_r, var_omr = 0.0, 0.0
 
     result_struct[t_idx, 0:6] = [
         data[0][t_idx, 0], data[0][t_idx, 1],
         omega_b, omega_r, var_omb, var_omr
     ] # min L, Temp, w_b, w_r, var(w_b), var(w_r)
 
-    jack_res_struct = np.empty((NUM_J, 4))
+    jack_res_struct = np.zeros((NUM_J, 4))
     for j_idx in range(NUM_J):
         one_jack = [x[j_idx, :, :] for x in jack]
-        jack_res_struct[j_idx, :2] = perform_fit(one_jack, t_idx, binderindex)
-        jack_res_struct[j_idx, 2:] = perform_fit(one_jack, t_idx, rhoindex)
+        jack_res_struct[j_idx, :2] = perform_fit_jack(one_jack, t_idx, binderindex, DYB)
+        #jack_res_struct[j_idx, 2:] = perform_fit_jack(one_jack, t_idx, rhoindex, DYR)
         #jack_res_struct[j_idx, :2] = 0.0, 0.0
-        #jack_res_struct[j_idx, 2:] = 0.0, 0.0
+        jack_res_struct[j_idx, 2:] = 0.0, 0.0
     result_struct[t_idx, 6] = np.sqrt(NUM_J -1) * np.std(jack_res_struct[:, 0])
     result_struct[t_idx, 7] = np.sqrt(NUM_J -1) * np.std(jack_res_struct[:, 1])
     result_struct[t_idx, 8] = np.sqrt(NUM_J -1) * np.std(jack_res_struct[:, 2])
@@ -57,15 +86,15 @@ for t_idx in range(NUM_T):
 do_save = True
 do_plot = False 
 if do_save:
-    np.save("result_fit_omega_skip_"+str(SKIP_N), result_struct)
-    savePath = settings.foutput_path+settings.model + "/vsT/omega_fit/a_fix_"
-    savePathVar = settings.foutput_path+settings.model + "/vsT/omega_fit_var/a_fix_"
+    np.save("a_free_result_phenfit"+str(SKIP_N), result_struct)
+    savePath = settings.foutput_path+settings.model + "/vsT/omega_fit/a_free_"
+    savePathVar = settings.foutput_path+settings.model + "/vsT/omega_fit_var/a_free_"
     fileWriter.writeQuant(savePath+"omega_b_skip"+str(SKIP_N)+".dat", result_struct, [1, 2, 6]) # omega_bin
     fileWriter.writeQuant(savePath+"omega_r_skip"+str(SKIP_N)+".dat", result_struct, [1, 3, 7]) # omega_rho
     fileWriter.writeQuant(savePathVar+"var_omega_b_skip"+str(SKIP_N)+".dat", result_struct, [1, 4, 8]) # var_omega_bin
     fileWriter.writeQuant(savePathVar+"var_omega_r_skip"+str(SKIP_N)+".dat", result_struct, [1, 5, 9]) # var_omega_rho
-  
- 
+
+
 if do_plot:
     temperature = result_struct[:, 1]
     omega_bin = result_struct[:, 2]

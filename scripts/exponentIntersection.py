@@ -46,7 +46,8 @@ def calc_exponents(omega, skip_n):
     def calc_nu(tview):
         x = tview[:, 0]
         y = tview[:, idx["DBDT"][0]]
-        params, covar = curve_fit(fitfunc, x, y)
+        dy = tview[:, 30 + idx["DBDT"][0]]
+        params, covar = curve_fit(fitfunc, x, y, sigma=dy)
         res = np.empty((1, 4))
         res[0, 0] = tview[0, 1]
         res[0, 1] = params[0]
@@ -57,7 +58,8 @@ def calc_exponents(omega, skip_n):
     def calc_eta(tview):
         x = tview[:, 0]
         y = tview[:, idx["CHI"][0]]
-        params, covar = curve_fit(etafunc, x, y)
+        dy = tview[:, 30 + idx["CHI"][0]]
+        params, covar = curve_fit(etafunc, x, y, sigma=dy)
         res = np.empty((1, 4))
         res[0, 0] = tview[0, 1]
         res[0, 1] = 2.0 - params[0]

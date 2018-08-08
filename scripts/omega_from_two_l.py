@@ -10,9 +10,9 @@ def fitfunc(size, omega, a_1):
     res = a_1 * (size ** (-omega))
     return res
 
-def fit_curve(x_val, y_val):
+def fit_curve(x_val, y_val, dy_val):
     try:
-        par, cov = curve_fit(fitfunc, x_val, y_val)
+        par, cov = curve_fit(fitfunc, x_val, y_val, sigma=dy_val)
     except:
         par = [np.nan, np.nan]
         cov = np.array(([[np.nan, np.nan], [np.nan, np.nan]]))
@@ -34,7 +34,7 @@ JACKLIST = [
     settings.pickles_path + "2Lquant/jackknife/jack_jul_26_final32_64.npy",
     settings.pickles_path + "2Lquant/jackknife/jack_jul_26_final64_128.npy",
 ]
-
+# format = [l1 , l2, t, b, rs, db, drs]
 # remove SKIP_N smallest sizes
 NAMELIST = NAMELIST[SKIP_N:]
 JACKLIST = JACKLIST[SKIP_N:]
@@ -82,12 +82,15 @@ for temp_ind in range(TI.shape[0] - 1):
     # sort view by L
     tview = tview[tview[:, 0].argsort()]
     # fit binder and rho quantity to power law to get omega
+    # format = [l1 , l2, T, b, rs, db, drs]
     X = tview[:, 1]
     Yb = tview[:, 3]
+    DYb = tview[:, 5]
     Yr = tview[:, 4]
-    param, covar = fit_curve(X, Yb)
+    DYr = tview[:, 6]
+    param, covar = fit_curve(X, Yb, DYb)
     BIN_OMEGA[temp_ind, :] = [tview[0, 2], param[0], param[1], covar[0, 0], covar[1, 1], 0.0, 0.0, 0.0, 0.0]
-    param, covar = fit_curve(X, Yr)
+    param, covar = fit_curve(X, Yr, DYr)
     RS_OMEGA[temp_ind, :] = [tview[0, 2], param[0], param[1], covar[0, 0], covar[1, 1], 0.0, 0.0, 0.0, 0.0]
     jack_omega_bin = []
     jack_omega_bin[:] = []
@@ -109,12 +112,12 @@ for temp_ind in range(TI.shape[0] - 1):
         X = ALL_JACK[jack_i, temp_ind*N_FILES:(temp_ind+1)*N_FILES:, 1]
         Yb = ALL_JACK[jack_i, temp_ind*N_FILES:(temp_ind+1)*N_FILES:, 3]
         Yr = ALL_JACK[jack_i, temp_ind*N_FILES:(temp_ind+1)*N_FILES:, 4]
-        param, covar = fit_curve(X, Yb)
+        param, covar = fit_curve(X, Yb, DYb)
         jack_omega_bin.append(param[0])
         jack_a_bin.append(param[1])
         jack_var_w_bin.append(covar[0, 0])
         jack_var_a_bin.append(covar[1, 1])
-        param, covar = fit_curve(X, Yr)
+        param, covar = fit_curve(X, Yr, DYr)
         jack_omega_rs.append(param[0])
         jack_a_rs.append(param[1])
         jack_var_w_rs.append(covar[0, 0])

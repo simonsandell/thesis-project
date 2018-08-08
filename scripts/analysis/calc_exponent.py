@@ -55,7 +55,34 @@ def calculate_exponents(omega,skip_n):
     def calculateNu(tview):
         X = tview[:, 0]
         Y = tview[:, idx["DBDT"][0]]
-        params, covar = curve_fit(fitfunc, X, Y)
+        DY = tview[:, 30 + idx["DBDT"][0]]
+        params, covar = curve_fit(fitfunc, X, Y, sigma=DY)
+        res = np.empty((1, 4))
+        res[0, 0] = tview[0, 1]
+        res[0, 1] = params[0]
+        res[0, 2] = covar[0, 0]
+        res[0, 3] = 0.0
+
+        return res, DY
+
+
+    def calculateEta(tview):
+        X = tview[:, 0]
+        Y = tview[:, idx["CHI"][0]]
+        DY = tview[:, 30 + idx["CHI"][0]]
+        params, covar = curve_fit(etafunc, X, Y, sigma=DY)
+        res = np.empty((1, 4))
+        res[0, 0] = tview[0, 1]
+        res[0, 1] = params[0]
+        res[0, 2] = covar[0, 0]
+        res[0, 3] = 0.0
+
+        return res, DY
+
+    def calcNu_Jack(tview, dy):
+        X = tview[:, 0]
+        Y = tview[:, idx["DBDT"][0]]
+        params, covar = curve_fit(fitfunc, X, Y, sigma=dy)
         res = np.empty((1, 4))
         res[0, 0] = tview[0, 1]
         res[0, 1] = params[0]
@@ -65,10 +92,10 @@ def calculate_exponents(omega,skip_n):
         return res
 
 
-    def calculateEta(tview):
+    def calcEta_Jack(tview, dy):
         X = tview[:, 0]
         Y = tview[:, idx["CHI"][0]]
-        params, covar = curve_fit(etafunc, X, Y)
+        params, covar = curve_fit(etafunc, X, Y, sigma=dy)
         res = np.empty((1, 4))
         res[0, 0] = tview[0, 1]
         res[0, 1] = params[0]
@@ -114,14 +141,14 @@ def calculate_exponents(omega,skip_n):
     for ind in range(Ti.shape[0] - 1):
         tview = all_tables[Ti[ind] : Ti[ind + 1], :]
         tview = tview[tview[:, 0].argsort()]
-        result[ind, :4] = calculateNu(tview)
-        eta_result[ind, :4] = calculateEta(tview)
+        result[ind, :4], DDBDT = calculateNu(tview)
+        eta_result[ind, :4], DCHI = calculateEta(tview)
 
         jresult = np.empty((0, 4))
         jeta_result = np.empty((0, 4))
         for i in range(JACK_NUM):
-            jresult = np.append(jresult, calculateNu(jack_tables[i, ind, :, :]), axis=0)
-            jeta_result = np.append(jeta_result, calculateEta(jack_tables[i, ind, :, :]), axis=0)
+            jresult = np.append(jresult, calcNu_Jack(jack_tables[i, ind, :, :], DDBDT), axis=0)
+            jeta_result = np.append(jeta_result, calcEta_Jack(jack_tables[i, ind, :, :], DCHI), axis=0)
         nu_delta = pow(JACK_NUM - 1, 0.5) * np.std(jresult[:, 1])
         eta_delta = pow(JACK_NUM - 1, 0.5) * np.std(jeta_result[:, 1])
         var_nu_delta = pow(JACK_NUM - 1, 0.5) * np.std(jresult[:, 2])
@@ -133,10 +160,10 @@ def calculate_exponents(omega,skip_n):
 
 
     # write to dat files for plotting
-    writePath = settings.foutput_path + settings.model + "/vsT/nu/" + SAVENAME + ".dat"
-    eta_Path = settings.foutput_path + settings.model + "/vsT/eta/" + SAVENAME + ".dat"
-    varnu_path = settings.foutput_path + settings.model + "/vsT/var_nu/var_"+SAVENAME + ".dat"
-    vareta_path = settings.foutput_path + settings.model + "/vsT/var_eta/var_"+SAVENAME + ".dat"
+    writePath = settings.foutput_path + settings.model + "/vsT/nu/std_" + SAVENAME + ".dat"
+    eta_Path = settings.foutput_path + settings.model + "/vsT/eta/std_" + SAVENAME + ".dat"
+    varnu_path = settings.foutput_path + settings.model + "/vsT/var_nu/std_var_"+SAVENAME + ".dat"
+    vareta_path = settings.foutput_path + settings.model + "/vsT/var_eta/std_var_"+SAVENAME + ".dat"
 
     fileWriter.writeQuant(writePath, result, [0, 1, 4, 3])
     fileWriter.writeQuant(eta_Path, eta_result, [0, 1, 4, 3])
