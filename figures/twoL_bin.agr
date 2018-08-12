@@ -90,7 +90,7 @@
 @timestamp rot 0
 @timestamp font 0
 @timestamp char size 1.500000
-@timestamp def "Thu Aug  2 17:20:45 2018"
+@timestamp def "Fri Aug 10 11:51:35 2018"
 @r0 off
 @link r0 to g0
 @r0 type above
@@ -135,9 +135,9 @@
 @g0 fixedpoint type 0
 @g0 fixedpoint xy 0.000000, 0.000000
 @g0 fixedpoint format general general
-@g0 fixedpoint prec 9, 9    
+@g0 fixedpoint prec 9, 9  
 @with g0
-@    world 2.20158538156, -0.0224673653, 2.20202554963, 0.0192314764
+@    world 2.20158538156, -0.0233498804927, 2.20203876789, 0.0194521051664
 @    stack world 0, 0, 0, 0
 @    znorm 1
 @    view 0.219072, 0.150000, 1.679553, 0.850000
@@ -211,7 +211,7 @@
 @    yaxis  bar color 1
 @    yaxis  bar linestyle 1
 @    yaxis  bar linewidth 1.0
-@    yaxis  label "U\s4\N(2L) - U\s4\N(L)"
+@    yaxis  label "B(2L) - B(L)"
 @    yaxis  label layout para
 @    yaxis  label place auto
 @    yaxis  label char size 1.500000
@@ -259,7 +259,7 @@
 @    altyaxis  off
 @    legend on
 @    legend loctype view
-@    legend 1.14488384, 0.411325611
+@    legend 1.29417598747, 0.510424710425
 @    legend box color 1
 @    legend box pattern 1
 @    legend box linewidth 1.0
@@ -328,7 +328,7 @@
 @    s0 errorbar riser clip off
 @    s0 errorbar riser clip length 0.100000
 @    s0 comment "Cols 1:2:3"
-@    s0 legend  "L = 16, 32"
+@    s0 legend  "jul_26_final_16.0_32.0.dat"
 @    s1 hidden false
 @    s1 type xydy
 @    s1 symbol 2
@@ -377,7 +377,7 @@
 @    s1 errorbar riser clip off
 @    s1 errorbar riser clip length 0.100000
 @    s1 comment "Cols 1:2:3"
-@    s1 legend  "L = 32, 64"
+@    s1 legend  "jul_26_final_32.0_64.0.dat"
 @    s2 hidden false
 @    s2 type xydy
 @    s2 symbol 3
@@ -426,7 +426,7 @@
 @    s2 errorbar riser clip off
 @    s2 errorbar riser clip length 0.100000
 @    s2 comment "Cols 1:2:3"
-@    s2 legend  "L = 4, 8"
+@    s2 legend  "jul_26_final_4.0_8.0.dat"
 @    s3 hidden false
 @    s3 type xydy
 @    s3 symbol 4
@@ -475,7 +475,7 @@
 @    s3 errorbar riser clip off
 @    s3 errorbar riser clip length 0.100000
 @    s3 comment "Cols 1:2:3"
-@    s3 legend  "L = 64, 128"
+@    s3 legend  "jul_26_final_64.0_128.0.dat"
 @    s4 hidden false
 @    s4 type xydy
 @    s4 symbol 5
@@ -524,7 +524,7 @@
 @    s4 errorbar riser clip off
 @    s4 errorbar riser clip length 0.100000
 @    s4 comment "Cols 1:2:3"
-@    s4 legend  "L = 8, 16"
+@    s4 legend  "jul_26_final_8.0_16.0.dat"
 @target G0.S0
 @type xydy
 2.2016 0.0015811447 1.0021479e-05
