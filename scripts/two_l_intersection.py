@@ -1,6 +1,5 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
 import settings
 from analysis import twoLomega
 from analysis import intersectionFinder
@@ -12,9 +11,6 @@ def prune_nan(not_pruned_X, not_pruned_Y):
         if not np.isnan(not_pruned_X[idx_size]):
             result.append([not_pruned_X[idx_size], not_pruned_Y[idx_size]])
     return result
-
-
-
 
 TAG = 'jul_26_final_zoom'
 DATLIST = [
@@ -33,7 +29,7 @@ JACKLIST = [
 ]
 
 # for range of omega, rescale and find intersection between sequentially larger system sizes
-OMEGA_RANGE = np.linspace(0.75, 0.85, 50)
+OMEGA_RANGE = np.linspace(0.7, 0.9, 30)
 RESULT = np.empty((OMEGA_RANGE.shape[0], len(DATLIST)-1, 5))
 J_SIZE = JACKLIST[0].shape[0]
 J_RESULT = np.empty((J_SIZE, OMEGA_RANGE.shape[0], len(DATLIST) - 1, 5))
@@ -45,13 +41,14 @@ for size_idx, (q1, q2) in enumerate(zip(DATLIST[:-1], DATLIST[1:])):
         RESULT[om_idx, size_idx, :] = [omega, *temp_bin, *temp_rho]
 
         for j_idx in range(JACKLIST[0].shape[0]):
-            jbres = twoLomega.intersections_for_given_omega(JACKLIST[size_idx][j_idx, :, :], JACKLIST[size_idx+1][j_idx, :, :], omega)
+            jbres = twoLomega.intersections_for_given_omega(
+                JACKLIST[size_idx][j_idx, :, :], JACKLIST[size_idx+1][j_idx, :, :], omega)
             temp_bin, temp_rho = jbres[0], jbres[1]
             J_RESULT[j_idx, om_idx, size_idx, :] = [omega, *temp_bin, *temp_rho]
 
-# calculate intersection closeness 
-bin_close_result = np.empty((0,7))
-rho_close_result = np.empty((0,7))
+# calculate intersection closeness
+bin_close_result = np.empty((0, 7))
+rho_close_result = np.empty((0, 7))
 
 for om_idx, omega in enumerate(OMEGA_RANGE):
     #prune nan's
@@ -118,9 +115,9 @@ fileWriter.writeQuant(tc_path + TAG + "bin.dat", bin_close_result, [0, 2, 5])
 fileWriter.writeQuant(tc_path + TAG + "rho.dat", rho_close_result, [0, 2, 5])
 f, (ax1, ax2) = plt.subplots(2, 1, sharex=True)
 ax1.plot(bin_close_result[:, 0], bin_close_result[:, 1], label='binder')
-ax1.plot(rho_close_result[:,0],rho_close_result[:,1], label='rho')
+ax1.plot(rho_close_result[:, 0], rho_close_result[:, 1], label='rho')
 ax2.plot(bin_close_result[:, 0], bin_close_result[:, 2], label='binder')
-ax2.plot(rho_close_result[:,0],rho_close_result[:,2], label='rho')
+ax2.plot(rho_close_result[:, 0], rho_close_result[:, 2], label='rho')
 plt.figlegend()
 plt.show(block=False)
 input()
