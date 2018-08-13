@@ -1,4 +1,6 @@
 import sys
+import time
+import math
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
@@ -6,12 +8,24 @@ from plotting import fileWriter
 
 import settings
 
-sp_fi = [0.8, -1.2]
-sp_fr = [0.8, 1.1, -1.2]
+sp_fi = [0.5, -1.2]
+sp_fr = [0.5, 0.5, 0.5]
+b = 10e3
+bnds = ([0, -b, -b], [5, b, b])
 # skip smallest
 SKIP_N = int(sys.argv[1])
 data = [np.load(x) for x in settings.DATATABLES[SKIP_N:]]
 jack = [np.load(x) for x in settings.JACKTABLES[SKIP_N:]]
+
+# drop irrelevant temperatures
+for i in range(len(data)):
+    data[i] = data[i][50:80,:]
+
+for i in range(len(jack)):
+    jack[i] = jack[i][:,50:80,:]
+
+
+
 
 binderindex = 22
 rhoindex = 26
@@ -21,10 +35,10 @@ NUM_J = jack[0].shape[0]
 
 def fit_func_fix(L, omega, b):
     a = 1.244
-    return a + b*pow(L, -omega)
+    return a + b*np.power(L, -omega)
 
 def fit_func_free(L, omega, a, b):
-    return a + b*pow(L, -omega)
+    return a + b*np.power(L, -omega)
 
 def perform_fit(data_list, tp_idx, q_idx):
     X = []
@@ -34,10 +48,12 @@ def perform_fit(data_list, tp_idx, q_idx):
     DY = []
     DY[:] = []
     for ldata in data_list:
-        X.append(ldata[tp_idx, 0])
-        Y.append(ldata[tp_idx, q_idx])
-        DY.append(ldata[tp_idx, q_idx +30])
-    params, covar = curve_fit(fit_func_fix, X, Y, p0=sp_fi, sigma=DY, maxfev=10000)
+        X.append(ldata[t_idx, 0])
+        Y.append(ldata[t_idx, q_idx])
+        DY.append(ldata[t_idx, q_idx +30])
+    a = time.time()
+    params, covar = curve_fit(fit_func_free, X, Y, sigma=DY, maxfev=100000)
+    print(time.time() - a)
     return params[0], covar[0, 0], DY
 
 def perform_fit_jack(data_list, tp_idx, q_idx, dy):
@@ -46,16 +62,17 @@ def perform_fit_jack(data_list, tp_idx, q_idx, dy):
     Y = []
     Y[:] = []
     for ldata in data_list:
-        X.append(ldata[tp_idx, 0])
-        Y.append(ldata[tp_idx, q_idx])
-    params, covar = curve_fit(fit_func_fix, X, Y, p0=sp_fi, sigma=dy, maxfev=10000)
+        X.append(ldata[t_idx, 0])
+        Y.append(ldata[t_idx, q_idx])
+    params, covar = curve_fit(fit_func_free, X, Y, sigma=dy, maxfev=100000)
     return params[0], covar[0, 0]
 
 result_struct = np.zeros((NUM_T, 20))
 for t_idx in range(NUM_T):
+    print(t_idx, "/", NUM_T)
     omega_b, var_omb, DYB = perform_fit(data, t_idx, binderindex)
-    #omega_r, var_omr, DYR = perform_fit(data, t_idx, rhoindex)
-    omega_r, var_omr = 0.0, 0.0
+    omega_r, var_omr, DYR = perform_fit(data, t_idx, rhoindex)
+    #omega_r, var_omr = 0.0, 0.0
 
     result_struct[t_idx, 0:6] = [
         data[0][t_idx, 0], data[0][t_idx, 1],
@@ -66,28 +83,24 @@ for t_idx in range(NUM_T):
     for j_idx in range(NUM_J):
         one_jack = [x[j_idx, :, :] for x in jack]
         jack_res_struct[j_idx, :2] = perform_fit_jack(one_jack, t_idx, binderindex, DYB)
-        #jack_res_struct[j_idx, 2:] = perform_fit_jack(one_jack, t_idx, rhoindex, DYR)
+        jack_res_struct[j_idx, 2:] = perform_fit_jack(one_jack, t_idx, rhoindex, DYR)
         #jack_res_struct[j_idx, :2] = 0.0, 0.0
-        jack_res_struct[j_idx, 2:] = 0.0, 0.0
-    result_struct[t_idx, 6] = np.sqrt(NUM_J -1) * np.std(jack_res_struct[:, 0])#w_b
-    result_struct[t_idx, 7] = np.sqrt(NUM_J -1) * np.std(jack_res_struct[:, 1])#var(w_b)
-    result_struct[t_idx, 8] = np.sqrt(NUM_J -1) * np.std(jack_res_struct[:, 2])#w_r
-    result_struct[t_idx, 9] = np.sqrt(NUM_J -1) * np.std(jack_res_struct[:, 3])#var(w_r)
-    np.save("a_fix_result_phenfit"+str(SKIP_N), result_struct)
+        #jack_res_struct[j_idx, 2:] = 0.0, 0.0
+    result_struct[t_idx, 6] = np.sqrt(NUM_J) * np.std(jack_res_struct[:, 0])
+    result_struct[t_idx, 7] = np.sqrt(NUM_J) * np.std(jack_res_struct[:, 1])
+    result_struct[t_idx, 8] = np.sqrt(NUM_J) * np.std(jack_res_struct[:, 2])
+    result_struct[t_idx, 9] = np.sqrt(NUM_J) * np.std(jack_res_struct[:, 3])
+    np.save("a_free_result_phenfit"+str(SKIP_N), result_struct)
 do_save = True
 do_plot = False
 if do_save:
-    np.save("a_fix_result_phenfit"+str(SKIP_N), result_struct)
-    savePath = settings.foutput_path+settings.model + "/vsT/omega_fit/a_fix_"
-    savePathVar = settings.foutput_path+settings.model + "/vsT/omega_fit_var/a_fix_"
-    fileWriter.writeQuant(
-        savePath+"omega_b_skip"+str(SKIP_N)+".dat", result_struct, [1, 2, 6]) # omega_bin
-    fileWriter.writeQuant(
-        savePath+"omega_r_skip"+str(SKIP_N)+".dat", result_struct, [1, 3, 8]) # omega_rho
-    fileWriter.writeQuant(
-        savePathVar+"var_omega_b_skip"+str(SKIP_N)+".dat", result_struct, [1, 4, 7]) # var_omega_bin
-    fileWriter.writeQuant(
-        savePathVar+"var_omega_r_skip"+str(SKIP_N)+".dat", result_struct, [1, 5, 9]) # var_omega_rho
+    np.save("a_free_result_phenfit"+str(SKIP_N), result_struct)
+    savePath = settings.foutput_path+settings.model + "/vsT/omega_fit/a_free_"
+    savePathVar = settings.foutput_path+settings.model + "/vsT/omega_fit_var/a_free_"
+    fileWriter.writeQuant(savePath+"omega_b_skip"+str(SKIP_N)+".dat", result_struct, [1, 2, 6]) # omega_bin
+    fileWriter.writeQuant(savePath+"omega_r_skip"+str(SKIP_N)+".dat", result_struct, [1, 3, 8]) # omega_rho
+    fileWriter.writeQuant(savePathVar+"var_omega_b_skip"+str(SKIP_N)+".dat", result_struct, [1, 4, 7]) # var_omega_bin
+    fileWriter.writeQuant(savePathVar+"var_omega_r_skip"+str(SKIP_N)+".dat", result_struct, [1, 5, 9]) # var_omega_rho
 
 
 if do_plot:
