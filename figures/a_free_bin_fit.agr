@@ -79,7 +79,7 @@
 @default color 1
 @default pattern 1
 @default font 0
-@default char size 1.000000
+@default char size 1.500000
 @default symbol size 1.000000
 @default sformat "%.8g"
 @background color 0
@@ -89,8 +89,8 @@
 @timestamp color 1
 @timestamp rot 0
 @timestamp font 0
-@timestamp char size 1.000000
-@timestamp def "Sun Aug 12 01:10:12 2018"
+@timestamp char size 1.500000
+@timestamp def "Sun Aug 12 15:04:59 2018"
 @r0 off
 @link r0 to g0
 @r0 type above
@@ -135,9 +135,9 @@
 @g0 fixedpoint type 0
 @g0 fixedpoint xy 0.000000, 0.000000
 @g0 fixedpoint format general general
-@g0 fixedpoint prec 6, 6
+@g0 fixedpoint prec 9, 9 
 @with g0
-@    world 2.20182342117, -0.143912316058, 2.20192411332, 3.17940796228
+@    world 2.2017, 0, 2.202, 4
 @    stack world 0, 0, 0, 0
 @    znorm 1
 @    view 0.243007, 0.150000, 1.863054, 0.850000
@@ -160,15 +160,15 @@
 @    xaxis  bar color 1
 @    xaxis  bar linestyle 1
 @    xaxis  bar linewidth 1.0
-@    xaxis  label "T - Temperature"
+@    xaxis  label "T"
 @    xaxis  label layout para
 @    xaxis  label place auto
-@    xaxis  label char size 1.000000
+@    xaxis  label char size 1.500000
 @    xaxis  label font 0
 @    xaxis  label color 1
 @    xaxis  label place normal
 @    xaxis  tick on
-@    xaxis  tick major 2e-05
+@    xaxis  tick major 5e-05
 @    xaxis  tick minor ticks 1
 @    xaxis  tick default 6
 @    xaxis  tick place rounded true
@@ -185,7 +185,7 @@
 @    xaxis  tick minor size 0.500000
 @    xaxis  ticklabel on
 @    xaxis  ticklabel format general
-@    xaxis  ticklabel prec 5
+@    xaxis  ticklabel prec 9
 @    xaxis  ticklabel formula ""
 @    xaxis  ticklabel append ""
 @    xaxis  ticklabel prepend ""
@@ -199,7 +199,7 @@
 @    xaxis  ticklabel start 0.000000
 @    xaxis  ticklabel stop type auto
 @    xaxis  ticklabel stop 0.000000
-@    xaxis  ticklabel char size 1.000000
+@    xaxis  ticklabel char size 1.500000
 @    xaxis  ticklabel font 0
 @    xaxis  ticklabel color 1
 @    xaxis  tick place both
@@ -211,15 +211,15 @@
 @    yaxis  bar color 1
 @    yaxis  bar linestyle 1
 @    yaxis  bar linewidth 1.0
-@    yaxis  label "\xw\0 from g(L) fit"
+@    yaxis  label "\xw\0"
 @    yaxis  label layout para
 @    yaxis  label place auto
-@    yaxis  label char size 1.000000
+@    yaxis  label char size 1.500000
 @    yaxis  label font 0
 @    yaxis  label color 1
 @    yaxis  label place normal
 @    yaxis  tick on
-@    yaxis  tick major 0.5
+@    yaxis  tick major 1
 @    yaxis  tick minor ticks 1
 @    yaxis  tick default 6
 @    yaxis  tick place rounded true
@@ -236,7 +236,7 @@
 @    yaxis  tick minor size 0.500000
 @    yaxis  ticklabel on
 @    yaxis  ticklabel format general
-@    yaxis  ticklabel prec 5
+@    yaxis  ticklabel prec 9
 @    yaxis  ticklabel formula ""
 @    yaxis  ticklabel append ""
 @    yaxis  ticklabel prepend ""
@@ -250,7 +250,7 @@
 @    yaxis  ticklabel start 0.000000
 @    yaxis  ticklabel stop type auto
 @    yaxis  ticklabel stop 0.000000
-@    yaxis  ticklabel char size 1.000000
+@    yaxis  ticklabel char size 1.500000
 @    yaxis  ticklabel font 0
 @    yaxis  ticklabel color 1
 @    yaxis  tick place both
@@ -267,7 +267,7 @@
 @    legend box fill color 0
 @    legend box fill pattern 1
 @    legend font 0
-@    legend char size 1.000000
+@    legend char size 1.500000
 @    legend color 1
 @    legend length 0
 @    legend vgap 1
@@ -307,12 +307,12 @@
 @    s0 fill pattern 1
 @    s0 avalue off
 @    s0 avalue type 2
-@    s0 avalue char size 1.000000
+@    s0 avalue char size 1.500000
 @    s0 avalue font 0
 @    s0 avalue color 1
 @    s0 avalue rot 0
 @    s0 avalue format general
-@    s0 avalue prec 3
+@    s0 avalue prec 9
 @    s0 avalue prepend ""
 @    s0 avalue append ""
 @    s0 avalue offset 0.000000 , 0.000000
@@ -328,7 +328,7 @@
 @    s0 errorbar riser clip off
 @    s0 errorbar riser clip length 0.100000
 @    s0 comment "Cols 1:2:3"
-@    s0 legend  "a_free_omega_b_skip0.dat"
+@    s0 legend  "U\s4\N L\smin\N = 4"
 @    s1 hidden false
 @    s1 type xydy
 @    s1 symbol 2
@@ -356,12 +356,12 @@
 @    s1 fill pattern 1
 @    s1 avalue off
 @    s1 avalue type 2
-@    s1 avalue char size 1.000000
+@    s1 avalue char size 1.500000
 @    s1 avalue font 0
 @    s1 avalue color 1
 @    s1 avalue rot 0
 @    s1 avalue format general
-@    s1 avalue prec 3
+@    s1 avalue prec 9
 @    s1 avalue prepend ""
 @    s1 avalue append ""
 @    s1 avalue offset 0.000000 , 0.000000
@@ -377,7 +377,7 @@
 @    s1 errorbar riser clip off
 @    s1 errorbar riser clip length 0.100000
 @    s1 comment "Cols 1:2:3"
-@    s1 legend  "a_free_omega_b_skip1.dat"
+@    s1 legend  "U\s4\N L\smin\N = 8"
 @    s2 hidden false
 @    s2 type xydy
 @    s2 symbol 3
@@ -405,12 +405,12 @@
 @    s2 fill pattern 1
 @    s2 avalue off
 @    s2 avalue type 2
-@    s2 avalue char size 1.000000
+@    s2 avalue char size 1.500000
 @    s2 avalue font 0
 @    s2 avalue color 1
 @    s2 avalue rot 0
 @    s2 avalue format general
-@    s2 avalue prec 3
+@    s2 avalue prec 9
 @    s2 avalue prepend ""
 @    s2 avalue append ""
 @    s2 avalue offset 0.000000 , 0.000000
@@ -426,14 +426,14 @@
 @    s2 errorbar riser clip off
 @    s2 errorbar riser clip length 0.100000
 @    s2 comment "Cols 1:2:3"
-@    s2 legend  "a_free_omega_b_skip2.dat"
-@    s4 hidden false
+@    s2 legend  "U\s4\N L\smin\N = 16"
+@    s4 hidden true
 @    s4 type xydy
 @    s4 symbol 5
 @    s4 symbol size 0.500000
-@    s4 symbol color 5
+@    s4 symbol color 11
 @    s4 symbol pattern 1
-@    s4 symbol fill color 5
+@    s4 symbol fill color 11
 @    s4 symbol fill pattern 0
 @    s4 symbol linewidth 1.0
 @    s4 symbol linestyle 1
@@ -443,7 +443,7 @@
 @    s4 line type 1
 @    s4 line linestyle 1
 @    s4 line linewidth 1.0
-@    s4 line color 5
+@    s4 line color 11
 @    s4 line pattern 1
 @    s4 baseline type 0
 @    s4 baseline off
@@ -454,12 +454,12 @@
 @    s4 fill pattern 1
 @    s4 avalue off
 @    s4 avalue type 2
-@    s4 avalue char size 1.000000
+@    s4 avalue char size 1.500000
 @    s4 avalue font 0
 @    s4 avalue color 1
 @    s4 avalue rot 0
 @    s4 avalue format general
-@    s4 avalue prec 3
+@    s4 avalue prec 9
 @    s4 avalue prepend ""
 @    s4 avalue append ""
 @    s4 avalue offset 0.000000 , 0.000000
@@ -478,11 +478,11 @@
 @    s4 legend  "a_free_omega_r_skip0.dat"
 @    s5 hidden false
 @    s5 type xydy
-@    s5 symbol 6
+@    s5 symbol 4
 @    s5 symbol size 0.500000
-@    s5 symbol color 6
+@    s5 symbol color 4
 @    s5 symbol pattern 1
-@    s5 symbol fill color 6
+@    s5 symbol fill color 4
 @    s5 symbol fill pattern 0
 @    s5 symbol linewidth 1.0
 @    s5 symbol linestyle 1
@@ -492,7 +492,7 @@
 @    s5 line type 1
 @    s5 line linestyle 1
 @    s5 line linewidth 1.0
-@    s5 line color 6
+@    s5 line color 4
 @    s5 line pattern 1
 @    s5 baseline type 0
 @    s5 baseline off
@@ -503,18 +503,18 @@
 @    s5 fill pattern 1
 @    s5 avalue off
 @    s5 avalue type 2
-@    s5 avalue char size 1.000000
+@    s5 avalue char size 1.500000
 @    s5 avalue font 0
 @    s5 avalue color 1
 @    s5 avalue rot 0
 @    s5 avalue format general
-@    s5 avalue prec 3
+@    s5 avalue prec 9
 @    s5 avalue prepend ""
 @    s5 avalue append ""
 @    s5 avalue offset 0.000000 , 0.000000
 @    s5 errorbar on
 @    s5 errorbar place both
-@    s5 errorbar color 6
+@    s5 errorbar color 4
 @    s5 errorbar pattern 1
 @    s5 errorbar size 1.000000
 @    s5 errorbar linewidth 1.0
@@ -524,14 +524,14 @@
 @    s5 errorbar riser clip off
 @    s5 errorbar riser clip length 0.100000
 @    s5 comment "Cols 1:2:3"
-@    s5 legend  "a_free_omega_r_skip1.dat"
+@    s5 legend  "L\xr\0\ss\N L\smin\N = 8"
 @    s6 hidden false
 @    s6 type xydy
-@    s6 symbol 7
+@    s6 symbol 5
 @    s6 symbol size 0.500000
-@    s6 symbol color 7
+@    s6 symbol color 11
 @    s6 symbol pattern 1
-@    s6 symbol fill color 7
+@    s6 symbol fill color 11
 @    s6 symbol fill pattern 0
 @    s6 symbol linewidth 1.0
 @    s6 symbol linestyle 1
@@ -541,7 +541,7 @@
 @    s6 line type 1
 @    s6 line linestyle 1
 @    s6 line linewidth 1.0
-@    s6 line color 7
+@    s6 line color 11
 @    s6 line pattern 1
 @    s6 baseline type 0
 @    s6 baseline off
@@ -552,18 +552,18 @@
 @    s6 fill pattern 1
 @    s6 avalue off
 @    s6 avalue type 2
-@    s6 avalue char size 1.000000
+@    s6 avalue char size 1.500000
 @    s6 avalue font 0
 @    s6 avalue color 1
 @    s6 avalue rot 0
 @    s6 avalue format general
-@    s6 avalue prec 3
+@    s6 avalue prec 9
 @    s6 avalue prepend ""
 @    s6 avalue append ""
 @    s6 avalue offset 0.000000 , 0.000000
 @    s6 errorbar on
 @    s6 errorbar place both
-@    s6 errorbar color 7
+@    s6 errorbar color 11
 @    s6 errorbar pattern 1
 @    s6 errorbar size 1.000000
 @    s6 errorbar linewidth 1.0
@@ -573,7 +573,7 @@
 @    s6 errorbar riser clip off
 @    s6 errorbar riser clip length 0.100000
 @    s6 comment "Cols 1:2:3"
-@    s6 legend  "a_free_omega_r_skip2.dat"
+@    s6 legend  "L\xr\0\ss\N L\smin\N = 16"
 @target G0.S0
 @type xydy
 2.20176 0.98589538 0.00087785423
@@ -662,22 +662,6 @@
 &
 @target G0.S2
 @type xydy
-2.20176 6.2463756 0.0012366442
-2.201764 6.2378776 0.001127519
-2.201768 6.2295972 0.0011827541
-2.201772 6.2215243 0.0011119943
-2.201776 6.2136495 0.0010646927
-2.20178 6.2059639 0.0010601415
-2.201784 6.1984594 0.0010341944
-2.201788 6.1911282 0.0010492508
-2.201792 6.1839632 0.0010100532
-2.201796 6.1769575 0.0010195483
-2.2018 6.1701047 0.00098995218
-2.201804 6.1633989 0.00095346414
-2.201808 6.1568345 0.00094244844
-2.201812 6.1504061 0.00090238507
-2.201816 6.1441087 0.00089221488
-2.20182 6.1379375 0.00090348133
 2.201824 3.7071047 0.11154011
 2.201828 2.7493014 0.055946097
 2.201832 2.2059512 0.035774312
@@ -791,24 +775,6 @@
 &
 @target G0.S6
 @type xydy
-2.20176 0.00014899426 0.00011951685
-2.201764 0.00015205404 0.00010883734
-2.201768 0.00014457309 9.3884282e-05
-2.201772 0.0001409024 8.7923273e-05
-2.201776 0.00014499595 0.00011226648
-2.20178 0.00013568002 0.00012517687
-2.201784 0.00013932385 0.00013645928
-2.201788 0.00013807052 0.00014916914
-2.201792 0.00013611212 0.00021932391
-2.201796 0.00013328044 0.00021360219
-2.2018 0.00012486198 0.00021925757
-2.201804 0.0001292748 0.00024447826
-2.201808 0.00012748679 0.00026306148
-2.201812 0.000125429 0.00026978692
-2.201816 0.00012366476 0.00030090557
-2.20182 0.00012690868 0.00029649151
-2.201824 0.00012451196 0.00027217086
-2.201828 0.0002128241 0.00050690205
 2.201832 0.033274304 0.092191279
 2.201836 0.11341368 0.10447982
 2.20184 0.20406716 0.11681501
@@ -821,14 +787,4 @@
 2.201868 1.5614287 0.46986712
 2.201872 2.059232 0.700819
 2.201876 2.8647144 1.2877613
-2.20188 4.8563748 5.3801587
-2.201884 5.8956729 0.0049889404
-2.201888 5.9044187 0.0051352319
-2.201892 5.9133768 0.005349686
-2.201896 5.9225579 0.0055475577
-2.2019 5.9319734 0.0057769835
-2.201904 5.9416358 0.0058323929
-2.201908 5.9515585 0.0060265217
-2.201912 5.9617559 0.0061212268
-2.201916 5.9722438 0.0065529589
 &

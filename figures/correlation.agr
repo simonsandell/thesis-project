@@ -155,7 +155,7 @@
 @g0 fixedpoint type 0
 @g0 fixedpoint xy 0.000000, 0.000000
 @g0 fixedpoint format general general
-@g0 fixedpoint prec 9, 9      
+@g0 fixedpoint prec 9, 9        
 @with g0
 @    world -26.2321148634, -0.000408309783186, 202.438572776, 0.00287474201562
 @    stack world 0, 0, 0, 0
@@ -458,7 +458,7 @@
 @g1 fixedpoint type 0
 @g1 fixedpoint xy 0.000000, 0.000000
 @g1 fixedpoint format general general
-@g1 fixedpoint prec 9, 9      
+@g1 fixedpoint prec 9, 9        
 @with g1
 @    world -15.3302071106, -0.00354041010012, 203.383022851, 0.0200835998221
 @    stack world 0, 0, 0, 0
@@ -761,7 +761,7 @@
 @g2 fixedpoint type 0
 @g2 fixedpoint xy 0.000000, 0.000000
 @g2 fixedpoint format general general
-@g2 fixedpoint prec 9, 9      
+@g2 fixedpoint prec 9, 9        
 @with g2
 @    world -24.7856108513, -0.000272061678535, 208.455999575, 0.0015553213826
 @    stack world 0, 0, 0, 0
@@ -1064,7 +1064,7 @@
 @g3 fixedpoint type 0
 @g3 fixedpoint xy 0.000000, 0.000000
 @g3 fixedpoint format general general
-@g3 fixedpoint prec 9, 9      
+@g3 fixedpoint prec 9, 9        
 @with g3
 @    world -26.1321019025, -0.00115382864213, 213.436752744, 0.0101257564796
 @    stack world 0, 0, 0, 0
@@ -1367,7 +1367,7 @@
 @g4 fixedpoint type 0
 @g4 fixedpoint xy 0.000000, 0.000000
 @g4 fixedpoint format general general
-@g4 fixedpoint prec 9, 9      
+@g4 fixedpoint prec 9, 9        
 @with g4
 @    world -24.8841546685, -0.00014749492425, 202.980660499, 0.000781237331626
 @    stack world 0, 0, 0, 0
@@ -1670,7 +1670,7 @@
 @g5 fixedpoint type 0
 @g5 fixedpoint xy 0.000000, 0.000000
 @g5 fixedpoint format general general
-@g5 fixedpoint prec 9, 9      
+@g5 fixedpoint prec 9, 9        
 @with g5
 @    world -30.8617688099, -0.000939352917708, 205.732930223, 0.0057223639644
 @    stack world 0, 0, 0, 0

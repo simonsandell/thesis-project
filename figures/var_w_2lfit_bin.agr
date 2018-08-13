@@ -135,7 +135,7 @@
 @g0 fixedpoint type 0
 @g0 fixedpoint xy 0.000000, 0.000000
 @g0 fixedpoint format general general
-@g0 fixedpoint prec 9, 9   
+@g0 fixedpoint prec 9, 9     
 @with g0
 @    world 2.20178215853, 1.20730364101e-05, 2.20197073904, 18822.7401203
 @    stack world 0, 0, 0, 0
