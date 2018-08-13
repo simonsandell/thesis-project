@@ -11,11 +11,7 @@ def fitfunc(size, omega, a_1):
     return res
 
 def fit_curve(x_val, y_val, dy_val):
-    try:
-        par, cov = curve_fit(fitfunc, x_val, y_val, sigma=dy_val)
-    except:
-        par = [np.nan, np.nan]
-        cov = np.array(([[np.nan, np.nan], [np.nan, np.nan]]))
+    par, cov = curve_fit(fitfunc, x_val, y_val, sigma=dy_val, maxfev=5000)
     return par, cov
 
 SKIP_N = int(sys.argv[1])
