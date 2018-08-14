@@ -5,13 +5,12 @@ from scipy.optimize import curve_fit
 
 from plotting import fileWriter
 import settings
-bnds = ([0, -10e10],[2, 10e10])
 def fitfunc(size, omega, a_1):
     res = a_1 * (size ** (-omega))
     return res
 
 def fit_curve(x_val, y_val, dy_val):
-    par, cov = curve_fit(fitfunc, x_val, y_val, sigma=dy_val, maxfev=20000)
+    par, cov = curve_fit(fitfunc, x_val, y_val, sigma=dy_val, maxfev=200000)
     return par, cov
 
 
@@ -51,7 +50,7 @@ N_TEMPS = DATA[0].shape[0]
 
 
 BIN_RES = np.empty((N_TEMPS, 5))
-#RHO_RES = np.empty((N_TEMPS, 5))
+RHO_RES = np.empty((N_TEMPS, 5))
 # for each temperature, fit to powerlaw to obtain omega
 for temp_ind in range(N_TEMPS):
     print(temp_ind +1 ,"/",N_TEMPS)
@@ -70,8 +69,8 @@ for temp_ind in range(N_TEMPS):
     DYr = tview[:, 6]
     param, covar = fit_curve(X, Yb, DYb)
     BIN_RES[temp_ind, :] = [tview[0, 2], param[0], covar[0, 0], 0.0, 0.0]
-    #param, covar = fit_curve(X, Yr, DYr)
-    #RHO_RES[temp_ind, :] = [tview[0, 2], param[0], covar[0, 0], 0.0, 0.0]
+    param, covar = fit_curve(X, Yr, DYr)
+    RHO_RES[temp_ind, :] = [tview[0, 2], param[0], covar[0, 0], 0.0, 0.0]
 
     jackres = np.empty((N_JACK, 4))
     for jack_i in range(N_JACK):
@@ -85,13 +84,15 @@ for temp_ind in range(N_TEMPS):
         param, covar = fit_curve(X, Jb, DYb)
         jackres[jack_i, :2] = param[0], covar[0,0]
 
-        #param, covar = fit_curve(X, Jr, DYr)
-        #jackres[jack_i, 2:] = param[0], covar[0,0]
+        param, covar = fit_curve(X, Jr, DYr)
+        jackres[jack_i, 2:] = param[0], covar[0,0]
     jackres = np.array(jackres)
     BIN_RES[temp_ind, 3] = np.sqrt(N_JACK) * np.std(jackres[:, 0])
     BIN_RES[temp_ind, 4] = np.sqrt(N_JACK) * np.std(jackres[:, 1])
-    #RHO_RES[temp_ind, 3] = np.sqrt(N_JACK) * np.std(jackres[:, 2])
-    #RHO_RES[temp_ind, 4] = np.sqrt(N_JACK) * np.std(jackres[:, 3])
+    RHO_RES[temp_ind, 3] = np.sqrt(N_JACK) * np.std(jackres[:, 2])
+    RHO_RES[temp_ind, 4] = np.sqrt(N_JACK) * np.std(jackres[:, 3])
+    np.save('2lfit_binres_skip_'+str(SKIP_N),BIN_RES)
+    np.save('2lfit_rhores_skip_'+str(SKIP_N),RHO_RES)
 
 # disable warnings about invalid name
 # pylint: disable=C0103
@@ -108,5 +109,5 @@ for dir_paths in dirlist:
         os.makedirs(d)
 fileWriter.writeQuant(pth_omega_bin, BIN_RES, [0, 1, 3])
 fileWriter.writeQuant(pth_var_omega_bin, BIN_RES, [0, 2, 4])
-#fileWriter.writeQuant(pth_omega_rs, RHO_RES, [0, 1, 3])
-#fileWriter.writeQuant(pth_var_omega_rs, RHO_RES, [0, 2, 4])
+fileWriter.writeQuant(pth_omega_rs, RHO_RES, [0, 1, 3])
+fileWriter.writeQuant(pth_var_omega_rs, RHO_RES, [0, 2, 4])
