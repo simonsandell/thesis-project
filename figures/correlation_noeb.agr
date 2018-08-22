@@ -90,7 +90,7 @@
 @timestamp rot 0
 @timestamp font 0
 @timestamp char size 1.500000
-@timestamp def "Thu Aug  2 16:46:57 2018"
+@timestamp def "Tue Aug 21 10:41:14 2018"
 @with string
 @    string on
 @    string loctype view
@@ -145,7 +145,7 @@
 @g0 fixedpoint type 0
 @g0 fixedpoint xy 0.000000, 0.000000
 @g0 fixedpoint format general general
-@g0 fixedpoint prec 9, 9             
+@g0 fixedpoint prec 9, 9
 @with g0
 @    world -26.2321148634, -0.000408309783, 202.438572776, 0.00287474202
 @    stack world 0, 0, 0, 0
@@ -394,9 +394,9 @@
 @    s4 type xydy
 @    s4 symbol 0
 @    s4 symbol size 0.500000
-@    s4 symbol color 1
+@    s4 symbol color 3
 @    s4 symbol pattern 1
-@    s4 symbol fill color 1
+@    s4 symbol fill color 3
 @    s4 symbol fill pattern 0
 @    s4 symbol linewidth 1.0
 @    s4 symbol linestyle 1
@@ -406,7 +406,7 @@
 @    s4 line type 1
 @    s4 line linestyle 1
 @    s4 line linewidth 1.0
-@    s4 line color 1
+@    s4 line color 3
 @    s4 line pattern 1
 @    s4 baseline type 0
 @    s4 baseline off
@@ -426,9 +426,9 @@
 @    s4 avalue prepend ""
 @    s4 avalue append ""
 @    s4 avalue offset 0.000000 , 0.000000
-@    s4 errorbar on
+@    s4 errorbar off
 @    s4 errorbar place both
-@    s4 errorbar color 1
+@    s4 errorbar color 3
 @    s4 errorbar pattern 1
 @    s4 errorbar size 1.000000
 @    s4 errorbar linewidth 1.0
@@ -448,7 +448,7 @@
 @g1 fixedpoint type 0
 @g1 fixedpoint xy 0.000000, 0.000000
 @g1 fixedpoint format general general
-@g1 fixedpoint prec 9, 9             
+@g1 fixedpoint prec 9, 9
 @with g1
 @    world -15.3302071106, -0.0035404101, 203.383022851, 0.0200835998
 @    stack world 0, 0, 0, 0
@@ -716,9 +716,9 @@
 @    s0 type xydy
 @    s0 symbol 0
 @    s0 symbol size 0.500000
-@    s0 symbol color 1
+@    s0 symbol color 4
 @    s0 symbol pattern 1
-@    s0 symbol fill color 1
+@    s0 symbol fill color 4
 @    s0 symbol fill pattern 0
 @    s0 symbol linewidth 1.0
 @    s0 symbol linestyle 1
@@ -728,7 +728,7 @@
 @    s0 line type 1
 @    s0 line linestyle 1
 @    s0 line linewidth 1.0
-@    s0 line color 1
+@    s0 line color 4
 @    s0 line pattern 1
 @    s0 baseline type 0
 @    s0 baseline off
@@ -748,9 +748,9 @@
 @    s0 avalue prepend ""
 @    s0 avalue append ""
 @    s0 avalue offset 0.000000 , 0.000000
-@    s0 errorbar on
+@    s0 errorbar off
 @    s0 errorbar place both
-@    s0 errorbar color 1
+@    s0 errorbar color 4
 @    s0 errorbar pattern 1
 @    s0 errorbar size 1.000000
 @    s0 errorbar linewidth 1.0
@@ -770,7 +770,7 @@
 @g2 fixedpoint type 0
 @g2 fixedpoint xy 0.000000, 0.000000
 @g2 fixedpoint format general general
-@g2 fixedpoint prec 9, 9             
+@g2 fixedpoint prec 9, 9
 @with g2
 @    world -19.9214750666, -0.000265627556, 211.542776884, 0.0014458183732
 @    stack world 0, 0, 0, 0
@@ -1019,9 +1019,9 @@
 @    s0 type xydy
 @    s0 symbol 0
 @    s0 symbol size 0.500000
-@    s0 symbol color 1
+@    s0 symbol color 11
 @    s0 symbol pattern 1
-@    s0 symbol fill color 1
+@    s0 symbol fill color 11
 @    s0 symbol fill pattern 0
 @    s0 symbol linewidth 1.0
 @    s0 symbol linestyle 1
@@ -1031,7 +1031,7 @@
 @    s0 line type 1
 @    s0 line linestyle 1
 @    s0 line linewidth 1.0
-@    s0 line color 1
+@    s0 line color 11
 @    s0 line pattern 1
 @    s0 baseline type 0
 @    s0 baseline off
@@ -1051,9 +1051,9 @@
 @    s0 avalue prepend ""
 @    s0 avalue append ""
 @    s0 avalue offset 0.000000 , 0.000000
-@    s0 errorbar on
+@    s0 errorbar off
 @    s0 errorbar place both
-@    s0 errorbar color 1
+@    s0 errorbar color 5
 @    s0 errorbar pattern 1
 @    s0 errorbar size 1.000000
 @    s0 errorbar linewidth 1.0
@@ -1073,7 +1073,7 @@
 @g3 fixedpoint type 0
 @g3 fixedpoint xy 0.000000, 0.000000
 @g3 fixedpoint format general general
-@g3 fixedpoint prec 9, 9             
+@g3 fixedpoint prec 9, 9
 @with g3
 @    world -26.1321019025, -0.00115382864, 213.436752744, 0.0101257565
 @    stack world 0, 0, 0, 0
@@ -1322,9 +1322,9 @@
 @    s0 type xydy
 @    s0 symbol 0
 @    s0 symbol size 0.500000
-@    s0 symbol color 1
+@    s0 symbol color 7
 @    s0 symbol pattern 1
-@    s0 symbol fill color 1
+@    s0 symbol fill color 7
 @    s0 symbol fill pattern 0
 @    s0 symbol linewidth 1.0
 @    s0 symbol linestyle 1
@@ -1334,7 +1334,7 @@
 @    s0 line type 1
 @    s0 line linestyle 1
 @    s0 line linewidth 1.0
-@    s0 line color 1
+@    s0 line color 7
 @    s0 line pattern 1
 @    s0 baseline type 0
 @    s0 baseline off
@@ -1354,9 +1354,9 @@
 @    s0 avalue prepend ""
 @    s0 avalue append ""
 @    s0 avalue offset 0.000000 , 0.000000
-@    s0 errorbar on
+@    s0 errorbar off
 @    s0 errorbar place both
-@    s0 errorbar color 1
+@    s0 errorbar color 6
 @    s0 errorbar pattern 1
 @    s0 errorbar size 1.000000
 @    s0 errorbar linewidth 1.0
@@ -1376,7 +1376,7 @@
 @g4 fixedpoint type 0
 @g4 fixedpoint xy 0.000000, 0.000000
 @g4 fixedpoint format general general
-@g4 fixedpoint prec 9, 9             
+@g4 fixedpoint prec 9, 9
 @with g4
 @    world -30.3634332024, -0.000105969447, 151.616343784, 0.000746807369
 @    stack world 0, 0, 0, 0
@@ -1657,7 +1657,7 @@
 @    s0 avalue prepend ""
 @    s0 avalue append ""
 @    s0 avalue offset 0.000000 , 0.000000
-@    s0 errorbar on
+@    s0 errorbar off
 @    s0 errorbar place both
 @    s0 errorbar color 1
 @    s0 errorbar pattern 1
@@ -1679,7 +1679,7 @@
 @g5 fixedpoint type 0
 @g5 fixedpoint xy 0.000000, 0.000000
 @g5 fixedpoint format general general
-@g5 fixedpoint prec 9, 9             
+@g5 fixedpoint prec 9, 9
 @with g5
 @    world -35.2527974277, -0.000394805444, 204.970853869, 0.00534575421
 @    stack world 0, 0, 0, 0
@@ -1928,9 +1928,9 @@
 @    s0 type xydy
 @    s0 symbol 0
 @    s0 symbol size 0.500000
-@    s0 symbol color 1
+@    s0 symbol color 2
 @    s0 symbol pattern 1
-@    s0 symbol fill color 1
+@    s0 symbol fill color 2
 @    s0 symbol fill pattern 0
 @    s0 symbol linewidth 1.0
 @    s0 symbol linestyle 1
@@ -1940,7 +1940,7 @@
 @    s0 line type 1
 @    s0 line linestyle 1
 @    s0 line linewidth 1.0
-@    s0 line color 1
+@    s0 line color 2
 @    s0 line pattern 1
 @    s0 baseline type 0
 @    s0 baseline off
@@ -1960,9 +1960,9 @@
 @    s0 avalue prepend ""
 @    s0 avalue append ""
 @    s0 avalue offset 0.000000 , 0.000000
-@    s0 errorbar on
+@    s0 errorbar off
 @    s0 errorbar place both
-@    s0 errorbar color 1
+@    s0 errorbar color 2
 @    s0 errorbar pattern 1
 @    s0 errorbar size 1.000000
 @    s0 errorbar linewidth 1.0

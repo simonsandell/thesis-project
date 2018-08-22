@@ -90,7 +90,7 @@
 @timestamp rot 0
 @timestamp font 0
 @timestamp char size 1.500000
-@timestamp def "Thu Aug  9 11:02:27 2018"
+@timestamp def "Tue Aug 14 14:40:19 2018"
 @r0 off
 @link r0 to g0
 @r0 type above
@@ -135,9 +135,9 @@
 @g0 fixedpoint type 0
 @g0 fixedpoint xy 0.000000, 0.000000
 @g0 fixedpoint format general general
-@g0 fixedpoint prec 9, 9    
+@g0 fixedpoint prec 9, 9  
 @with g0
-@    world 2.20182764777, 2.49745620686e-06, 2.20192787169, 0.0472867102521
+@    world 2.20182764777, 2.49745621e-06, 2.20192787169, 0.0472867103
 @    stack world 0, 0, 0, 0
 @    znorm 1
 @    view 0.219072, 0.150000, 1.679553, 0.850000
@@ -169,7 +169,7 @@
 @    xaxis  label place normal
 @    xaxis  tick on
 @    xaxis  tick major 2e-05
-@    xaxis  tick minor ticks 1
+@    xaxis  tick minor ticks 9
 @    xaxis  tick default 6
 @    xaxis  tick place rounded true
 @    xaxis  tick in
@@ -211,7 +211,7 @@
 @    yaxis  bar color 1
 @    yaxis  bar linestyle 1
 @    yaxis  bar linewidth 1.0
-@    yaxis  label "Var(\xw\0) from g(L) fit"
+@    yaxis  label "Var(\xw\0)"
 @    yaxis  label layout para
 @    yaxis  label place auto
 @    yaxis  label char size 1.500000
@@ -219,8 +219,8 @@
 @    yaxis  label color 1
 @    yaxis  label place normal
 @    yaxis  tick on
-@    yaxis  tick major 500000000
-@    yaxis  tick minor ticks 1
+@    yaxis  tick major 10
+@    yaxis  tick minor ticks 9
 @    yaxis  tick default 6
 @    yaxis  tick place rounded true
 @    yaxis  tick in
@@ -259,7 +259,7 @@
 @    altyaxis  off
 @    legend on
 @    legend loctype view
-@    legend 1.24140893471, 0.8
+@    legend 1.08805841925, 0.787113402062
 @    legend box color 1
 @    legend box pattern 1
 @    legend box linewidth 1.0
@@ -328,7 +328,7 @@
 @    s0 errorbar riser clip off
 @    s0 errorbar riser clip length 0.100000
 @    s0 comment "Cols 1:2:3"
-@    s0 legend  "a_fix_var_omega_b_skip0.dat"
+@    s0 legend  "L\smin\N = 4"
 @    s1 hidden false
 @    s1 type xydy
 @    s1 symbol 2
@@ -377,7 +377,7 @@
 @    s1 errorbar riser clip off
 @    s1 errorbar riser clip length 0.100000
 @    s1 comment "Cols 1:2:3"
-@    s1 legend  "a_fix_var_omega_b_skip1.dat"
+@    s1 legend  "L\smin\N = 8"
 @    s2 hidden false
 @    s2 type xydy
 @    s2 symbol 3
@@ -426,7 +426,7 @@
 @    s2 errorbar riser clip off
 @    s2 errorbar riser clip length 0.100000
 @    s2 comment "Cols 1:2:3"
-@    s2 legend  "a_fix_var_omega_b_skip2.dat"
+@    s2 legend  "L\smin\N = 16"
 @    s3 hidden false
 @    s3 type xydy
 @    s3 symbol 4
@@ -475,203 +475,7 @@
 @    s3 errorbar riser clip off
 @    s3 errorbar riser clip length 0.100000
 @    s3 comment "Cols 1:2:3"
-@    s3 legend  "a_fix_var_omega_b_skip3.dat"
-@    s4 hidden false
-@    s4 type xydy
-@    s4 symbol 5
-@    s4 symbol size 0.500000
-@    s4 symbol color 11
-@    s4 symbol pattern 1
-@    s4 symbol fill color 11
-@    s4 symbol fill pattern 0
-@    s4 symbol linewidth 1.0
-@    s4 symbol linestyle 1
-@    s4 symbol char 65
-@    s4 symbol char font 0
-@    s4 symbol skip 0
-@    s4 line type 1
-@    s4 line linestyle 1
-@    s4 line linewidth 1.0
-@    s4 line color 11
-@    s4 line pattern 1
-@    s4 baseline type 0
-@    s4 baseline off
-@    s4 dropline off
-@    s4 fill type 0
-@    s4 fill rule 0
-@    s4 fill color 1
-@    s4 fill pattern 1
-@    s4 avalue off
-@    s4 avalue type 2
-@    s4 avalue char size 1.500000
-@    s4 avalue font 0
-@    s4 avalue color 1
-@    s4 avalue rot 0
-@    s4 avalue format general
-@    s4 avalue prec 9
-@    s4 avalue prepend ""
-@    s4 avalue append ""
-@    s4 avalue offset 0.000000 , 0.000000
-@    s4 errorbar on
-@    s4 errorbar place both
-@    s4 errorbar color 5
-@    s4 errorbar pattern 1
-@    s4 errorbar size 1.000000
-@    s4 errorbar linewidth 1.0
-@    s4 errorbar linestyle 1
-@    s4 errorbar riser linewidth 1.0
-@    s4 errorbar riser linestyle 1
-@    s4 errorbar riser clip off
-@    s4 errorbar riser clip length 0.100000
-@    s4 comment "Cols 1:2:3"
-@    s4 legend  "a_fix_var_omega_r_skip0.dat"
-@    s5 hidden false
-@    s5 type xydy
-@    s5 symbol 6
-@    s5 symbol size 0.500000
-@    s5 symbol color 7
-@    s5 symbol pattern 1
-@    s5 symbol fill color 7
-@    s5 symbol fill pattern 0
-@    s5 symbol linewidth 1.0
-@    s5 symbol linestyle 1
-@    s5 symbol char 65
-@    s5 symbol char font 0
-@    s5 symbol skip 0
-@    s5 line type 1
-@    s5 line linestyle 1
-@    s5 line linewidth 1.0
-@    s5 line color 7
-@    s5 line pattern 1
-@    s5 baseline type 0
-@    s5 baseline off
-@    s5 dropline off
-@    s5 fill type 0
-@    s5 fill rule 0
-@    s5 fill color 1
-@    s5 fill pattern 1
-@    s5 avalue off
-@    s5 avalue type 2
-@    s5 avalue char size 1.500000
-@    s5 avalue font 0
-@    s5 avalue color 1
-@    s5 avalue rot 0
-@    s5 avalue format general
-@    s5 avalue prec 9
-@    s5 avalue prepend ""
-@    s5 avalue append ""
-@    s5 avalue offset 0.000000 , 0.000000
-@    s5 errorbar on
-@    s5 errorbar place both
-@    s5 errorbar color 6
-@    s5 errorbar pattern 1
-@    s5 errorbar size 1.000000
-@    s5 errorbar linewidth 1.0
-@    s5 errorbar linestyle 1
-@    s5 errorbar riser linewidth 1.0
-@    s5 errorbar riser linestyle 1
-@    s5 errorbar riser clip off
-@    s5 errorbar riser clip length 0.100000
-@    s5 comment "Cols 1:2:3"
-@    s5 legend  "a_fix_var_omega_r_skip1.dat"
-@    s6 hidden false
-@    s6 type xydy
-@    s6 symbol 7
-@    s6 symbol size 0.500000
-@    s6 symbol color 7
-@    s6 symbol pattern 1
-@    s6 symbol fill color 7
-@    s6 symbol fill pattern 0
-@    s6 symbol linewidth 1.0
-@    s6 symbol linestyle 1
-@    s6 symbol char 65
-@    s6 symbol char font 0
-@    s6 symbol skip 0
-@    s6 line type 1
-@    s6 line linestyle 1
-@    s6 line linewidth 1.0
-@    s6 line color 7
-@    s6 line pattern 1
-@    s6 baseline type 0
-@    s6 baseline off
-@    s6 dropline off
-@    s6 fill type 0
-@    s6 fill rule 0
-@    s6 fill color 1
-@    s6 fill pattern 1
-@    s6 avalue off
-@    s6 avalue type 2
-@    s6 avalue char size 1.500000
-@    s6 avalue font 0
-@    s6 avalue color 1
-@    s6 avalue rot 0
-@    s6 avalue format general
-@    s6 avalue prec 9
-@    s6 avalue prepend ""
-@    s6 avalue append ""
-@    s6 avalue offset 0.000000 , 0.000000
-@    s6 errorbar on
-@    s6 errorbar place both
-@    s6 errorbar color 7
-@    s6 errorbar pattern 1
-@    s6 errorbar size 1.000000
-@    s6 errorbar linewidth 1.0
-@    s6 errorbar linestyle 1
-@    s6 errorbar riser linewidth 1.0
-@    s6 errorbar riser linestyle 1
-@    s6 errorbar riser clip off
-@    s6 errorbar riser clip length 0.100000
-@    s6 comment "Cols 1:2:3"
-@    s6 legend  "a_fix_var_omega_r_skip2.dat"
-@    s7 hidden false
-@    s7 type xydy
-@    s7 symbol 8
-@    s7 symbol size 0.500000
-@    s7 symbol color 8
-@    s7 symbol pattern 1
-@    s7 symbol fill color 8
-@    s7 symbol fill pattern 0
-@    s7 symbol linewidth 1.0
-@    s7 symbol linestyle 1
-@    s7 symbol char 65
-@    s7 symbol char font 0
-@    s7 symbol skip 0
-@    s7 line type 1
-@    s7 line linestyle 1
-@    s7 line linewidth 1.0
-@    s7 line color 8
-@    s7 line pattern 1
-@    s7 baseline type 0
-@    s7 baseline off
-@    s7 dropline off
-@    s7 fill type 0
-@    s7 fill rule 0
-@    s7 fill color 1
-@    s7 fill pattern 1
-@    s7 avalue off
-@    s7 avalue type 2
-@    s7 avalue char size 1.500000
-@    s7 avalue font 0
-@    s7 avalue color 1
-@    s7 avalue rot 0
-@    s7 avalue format general
-@    s7 avalue prec 9
-@    s7 avalue prepend ""
-@    s7 avalue append ""
-@    s7 avalue offset 0.000000 , 0.000000
-@    s7 errorbar on
-@    s7 errorbar place both
-@    s7 errorbar color 8
-@    s7 errorbar pattern 1
-@    s7 errorbar size 1.000000
-@    s7 errorbar linewidth 1.0
-@    s7 errorbar linestyle 1
-@    s7 errorbar riser linewidth 1.0
-@    s7 errorbar riser linestyle 1
-@    s7 errorbar riser clip off
-@    s7 errorbar riser clip length 0.100000
-@    s7 comment "Cols 1:2:3"
-@    s7 legend  "a_fix_var_omega_r_skip3.dat"
+@    s3 legend  "L\smin\N= 32"
 @target G0.S0
 @type xydy
 2.2016 0.016083004 2.7192333e-05
@@ -1087,420 +891,4 @@
 2.201992 9.7331417e+08 6.019988e+09
 2.201996 1.7815239e+09 6.8983789e+09
 2.202 2.1331765e+09 8.0489203e+09
-&
-@target G0.S4
-@type xydy
-2.2016 0 0
-2.201604 0 0
-2.201608 0 0
-2.201612 0 0
-2.201616 0 0
-2.20162 0 0
-2.201624 0 0
-2.201628 0 0
-2.201632 0 0
-2.201636 0 0
-2.20164 0 0
-2.201644 0 0
-2.201648 0 0
-2.201652 0 0
-2.201656 0 0
-2.20166 0 0
-2.201664 0 0
-2.201668 0 0
-2.201672 0 0
-2.201676 0 0
-2.20168 0 0
-2.201684 0 0
-2.201688 0 0
-2.201692 0 0
-2.201696 0 0
-2.2017 0 0
-2.201704 0 0
-2.201708 0 0
-2.201712 0 0
-2.201716 0 0
-2.20172 0 0
-2.201724 0 0
-2.201728 0 0
-2.201732 0 0
-2.201736 0 0
-2.20174 0 0
-2.201744 0 0
-2.201748 0 0
-2.201752 0 0
-2.201756 0 0
-2.20176 0 0
-2.201764 0 0
-2.201768 0 0
-2.201772 0 0
-2.201776 0 0
-2.20178 0 0
-2.201784 0 0
-2.201788 0 0
-2.201792 0 0
-2.201796 0 0
-2.2018 0 0
-2.201804 0 0
-2.201808 0 0
-2.201812 0 0
-2.201816 0 0
-2.20182 0 0
-2.201824 0 0
-2.201828 0 0
-2.201832 0 0
-2.201836 0 0
-2.20184 0 0
-2.201844 0 0
-2.201848 0 0
-2.201852 0 0
-2.201856 0 0
-2.20186 0 0
-2.201864 0 0
-2.201868 0 0
-2.201872 0 0
-2.201876 0 0
-2.20188 0 0
-2.201884 0 0
-2.201888 0 0
-2.201892 0 0
-2.201896 0 0
-2.2019 0 0
-2.201904 0 0
-2.201908 0 0
-2.201912 0 0
-2.201916 0 0
-2.20192 0 0
-2.201924 0 0
-2.201928 0 0
-2.201932 0 0
-2.201936 0 0
-2.20194 0 0
-2.201944 0 0
-2.201948 0 0
-2.201952 0 0
-2.201956 0 0
-2.20196 0 0
-2.201964 0 0
-2.201968 0 0
-2.201972 0 0
-2.201976 0 0
-2.20198 0 0
-2.201984 0 0
-2.201988 0 0
-2.201992 0 0
-2.201996 0 0
-2.202 0 0
-&
-@target G0.S5
-@type xydy
-2.2016 0 0
-2.201604 0 0
-2.201608 0 0
-2.201612 0 0
-2.201616 0 0
-2.20162 0 0
-2.201624 0 0
-2.201628 0 0
-2.201632 0 0
-2.201636 0 0
-2.20164 0 0
-2.201644 0 0
-2.201648 0 0
-2.201652 0 0
-2.201656 0 0
-2.20166 0 0
-2.201664 0 0
-2.201668 0 0
-2.201672 0 0
-2.201676 0 0
-2.20168 0 0
-2.201684 0 0
-2.201688 0 0
-2.201692 0 0
-2.201696 0 0
-2.2017 0 0
-2.201704 0 0
-2.201708 0 0
-2.201712 0 0
-2.201716 0 0
-2.20172 0 0
-2.201724 0 0
-2.201728 0 0
-2.201732 0 0
-2.201736 0 0
-2.20174 0 0
-2.201744 0 0
-2.201748 0 0
-2.201752 0 0
-2.201756 0 0
-2.20176 0 0
-2.201764 0 0
-2.201768 0 0
-2.201772 0 0
-2.201776 0 0
-2.20178 0 0
-2.201784 0 0
-2.201788 0 0
-2.201792 0 0
-2.201796 0 0
-2.2018 0 0
-2.201804 0 0
-2.201808 0 0
-2.201812 0 0
-2.201816 0 0
-2.20182 0 0
-2.201824 0 0
-2.201828 0 0
-2.201832 0 0
-2.201836 0 0
-2.20184 0 0
-2.201844 0 0
-2.201848 0 0
-2.201852 0 0
-2.201856 0 0
-2.20186 0 0
-2.201864 0 0
-2.201868 0 0
-2.201872 0 0
-2.201876 0 0
-2.20188 0 0
-2.201884 0 0
-2.201888 0 0
-2.201892 0 0
-2.201896 0 0
-2.2019 0 0
-2.201904 0 0
-2.201908 0 0
-2.201912 0 0
-2.201916 0 0
-2.20192 0 0
-2.201924 0 0
-2.201928 0 0
-2.201932 0 0
-2.201936 0 0
-2.20194 0 0
-2.201944 0 0
-2.201948 0 0
-2.201952 0 0
-2.201956 0 0
-2.20196 0 0
-2.201964 0 0
-2.201968 0 0
-2.201972 0 0
-2.201976 0 0
-2.20198 0 0
-2.201984 0 0
-2.201988 0 0
-2.201992 0 0
-2.201996 0 0
-2.202 0 0
-&
-@target G0.S6
-@type xydy
-2.2016 0 0
-2.201604 0 0
-2.201608 0 0
-2.201612 0 0
-2.201616 0 0
-2.20162 0 0
-2.201624 0 0
-2.201628 0 0
-2.201632 0 0
-2.201636 0 0
-2.20164 0 0
-2.201644 0 0
-2.201648 0 0
-2.201652 0 0
-2.201656 0 0
-2.20166 0 0
-2.201664 0 0
-2.201668 0 0
-2.201672 0 0
-2.201676 0 0
-2.20168 0 0
-2.201684 0 0
-2.201688 0 0
-2.201692 0 0
-2.201696 0 0
-2.2017 0 0
-2.201704 0 0
-2.201708 0 0
-2.201712 0 0
-2.201716 0 0
-2.20172 0 0
-2.201724 0 0
-2.201728 0 0
-2.201732 0 0
-2.201736 0 0
-2.20174 0 0
-2.201744 0 0
-2.201748 0 0
-2.201752 0 0
-2.201756 0 0
-2.20176 0 0
-2.201764 0 0
-2.201768 0 0
-2.201772 0 0
-2.201776 0 0
-2.20178 0 0
-2.201784 0 0
-2.201788 0 0
-2.201792 0 0
-2.201796 0 0
-2.2018 0 0
-2.201804 0 0
-2.201808 0 0
-2.201812 0 0
-2.201816 0 0
-2.20182 0 0
-2.201824 0 0
-2.201828 0 0
-2.201832 0 0
-2.201836 0 0
-2.20184 0 0
-2.201844 0 0
-2.201848 0 0
-2.201852 0 0
-2.201856 0 0
-2.20186 0 0
-2.201864 0 0
-2.201868 0 0
-2.201872 0 0
-2.201876 0 0
-2.20188 0 0
-2.201884 0 0
-2.201888 0 0
-2.201892 0 0
-2.201896 0 0
-2.2019 0 0
-2.201904 0 0
-2.201908 0 0
-2.201912 0 0
-2.201916 0 0
-2.20192 0 0
-2.201924 0 0
-2.201928 0 0
-2.201932 0 0
-2.201936 0 0
-2.20194 0 0
-2.201944 0 0
-2.201948 0 0
-2.201952 0 0
-2.201956 0 0
-2.20196 0 0
-2.201964 0 0
-2.201968 0 0
-2.201972 0 0
-2.201976 0 0
-2.20198 0 0
-2.201984 0 0
-2.201988 0 0
-2.201992 0 0
-2.201996 0 0
-2.202 0 0
-&
-@target G0.S7
-@type xydy
-2.2016 0 0
-2.201604 0 0
-2.201608 0 0
-2.201612 0 0
-2.201616 0 0
-2.20162 0 0
-2.201624 0 0
-2.201628 0 0
-2.201632 0 0
-2.201636 0 0
-2.20164 0 0
-2.201644 0 0
-2.201648 0 0
-2.201652 0 0
-2.201656 0 0
-2.20166 0 0
-2.201664 0 0
-2.201668 0 0
-2.201672 0 0
-2.201676 0 0
-2.20168 0 0
-2.201684 0 0
-2.201688 0 0
-2.201692 0 0
-2.201696 0 0
-2.2017 0 0
-2.201704 0 0
-2.201708 0 0
-2.201712 0 0
-2.201716 0 0
-2.20172 0 0
-2.201724 0 0
-2.201728 0 0
-2.201732 0 0
-2.201736 0 0
-2.20174 0 0
-2.201744 0 0
-2.201748 0 0
-2.201752 0 0
-2.201756 0 0
-2.20176 0 0
-2.201764 0 0
-2.201768 0 0
-2.201772 0 0
-2.201776 0 0
-2.20178 0 0
-2.201784 0 0
-2.201788 0 0
-2.201792 0 0
-2.201796 0 0
-2.2018 0 0
-2.201804 0 0
-2.201808 0 0
-2.201812 0 0
-2.201816 0 0
-2.20182 0 0
-2.201824 0 0
-2.201828 0 0
-2.201832 0 0
-2.201836 0 0
-2.20184 0 0
-2.201844 0 0
-2.201848 0 0
-2.201852 0 0
-2.201856 0 0
-2.20186 0 0
-2.201864 0 0
-2.201868 0 0
-2.201872 0 0
-2.201876 0 0
-2.20188 0 0
-2.201884 0 0
-2.201888 0 0
-2.201892 0 0
-2.201896 0 0
-2.2019 0 0
-2.201904 0 0
-2.201908 0 0
-2.201912 0 0
-2.201916 0 0
-2.20192 0 0
-2.201924 0 0
-2.201928 0 0
-2.201932 0 0
-2.201936 0 0
-2.20194 0 0
-2.201944 0 0
-2.201948 0 0
-2.201952 0 0
-2.201956 0 0
-2.20196 0 0
-2.201964 0 0
-2.201968 0 0
-2.201972 0 0
-2.201976 0 0
-2.20198 0 0
-2.201984 0 0
-2.201988 0 0
-2.201992 0 0
-2.201996 0 0
-2.202 0 0
 &

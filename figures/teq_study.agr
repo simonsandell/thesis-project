@@ -90,7 +90,7 @@
 @timestamp rot 0
 @timestamp font 0
 @timestamp char size 1.500000
-@timestamp def "Thu Aug  2 13:35:09 2018"
+@timestamp def "Wed Aug 22 10:50:52 2018"
 @r0 off
 @link r0 to g0
 @r0 type above
@@ -135,7 +135,7 @@
 @g0 fixedpoint type 0
 @g0 fixedpoint xy 0.000000, 0.000000
 @g0 fixedpoint format general general
-@g0 fixedpoint prec 9, 9        
+@g0 fixedpoint prec 9, 9
 @with g0
 @    world 0.952410072, -0.0909425626, 2385.8753, 1.00441826
 @    stack world 0, 0, 0, 0
@@ -153,84 +153,7 @@
 @    yaxes scale Normal
 @    xaxes invert off
 @    yaxes invert off
-@    xaxis  on
-@    xaxis  type zero false
-@    xaxis  offset 0.000000 , 0.000000
-@    xaxis  bar on
-@    xaxis  bar color 1
-@    xaxis  bar linestyle 1
-@    xaxis  bar linewidth 1.0
-@    xaxis  label "N\ssweeps\S"
-@    xaxis  label layout para
-@    xaxis  label place auto
-@    xaxis  label char size 1.560000
-@    xaxis  label font 0
-@    xaxis  label color 1
-@    xaxis  label place normal
-@    xaxis  tick on
-@    xaxis  tick major 100
-@    xaxis  tick minor ticks 9
-@    xaxis  tick default 6
-@    xaxis  tick place rounded true
-@    xaxis  tick in
-@    xaxis  tick major size 1.000000
-@    xaxis  tick major color 1
-@    xaxis  tick major linewidth 1.0
-@    xaxis  tick major linestyle 1
-@    xaxis  tick major grid off
-@    xaxis  tick minor color 1
-@    xaxis  tick minor linewidth 1.0
-@    xaxis  tick minor linestyle 1
-@    xaxis  tick minor grid off
-@    xaxis  tick minor size 0.500000
-@    xaxis  ticklabel on
-@    xaxis  ticklabel format general
-@    xaxis  ticklabel prec 9
-@    xaxis  ticklabel formula ""
-@    xaxis  ticklabel append ""
-@    xaxis  ticklabel prepend ""
-@    xaxis  ticklabel angle 0
-@    xaxis  ticklabel skip 0
-@    xaxis  ticklabel stagger 0
-@    xaxis  ticklabel place normal
-@    xaxis  ticklabel offset auto
-@    xaxis  ticklabel offset 0.000000 , 0.010000
-@    xaxis  ticklabel start type auto
-@    xaxis  ticklabel start 0.000000
-@    xaxis  ticklabel stop type auto
-@    xaxis  ticklabel stop 0.000000
-@    xaxis  ticklabel char size 1.540000
-@    xaxis  ticklabel font 0
-@    xaxis  ticklabel color 1
-@    xaxis  tick place both
-@    xaxis  tick spec type both
-@    xaxis  tick spec 17
-@    xaxis  tick major 0, 2
-@    xaxis  ticklabel 0, "2"
-@    xaxis  tick minor 1, 4
-@    xaxis  tick major 2, 8
-@    xaxis  ticklabel 2, "8"
-@    xaxis  tick minor 3, 16
-@    xaxis  tick major 4, 32
-@    xaxis  ticklabel 4, "32"
-@    xaxis  tick minor 5, 64
-@    xaxis  tick major 6, 128
-@    xaxis  ticklabel 6, "128"
-@    xaxis  tick minor 7, 256
-@    xaxis  tick major 8, 512
-@    xaxis  ticklabel 8, "2e+9"
-@    xaxis  tick minor 9, 1024
-@    xaxis  tick major 10, 2048
-@    xaxis  ticklabel 10, "2e+11"
-@    xaxis  tick minor 11, 4096
-@    xaxis  tick major 12, 8192
-@    xaxis  ticklabel 12, "2e+13"
-@    xaxis  tick minor 13, 16384
-@    xaxis  tick major 14, 32768
-@    xaxis  ticklabel 14, "2e+15"
-@    xaxis  tick minor 15, 65536
-@    xaxis  tick major 16, 131072
-@    xaxis  ticklabel 16, "2e+17"
+@    xaxis  off
 @    yaxis  on
 @    yaxis  type zero false
 @    yaxis  offset 0.000000 , 0.000000
@@ -247,7 +170,7 @@
 @    yaxis  label place normal
 @    yaxis  tick on
 @    yaxis  tick major 0.2
-@    yaxis  tick minor ticks 1
+@    yaxis  tick minor ticks 9
 @    yaxis  tick default 6
 @    yaxis  tick place rounded true
 @    yaxis  tick in
@@ -282,11 +205,61 @@
 @    yaxis  ticklabel color 1
 @    yaxis  tick place both
 @    yaxis  tick spec type none
-@    altxaxis  off
+@    altxaxis  on
+@    altxaxis  type zero false
+@    altxaxis  offset 0.000000 , 0.000000
+@    altxaxis  bar on
+@    altxaxis  bar color 1
+@    altxaxis  bar linestyle 1
+@    altxaxis  bar linewidth 1.0
+@    altxaxis  label "N\ssweeps"
+@    altxaxis  label layout para
+@    altxaxis  label place auto
+@    altxaxis  label char size 1.000000
+@    altxaxis  label font 0
+@    altxaxis  label color 1
+@    altxaxis  label place normal
+@    altxaxis  tick on
+@    altxaxis  tick major 2
+@    altxaxis  tick minor ticks 9
+@    altxaxis  tick default 6
+@    altxaxis  tick place rounded true
+@    altxaxis  tick in
+@    altxaxis  tick major size 1.000000
+@    altxaxis  tick major color 1
+@    altxaxis  tick major linewidth 1.0
+@    altxaxis  tick major linestyle 1
+@    altxaxis  tick major grid off
+@    altxaxis  tick minor color 1
+@    altxaxis  tick minor linewidth 1.0
+@    altxaxis  tick minor linestyle 1
+@    altxaxis  tick minor grid off
+@    altxaxis  tick minor size 0.500000
+@    altxaxis  ticklabel on
+@    altxaxis  ticklabel format general
+@    altxaxis  ticklabel prec 5
+@    altxaxis  ticklabel formula ""
+@    altxaxis  ticklabel append ""
+@    altxaxis  ticklabel prepend ""
+@    altxaxis  ticklabel angle 0
+@    altxaxis  ticklabel skip 0
+@    altxaxis  ticklabel stagger 0
+@    altxaxis  ticklabel place normal
+@    altxaxis  ticklabel offset auto
+@    altxaxis  ticklabel offset 0.000000 , 0.010000
+@    altxaxis  ticklabel start type auto
+@    altxaxis  ticklabel start 0.000000
+@    altxaxis  ticklabel stop type auto
+@    altxaxis  ticklabel stop 0.000000
+@    altxaxis  ticklabel char size 1.000000
+@    altxaxis  ticklabel font 0
+@    altxaxis  ticklabel color 1
+@    altxaxis  tick place both
+@    altxaxis  tick spec type none
 @    altyaxis  off
 @    legend on
 @    legend loctype view
-@    legend 1.43587715108, 0.824482877576
+@    legend 1.36371220263, 0.833503496133
 @    legend box color 1
 @    legend box pattern 1
 @    legend box linewidth 1.0

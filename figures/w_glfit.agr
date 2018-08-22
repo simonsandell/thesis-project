@@ -135,7 +135,7 @@
 @g0 fixedpoint type 0
 @g0 fixedpoint xy 0.000000, 0.000000
 @g0 fixedpoint format general general
-@g0 fixedpoint prec 9, 9         
+@g0 fixedpoint prec 9, 9              
 @with g0
 @    world 2.20183405492, -0.359620962708, 2.20188564831, 2.51415961242
 @    stack world 0, 0, 0, 0
@@ -169,7 +169,7 @@
 @    xaxis  label place normal
 @    xaxis  tick on
 @    xaxis  tick major 1e-05
-@    xaxis  tick minor ticks 1
+@    xaxis  tick minor ticks 9
 @    xaxis  tick default 6
 @    xaxis  tick place rounded true
 @    xaxis  tick in
@@ -220,7 +220,7 @@
 @    yaxis  label place normal
 @    yaxis  tick on
 @    yaxis  tick major 0.5
-@    yaxis  tick minor ticks 1
+@    yaxis  tick minor ticks 9
 @    yaxis  tick default 6
 @    yaxis  tick place rounded true
 @    yaxis  tick in

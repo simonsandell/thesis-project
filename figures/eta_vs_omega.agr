@@ -90,7 +90,7 @@
 @timestamp rot 0
 @timestamp font 0
 @timestamp char size 1.500000
-@timestamp def "Thu Aug  2 17:17:00 2018"
+@timestamp def "Wed Aug 15 12:36:12 2018"
 @r0 off
 @link r0 to g0
 @r0 type above
@@ -135,9 +135,9 @@
 @g0 fixedpoint type 0
 @g0 fixedpoint xy 0.000000, 0.000000
 @g0 fixedpoint format general general
-@g0 fixedpoint prec 9, 9        
+@g0 fixedpoint prec 9, 9
 @with g0
-@    world 0.508250783804, 0.0153085459921, 1.49177484832, 0.0607218803504
+@    world 0.600239385554, 0.0291641251098, 1.10431255416, 0.0515597238581
 @    stack world 0, 0, 0, 0
 @    znorm 1
 @    view 0.219072, 0.150000, 1.679553, 0.850000
@@ -160,7 +160,7 @@
 @    xaxis  bar color 1
 @    xaxis  bar linestyle 1
 @    xaxis  bar linewidth 1.0
-@    xaxis  label "\xw\0 - First Order Scaling Correction"
+@    xaxis  label "\xw\0"
 @    xaxis  label layout para
 @    xaxis  label place auto
 @    xaxis  label char size 1.500000
@@ -168,8 +168,8 @@
 @    xaxis  label color 1
 @    xaxis  label place normal
 @    xaxis  tick on
-@    xaxis  tick major 0.2
-@    xaxis  tick minor ticks 1
+@    xaxis  tick major 0.1
+@    xaxis  tick minor ticks 9
 @    xaxis  tick default 6
 @    xaxis  tick place rounded true
 @    xaxis  tick in
@@ -211,7 +211,7 @@
 @    yaxis  bar color 1
 @    yaxis  bar linestyle 1
 @    yaxis  bar linewidth 1.0
-@    yaxis  label "\xh\0 critical exponent"
+@    yaxis  label "\xh\0"
 @    yaxis  label layout para
 @    yaxis  label place auto
 @    yaxis  label char size 1.500000
@@ -219,8 +219,8 @@
 @    yaxis  label color 1
 @    yaxis  label place normal
 @    yaxis  tick on
-@    yaxis  tick major 0.01
-@    yaxis  tick minor ticks 1
+@    yaxis  tick major 0.005
+@    yaxis  tick minor ticks 9
 @    yaxis  tick default 6
 @    yaxis  tick place rounded true
 @    yaxis  tick in
@@ -328,7 +328,7 @@
 @    s0 errorbar riser clip off
 @    s0 errorbar riser clip length 0.100000
 @    s0 comment "Cols 1:2:3"
-@    s0 legend  "jul_26_finaleta_vs_omega.dat"
+@    s0 legend  ""
 @target G0.S0
 @type xydy
 0.5 0.06187508 0
