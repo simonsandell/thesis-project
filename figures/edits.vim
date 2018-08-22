@@ -10,5 +10,6 @@
 %s/T - Temperature/T/g 
 %s/char size 1\.0/char size 1\.5/g 
 %s/prec \d/prec 9/g 
-%s/prec \d, \d/prec 9, 9 
+%s/prec \d, \d/prec 9, 9/g 
+%s/minor ticks \d/minor ticks 9/g
 wq
