@@ -5,24 +5,16 @@ import matplotlib.pyplot as plt
 import settings
 
 
-
 filelist = [
     np.load(settings.pickles_path + "correlation/jack/jack_" + settings.TAG + "4.npy"),
-    np.load(settings.pickles_path + "correlation/jack/jack_" + settings.TAG + "8.npy"),
-    np.load(settings.pickles_path + "correlation/jack/jack_" + settings.TAG + "16.npy"),
-    np.load(settings.pickles_path + "correlation/jack/jack_" + settings.TAG + "32.npy"),
-    np.load(settings.pickles_path + "correlation/jack/jack_" + settings.TAG + "64.npy"),
-   np.load(settings.pickles_path + "correlation/jack/jack_" + settings.TAG + "128.npy"),
+    #np.load(settings.pickles_path + "correlation/jack/jack_" + settings.TAG + "8.npy"),
+    #np.load(settings.pickles_path + "correlation/jack/jack_" + settings.TAG + "16.npy"),
+    #np.load(settings.pickles_path + "correlation/jack/jack_" + settings.TAG + "32.npy"),
+    #np.load(settings.pickles_path + "correlation/jack/jack_" + settings.TAG + "64.npy"),
+    #np.load(settings.pickles_path + "correlation/jack/jack_" + settings.TAG + "128.npy"),
 ]
 
-datatables = [
-    np.load(settings.DATATABLES[0]),
-    np.load(settings.DATATABLES[1]),
-    np.load(settings.DATATABLES[2]),
-    np.load(settings.DATATABLES[3]),
-    np.load(settings.DATATABLES[4]),
-   np.load(settings.DATATABLES[5]),
-]
+
 
 # data format:
 # L T xmag ymag time cluster_index
@@ -32,100 +24,78 @@ datatables = [
 
 do_plot = False
 Mags = []
-Data = []
 
-for i in datatables:
-    mag = i[60, 28]
-    Mags.append(math.pow(mag, 2))
-    Data.append(i[60, :])
+def np_raise(numparr, exp):
+    return np.power(numparr, exp*np.ones(numparr.shape))
 
 def calc_mag(ser):
     # xmax = 2, ymag = 3
     xmag = ser[:, 2]
     ymag = ser[:, 3]
     L = ser[0, 0]
-    Ls = L*np.ones(xmag.shape)
+    # m = sqrt( xmag**2+ ymag**2)
+    return np_raise(np_raise(xmag,2) + np_raise(ymag, 2), 0.5)
 
-    return np.power(np.power(xmag, 2.0) + np.power(ymag, 2.0), 0.5)/np.power(Ls, 3)
-
-def calc_corr(mag_t, step, lidx):
-    avg_m_sq = Mags[lidx]
+def calc_corr(mag_t, step, lidx, avg_m):
+    #avg_m_sq = Mags[lidx]
     corr = []
     corr[:] = []
-    corr = mag_t[:-step]*mag_t[step:]
-    corr = corr - np.ones(corr.size)*avg_m_sq
+    corr = mag_t[:-step]*mag_t[step:] - (avg_m**2)
+    return corr
+
+def get_zero_corr(magser, avg_m):
+    corr = []
+    corr[:] = []
+    corr = np.power(magser, 2*np.ones(magser.size)) - np.ones(magser.size)*(avg_m**2)
     return corr
 
 
 def calc_MCS_per_clust(timeseries):
-    diff = timeseries[1:, 4] - timeseries[:-1, 4]
-    diff /= math.pow(timeseries[0, 0], 3)        #measure in sweeps
+    diff = timeseries[1:, 4] - timeseries[:-1, 4] # diff is number of tested spinflips between clusters
+    diff /= math.pow(timeseries[0, 0], 3)        #
     return diff
 
-#compute zerotime correlation function from datatables
-def get_zero_corr(lidx):
-    avg_m2 = Data[lidx][10]
-    avg_m = Data[lidx][9]
-    exp = Data[lidx][21]
+def calc_mag_sq(ser):
+    return np.power(ser[:, 2], 2*np.ones(ser[:, 2].shape)) + np.power(ser[:, 3], 2*np.ones(ser[:, 3].shape))
 
-    return avg_m2/exp - math.pow(avg_m/exp, 2)
-
-
-JACK_N = filelist[0].shape[0]
-TIME_N = filelist[0].shape[1]
 print('done loading')
 print(filelist[0].shape)
 
-do_jack = True
-
-def jack_time(times):
-    t = time.time()
-    block_size = times.shape[1]
-    j_size = times.shape[0] -1
-    if do_jack:
-        jack_res = np.empty((JACK_N))
-        out = np.empty((j_size, block_size), dtype=times.dtype)
-        for ji in range(JACK_N):
-            out[:ji, :] = times[:ji, :]
-            out[ji:, :] = times[ji+1:, :]
-            jack_res[ji] = np.mean(out)
-
-
-        print(time.time() -t)
-        return np.mean(times), math.pow(JACK_N, 0.5)*np.std(jack_res)
-    else:
-        print(time.time() - t)
-        return np.mean(times), 0.0
-
-
+ndiffmax = np.linspace(100, 5000, 6)
 for l_idx, series in enumerate(filelist):
-    #begin by computing average time per cluster
+    #begin by computing average time per cluster and <m>^2
     times = []
-
-    for j in range(JACK_N):
+    times[:] = []
+    for j in range(series.shape[0]):
         times.append(calc_MCS_per_clust(series[j, :, :]))
     times = np.array(times)
-    avg_time, delta_time = jack_time(times)
+    avg_time = np.mean(times.ravel())
+    delta_time = (1.0/pow(times.ravel().shape[0], 0.5))*np.std(times)
     print("computed avg_time")
 
     # compute magseries for each jack
-    magseries = np.empty((series.shape[0],series.shape[1]))
-    for j in range(JACK_N):
+    magseries = np.empty((series.shape[0], series.shape[1]))
+    for j in range(series.shape[0]):
         magseries[j, :] = calc_mag(series[j, :, :])
+    avg_mag = np.mean(magseries.ravel())
 
     # now do correlation function for range of times
     correlation_func = []
     correlation_func[:] = []
-    correlation_func.append([ 0, 0, get_zero_corr(l_idx), 0])
-    for ndiff in range(1, 5000):
+    zer_corr = []
+    zer_corr[:] = []
+    for j in range(series.shape[0]):
+        zer_corr.append(get_zero_corr(magseries[j, :], avg_mag))
+    correlation_func.append([0, 0, np.mean(zer_corr), 0])
+    for ndiff in range(1, int(ndiffmax[l_idx])):
+        print(ndiff+1, '/',ndiffmax[l_idx])
         curr_corr = []
         curr_corr[:] = []
-        for j in range(JACK_N):
-            curr_corr.append(calc_corr(magseries[j, :], ndiff, l_idx))
-        curr_corr = np.array(curr_corr)
-        correlation_func.append([avg_time*ndiff, delta_time*ndiff, *jack_time(curr_corr)])
-        #correlation_func.append([avg_time*ndiff, delta_time*ndiff, np.mean(curr_corr), (1/math.sqrt(JACK_N))*np.std(curr_corr)])
-        
+        for j in range(series.shape[0]):
+            curr_corr.append(calc_corr(magseries[j, :], ndiff, l_idx, avg_mag))
+        avg_corr = np.mean(curr_corr)
+        delta_corr = np.std(curr_corr)*(1.0/pow(len(curr_corr), 0.5))
+        correlation_func.append([avg_time*ndiff, delta_time*ndiff, avg_corr, delta_corr])
     correlation_func = np.array(correlation_func)
 
     if do_plot:
@@ -136,5 +106,4 @@ for l_idx, series in enumerate(filelist):
                          xerr=correlation_func[:, 1],
                          fmt='o')
             plt.show()
-    np.save("jack_correlation_func_" + repr(series[0,0,0]), correlation_func)
-
+    np.save("new_correlation_func_" + repr(series[0, 0, 0]), correlation_func)

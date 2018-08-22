@@ -9,25 +9,21 @@ def lidx_to_L(idx):
     return 4*math.pow(2, idx)
 
 flist = [
-        "./correlation_data/jack_correlation_func_4.0.npy",
-        "./correlation_data/jack_correlation_func_8.0.npy",
-        "./correlation_data/jack_correlation_func_16.0.npy",
-        "./correlation_data/jack_correlation_func_32.0.npy",
-        "./correlation_data/jack_correlation_func_64.0.npy",
-        "./correlation_data/jack_correlation_func_128.0.npy",
+        "./new_correlation_func_4.0.npy",
+        "./new_correlation_func_8.0.npy",
+        "./new_correlation_func_16.0.npy",
+        "./new_correlation_func_32.0.npy",
+        "./new_correlation_func_64.0.npy",
+        "./new_correlation_func_128.0.npy",
         ]
+plt.figure(num=1)
+plt.yscale('log')
 for li,f in enumerate(flist):
-    correlation_func = np.load(f)
-    print(correlation_func.shape)
-    print(correlation_func[-1, 1])
-    if False:
-        plt.figure()
-        plt.errorbar(correlation_func[:, 0],
-                     correlation_func[:, 2],
-                     yerr=correlation_func[:, 3],
-                     xerr=correlation_func[:, 1],
-                     fmt='x'
-                     )
-        plt.show()
-    path = settings.foutput_path + settings.model + "/vstime/corr/cf_"
-    fileWriter.writeQuant(path+str(lidx_to_L(li))+".dat", correlation_func, [0, 2, 3, 1])
+    cfunc = np.load(f)
+   #plt.errorbar(cfunc[:, 0], cfunc[:, 2]/cfunc[0,2] ,yerr=cfunc[:, 3]/cfunc[0, 2], label=f)
+    plt.plot(cfunc[:, 0], cfunc[:, 2]/cfunc[0,2] , 'o-', label=f)
+    print(cfunc[1, 0])
+plt.figlegend()
+plt.show()
+path = settings.foutput_path + settings.model + "/vstime/corr/cf_"
+fileWriter.writeQuant(path+str(lidx_to_L(li))+".dat", cfunc, [0, 2, 3, 1])
