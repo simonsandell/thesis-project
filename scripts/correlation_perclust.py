@@ -65,17 +65,17 @@ def get_M0MT(subser, d, am, am2):
 
     magprod = np.multiply(mag1, mag2)
     magprod = np.divide(magprod, math.pow(subser[0, 0, 0], 6))
-    timediff = np.subtract(subser[:, d:, 5], subser[:, :-d, 5])
+    timediff = np.subtract(subser[:, d:, 4], subser[:, :-d, 4])
     #timediff = np.divide(timediff, math.pow(subser[0, 0, 0], 3))
     return magprod.ravel(), timediff.ravel()
 
 
-ndiffmax = [1001, 1001, 1001, 1001, 1001, 1001]
+ndiffmax = [1001, 1001, 751, 1251, 2501, 5001]
 for l_idx, fname in enumerate(filelist):
     series = np.load(fname)
     series = series[300:305, :, :]
-    avg_m, avg_m2 = get_ms_best(series)
-    #avg_m, avg_m2 = get_ms(series)
+    #avg_m, avg_m2 = get_ms_best(series)
+    avg_m, avg_m2 = get_ms(series)
     print('got avgs, m=',avg_m, ', m2=',avg_m2)
     print('C(0) = ', avg_m2 - pow(avg_m,2))
     correlations =[]
@@ -86,18 +86,14 @@ for l_idx, fname in enumerate(filelist):
     for diff in range(1, ndiffmax[l_idx]):
         print('diff: ', diff,'/',ndiffmax[l_idx]-1)
         c, t = get_M0MT(series, math.ceil(diff), avg_m, avg_m2)
-        correlations.extend(c)
-        times.extend(t)
+        correlations.append(np.divide((np.mean(c) - avg_m*avg_m), (avg_m2 - avg_m*avg_m)))
+        times.append(diff)
 
-    #times = np.array(times)
-    #correlations = np.array(correlations)
-    res, binedges, binnumber = binned_statistic(times, [times, correlations], statistic='mean', bins=ndfiffmax[0])
-    #res[1] = res[1] - pow(avg_m, 2)
-    #res[1] /= (avg_m2 - pow(avg_m,2))
+    res = np.array([times, correlations])
     np.save('binned'+str(4*pow(2,l_idx)), res)
-    #plt.plot(res[0], res[1])/(avg_m2 - pow(avg_m,2)))
-#plt.show() 
 """
+    plt.plot(res[0,:], res[1, :])
+    plt.show() 
     bins = np.linspace(0, max(correlations[:,0]), 500)
     inds = np.digitize(correlations[:, 0], bins])
     bin_means = [correlations[:,1
