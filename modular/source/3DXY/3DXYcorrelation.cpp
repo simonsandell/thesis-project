@@ -20,9 +20,9 @@ void print_line(Lattice3DXY &lat, long double time, long int n_cl, int jnum)
     sstrm << std::fixed << lat.runTemp << " ";	//1
     sstrm << std::fixed << lat.xmag << " ";	//2
     sstrm << std::fixed << lat.ymag << " ";    	//3
-    sstrm << std::fixed << time << " ";         //4
-    sstrm << std::fixed << n_cl << " ";         //5
-    sstrm << std::fixed << jnum << " ";         //6
+    sstrm << std::fixed << time << " ";         //4 time in number of tested spinflips
+    sstrm << std::fixed << n_cl << " ";         //5 number of clusters performed before
+    sstrm << std::fixed << jnum << " ";         //6 jnum, identifying indep series
     sstrm << std::endl;				
     lat.oPer.addLine(sstrm.str());
 

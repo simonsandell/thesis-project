@@ -8,21 +8,25 @@ import settings
 def lidx_to_L(idx):
     return 4*math.pow(2, idx)
 
+ss = './perclust/perclust_'
+ss = './pertime/pertime_'
+ss = './tbin/binned'
 flist = [
-        "./binned4.npy",
-        "./binned8.npy",
-        "./binned16.npy",
-        "./binned32.npy",
-        "./binned64.npy",
-        "./binned128.npy"
+        ss + "4.npy",
+        ss + "8.npy",
+        ss + "16.npy",
+        ss + "32.npy",
+        ss + "64.npy",
+        ss + "128.npy"
         ]
 plt.figure(num=1)
 for li,f in enumerate(flist):
     cfunc = np.load(f)
-    plt.plot(cfunc[0], cfunc[1], 'o-', label=f)
-    print(cfunc[1, 0])
-plt.yscale('log')
+    print(cfunc.shape)
+    #cfunc[0, : ] = np.divide(cfunc[0,: ],(lidx_to_L(li)**3))
+    plt.plot(cfunc[0, :], cfunc[1,: ], 'o-', label=f)
+    path = settings.foutput_path + settings.model + "/vstime/corr/cf_"
+    fileWriter.writeQuant(path+str(lidx_to_L(li))+".dat", np.transpose(cfunc) , [0, 1, 1])
+#plt.yscale('log')
 plt.figlegend()
 plt.show()
-path = settings.foutput_path + settings.model + "/vstime/corr/cf_"
-fileWriter.writeQuant(path+str(lidx_to_L(li))+".dat", cfunc, [0, 2, 3, 1])

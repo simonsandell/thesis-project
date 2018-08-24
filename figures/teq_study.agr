@@ -215,7 +215,7 @@
 @    altxaxis  label "N\ssweeps"
 @    altxaxis  label layout para
 @    altxaxis  label place auto
-@    altxaxis  label char size 1.000000
+@    altxaxis  label char size 1.500000
 @    altxaxis  label font 0
 @    altxaxis  label color 1
 @    altxaxis  label place normal
@@ -237,7 +237,7 @@
 @    altxaxis  tick minor size 0.500000
 @    altxaxis  ticklabel on
 @    altxaxis  ticklabel format general
-@    altxaxis  ticklabel prec 5
+@    altxaxis  ticklabel prec 9
 @    altxaxis  ticklabel formula ""
 @    altxaxis  ticklabel append ""
 @    altxaxis  ticklabel prepend ""
@@ -251,7 +251,7 @@
 @    altxaxis  ticklabel start 0.000000
 @    altxaxis  ticklabel stop type auto
 @    altxaxis  ticklabel stop 0.000000
-@    altxaxis  ticklabel char size 1.000000
+@    altxaxis  ticklabel char size 1.500000
 @    altxaxis  ticklabel font 0
 @    altxaxis  ticklabel color 1
 @    altxaxis  tick place both
