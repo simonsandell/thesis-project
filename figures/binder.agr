@@ -71,6 +71,14 @@
 @map color 13 to (103, 7, 72), "maroon"
 @map color 14 to (64, 224, 208), "turquoise"
 @map color 15 to (0, 139, 0), "green4"
+@map color 16 to (27, 158, 119), "col2"
+@map color 17 to (217, 95, 2), "col3"
+@map color 18 to (117, 112, 179), "col4"
+@map color 19 to (231, 41, 138), "col5"
+@map color 20 to (102, 166, 30), "col6"
+@map color 21 to (230, 171, 2), "col7"
+@map color 22 to (166, 118, 29), "col8"
+@map color 23 to (102, 102, 102), "col9"
 @reference date 0
 @date wrap off
 @date wrap year 1950
@@ -90,7 +98,7 @@
 @timestamp rot 0
 @timestamp font 0
 @timestamp char size 1.500000
-@timestamp def "Tue Aug 21 10:48:13 2018"
+@timestamp def "Wed Sep  5 10:45:56 2018"
 @r0 off
 @link r0 to g0
 @r0 type above
@@ -480,9 +488,9 @@
 @    s4 type xydy
 @    s4 symbol 5
 @    s4 symbol size 0.500000
-@    s4 symbol color 11
+@    s4 symbol color 13
 @    s4 symbol pattern 1
-@    s4 symbol fill color 11
+@    s4 symbol fill color 13
 @    s4 symbol fill pattern 0
 @    s4 symbol linewidth 1.0
 @    s4 symbol linestyle 1
@@ -492,7 +500,7 @@
 @    s4 line type 1
 @    s4 line linestyle 1
 @    s4 line linewidth 1.0
-@    s4 line color 11
+@    s4 line color 13
 @    s4 line pattern 1
 @    s4 baseline type 0
 @    s4 baseline off
@@ -514,7 +522,7 @@
 @    s4 avalue offset 0.000000 , 0.000000
 @    s4 errorbar on
 @    s4 errorbar place both
-@    s4 errorbar color 11
+@    s4 errorbar color 13
 @    s4 errorbar pattern 1
 @    s4 errorbar size 1.000000
 @    s4 errorbar linewidth 1.0

@@ -74,7 +74,7 @@
 @reference date 0
 @date wrap off
 @date wrap year 1950
-@default linewidth 1.0
+@default linewidth 2.0
 @default linestyle 1
 @default color 1
 @default pattern 1
@@ -90,40 +90,40 @@
 @timestamp rot 0
 @timestamp font 0
 @timestamp char size 1.500000
-@timestamp def "Wed Aug 29 16:35:18 2018"
+@timestamp def "Wed Aug 29 16:31:49 2018"
 @r0 off
 @link r0 to g0
 @r0 type above
 @r0 linestyle 1
-@r0 linewidth 1.0
+@r0 linewidth 2.0
 @r0 color 1
 @r0 line 0, 0, 0, 0
 @r1 off
 @link r1 to g0
 @r1 type above
 @r1 linestyle 1
-@r1 linewidth 1.0
+@r1 linewidth 2.0
 @r1 color 1
 @r1 line 0, 0, 0, 0
 @r2 off
 @link r2 to g0
 @r2 type above
 @r2 linestyle 1
-@r2 linewidth 1.0
+@r2 linewidth 2.0
 @r2 color 1
 @r2 line 0, 0, 0, 0
 @r3 off
 @link r3 to g0
 @r3 type above
 @r3 linestyle 1
-@r3 linewidth 1.0
+@r3 linewidth 2.0
 @r3 color 1
 @r3 line 0, 0, 0, 0
 @r4 off
 @link r4 to g0
 @r4 type above
 @r4 linestyle 1
-@r4 linewidth 1.0
+@r4 linewidth 2.0
 @r4 color 1
 @r4 line 0, 0, 0, 0
 @g0 on
@@ -160,7 +160,7 @@
 @    yaxis  bar on
 @    yaxis  bar color 1
 @    yaxis  bar linestyle 1
-@    yaxis  bar linewidth 1.0
+@    yaxis  bar linewidth 2.0
 @    yaxis  label "\xa\0"
 @    yaxis  label layout para
 @    yaxis  label place auto
@@ -176,11 +176,11 @@
 @    yaxis  tick in
 @    yaxis  tick major size 1.000000
 @    yaxis  tick major color 1
-@    yaxis  tick major linewidth 1.0
+@    yaxis  tick major linewidth 2.0
 @    yaxis  tick major linestyle 1
 @    yaxis  tick major grid off
 @    yaxis  tick minor color 1
-@    yaxis  tick minor linewidth 1.0
+@    yaxis  tick minor linewidth 2.0
 @    yaxis  tick minor linestyle 1
 @    yaxis  tick minor grid off
 @    yaxis  tick minor size 0.500000
@@ -212,7 +212,7 @@
 @    legend 1.20413086, 0.796268657
 @    legend box color 1
 @    legend box pattern 1
-@    legend box linewidth 1.0
+@    legend box linewidth 2.0
 @    legend box linestyle 1
 @    legend box fill color 0
 @    legend box fill pattern 1
@@ -225,7 +225,7 @@
 @    legend invert false
 @    frame type 0
 @    frame linestyle 1
-@    frame linewidth 1.0
+@    frame linewidth 2.0
 @    frame color 1
 @    frame pattern 1
 @    frame background color 0
@@ -233,7 +233,7 @@
 @    s0 hidden false
 @    s0 type xydy
 @    s0 symbol 1
-@    s0 symbol size 0.510000
+@    s0 symbol size 0.610000
 @    s0 symbol color 1
 @    s0 symbol pattern 1
 @    s0 symbol fill color 1
@@ -245,7 +245,7 @@
 @    s0 symbol skip 0
 @    s0 line type 1
 @    s0 line linestyle 1
-@    s0 line linewidth 1.0
+@    s0 line linewidth 2.0
 @    s0 line color 1
 @    s0 line pattern 1
 @    s0 baseline type 0
@@ -265,7 +265,7 @@
 @    s0 avalue prec 9
 @    s0 avalue prepend ""
 @    s0 avalue append "This work"
-@    s0 avalue offset 0.000000 , 0.050000
+@    s0 avalue offset 0.170000 , 0.000000
 @    s0 errorbar on
 @    s0 errorbar place both
 @    s0 errorbar color 1
@@ -282,7 +282,7 @@
 @    s1 hidden false
 @    s1 type xydy
 @    s1 symbol 3
-@    s1 symbol size 0.510000
+@    s1 symbol size 0.610000
 @    s1 symbol color 3
 @    s1 symbol pattern 1
 @    s1 symbol fill color 3
@@ -294,7 +294,7 @@
 @    s1 symbol skip 0
 @    s1 line type 1
 @    s1 line linestyle 1
-@    s1 line linewidth 1.0
+@    s1 line linewidth 2.0
 @    s1 line color 3
 @    s1 line pattern 1
 @    s1 baseline type 0
@@ -314,7 +314,7 @@
 @    s1 avalue prec 9
 @    s1 avalue prepend ""
 @    s1 avalue append "Sokolov et al. 2016"
-@    s1 avalue offset 0.000000 , 0.050000
+@    s1 avalue offset 0.170000 , 0.000000
 @    s1 errorbar on
 @    s1 errorbar place both
 @    s1 errorbar color 3
@@ -331,7 +331,7 @@
 @    s4 hidden false
 @    s4 type xydy
 @    s4 symbol 2
-@    s4 symbol size 0.510000
+@    s4 symbol size 0.610000
 @    s4 symbol color 2
 @    s4 symbol pattern 1
 @    s4 symbol fill color 2
@@ -343,7 +343,7 @@
 @    s4 symbol skip 0
 @    s4 line type 1
 @    s4 line linestyle 1
-@    s4 line linewidth 1.0
+@    s4 line linewidth 2.0
 @    s4 line color 2
 @    s4 line pattern 1
 @    s4 baseline type 0
@@ -363,7 +363,7 @@
 @    s4 avalue prec 9
 @    s4 avalue prepend ""
 @    s4 avalue append "Campostrini et al. 2006"
-@    s4 avalue offset 0.000000 , 0.050000
+@    s4 avalue offset 0.200000 , 0.000000
 @    s4 errorbar on
 @    s4 errorbar place both
 @    s4 errorbar color 2
@@ -380,7 +380,7 @@
 @    s6 hidden false
 @    s6 type xydy
 @    s6 symbol 4
-@    s6 symbol size 0.510000
+@    s6 symbol size 0.610000
 @    s6 symbol color 4
 @    s6 symbol pattern 1
 @    s6 symbol fill color 4
@@ -392,7 +392,7 @@
 @    s6 symbol skip 0
 @    s6 line type 1
 @    s6 line linestyle 1
-@    s6 line linewidth 1.0
+@    s6 line linewidth 2.0
 @    s6 line color 4
 @    s6 line pattern 1
 @    s6 baseline type 0
@@ -412,7 +412,7 @@
 @    s6 avalue prec 9
 @    s6 avalue prepend ""
 @    s6 avalue append "Lipa et al. 2003"
-@    s6 avalue offset 0.000000 , 0.050000
+@    s6 avalue offset 0.170000 , -0.010000
 @    s6 errorbar on
 @    s6 errorbar place both
 @    s6 errorbar color 4
