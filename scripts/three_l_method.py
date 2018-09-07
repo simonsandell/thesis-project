@@ -41,8 +41,8 @@ FINAL_RESULT = np.empty((RESULT.shape[0], RESULT.shape[1], RESULT.shape[2] + 2))
 for line in range(J_RESULT.shape[0]):
     deltas = np.empty((RESULT.shape[1], 2))
     for temp in range(J_RESULT.shape[2]):
-        delta_bin = np.sqrt(J_RESULT.shape[1]-1)*np.std(J_RESULT[line, :, temp, 1])
-        delta_rs = np.sqrt(J_RESULT.shape[1]-1)*np.std(J_RESULT[line, :, temp, 2])
+        delta_bin = np.sqrt(J_RESULT.shape[1])*np.std(J_RESULT[line, :, temp, 1])
+        delta_rs = np.sqrt(J_RESULT.shape[1])*np.std(J_RESULT[line, :, temp, 2])
         deltas[temp, :] = [delta_bin, delta_rs]
     res_plus_del = np.append(RESULT[line, :, :], deltas, axis=1)
     FINAL_RESULT[line, :, :] = res_plus_del

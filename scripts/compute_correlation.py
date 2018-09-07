@@ -7,6 +7,14 @@ import settings
 
 
 filelist = [
+    np.load(settings.pickles_path + "correlation/" + settings.TAG + "4.npy"),
+    np.load(settings.pickles_path + "correlation/" + settings.TAG + "8.npy"),
+    np.load(settings.pickles_path + "correlation/" + settings.TAG + "16.npy"),
+    np.load(settings.pickles_path + "correlation/" + settings.TAG + "32.npy"),
+    np.load(settings.pickles_path + "correlation/" + settings.TAG + "64.npy"),
+    np.load(settings.pickles_path + "correlation/" + settings.TAG + "128.npy"),
+]
+jacklist = [
     np.load(settings.pickles_path + "correlation/jack/jack_" + settings.TAG + "4.npy"),
     np.load(settings.pickles_path + "correlation/jack/jack_" + settings.TAG + "8.npy"),
     np.load(settings.pickles_path + "correlation/jack/jack_" + settings.TAG + "16.npy"),
@@ -95,7 +103,7 @@ for l_idx, series in enumerate(filelist):
     print('average cluster time ', avg_time)
     print('average m2', Mags[l_idx])
 
-    # for timediffs of upto x, compute correlation function
+    # for timediffs of up to x, compute correlation function
     for i in range(1, 500):
         correlation_func.append([i*avg_time[0], i*avg_time[1], *calc_corr(series, i, l_idx)])
     corr_func = np.array(correlation_func)

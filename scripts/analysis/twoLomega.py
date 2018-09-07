@@ -21,6 +21,9 @@ def get_bin_rho_intersection(data_1, data_2):
     intersection = intersectionFinder.findIntersection(x, y1_binder, y2_binder)
 
     if len(intersection) > 0:
+        if len(intersection) > 1:
+            print('more than 1 intersection binder')
+            print(intersection)
         bres = intersection[0]
     else:
         bres = [np.nan, np.nan]
@@ -28,6 +31,9 @@ def get_bin_rho_intersection(data_1, data_2):
 
     if len(rho_intersection) > 0:
         rres = rho_intersection[0]
+        if len(intersection) > 1:
+            print('more than 1 intersection rho')
+            print(intersection)
     else:
         rres = [np.nan, np.nan]
 

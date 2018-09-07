@@ -33,9 +33,11 @@ OMEGA_RANGE = np.linspace(0.7, 0.9, 30)
 RESULT = np.empty((OMEGA_RANGE.shape[0], len(DATLIST)-1, 5))
 J_SIZE = JACKLIST[0].shape[0]
 J_RESULT = np.empty((J_SIZE, OMEGA_RANGE.shape[0], len(DATLIST) - 1, 5))
-
+print('rescaling and finding intersections')
 for size_idx, (q1, q2) in enumerate(zip(DATLIST[:-1], DATLIST[1:])):
+    print('size', size_idx,"/",len(DATLIST)-1)
     for om_idx, omega in enumerate(OMEGA_RANGE):
+        print('omega',om_idx,"/",30) 
         bothresult = twoLomega.intersections_for_given_omega(q1, q2, omega)
         temp_bin, temp_rho = bothresult[0], bothresult[1]
         RESULT[om_idx, size_idx, :] = [omega, *temp_bin, *temp_rho]
@@ -49,8 +51,9 @@ for size_idx, (q1, q2) in enumerate(zip(DATLIST[:-1], DATLIST[1:])):
 # calculate intersection closeness
 bin_close_result = np.empty((0, 7))
 rho_close_result = np.empty((0, 7))
-
+print('finding intersections')
 for om_idx, omega in enumerate(OMEGA_RANGE):
+    print(om_idx,"/",30)
     #prune nan's
     bin_pts_X = RESULT[om_idx, :, 1]
     bin_pts_Y = RESULT[om_idx, :, 2]
@@ -72,9 +75,9 @@ for om_idx, omega in enumerate(OMEGA_RANGE):
                 j_res.append(intersectionFinder.findCloseness([jbin_pruned]))
         j_res = np.array(j_res)
         j_res = [
-            pow(j_res.shape[0]-1, 0.5)*np.std(j_res[:, 0]),
-            pow(j_res.shape[0]-1, 0.5)*np.std(j_res[:, 1]),
-            pow(j_res.shape[0]-1, 0.5)*np.std(j_res[:, 2])
+            pow(j_res.shape[0], 0.5)*np.std(j_res[:, 0]),
+            pow(j_res.shape[0], 0.5)*np.std(j_res[:, 1]),
+            pow(j_res.shape[0], 0.5)*np.std(j_res[:, 2])
             ]
         close_bin = intersectionFinder.findCloseness([bin_pruned])
         row = np.array([[omega, *close_bin, *j_res]])
@@ -92,9 +95,9 @@ for om_idx, omega in enumerate(OMEGA_RANGE):
                 j_res.append(intersectionFinder.findCloseness([jrho_pruned]))
         j_res = np.array(j_res)
         j_res = [
-            pow(j_res.shape[0]-1, 0.5)*np.std(j_res[:, 0]),
-            pow(j_res.shape[0]-1, 0.5)*np.std(j_res[:, 1]),
-            pow(j_res.shape[0]-1, 0.5)*np.std(j_res[:, 2])
+            pow(j_res.shape[0], 0.5)*np.std(j_res[:, 0]),
+            pow(j_res.shape[0], 0.5)*np.std(j_res[:, 1]),
+            pow(j_res.shape[0], 0.5)*np.std(j_res[:, 2])
             ]
         close_rho = intersectionFinder.findCloseness([rho_pruned])
         row = np.array([[omega, *close_rho, *j_res]])

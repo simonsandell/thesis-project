@@ -3,38 +3,44 @@ import numpy as np
 from analysis import intersectionFinder
 
 
+def read_grace_dat(filepath):
+    ret = [];
+    with open(filepath,"r") as a:
+        for line in a:
+            if not "#" in line:
+                spline = (line.rsplit("    "))
+                spline = [x for x in spline if not x==""]
+                fline = [float(x) for x in spline[:-1]]
+                ret.append(fline)
+    return np.array(ret)
+pth = "/home/simon/exjobb/modular/foutput/3DXY/2Lquant_fit/omega_bin/"
+a = (read_grace_dat(pth + "/asdf.dat"))
+b = (read_grace_dat(pth+"/2jul_26_final_skip_.dat"))
+print(a.shape, b.shape)
+x = a[:, 0]
+y1 = a[:, 1]
+y2 = b[:, 1]
+dy1 = a[:, 2]
+dy2 = b[:, 2]
+int_a = intersectionFinder.findIntersection(x, y1, y2)
+print(int_a)
+c_int = int_a[0]
+near_x = []
+for ind,xval in enumerate(x):
+    if xval > c_int[0]:
+        near_x = [x[ind-1], x[ind]]
+        near_y1 = [y1[ind-1], y1[ind]]
+        near_y2 = [y2[ind-1], y2[ind]]
+        near_del_1 = max([dy1[ind-1], dy1[ind]])
+        near_del_2 = max([dy2[ind-1], dy2[ind]])
+        break
 
-x = np.array([
-    2.201856000000000000000000000000,          
-    2.201860000000000000000000000000,          
-    2.201864000000000000000000000000,          
-])
-y1 = np.array([
-    0.794060648933400781146474400884,#   0.001047828464334074442809718875
-    0.805940658650742602908678691165,#   0.001035936878068147376855123731
-    0.817661253137404231416951461142,#   0.001034280368003510745811279747
+if near_del_1 > near_del_2:
+    slope = (near_y1[1] - near_y1[0])/(near_x[1] - near_x[0])
+    delta_y = near_del_1
+else:
+    slope = (near_y2[1] - near_y2[0])/(near_x[1] - near_x[0])
+    delta_y = near_del_2
+delta_x = delta_y/slope
 
-])
-y2 = np.array([
-    0.789299967814464098481153087050,#   0.002505572893646917931320672324
-    0.817496305907651876765385168255,#   0.002507700852184018957408140338
-    0.845443307985452752184585278883,#   0.002523103188846532226458085901
-])
-y3 = np.array([
-    0.742472230591427306833907096006,#   0.005519199208468019562934259170
-    0.805773437899767519532190362952,#   0.005703703533234007368168949625
-    0.870507535769419971138916025666,#   0.006127448982629438503644259129
-
-  ])
-y4 = np.array([
-    0.688449475648429731755584271014,#   0.010330691340294391109000393669
-    0.826187397898631492587639968406,#   0.012164117171566412450856020655
-    0.980711208629801212133259014081,#   0.014942071817620073553856130388
-  ])
-print(intersectionFinder.findIntersection(x, y1, y2))
-print(intersectionFinder.findIntersection(x, y2, y3))
-print(intersectionFinder.findIntersection(x, y3, y4))
-"""
-2.20185717 0.79752693
-2.20186127 0.82640212
-2.2018589  0.78841334
+print('x ', c_int[0],delta_x, 'y ', c_int[1], delta_y)

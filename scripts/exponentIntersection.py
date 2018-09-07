@@ -6,7 +6,7 @@ from analysis import intersectionFinder
 import anaFuncs
 import settings
 
-TAG = settings.TAG
+TAG = settings.TAG + "_zoom_"
 
 FILELIST = [
     np.load(settings.DATATABLES[0]),
@@ -53,13 +53,35 @@ def calc_exponents(omega, skip_n):
         res[0, 1] = params[0]
         res[0, 2] = covar[0, 0]
 
-        return res
+        return res, dy
 
     def calc_eta(tview):
         x = tview[:, 0]
         y = tview[:, idx["CHI"][0]]
         dy = tview[:, 30 + idx["CHI"][0]]
         params, covar = curve_fit(etafunc, x, y, sigma=dy)
+        res = np.empty((1, 4))
+        res[0, 0] = tview[0, 1]
+        res[0, 1] = 2.0 - params[0]
+        res[0, 2] = covar[0, 0]
+
+        return res, dy
+
+    def calc_nu_jack(tview, dnu):
+        x = tview[:, 0]
+        y = tview[:, idx["DBDT"][0]]
+        params, covar = curve_fit(fitfunc, x, y, sigma=dnu)
+        res = np.empty((1, 4))
+        res[0, 0] = tview[0, 1]
+        res[0, 1] = params[0]
+        res[0, 2] = covar[0, 0]
+
+        return res
+
+    def calc_eta_jack(tview, deta):
+        x = tview[:, 0]
+        y = tview[:, idx["CHI"][0]]
+        params, covar = curve_fit(etafunc, x, y, sigma=deta)
         res = np.empty((1, 4))
         res[0, 0] = tview[0, 1]
         res[0, 1] = 2.0 - params[0]
@@ -97,19 +119,19 @@ def calc_exponents(omega, skip_n):
         # sort by L
         tview = tview[tview[:, 0].argsort()]
         # fit to functions
-        result[ind, :] = calc_nu(tview)
-        eta_result[ind, :] = calc_eta(tview)
+        result[ind, :], DNU = calc_nu(tview)
+        eta_result[ind, :], DETA = calc_eta(tview)
 
         for jack_n in range(JACK_NUM):
-            jack_nu_res[jack_n, ind, :] = calc_nu(all_jdata[jack_n, :, ind, :])
-            jack_eta_res[jack_n, ind, :] = calc_eta(all_jdata[jack_n, :, ind, :])
+            jack_nu_res[jack_n, ind, :] = calc_nu_jack(all_jdata[jack_n, :, ind, :], DNU)
+            jack_eta_res[jack_n, ind, :] = calc_eta_jack(all_jdata[jack_n, :, ind, :], DETA)
 
     return [result, eta_result, jack_nu_res, jack_eta_res]
 
 
 # for a range of omegas, find different nu,eta curves by curve_fit by succesively omitting smallest L points
 # for each omega, find the intersection points of those nu/eta-curves and check their closeness/clustering.
-ORANGE = np.linspace(0.5, 1.5, num=30)
+ORANGE = np.linspace(0.6, 1, num=30)
 N_SKIP_RANGE = [0, 1, 2, 3]
 nu_close = np.empty((ORANGE.shape[0], 7))
 eta_close = np.empty((ORANGE.shape[0], 7))

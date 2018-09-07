@@ -168,10 +168,9 @@ void _3DXY::correlationRun(std::string maxepath, std::string warmlatpath, long d
     RandStruct r;
     Lattice3DXY lat(L, runTemp, true, r, c, maxepath, warmlatpath);
     lat.loadLattice();
-    long int N_clusts = 10000;
-    for (int i =0; i < 500; i++) 
+    long int N_clusts = 10000000;
+    for (int i =0; i < 1; i++) 
     {
-        warmup(lat, 100);
         computeWolffCorrelation(lat, N_clusts, i);
     }
 }

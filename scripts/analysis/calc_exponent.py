@@ -139,6 +139,7 @@ def calculate_exponents(omega,skip_n):
     # result format : [T exponent var(exponent) N=NL1 + NL2]
 
     for ind in range(Ti.shape[0] - 1):
+        print(ind+1,'/', Ti.shape[0] - 1)
         tview = all_tables[Ti[ind] : Ti[ind + 1], :]
         tview = tview[tview[:, 0].argsort()]
         result[ind, :4], DDBDT = calculateNu(tview)
